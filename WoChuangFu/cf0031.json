@@ -1,0 +1,24 @@
+{
+    "@class": "com.ailk.app.mapp.model.GXCDatapackage",
+    "header": {
+        "@class": "com.ailk.app.mapp.model.GXCHeader",
+        "bizCode": "cf0031",
+        "identityId": null,
+        "respCode": "0000",
+        "respMsg": "",
+        "mode": "1",
+        "sign": null
+    },
+    "body": {
+        "@class": "com.ailk.app.mapp.model.rsp.CF0031Response",
+        "expand": null,
+        "assess": {
+            "@class": "com.ailk.app.mapp.model.rsp.EvaluateResult",
+            "expand": null,
+            "evaluateCount": "74",
+            "evaluateNiceCount": "53",
+            "evaluateNeutralCoun": "8",
+            "evaluateNegativeCoun": "13"
+        }
+    }
+}

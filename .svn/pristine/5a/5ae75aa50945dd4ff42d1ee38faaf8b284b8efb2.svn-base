@@ -1,0 +1,8 @@
+#import <UIKit/UIKit.h>
+
+@interface MyTableVC : UITableViewController
+
+@property (nonatomic,assign) int evaluateId;
+@property (nonatomic,copy) NSString *productId;
+
+@end

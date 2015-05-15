@@ -1,0 +1,390 @@
+//
+//  ChooseNumVC.m
+//  WoChuangFu
+//
+//  Created by duwl on 12/1/14.
+//  Copyright (c) 2014 asiainfo-linkage. All rights reserved.
+//
+
+#import "ChooseNumVC.h"
+#import "CommonMacro.h"
+#import "ChooseNumCell.h"
+#import "NumberManager.h"
+#import "ZSYCommonPickerView.h"
+#import "UIImage+LXX.h"
+#import "TitleBar.h"
+
+
+@interface ChooseNumVC() <UITableViewDataSource,UITableViewDelegate,TitleBarDelegate,UITextFieldDelegate>
+
+{
+    UITableView *_tableView;
+    NSString *searchedNum;
+    NSMutableArray *_resultsData;//搜索结果数据
+    UISearchBar *mySearchBar;
+    UISearchDisplayController *mySearchDisplayController;
+}
+@property (nonatomic, strong) NSMutableArray *dataSources;
+@property (nonatomic, strong) UIView *countView;
+@property (nonatomic,retain) UILabel *countlable;          //数量标签
+@property(nonatomic,retain)NSDictionary *SendDic;
+@property (nonatomic, strong) NSMutableArray *dataArray;
+@property (nonatomic,strong) UILabel *countLable;                   //数量标签 eg.(总共多少件商品)
+@property (nonatomic,strong) TitleBar *titleBar;
+@property (nonatomic,strong) NSString *searchedText;
+@property (nonatomic,strong)NSString *areaName;//地区名字
+@property (nonatomic,strong)NSString *areaCode;//地区ID
+@property (nonatomic,strong)NSString *typeId;//靓号ID
+@property (nonatomic,strong)NSString *typeName;//靓号名字
+
+
+@end
+
+@implementation ChooseNumVC
+
+@synthesize dataSources;
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:YES];
+    _searchedText = [_titleBar getSearchText];
+    
+    bussineDataService *bus = [bussineDataService  sharedDataService];
+    bus.target = self;
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                 @"",@"phoneNum",
+                                 @"",@"areaId",
+                                 @"",@"cardType",
+                                 @"",@"numType",
+                                 @"10017",@"productId",
+                                 @"1",@"pageIndex",
+                                 @"20",@"pageCount",
+                                 @"initSearch",@"requestType",nil];
+                               //  @"",@"initSearch",nil];
+    [bus number:dict];
+
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    _titleBar.searchTxt.keyboardAppearance = UIKeyboardTypeDecimalPad;
+    _titleBar = [[TitleBar alloc]initWithFram:CGRectMake(0, 0, SCREEN_WIDTH, 64) ShowHome:YES ShowSearch:YES TitlePos:middle_position];
+    _titleBar.target = self;
+    [self.view addSubview:_titleBar];
+    
+    self.navigationController.navigationBarHidden = YES;
+    _dataArray = [NSMutableArray array];
+  //  _resultsData = [NSMutableArray array];
+    [self initTableView];
+    [self showCount];
+    
+        if ([_tableView respondsToSelector:@selector(setSeparatorInset:)]) {
+        [_tableView setSeparatorInset:UIEdgeInsetsZero];
+    }
+    
+
+    UIButton *topBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [topBtn setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+    [topBtn setImage:[UIImage imageNamed:@""] forState:UIControlStateHighlighted];
+    [topBtn addTarget:self action:@selector(scrollTotop) forControlEvents:UIControlEventTouchUpInside];
+    [topBtn setFrame:CGRectMake(SCREEN_WIDTH-60, SCREEN_HEIGHT-100, 30, 30)];
+    [self.view addSubview:topBtn];
+}
+-(void)scrollTotop{
+    
+    [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+}
+
+
+- (NSMutableArray *)dataArray
+{
+    if (nil == _dataArray)
+    {
+        _dataArray = [NSMutableArray array];
+    }
+    return _dataArray;
+}
+
+-(void)showCount
+{
+    _countView = [[UIView alloc] initWithFrame:CGRectMake(0, 64, SCREEN_WIDTH, 44)];
+    _countView.backgroundColor = UIColorWithRGBA(255, 249, 245, 1);
+   
+    
+    UILabel *countLable = [[UILabel alloc] init];
+    countLable.text = @"总共0件商品";
+    countLable.font = [UIFont systemFontOfSize:14.0f];
+    countLable.textAlignment = NSTextAlignmentCenter;
+    countLable.frame = CGRectMake(SCREEN_WIDTH/2-100, 64, 200, 44);
+    _countLable = countLable;
+    _countLable.textAlignment = NSTextAlignmentCenter;
+   
+     [self.view addSubview:_countView];
+     [self.view addSubview:countLable];
+}
+
+- (void)initTableView
+{
+    _tableView = [[UITableView alloc] init];
+    _tableView.frame = CGRectMake(0,108, 320, 400);
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
+    _tableView.backgroundColor = [UIColor whiteColor];
+    _tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+    _tableView.showsVerticalScrollIndicator = NO;
+//    _tableView.tableHeaderView = _countView;
+    _tableView.tableHeaderView = [[UIView alloc] init];
+    [_tableView setTableHeaderView:_countView];
+    _tableView.tableFooterView = [[UIView alloc] init];
+
+    UIButton * saveButton = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH/2, 50)];
+    [saveButton setTitle:@"选择地区" forState:UIControlStateNormal];
+    [saveButton addTarget:self action:@selector(whereClicked) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIView *view1 = [[UIView alloc]initWithFrame:CGRectMake(0, SCREEN_HEIGHT-60, SCREEN_WIDTH, 300)];
+    view1.backgroundColor = [UIColor whiteColor];
+    [view1 addSubview:saveButton];
+   
+    //[_tableView setTableFooterView:view1];
+     [self.view addSubview:_tableView];
+    [self.view addSubview:view1];
+    if (IOS7)
+        //分割线的位置不带偏移
+        [_tableView setSeparatorInset:UIEdgeInsetsMake(0, 0, 0, 0)];
+       // separatorInset = UIEdgeInsetsZero;
+}
+
+
+-(void)requestDidFinished:(NSDictionary *)info
+{
+    bussineDataService *bus=[bussineDataService sharedDataService];
+    NSArray *phoneNums = bus.rspInfo[@"phoneNumObject"];
+    
+    for (NSDictionary *dict in phoneNums)
+    {
+        [_dataArray addObject:dict[@"phoneNum"]];
+    }
+    [_tableView reloadData];
+    _countLable.text = [NSString stringWithFormat:@"总共%d件商品",_dataArray.count];
+}
+
+
+-(void)requestFailed:(NSDictionary *)info
+{
+    NSString* bizCode = [info objectForKey:@"bussineCode"];
+    NSString* msg = [info objectForKey:@"MSG"];
+    [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
+    
+    if([[ChoosePackageMessage getBizCode] isEqualToString:bizCode]){
+        if([info objectForKey:@"MSG"] == [NSNull null]){
+            msg = @"获取数据失败！";
+        }
+        if(nil == msg){
+            msg = @"获取数据失败！";
+        }
+        [self showAlertViewTitle:@"提示"
+                         message:msg
+                        delegate:self
+                             tag:10101
+               cancelButtonTitle:@"取消"
+               otherButtonTitles:@"重试",nil];
+        
+    }
+}
+
+#pragma mark AlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    [alertView dismissWithClickedButtonIndex:buttonIndex animated:YES];
+    NSString *buttonTitle = [alertView buttonTitleAtIndex:buttonIndex];
+    if(alertView.tag==10101){
+        if([buttonTitle isEqualToString:@"重试"]){
+            bussineDataService *bus=[bussineDataService sharedDataService];
+            bus.target=self;
+            [bus number:self.SendDic];
+        }
+    }
+}
+
+#pragma mark -
+#pragma mark AlertView
+-(void)showAlertViewTitle:(NSString*)title message:(NSString*)message delegate:(id)delegate tag:(NSInteger)tag cancelButtonTitle:(NSString*)cancelButtonTitle otherButtonTitles:(NSString*)otherButtonTitles,...
+{
+    NSMutableArray* argsArray = [[NSMutableArray alloc] initWithCapacity:0];
+    
+    id arg;
+    va_list argList;
+    if(nil != otherButtonTitles){
+        va_start(argList, otherButtonTitles);
+        while ((arg = va_arg(argList,id))) {
+            [argsArray addObject:arg];
+        }
+        va_end(argList);
+    }
+    
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:title
+                                                    message:message
+                                                   delegate:delegate
+                                          cancelButtonTitle:cancelButtonTitle
+                                          otherButtonTitles:otherButtonTitles,nil];
+    alert.tag = tag;
+    for(int i = 0; i < [argsArray count]; i++){
+        [alert addButtonWithTitle:[argsArray objectAtIndex:i]];
+    }
+    [alert show];
+}
+
+-(void)showSimpleAlertView:(NSString*)message
+{
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示信息"
+                                                    message:message
+                                                   delegate:nil
+                                          cancelButtonTitle:@"确定"
+                                          otherButtonTitles:nil];
+    [alert show];
+}
+
+
+////源字符串内容是否包含或等于要搜索的字符串内容
+//-(void)filterContentForSearchText:(NSString*)searchText scope:(NSString*)scope
+//{
+//    NSMutableArray *tempResults = [NSMutableArray array];
+//   _searchedNum = NSCaseInsensitiveSearch | NSDiacriticInsensitiveSearch;
+//    
+//    for (int i = 0; i < _dataArray.count; i++) {
+//      
+//        NSString *storeString = _dataArray[i];
+//        NSRange storeRange = NSMakeRange(0, storeString.length);
+//        NSRange foundRange = [storeString rangeOfString:searchText options:searchOptions range:storeRange];
+//    
+//        if (foundRange.length) {
+//            [tempResults addObject:storeString];
+//        }
+//    }
+//
+//    [_resultsData addObjectsFromArray:tempResults];
+//}
+
+#pragma mark - tableView代理
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+
+        return _dataArray.count;
+
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 50;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *myCell = @"cell_identifier";
+    ChooseNumCell *cell = [tableView dequeueReusableCellWithIdentifier:myCell];
+    
+    if (cell == nil) {
+        cell = [[ChooseNumCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:myCell];
+    }
+    NumberModel *numb = [NumberManager shareInstance].num;
+    if(numb == nil)
+        cell.SelectedimgView.hidden = true;
+    else
+    {
+        if([numb.number isEqualToString:[_dataArray objectAtIndex:indexPath.row]])
+            cell.SelectedimgView.hidden = false;
+        else
+            cell.SelectedimgView.hidden = true;
+    }
+    NSString *search =_searchedText;
+    NSString *num = [_dataArray objectAtIndex:indexPath.row];
+    NSRange range  = [num rangeOfString:search];
+    NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc] initWithString:num];
+    [attrStr addAttribute:NSForegroundColorAttributeName value:[UIColor orangeColor] range:range];
+    cell.numLable.attributedText =attrStr;
+
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    return cell;
+}
+
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    // 数据项
+    NumberModel *item =[[NumberModel alloc]init];
+    item.number =  [_dataArray objectAtIndex:indexPath.row];
+    
+    // 保存到单例
+    [NumberManager shareInstance].num = item;
+    // 刷新界面
+    [_tableView reloadData];
+}
+
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
+        
+        [cell setSeparatorInset:UIEdgeInsetsZero];
+        
+    }
+    
+//    if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
+//        
+//        if (IOS8) {
+//            [cell setLayoutMargins:UIEdgeInsetsZero];
+//        }
+//        
+//        
+//    }
+}
+
+#pragma mark - 实现键盘上Search按钮的方法
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+    
+    NSLog(@"您点击了键盘上的Search按钮");
+}
+
+
+-(void)searchAction:(NSString*)key
+{
+    NSLog(@"");
+    _searchedText = [_titleBar getSearchText];
+
+    bussineDataService *bus = [bussineDataService  sharedDataService];
+    bus.target = self;
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                 _searchedText,@"phoneNum",
+                                 @"",@"areaId",
+                                 @"",@"cardType",
+                                 @"",@"numType",
+                                 @"10017",@"productId",
+                                 @"1",@"pageIndex",
+                                 @"20",@"pageCount",
+                                 @"",@"requestType",nil];
+                                // @"",@"initSearch",nil];
+    [bus number:dict];
+    self.SendDic = dict;
+    [_titleBar.searchTxt resignFirstResponder];
+   
+}
+
+
+-(void)whereClicked
+{
+
+}
+
+-(void)backAction
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+-(void)homeAction
+{
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
+
+
+@end

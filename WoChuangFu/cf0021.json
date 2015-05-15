@@ -1,0 +1,26 @@
+{
+    "@class": "com.ailk.gx.mapp.model.GXCDatapackage",
+    "header": {
+        "@class": "com.ailk.gx.mapp.model.GXCHeader",
+        "bizCode": "cf0022",
+        "identityId": null,
+        "respCode": "0000",
+        "respMsg": "",
+        "mode": "1",
+        "sign": null
+    },
+    "body": {
+        "@class": "com.ailk.gx.mapp.model.rsp.cf0022Response",
+        "expand": null,
+        "orders": [{
+            "orderId": "7887788998",
+            "orderStatus": "未支付"},
+                   {
+                   "orderId": "789988998",
+                   "orderStatus": "已支付"},
+                   {
+                   "orderId": "788668998",
+                   "orderStatus": "未支付"}
+                   ]
+            }
+}

@@ -1,0 +1,157 @@
+#import "MyTableVC.h"
+#import "EvaluateCell.h"
+#import "MJRefresh.h"
+#import "bussineDataService.h"
+#import "EvaluateCellFrame.h"
+#import "EvaluateModel.h"
+#define PAFE_COUNT @"20"
+
+static NSString *identifier = @"EvaluationCell";
+
+@interface MyTableVC ()<HttpBackDelegate>
+{
+    NSMutableArray *evaluatesList;
+    NSMutableDictionary *requestDict;
+    int pageIndex;
+}
+
+@end
+
+@implementation MyTableVC
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    pageIndex = 1;
+    evaluatesList = [NSMutableArray array];
+    // 上拉加载更多
+    [(UITableView *)self.view addFooterWithTarget:self action:@selector(footerRereshing)];
+    [self.tableView registerClass:[EvaluateCell class] forCellReuseIdentifier:identifier];
+    
+    bussineDataService *bus = [bussineDataService sharedDataService];
+    bus.target = self;
+    requestDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                   self.productId,@"productId",
+                   [NSString stringWithFormat:@"%d",self.evaluateId],@"productType",
+                   @"1",@"pageIndex",
+                   PAFE_COUNT,@"pageCount",nil];
+    
+    [bus getEvaluate:requestDict];
+}
+
+//下拉刷新
+- (void)footerRereshing
+{
+    bussineDataService *bus = [bussineDataService sharedDataService];
+    [bus getEvaluate:requestDict];
+}
+
+#pragma mark - Table view data source
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return evaluatesList.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    EvaluateCell *cell = (EvaluateCell *)[tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
+    cell.myEvaluateCellFrame = evaluatesList[indexPath.row];
+    return cell;
+}
+#pragma mark - UITableViewDelegate
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    EvaluateCellFrame *frame = evaluatesList[indexPath.row];
+    return frame.cellHeight;
+}
+
+- (void)requestDidFinished:(NSDictionary*)info
+{
+    NSString* oKCode = @"0000";
+    NSString* bizCode = [info objectForKey:@"bussineCode"];
+    NSString* errCode = [info objectForKey:@"errorCode"];
+    NSString* msg = [info objectForKey:@"MSG"];
+    [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
+    if ([[GetEvaluateMessage getBizCode] isEqualToString:bizCode])
+    {
+        if ([oKCode isEqualToString:errCode])
+        {
+            bussineDataService *bus = [bussineDataService sharedDataService];
+            if (bus.rspInfo[@"evaluates"] != [NSNull null])
+            {
+                for (NSDictionary *dict in bus.rspInfo[@"evaluates"])
+                {
+                    EvaluateModel *model = [[EvaluateModel alloc] initWithDict:dict];
+                    EvaluateCellFrame *frame =[[EvaluateCellFrame alloc] init];
+                    frame.evaluateModel = model;
+                    [evaluatesList addObject:frame];
+                }
+                pageIndex ++;
+                [requestDict setObject:[NSString stringWithFormat:@"%d",pageIndex] forKey:@"pageIndex"];
+                [self.tableView reloadData];
+            }
+            else
+                [self showSimpleAlertView:@"已经到底了！"];
+        }
+        else
+        {
+            if([NSNull null] == [info objectForKey:@"MSG"]){
+                msg = @"刷新异常！";
+            }
+            if(nil == msg){
+                msg = @"刷新异常！";
+            }
+            [self showSimpleAlertView:msg];
+        }
+    }
+    [self.tableView footerEndRefreshing];
+}
+- (void)requestFailed:(NSDictionary*)info
+{
+    NSString* bizCode = [info objectForKey:@"bussineCode"];
+    NSString* msg = [info objectForKey:@"MSG"];
+    [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
+    
+    if([[GetEvaluateMessage getBizCode] isEqualToString:bizCode])
+    {
+        if([info objectForKey:@"MSG"] == [NSNull null])
+        {
+            msg = @"刷新失败！";
+        }
+        if(nil == msg)
+        {
+            msg = @"刷新失败！";
+        }
+        [self showSimpleAlertView:msg];
+    }
+    [self.tableView footerEndRefreshing];
+}
+
+- (void)cancelTimeOutAndLinkError
+{
+    if ([self.tableView isFooterRefreshing]) {
+        [self.tableView footerEndRefreshing];
+    }
+}
+-(void)showSimpleAlertView:(NSString*)message
+{
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示信息"
+                                                    message:message
+                                                   delegate:nil
+                                          cancelButtonTitle:@"确定"
+                                          otherButtonTitles:nil];
+    [alert show];
+}
+
+@end

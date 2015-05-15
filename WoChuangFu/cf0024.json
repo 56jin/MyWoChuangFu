@@ -1,0 +1,98 @@
+{
+    "@class": "com.ailk.app.mapp.model.GXCDatapackage",
+    "header": {
+        "@class": "com.ailk.app.mapp.model.GXCHeader",
+        "bizCode": "cf0024",
+        "identityId": null,
+        "respCode": "0000",
+        "respMsg": "",
+        "mode": "1",
+        "sign": null
+    },
+    "body": {
+        "@class": "com.ailk.app.mapp.model.rsp.CF0024Response",
+        "expand": null,
+        "packageMonthBill": null,
+        "paMonthData": [
+                        {
+                        "@class": "com.ailk.app.mapp.model.rsp.CF0024Response$PackageMonthData",
+                        "expand": null,
+                        "rangePrice": "999",
+                        "thawmon": "13",
+                        "period": "0",
+                        "innetrtnfee": "100",
+                        "backFee": null
+                        }
+                        ],
+        "packageType": [
+                        {
+                        "@class": "com.ailk.app.mapp.model.rsp.CF0024Response$PackageTypes",
+                        "expand": null,
+                        "packageName": "A套餐",
+                        "packageInlandVoice": "50分钟",
+                        "packageInlandFlow": "150MB",
+                        "packageInlandMessage": "0条",
+                        "packageInlandMediaMessage": "0条",
+                        "packageOtherBill": null,
+                        "pkgId": "65",
+                        "pkgType": "A",
+                        "skuId": null,
+                        "skuName": null,
+                        "normalPrice": null,
+                        "sailPrice": null,
+                        "beyondFee": "超出0.25元/分钟；超出0.0003元/KB"
+                        },
+                        {
+                        "@class": "com.ailk.app.mapp.model.rsp.CF0024Response$PackageTypes",
+                        "expand": null,
+                        "packageName": "B套餐",
+                        "packageInlandVoice": "120分钟",
+                        "packageInlandFlow": "40MB",
+                        "packageInlandMessage": "0条",
+                        "packageInlandMediaMessage": "0条",
+                        "packageOtherBill": null,
+                        "pkgId": "66",
+                        "pkgType": "B",
+                        "skuId": null,
+                        "skuName": null,
+                        "normalPrice": null,
+                        "sailPrice": null,
+                        "beyondFee": "超出0.25元/分钟；超出0.0003元/KB"
+                        },
+                        {
+                        "@class": "com.ailk.app.mapp.model.rsp.CF0024Response$PackageTypes",
+                        "expand": null,
+                        "packageName": "C套餐",
+                        "packageInlandVoice": "260分钟",
+                        "packageInlandFlow": "40MB",
+                        "packageInlandMessage": "0条",
+                        "packageInlandMediaMessage": "0条",
+                        "packageOtherBill": null,
+                        "pkgId": "67",
+                        "pkgType": "C",
+                        "skuId": null,
+                        "skuName": null,
+                        "normalPrice": null,
+                        "sailPrice": null,
+                        "beyondFee": "超出0.2元/分钟；超出0.0003元/KB"
+                        }
+                        ],
+        "allLowCost": [
+                       "46",
+                       "66",
+                       "96",
+                       "126",
+                       "156",
+                       "186"
+                       ],
+        "validLowCost": [
+                         "46",
+                         "66",
+                         "96",
+                         "126",
+                         "156",
+                         "186"
+                         ],
+        "lowCost": "46"
+    }
+}

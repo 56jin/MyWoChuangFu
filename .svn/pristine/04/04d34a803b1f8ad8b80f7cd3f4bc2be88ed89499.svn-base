@@ -1,0 +1,345 @@
+//
+//  CommitVC.m
+//  WoChuangFu
+//
+//  Created by duwl on 12/15/14.
+//  Copyright (c) 2014 asiainfo-linkage. All rights reserved.
+//
+
+#import "CommitVC.h"
+#import "GTMBase64_My.h"
+#import "ChooseAreaVC.h"
+#import "passParams.h"
+#import "ShowWebVC.h"
+
+#define TWITTERFON_FORM_BOUNDARY  @"imgBase64"
+
+@interface CommitVC (){
+    NSDictionary* saveRequestData;
+}
+
+@property(nonatomic,retain)NSDictionary* saveRequestData;
+
+@end
+
+@implementation CommitVC
+
+@synthesize titleBar;
+@synthesize commitView;
+@synthesize receiveData;
+@synthesize photoImage;
+@synthesize saveUploadPhotoId;
+@synthesize isNeedCertInfo;
+@synthesize saveRequestData;
+
+- (void)dealloc
+{
+    [titleBar release];
+    [commitView release];
+    if(receiveData != nil){
+        [receiveData release];
+    }
+    if(photoImage != nil){
+        [photoImage release];
+    }
+    if(saveUploadPhotoId != nil){
+        [saveUploadPhotoId release];
+    }
+    if(saveRequestData != nil){
+        [saveRequestData release];
+    }
+    [super dealloc];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    if(self.commitView != nil){
+        passParams* pass = [passParams sharePassParams];
+        NSDictionary* city = [pass.params objectForKey:@"cityCode"];
+        NSDictionary* country = [pass.params objectForKey:@"countryCode"];
+        if(city != nil && country != nil){
+            [self.commitView updateAreaData:[[city objectForKey:@"areaName"] stringByAppendingString:[country objectForKey:@"areaName"]]];
+        }
+    }
+}
+
+-(void)loadView
+{
+    [super loadView];
+    CGRect ScF=[UIScreen mainScreen].bounds;
+    UIView *BackV=[[UIView alloc] initWithFrame:ScF];
+    BackV.backgroundColor=[UIColor grayColor];//[ComponentsFactory createColorByHex:@"#F8F8F8"];
+    self.view = BackV;
+    [BackV release];
+    self.navigationController.navigationBarHidden=YES;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+    [self initTitleBar];
+    [self initContentView];
+}
+
+- (void)initTitleBar
+{
+    TitleBar* title = [[TitleBar alloc] initWithFramShowHome:YES ShowSearch:NO TitlePos:left_position];
+    [title setLeftIsHiden:NO];
+    [title setTitle:@"提交订单"];
+    title.target = self;
+    self.titleBar = title;
+    [title release];
+    [self.view addSubview:self.titleBar];
+    
+}
+
+- (void)initContentView
+{
+    CommitView* commit = [[CommitView alloc] initWithFrame:CGRectMake(0, TITLE_BAR_HEIGHT, [AppDelegate sharePhoneWidth], [AppDelegate sharePhoneContentHeight]) ShowCert:YES];
+    commit.target = self;
+    self.commitView = commit;
+    [commit release];
+    [self.view addSubview:self.commitView];
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+#pragma
+#pragma TitleBarDelegate
+-(void)backAction
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+-(void)homeAction
+{
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
+
+#pragma
+#pragma 相机调用
+-(void) showCameraForPhoto
+{
+    UIImagePickerControllerSourceType sourceType = UIImagePickerControllerSourceTypeCamera;
+    if (![UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera]) {
+        sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    }
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.delegate = self;
+    picker.allowsEditing = NO;
+    picker.sourceType = sourceType;
+    //    self.imgPicker = picker;
+#ifdef __IPHONE_6_0
+//    [self presentModalViewController:picker animated:YES];
+    [self presentViewController:picker animated:YES completion:nil];
+#else
+    [self presentModalViewController:picker animated:YES];
+#endif
+    [picker release];
+}
+
+- (void) imagePickerController: (UIImagePickerController*) picker
+ didFinishPickingMediaWithInfo: (NSDictionary*) info
+{
+    UIImage *photoImg = [info objectForKey:UIImagePickerControllerOriginalImage];
+    if(photoImg==nil){
+        return;
+    }
+    self.photoImage = photoImg;
+    [picker dismissModalViewControllerAnimated:YES];
+    
+    [((UIButton*)[self.view viewWithTag:UPLOAD_PHOTO_BTN])
+     setImage:self.photoImage forState:UIControlStateNormal];
+    
+    [[self.view viewWithTag:UPLOAD_PHOTO_IMG] setHidden:YES];
+//    [self uploadPhotoRequest];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    [picker dismissModalViewControllerAnimated:YES];
+}
+
+-(void)showCamera
+{
+    [self showCameraForPhoto];
+}
+
+-(void)requestAreaData
+{
+    ChooseAreaVC* chooseArea = [[ChooseAreaVC alloc] init];
+    NSDictionary* passParams = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                @"",@"title_str",
+                                [NSNull null],@"request_data",nil];
+    chooseArea.params = passParams;
+    [self.navigationController pushViewController:chooseArea animated:YES];
+    [chooseArea release];
+}
+
+#pragma
+#pragma 创建订单
+-(void)commitRequestData:(NSDictionary*)data
+{
+    self.saveRequestData = data;
+    if(self.saveUploadPhotoId == nil){
+        [self uploadPhotoRequest];
+    } else {
+        [self commitOrderRequest:data];
+    }
+    
+    /*支付测试使用
+    NSDictionary* sendDic1 = [[NSDictionary alloc] initWithObjectsAndKeys:@"M2014122321000030274",@"order_code", nil];
+    
+    [buss paymentUrl:sendDic1 url:@"http://mall.gx10010.com/emallorder/alipay_wap_mobile.do" key:@"order_code"];
+    [sendDic1 release];*/
+}
+
+-(void)commitOrderRequest:(NSDictionary*)data
+{
+    NSDictionary* addrInfo = [data objectForKey:@"addrInfo"];
+    NSDictionary* productInfo = [self makeProductInfoData:[data objectForKey:@"productInfo"]];
+    NSObject* payInfo = [NSNull null];
+    
+    NSDictionary* sendDic = [[NSDictionary alloc] initWithObjectsAndKeys:
+                             addrInfo,@"addrInfo",
+                             productInfo,@"productInfo",
+                             payInfo,@"payInfo", nil];
+    
+    [productInfo release];
+    
+    bussineDataService* buss = [bussineDataService sharedDataService];
+    buss.target = self;
+    [buss createOrder:sendDic];
+    
+    [sendDic release];
+}
+
+-(NSDictionary*)makeProductInfoData:(NSMutableDictionary*)enterData
+{
+    NSDictionary* previewData = [self.receiveData objectForKey:@"ProductInfo"];
+    NSMutableDictionary* fullProductInfo = [[NSMutableDictionary alloc] initWithCapacity:0];
+    
+    NSString *requestClass = [[[NSString alloc] initWithFormat:JSON_BODY_REUEST,[CREATE_ORDER_BIZCODE uppercaseString]] stringByAppendingString:@"$ProductInfo"];
+    [fullProductInfo setObject:requestClass forKey:@"@class"];
+    [requestClass release];
+    
+    [fullProductInfo setObject:self.saveUploadPhotoId forKey:@"fileId"];
+    [fullProductInfo setObject:[enterData objectForKey:@"invoiceInfo"] forKey:@"invoiceInfo"];
+    [fullProductInfo setObject:[enterData objectForKey:@"certName"] forKey:@"certName"];
+    [fullProductInfo setObject:[enterData objectForKey:@"certNum"] forKey:@"certNum"];
+    [fullProductInfo setObject:[enterData objectForKey:@"remark"]==nil?[NSNull null]:[enterData objectForKey:@"remark"] forKey:@"remark"];
+    [fullProductInfo setObject:[NSNull null] forKey:@"moduleId"];
+    [fullProductInfo setObject:[enterData objectForKey:@"modeCode"] forKey:@"modeCode"];
+    
+    [fullProductInfo setObject:[previewData objectForKey:@"period"]==nil?[NSNull null]:[previewData objectForKey:@"period"] forKey:@"period"];
+    [fullProductInfo setObject:[previewData objectForKey:@"pkgId"]==nil?[NSNull null]:[previewData objectForKey:@"pkgId"] forKey:@"pkgId"];
+    [fullProductInfo setObject:[previewData objectForKey:@"productId"]==nil?[NSNull null]:[previewData objectForKey:@"productId"] forKey:@"productId"];
+    [fullProductInfo setObject:[previewData objectForKey:@"cardNum"]==nil?[NSNull null]:[previewData objectForKey:@"cardNum"] forKey:@"cardNum"];
+    [fullProductInfo setObject:[previewData objectForKey:@"colorProp"]==nil?[NSNull null]:[previewData objectForKey:@"colorProp"] forKey:@"colorProp"];
+    [fullProductInfo setObject:[previewData objectForKey:@"ramProp"]==nil?[NSNull null]:[previewData objectForKey:@"ramProp"] forKey:@"ramProp"];
+    [fullProductInfo setObject:[previewData objectForKey:@"seckillFlag"]==nil?[NSNull null]:[previewData objectForKey:@"seckillFlag"] forKey:@"seckillFlag"];
+    [fullProductInfo setObject:[previewData objectForKey:@"skuId"]==nil?[NSNull null]:[previewData objectForKey:@"skuId"] forKey:@"skuId"];
+    [fullProductInfo setObject:[previewData objectForKey:@"custType"]==nil?[NSNull null]:[previewData objectForKey:@"custType"] forKey:@"custType"];
+    
+    return fullProductInfo;
+}
+
+#pragma
+#pragma 照片上传
+- (void)uploadPhotoRequest
+{
+    NSString *str = [GTMBase64_My stringByEncodingData:UIImageJPEGRepresentation(self.photoImage,0.01)];
+    NSDictionary *dic = [[NSDictionary alloc] initWithObjectsAndKeys:str,@"photoStr", nil];
+    
+    bussineDataService *buss = [bussineDataService sharedDataService];
+    buss.target = self;
+    [buss uploadPhoto:dic];
+    [dic release];
+}
+
+-(void)showSimpleAlertView:(NSString*)message
+{
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示信息"
+                                                    message:message
+                                                   delegate:nil
+                                          cancelButtonTitle:@"确定"
+                                          otherButtonTitles:nil];
+    [alert show];
+    [alert release];
+}
+
+//key: bussineCode value :; Key:errorCode, value: key:MSG, value:
+- (void)requestDidFinished:(NSDictionary*)info
+{
+    NSLog(@"%@",info);
+    NSString* oKCode = @"0000";
+    NSString* bizCode = [info objectForKey:@"bussineCode"];
+    NSString* errCode = [info objectForKey:@"errorCode"];
+    NSString* msg = [info objectForKey:@"MSG"];
+    
+    if([bizCode isEqualToString:[CreateOrderMessage getBizCode]]){
+        if([oKCode isEqualToString:errCode]){
+            bussineDataService* buss = [bussineDataService sharedDataService];
+            NSString* postData = [buss.rspInfo objectForKey:@"postData"];
+            NSMutableArray* postArr = [[NSMutableArray alloc] initWithArray:[postData componentsSeparatedByString:@"="]];
+            if(postArr.count>=2){
+                NSDictionary* sendDic = [[NSDictionary alloc] initWithObjectsAndKeys:postArr[1],@"order_code", nil];
+                
+                buss.target = self;
+                [buss paymentUrl:sendDic url:[buss.rspInfo objectForKey:@"postUrl"] key:postArr[0]];
+                [sendDic release];
+            }
+            [postArr release];
+            
+        } else {
+            if(nil == msg || [info objectForKey:@"MSG"] == [NSNull null]){
+                msg = @"提交订单失败！";
+            }
+            [self showSimpleAlertView:msg];
+        }
+    } else if([bizCode isEqualToString:[UploadPhotoMessage getBizCode]]){//UploadPhotoMessage
+        NSString* saveId = [info objectForKey:@"saveId"];
+        if(saveId != nil && saveId.length > 0){
+            self.saveUploadPhotoId = saveId;
+            
+            //提交订单
+            [self commitOrderRequest:self.saveRequestData];
+        } else {
+            [self showSimpleAlertView:@"上传图片失败，请重新上传！"];
+        }
+    } else if([bizCode isEqualToString:[PaymentUrlMessage getBizCode]]){//PaymentUrlMessage
+        NSString* paymentUrl = [info objectForKey:@"paymentUrl"];
+        if(paymentUrl != nil && paymentUrl.length>0){
+            ShowWebVC* webVC = [[ShowWebVC alloc] init];
+            webVC.titleStr = @"在线支付";
+            webVC.urlStr = paymentUrl;
+            webVC.isPayment = YES;
+            [self.navigationController pushViewController:webVC animated:YES];
+        } else {
+            [self showSimpleAlertView:@"请求支付失败，请重新提交订单"];
+        }
+    }
+
+}
+//key: bussineCode value :; Key:errorCode, value: key:MSG, value:
+- (void)requestFailed:(NSDictionary*)info
+{
+    NSLog(@"%@",info);
+    NSString* bizCode = [info objectForKey:@"bussineCode"];
+    NSString* msg = [info objectForKey:@"MSG"];
+    
+    if([[CreateOrderMessage getBizCode] isEqualToString:bizCode]){
+        if(nil == msg || [info objectForKey:@"MSG"] == [NSNull null]){
+            msg = @"提交订单失败！";
+        }
+        [self showSimpleAlertView:msg];
+        
+    }
+}
+@end

@@ -1,0 +1,218 @@
+{
+    "@class": "com.ailk.app.mapp.model.GXCDatapackage",
+    "header": {
+        "@class": "com.ailk.app.mapp.model.GXCHeader",
+        "bizCode": "cf0030",
+        "identityId": null,
+        "respCode": "0000",
+        "respMsg": "",
+        "mode": "1",
+        "sign": null
+    },
+    "body": {
+        "@class": "com.ailk.app.mapp.model.rsp.CF0030Response",
+        "expand": null,
+        "evaluates": [
+                      {
+                      "evaluateId": "325",
+                      "evaluateContent": "Asfdsf",
+                      "evaluatesType": "1",
+                      "evaluatesStar": "5",
+                      "evaluateUser": "",
+                      "evalateTime": "2014-12-18 22:25",
+                      "replyContent": null,
+                      "replyName": null
+                      },
+                      {
+                      "evaluateId": "324",
+                      "evaluateContent": "Sdf",
+                      "evaluatesType": "1",
+                      "evaluatesStar": "5",
+                      "evaluateUser": "",
+                      "evalateTime": "2014-12-18 17:37",
+                      "replyContent": null,
+                      "replyName": null
+                      },
+                      {
+                      "evaluateId": "323",
+                      "evaluateContent": "Sfsd",
+                      "evaluatesType": "1",
+                      "evaluatesStar": "5",
+                      "evaluateUser": "",
+                      "evalateTime": "2014-12-18 17:37",
+                      "replyContent": null,
+                      "replyName": null
+                      },
+                      {
+                      "evaluateId": "322",
+                      "evaluateContent": "12nklanskldnmklasndklasndmklsandmklsanmdkasndklasnklnfklsdnfkla",
+                      "evaluatesType": "1",
+                      "evaluatesStar": "5",
+                      "evaluateUser": "",
+                      "evalateTime": "2014-12-18 17:10",
+                      "replyContent": null,
+                      "replyName": null
+                      },
+                      {
+                      "evaluateId": "320",
+                      "evaluateContent": "Asd",
+                      "evaluatesType": "1",
+                      "evaluatesStar": "5",
+                      "evaluateUser": "",
+                      "evalateTime": "2014-12-18 17:00",
+                      "replyContent": null,
+                      "replyName": null
+                      },
+                      {
+                      "evaluateId": "319",
+                      "evaluateContent": "Sdfs",
+                      "evaluatesType": "1",
+                      "evaluatesStar": "5",
+                      "evaluateUser": "",
+                      "evalateTime": "2014-12-18 16:12",
+                      "replyContent": null,
+                      "replyName": null
+                      },
+                      {
+                      "evaluateId": "318",
+                      "evaluateContent": "Sdfsd",
+                      "evaluatesType": "1",
+                      "evaluatesStar": "5",
+                      "evaluateUser": "",
+                      "evalateTime": "2014-12-18 15:49",
+                      "replyContent": null,
+                      "replyName": null
+                      },
+                      {
+                      "evaluateId": "317",
+                      "evaluateContent": "Df",
+                      "evaluatesType": "1",
+                      "evaluatesStar": "5",
+                      "evaluateUser": "",
+                      "evalateTime": "2014-12-18 15:33",
+                      "replyContent": null,
+                      "replyName": null
+                      },
+                      {
+                      "evaluateId": "316",
+                      "evaluateContent": "Saf",
+                      "evaluatesType": "1",
+                      "evaluatesStar": "5",
+                      "evaluateUser": "",
+                      "evalateTime": "2014-12-18 15:32",
+                      "replyContent": null,
+                      "replyName": null
+                      },
+                      {
+                      "evaluateId": "315",
+                      "evaluateContent": "Sdf",
+                      "evaluatesType": "1",
+                      "evaluatesStar": "5",
+                      "evaluateUser": "",
+                      "evalateTime": "2014-12-18 15:29",
+                      "replyContent": null,
+                      "replyName": null
+                      },
+                      {
+                      "evaluateId": "314",
+                      "evaluateContent": "Fas",
+                      "evaluatesType": "1",
+                      "evaluatesStar": "5",
+                      "evaluateUser": "",
+                      "evalateTime": "2014-12-18 15:29",
+                      "replyContent": null,
+                      "replyName": null
+                      },
+                      {
+                      "evaluateId": "313",
+                      "evaluateContent": "Sdfcds",
+                      "evaluatesType": "1",
+                      "evaluatesStar": "5",
+                      "evaluateUser": "",
+                      "evalateTime": "2014-12-18 15:29",
+                      "replyContent": null,
+                      "replyName": null
+                      },
+                      {
+                      "evaluateId": "312",
+                      "evaluateContent": "你好啊！这个是什么呀？",
+                      "evaluatesType": "1",
+                      "evaluatesStar": "4",
+                      "evaluateUser": "",
+                      "evalateTime": "2014-12-18 15:19",
+                      "replyContent": null,
+                      "replyName": null
+                      },
+                      {
+                      "evaluateId": "311",
+                      "evaluateContent": "Nishishuia?",
+                      "evaluatesType": "1",
+                      "evaluatesStar": "5",
+                      "evaluateUser": "",
+                      "evalateTime": "2014-12-18 14:58",
+                      "replyContent": null,
+                      "replyName": null
+                      },
+                      {
+                      "evaluateId": "310",
+                      "evaluateContent": "Nishishuia?",
+                      "evaluatesType": "1",
+                      "evaluatesStar": "5",
+                      "evaluateUser": "",
+                      "evalateTime": "2014-12-18 14:58",
+                      "replyContent": null,
+                      "replyName": null
+                      },
+                      {
+                      "evaluateId": "306",
+                      "evaluateContent": "Yjut",
+                      "evaluatesType": "1",
+                      "evaluatesStar": "5",
+                      "evaluateUser": "",
+                      "evalateTime": "2014-12-18 14:42",
+                      "replyContent": null,
+                      "replyName": null
+                      },
+                      {
+                      "evaluateId": "305",
+                      "evaluateContent": "Sdf",
+                      "evaluatesType": "1",
+                      "evaluatesStar": "5",
+                      "evaluateUser": "",
+                      "evalateTime": "2014-12-18 14:41",
+                      "replyContent": null,
+                      "replyName": null
+                      },
+                      {
+                      "evaluateId": "304",
+                      "evaluateContent": "12345678",
+                      "evaluatesType": "1",
+                      "evaluatesStar": "5",
+                      "evaluateUser": "",
+                      "evalateTime": "2014-12-18 14:40",
+                      "replyContent": null,
+                      "replyName": null
+                      },
+                      {
+                      "evaluateId": "303",
+                      "evaluateContent": "Asdf",
+                      "evaluatesType": "1",
+                      "evaluatesStar": "5",
+                      "evaluateUser": "",
+                      "evalateTime": "2014-12-18 14:39",
+                      "replyContent": null,
+                      "replyName": null
+                      },
+                      {
+                      "evaluateId": "302",
+                      "evaluateContent": "Ert",
+                      "evaluatesType": "1",
+                      "evaluatesStar": "5",
+                      "evaluateUser": "",
+                      "evalateTime": "2014-12-18 14:37",
+                      "replyContent": null,
+                      "replyName": null
+                      }
+                      ]
+    }
+}

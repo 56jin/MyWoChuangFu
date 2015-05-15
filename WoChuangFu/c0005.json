@@ -1,0 +1,131 @@
+{
+    "@class": "com.ailk.app.mapp.model.GXCDatapackage",
+    "header": {
+        "@class": "com.ailk.app.mapp.model.GXCHeader",
+        "bizCode": "c0005",
+        "identityId": "gxlt10016",
+        "respCode": "0000",
+        "respMsg": "",
+        "mode": "1",
+        "sign": null
+    },
+    "body": {
+        "@class": "com.ailk.app.mapp.model.rsp.C0005Response",
+        "expand": null,
+        "models": [
+                   {
+                   "@class": "com.ailk.app.mapp.model.rsp.C0005Response$GroupInfo",
+                   "expand": null,
+                   "groupName": "个人信息",
+                   "canEdit": false,
+                   "infos": [
+                             {
+                             "@class": "com.ailk.app.mapp.model.rsp.C0005Response$ItemInfo",
+                             "expand": null,
+                             "itemName": "姓名",
+                             "itemValue": "260817412@qq.com",
+                             "itemId": "m001",
+                             "canEdit": false
+                             },
+                             {
+                             "@class": "com.ailk.app.mapp.model.rsp.C0005Response$ItemInfo",
+                             "expand": null,
+                             "itemName": "城市",
+                             "itemValue": "崇左",
+                             "itemId": "m002",
+                             "canEdit": false
+                             },
+                             {
+                             "@class": "com.ailk.app.mapp.model.rsp.C0005Response$ItemInfo",
+                             "expand": null,
+                             "itemName": "县区",
+                             "itemValue": "崇左江州区",
+                             "itemId": "m003",
+                             "canEdit": false
+                             },
+                             {
+                             "@class": "com.ailk.app.mapp.model.rsp.C0005Response$ItemInfo",
+                             "expand": null,
+                             "itemName": "QQ邮箱",
+                             "itemValue": "260817412@qq.com",
+                             "itemId": "s001",
+                             "canEdit": false
+                             },
+                             {
+                             "@class": "com.ailk.app.mapp.model.rsp.C0005Response$ItemInfo",
+                             "expand": null,
+                             "itemName": "手机号码",
+                             "itemValue": "15878763719",
+                             "itemId": "s002",
+                             "canEdit": false
+                             }
+                             ],
+                   "isQrUrl": false,
+                   "qrUrl": null,
+                   "userInfo": null
+                   },
+                   {
+                   "@class": "com.ailk.app.mapp.model.rsp.C0005Response$GroupInfo",
+                   "expand": null,
+                   "groupName": null,
+                   "canEdit": false,
+                   "infos": [
+                             {
+                             "@class": "com.ailk.app.mapp.model.rsp.C0005Response$ItemInfo",
+                             "expand": null,
+                             "itemName": "推广码",
+                             "itemValue": "15878763719",
+                             "itemId": "s003",
+                             "canEdit": false
+                             },
+                             {
+                             "@class": "com.ailk.app.mapp.model.rsp.C0005Response$ItemInfo",
+                             "expand": null,
+                             "itemName": "机构码",
+                             "itemValue": "a369063785",
+                             "itemId": "s004",
+                             "canEdit": false
+                             },
+                             {
+                             "@class": "com.ailk.app.mapp.model.rsp.C0005Response$ItemInfo",
+                             "expand": null,
+                             "itemName": "机构名称",
+                             "itemValue": null,
+                             "itemId": "m001",
+                             "canEdit": false
+                             }
+                             ],
+                   "isQrUrl": false,
+                   "qrUrl": null,
+                   "userInfo": null
+                   },
+                   {
+                   "@class": "com.ailk.app.mapp.model.rsp.C0005Response$GroupInfo",
+                   "expand": null,
+                   "groupName": null,
+                   "canEdit": false,
+                   "infos": [
+                             {
+                             "@class": "com.ailk.app.mapp.model.rsp.C0005Response$ItemInfo",
+                             "expand": null,
+                             "itemName": "发展客户的专属二维码",
+                             "itemValue": "http://www.baidu.com",
+                             "itemId": "q001",
+                             "canEdit": false
+                             },
+                             {
+                             "@class": "com.ailk.app.mapp.model.rsp.C0005Response$ItemInfo",
+                             "expand": null,
+                             "itemName": "发展创富者的专属二维码",
+                             "itemValue": "http://www.baidu.com",
+                             "itemId": "q002",
+                             "canEdit": false
+                             }
+                             ],
+                   "isQrUrl": true,
+                   "qrUrl": null,
+                   "userInfo": null
+                   }
+                   ]
+    }
+}

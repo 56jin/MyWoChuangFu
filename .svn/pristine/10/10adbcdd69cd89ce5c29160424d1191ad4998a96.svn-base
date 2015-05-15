@@ -1,0 +1,74 @@
+//
+//  ShowWebVC.m
+//  WoChuangFu
+//
+//  Created by duwl on 12/12/14.
+//  Copyright (c) 2014 asiainfo-linkage. All rights reserved.
+//
+
+#import "ShowWebVC.h"
+
+@interface ShowWebVC ()
+
+@end
+
+@implementation ShowWebVC
+@synthesize urlStr;
+@synthesize titleStr;
+@synthesize titleBar;
+
+- (void)dealloc
+{
+    if(urlStr != nil){
+        [urlStr release];
+    }
+    if(titleStr != nil){
+        [titleStr release];
+    }
+    if(titleBar != nil){
+        [titleBar release];
+    }
+    [super dealloc];
+}
+
+-(void)loadView
+{
+    [super loadView];
+    CGRect ScF=[UIScreen mainScreen].bounds;
+    UIView *BackV=[[UIView alloc] initWithFrame:ScF];
+    BackV.backgroundColor=[UIColor grayColor];//[ComponentsFactory createColorByHex:@"#F8F8F8"];
+    self.view = BackV;
+    [BackV release];
+    self.navigationController.navigationBarHidden=YES;
+}
+
+- (void)initTitleBar
+{
+    TitleBar* title = [[TitleBar alloc] initWithFramShowHome:YES ShowSearch:NO TitlePos:left_position];
+    [title setLeftIsHiden:NO];
+    [title setTitle:self.titleStr];
+    self.titleBar = title;
+    [title release];
+    [self.view addSubview:self.titleBar];
+    
+}
+
+- (void)initContentView
+{
+    UIWebView* webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, TITLE_BAR_HEIGHT, [AppDelegate sharePhoneWidth], [AppDelegate sharePhoneContentHeight]-TITLE_BAR_HEIGHT)];
+    webView.delegate = self;
+    [webView release];
+    [self.view addSubview:webView];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+    [self initTitleBar];
+    [self initContentView];
+    
+    
+}
+
+@end

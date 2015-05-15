@@ -1,0 +1,170 @@
+{
+    "@class": "com.ailk.app.mapp.model.GXCDatapackage",
+    "header": {
+        "@class": "com.ailk.app.mapp.model.GXCHeader",
+        "bizCode": "cf0010",
+        "identityId": null,
+        "respCode": "0000",
+        "respMsg": "",
+        "mode": "1",
+        "sign": null
+    },
+    "body": {
+        "@class": "com.ailk.app.mapp.model.rsp.CF0010Response",
+        "expand": null,
+        "dataList": [
+                     {
+                     "@class": "com.ailk.app.mapp.model.rsp.CF0010Response$DataList",
+                     "expand": null,
+                     "productId": "10001",
+                     "imgURL": "http://121.31.40.3:80/gxImg/picts/INCOMING/mall/imgpath/U2014052315430110062.jpg",
+                     "name": "苹果iPhone 4S 8G版 3G手机（一年免话费套餐）",
+                     "desc": "iPhone中的经典，值得拥有！全新升级的iOS7操作系统！1",
+                     "sellCount": "0",
+                     "sailPrice": "2699",
+                     "contractPrice": "2699",
+                     "discountPrice": "2699",
+                     "clickUrl": "http://mall.gx10010.com/emallorder/choiceTreatyDetail.do?productId=10001&developId=1001"
+                     },
+                     {
+                     "@class": "com.ailk.app.mapp.model.rsp.CF0010Response$DataList",
+                     "expand": null,
+                     "productId": "10004",
+                     "imgURL": "http://121.31.40.3:80/gxImg/picts/INCOMING/mall/imgpath/U2014052315430110065.jpg",
+                     "name": "华为 Ascend G6 3G手机（一年免话费套餐）",
+                     "desc": "P6迷你版，高通四核处理器，800W+500W摄像头！",
+                     "sellCount": "1",
+                     "sailPrice": "1599",
+                     "contractPrice": "999",
+                     "discountPrice": "1499",
+                     "clickUrl": "http://mall.gx10010.com/emallorder/choiceTreatyDetail.do?productId=10004&developId=1001"
+                     },
+                     {
+                     "@class": "com.ailk.app.mapp.model.rsp.CF0010Response$DataList",
+                     "expand": null,
+                     "productId": "10011",
+                     "imgURL": "http://121.31.40.3:80/gxImg/picts/INCOMING/mall/imgpath/U2014092220021589500.jpg",
+                     "name": "三星 Galaxy Note3 N9002 16G双卡 3G手机（一年免话费套餐）",
+                     "desc": "测试5.7英寸高清屏，2.3GHZ四核处理器，1300万像素摄像头，双卡双待双通！",
+                     "sellCount": "0",
+                     "sailPrice": "539988",
+                     "contractPrice": "5099",
+                     "discountPrice": "509988",
+                     "clickUrl": "http://mall.gx10010.com/emallorder/choiceTreatyDetail.do?productId=10011&developId=1001"
+                     },
+                     {
+                     "@class": "com.ailk.app.mapp.model.rsp.CF0010Response$DataList",
+                     "expand": null,
+                     "productId": "10013",
+                     "imgURL": "http://121.31.40.3:80/gxImg/picts/INCOMING/mall/imgpath/U2014052315430110074.jpg",
+                     "name": "小米手机 小米3 16G（一年免话费套餐）",
+                     "desc": "5.0英寸大屏，高通四核2.3GHz处理器，1300万像素摄像头！",
+                     "sellCount": "0",
+                     "sailPrice": "1999",
+                     "contractPrice": "1999",
+                     "discountPrice": "1999",
+                     "clickUrl": "http://mall.gx10010.com/emallorder/choiceTreatyDetail.do?productId=10013&developId=1001"
+                     },
+                     {
+                     "@class": "com.ailk.app.mapp.model.rsp.CF0010Response$DataList",
+                     "expand": null,
+                     "productId": "10014",
+                     "imgURL": "http://121.31.40.3:80/gxImg/picts/INCOMING/mall/imgpath/U2014060612000000001.jpg",
+                     "name": "苹果iPhone 4S 32G版 3G手机（特价购机）",
+                     "desc": "iPhone中的经典，值得拥有！全新升级的iOS7操作系统！",
+                     "sellCount": "0",
+                     "sailPrice": "6999",
+                     "contractPrice": "3499",
+                     "discountPrice": "3499",
+                     "clickUrl": "http://mall.gx10010.com/emallorder/choiceTreatyDetail.do?productId=10014&developId=1001"
+                     },
+                     {
+                     "@class": "com.ailk.app.mapp.model.rsp.CF0010Response$DataList",
+                     "expand": null,
+                     "productId": "10015",
+                     "imgURL": "http://121.31.40.3:80/gxImg/picts/INCOMING/mall/imgpath/U2014060612000000002.jpg",
+                     "name": "苹果iPhone 4S 64G版 3G手机（特价购机）",
+                     "desc": "iPhone中的经典，值得拥有！全新升级的iOS7操作系统！",
+                     "sellCount": "0",
+                     "sailPrice": "6999",
+                     "contractPrice": "3999",
+                     "discountPrice": "3499",
+                     "clickUrl": "http://mall.gx10010.com/emallorder/choiceTreatyDetail.do?productId=10015&developId=1001"
+                     },
+                     {
+                     "@class": "com.ailk.app.mapp.model.rsp.CF0010Response$DataList",
+                     "expand": null,
+                     "productId": "10017",
+                     "imgURL": "http://121.31.40.3:80/gxImg/picts/INCOMING/mall/imgpath/U2014060916310000007.jpg",
+                     "name": "苹果iPhone 4S 8G版 3G手机",
+                     "desc": "iPhone中的经典，值得拥有！全新升级的iOS7操作系统！",
+                     "sellCount": "3",
+                     "sailPrice": "2699",
+                     "contractPrice": "2399",
+                     "discountPrice": "2499",
+                     "clickUrl": "http://mall.gx10010.com/emallorder/choiceTreatyDetail.do?productId=10017&developId=1001"
+                     }
+                     ],
+        "productType": {
+            "typeName": "品牌",
+            "typeList": [
+                         {
+                         "id": "1",
+                         "name": "苹果"
+                         },
+                         {
+                         "id": "2",
+                         "name": "小米"
+                         },
+                         {
+                         "id": "3",
+                         "name": "三星"
+                         },
+                         {
+                         "id": "4",
+                         "name": "联想"
+                         },
+                         {
+                         "id": "5",
+                         "name": "华为"
+                         },
+                         {
+                         "id": "6",
+                         "name": "魅族"
+                         },
+                         {
+                         "id": "7",
+                         "name": "索尼"
+                         },
+                         {
+                         "id": "8",
+                         "name": "HTC"
+                         },
+                         {
+                         "id": "9",
+                         "name": "摩托罗拉"
+                         },
+                         {
+                         "id": "10",
+                         "name": "中兴"
+                         },
+                         {
+                         "id": "11",
+                         "name": "诺基亚"
+                         },
+                         {
+                         "id": "12",
+                         "name": "天语"
+                         },
+                         {
+                         "id": "13",
+                         "name": "酷派"
+                         },
+                         {
+                         "id": "14",
+                         "name": "其他"
+                         }
+                         ]
+        }
+    }
+}

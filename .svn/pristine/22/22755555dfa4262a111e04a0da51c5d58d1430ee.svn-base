@@ -1,0 +1,47 @@
+#import "EvaluationCellFrame.h"
+#import "EvaluateModel.h"
+
+#define FONTSIZE(size) [UIFont systemFontOfSize:(size)]  //字体大小
+#define LEFT_MARGIN 9                                    //内容左边距
+#define CONTENT_TOP_MARGIN 15                            //评价内容上边距
+#define USER_TOP_MARGIN (CONTENT_TOP_MARGIN + 13)
+#define BOTTOM_MARGIN 20
+
+@implementation EvaluationCellFrame
+
+
+- (void)setEvaluate:(EvaluateModel *)evaluate
+{
+    _evaluate = evaluate;
+    
+    //评论内容
+    CGSize contentSize = [_evaluate.evaluateContent sizeWithAttributes:@{NSFontAttributeName:FONTSIZE(16.0)}];
+    _evaluateContentFrame = (CGRect){{LEFT_MARGIN,CONTENT_TOP_MARGIN},contentSize};
+    _cellHeight += contentSize.height;
+    
+    //评价用户
+    CGSize userSize = [_evaluate.evaluateUser sizeWithAttributes:@{NSFontAttributeName:FONTSIZE(14.0)}];
+    _evaluateUserFrame = (CGRect){{LEFT_MARGIN,USER_TOP_MARGIN},userSize};
+    _cellHeight += userSize.height;
+    
+    //评论时间
+    CGSize timeSize = [_evaluate.evalateTime sizeWithAttributes:@{NSFontAttributeName:FONTSIZE(14.0)}];
+    _evaluateUserFrame = (CGRect){{LEFT_MARGIN + userSize.width + 10 ,USER_TOP_MARGIN},timeSize};
+    _cellHeight += timeSize.height;
+
+    if (_evaluate.replyContent != nil)
+    {
+        // 回复内容
+        CGSize replyContentSize = [_evaluate.replyContent sizeWithAttributes:@{NSFontAttributeName:FONTSIZE(16.0)}];
+        _replyContentFrame = (CGRect){{LEFT_MARGIN,USER_TOP_MARGIN + userSize.height + 20},replyContentSize};
+        _cellHeight += replyContentSize.height;
+//        // 回复姓名
+//        CGSize replyNametSize = [_evaluate.replyContent sizeWithAttributes:@{NSFontAttributeName:FONTSIZE(14.0)}];
+//        _replyNameFrame = (CGRect){{LEFT_MARGIN,USER_TOP_MARGIN + userSize.height + 20},replyNametSize};
+//        _cellHeight += replyContentSize.height;
+        
+    }
+    _cellHeight += BOTTOM_MARGIN;
+}
+
+@end

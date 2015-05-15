@@ -1,0 +1,161 @@
+//
+//  SeachedTermVC.m
+//  WoChuangFu
+//
+//  Created by 郑渊文 on 14/12/15.
+//  Copyright (c) 2014年 asiainfo-linkage. All rights reserved.
+//
+#import "UIImage+LXX.h"
+#import "SeachedTermVC.h"
+#import "CommonMacro.h"
+#import "SearchOrderVC.h"
+#import "TitleBar.h"
+#define MyTextFieldHeight 44
+
+
+
+@interface SeachedTermVC ()<UITextFieldDelegate,HttpBackDelegate>
+
+@end
+
+@implementation SeachedTermVC
+
+- (void)viewDidLoad {
+    
+    [super viewDidLoad];
+    [self layoutSubView];
+    
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
+    [self.view addGestureRecognizer:tap];
+}
+
+- (void)tap:(UITapGestureRecognizer *)recognizer
+{
+    [_orderCode resignFirstResponder];
+    [_receiverPhoneNum resignFirstResponder];
+    [_certNum resignFirstResponder];
+}
+
+-(void)layoutSubView
+{
+    UIView *textbg = [[UIView alloc]initWithFrame:CGRectMake(0,10, SCREEN_WIDTH, MyTextFieldHeight*3+74)];
+    [self.view addSubview:textbg];
+    
+    textbg.backgroundColor = [UIColor clearColor];
+    if (IOS7) {
+        
+        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
+        
+    } else {
+        
+        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleBlackOpaque;
+        
+    }
+    
+    TitleBar *titleBar = [[TitleBar alloc] initWithFramShowHome:YES ShowSearch:YES TitlePos:3];
+    titleBar.title = @"订单查询";
+    self.navigationController.view.backgroundColor = UIColorWithRGBA(255, 126, 12, 1);
+    [self.navigationController.view addSubview:titleBar];
+    
+    
+    //    UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(0, 15, SCREEN_WIDTH, 0.5)];
+    //    line1.backgroundColor = [UIColor grayColor];
+    //    [textbg addSubview:line1];
+    
+    UIView *orderCode1= [[UIView alloc]initWithFrame:CGRectMake(0, 74, SCREEN_WIDTH, MyTextFieldHeight)];
+    _orderCode = [[UITextField alloc]initWithFrame:CGRectMake(20, 0, SCREEN_WIDTH, MyTextFieldHeight)];
+    //   orderCode.delegate = self;
+    _orderCode.placeholder = @"订单号";
+    _orderCode.backgroundColor = [UIColor whiteColor];
+    orderCode1.backgroundColor = [UIColor whiteColor];
+    [orderCode1 addSubview:_orderCode];
+    
+    
+    
+    UIView *receiverPhoneNum1= [[UIView alloc]initWithFrame:CGRectMake(0, MyTextFieldHeight+74+0.5, SCREEN_WIDTH, MyTextFieldHeight)];
+    _receiverPhoneNum = [[UITextField alloc]initWithFrame:CGRectMake(20, 0, SCREEN_WIDTH, MyTextFieldHeight)];
+    _receiverPhoneNum.delegate = self;
+    _receiverPhoneNum.placeholder = @"收件人手机号码";
+    _receiverPhoneNum.backgroundColor = [UIColor whiteColor];
+    receiverPhoneNum1.backgroundColor = [UIColor whiteColor];
+    [receiverPhoneNum1 addSubview:_receiverPhoneNum];
+    
+    
+    UIView *certNum3= [[UIView alloc]initWithFrame:CGRectMake(0, MyTextFieldHeight*2+74+1, SCREEN_WIDTH, MyTextFieldHeight)];
+    _certNum = [[UITextField alloc]initWithFrame:CGRectMake(20, 0, SCREEN_WIDTH, MyTextFieldHeight)];
+    _certNum.delegate = self;
+    _certNum.backgroundColor = [UIColor whiteColor];
+    _certNum.placeholder = @"入网证件号码";
+    certNum3.backgroundColor = [UIColor whiteColor];
+    [certNum3 addSubview:_certNum];
+    
+    
+    
+    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, SCREEN_HEIGHT-60, SCREEN_WIDTH, 60)];
+    view.backgroundColor = [UIColor whiteColor];
+    UIButton *searchBtn = [[UIButton alloc]initWithFrame:CGRectMake(30, 10, SCREEN_WIDTH-60, 33)];
+    
+    UIImage* image = [UIImage resizedImage:@"btn_alter_bg_p"];
+    //image = [image stretchableImageWithLeftCapWidth:19 topCapHeight:19];
+    [searchBtn setBackgroundImage:image forState:UIControlStateNormal];
+    [searchBtn setTitle:@"搜索" forState:UIControlStateNormal];
+    [searchBtn addTarget:self action:@selector(searchedClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [view addSubview:searchBtn];
+    
+    [self.view addSubview:certNum3];
+    [self.view addSubview:receiverPhoneNum1];
+    [self.view addSubview:orderCode1];
+    
+    [self.view addSubview:view];
+    self.view.backgroundColor = UIColorWithRGBA(240, 239, 245, 1);
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    
+    // Dispose of any resources that can be recreated.
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    //resign keyboard
+    [_orderCode resignFirstResponder];
+    [_receiverPhoneNum resignFirstResponder];
+    [_certNum resignFirstResponder];
+    return YES;
+}
+
+//-(void)requestDidFinished:(NSDictionary *)info
+//{
+//    bussineDataService *bus=[bussineDataService sharedDataService];
+//    NSArray *orders = bus.rspInfo[@"orderCode"];
+//    for (NSDictionary *dict in orders)
+//    {
+////        [_dataArray addObject:dict[@"phoneNum"]];
+//        NSLog(@"dict的值是%@",dict[@"orderCode"]);
+//    }
+//}
+//
+//-(void)requestFailed:(NSDictionary *)info
+//{
+//
+//}
+
+/**
+ 按钮点击事件，用来处理按钮点击后的事情。
+ 此例中用来发送代理，并跳到下个视图
+ */
+-(void)searchedClicked:(id)sender
+{
+
+    SearchOrderVC *se=[[SearchOrderVC alloc] init];
+    se.orderCode = self.orderCode.text;
+    se.certNum = self.certNum.text;
+    se.receiverPhoneNum = self.receiverPhoneNum.text;
+    [self presentModalViewController:se animated:YES];//未加动画的跳转
+    
+}
+
+
+@end

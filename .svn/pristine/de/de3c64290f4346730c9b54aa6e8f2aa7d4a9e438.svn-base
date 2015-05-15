@@ -1,0 +1,88 @@
+#import "MyTableVC.h"
+#import "EvaluationCell.h"
+#import "MJRefresh.h"
+#import "bussineDataService.h"
+#import "EvaluationCellFrame.h"
+#import "EvaluateModel.h"
+
+static NSString *identifier = @"EvaluationCell";
+
+@interface MyTableVC ()<HttpBackDelegate>
+{
+    NSMutableArray *evaluatesList;
+}
+
+@end
+
+@implementation MyTableVC
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    evaluatesList = [NSMutableArray array];
+    // 上拉加载更多
+    [(UITableView *)self.view addFooterWithTarget:self action:@selector(footerRereshing)];
+    [self.tableView registerClass:[EvaluationCell class] forCellReuseIdentifier:identifier];
+    
+    bussineDataService *bus = [bussineDataService sharedDataService];
+    bus.target = self;
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                 self.productId,@"productId",
+                                 [NSString stringWithFormat:@"%d",self.evaluateId],@"productType",
+                                 @"1",@"pageIndex",
+                                 @"20",@"pageCount",nil];
+    
+    [bus getEvaluate:dict];
+}
+
+//下拉刷新
+- (void)footerRereshing
+{
+}
+
+#pragma mark - Table view data source
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return evaluatesList.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+
+    EvaluationCell *cell = (EvaluationCell *)[tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
+    NSDictionary *dict = evaluatesList[indexPath.row];
+    cell.dict = dict;
+    return cell;
+}
+#pragma mark - UITableViewDelegate
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 80;
+}
+
+- (void)requestDidFinished:(NSDictionary*)info
+{
+    bussineDataService *bus = [bussineDataService sharedDataService];
+    for (int i = 0; i< [bus.rspInfo[@"evaluates"] count]; i++)
+    {
+        EvaluateModel *model = [[EvaluateModel alloc] init];
+        
+    }
+    evaluatesList = bus.rspInfo[@"evaluates"];
+    [self.tableView reloadData];
+}
+- (void)requestFailed:(NSDictionary*)info
+{
+    
+}
+@end

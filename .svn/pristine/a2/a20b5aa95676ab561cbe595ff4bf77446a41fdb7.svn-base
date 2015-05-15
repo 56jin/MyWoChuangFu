@@ -1,0 +1,125 @@
+{
+    "@class": "com.ailk.gx.mapp.model.GXCDatapackage",
+    "header":
+    {
+        "@class": "com.ailk.gx.mapp.model.GXCHeader",
+        "bizCode": "cf0010",
+        "identityId": null,
+        "respCode": "0000",
+        "respMsg": "",
+        "mode": "1",
+        "sign": null
+    },
+    "body":
+    {
+        "@class": "com.ailk.gx.mapp.model.rsp.cf0010Response",
+        "expand": null,
+        "dataList": [
+                     {
+                     "id": "001",
+                     "imgURL": "http://121.31.40.3/gxImg/picts/INCOMING/mall/imgpath/U2014101011250397300.jpg",
+                     "name": "小米3",
+                     "desc": "4G手机5.5英寸高清屏幕！四核1.3GHz！7.9mm超薄外观",
+                     "sellCount": "100",
+                     "sailPrice": "¥3480",
+                     "contractPrice": "¥3080",
+                     "discountPrice": "¥2480",
+                     "clickURL": "http://www.baidu.com",
+                     "productType":
+                     {
+                     "typeName": "手机",
+                     "typeList": [
+                                  {
+                                  "id": "001",
+                                  "name": "小米手机"
+                                  }
+                                  ]
+                     }
+                     },
+                     {
+                     "id": "002",
+                     "imgURL": "http://121.31.40.3/gxImg/picts/INCOMING/mall/imgpath/U2014101011250397300.jpg",
+                     "name": "锤子Smartisan T1 4G手机",
+                     "desc": "4G手机5.5英寸高清屏幕！四核1.3GHz！7.9mm超薄外观",
+                     "sellCount": "100",
+                     "sailPrice": "¥3480",
+                     "contractPrice": "¥3080",
+                     "discountPrice": "¥2480",
+                     "clickURL": "http://www.baidu.com",
+                     "productType":
+                     {
+                     "typeName": "手机",
+                     "typeList": [
+                                  {
+                                  "id": "002",
+                                  "name": "锤子手机"
+                                  }
+                                  ]
+                     }
+                     },
+                     {
+                     "id": "003",
+                     "imgURL": "http://121.31.40.3/gxImg/picts/INCOMING/mall/imgpath/U2014101011250397300.jpg",
+                     "name": "中兴手机",
+                     "desc": "4G手机5.5英寸高清屏幕！四核1.3GHz！7.9mm超薄外观",
+                     "sellCount": "100",
+                     "sailPrice": "¥3480",
+                     "contractPrice": "¥3080",
+                     "discountPrice": "¥2480",
+                     "clickURL": "http://www.baidu.com",
+                     "productType":
+                     {
+                     "typeName": "手机",
+                     "typeList": [
+                                  {
+                                  "id": "003",
+                                  "name": "中兴手机"
+                                  }
+                                  ]
+                     }
+                     },
+                     {
+                     "id": "004",
+                     "imgURL": "http://121.31.40.3/gxImg/picts/INCOMING/mall/imgpath/U2014101011250397300.jpg",
+                     "name": "华为手机",
+                     "desc": "4G手机5.5英寸高清屏幕！四核1.3GHz！7.9mm超薄外观",
+                     "sellCount": "100",
+                     "sailPrice": "¥3480",
+                     "contractPrice": "¥3080",
+                     "discountPrice": "¥2480",
+                     "clickURL": "http://www.baidu.com",
+                     "productType":
+                     {
+                     "typeName": "手机",
+                     "typeList": [
+                                  {
+                                  "id": "004",
+                                  "name": "华为手机"
+                                  }
+                                  ]
+                     }
+                     },
+                     {
+                     "id": "005",
+                     "imgURL": "http://121.31.40.3/gxImg/picts/INCOMING/mall/imgpath/U2014101011250397300.jpg",
+                     "name": "黑米手机",
+                     "desc": "4G手机5.5英寸高清屏幕！四核1.3GHz！7.9mm超薄外观",
+                     "sellCount": "100",
+                     "sailPrice": "¥3480",
+                     "contractPrice": "¥3080",
+                     "discountPrice": "¥2480",
+                     "clickURL": "http://www.baidu.com",
+                     "productType":
+                     {
+                     "typeName": "手机",
+                     "typeList": [
+                                  {
+                                  "id": "005",
+                                  "name": "锤子手机"
+                                  }
+                                  ]
+                     }
+                     }
+                     ]
+    }
+}

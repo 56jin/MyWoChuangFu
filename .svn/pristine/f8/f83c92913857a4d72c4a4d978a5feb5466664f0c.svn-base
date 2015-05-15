@@ -1,0 +1,200 @@
+//
+//  ShowWebVC.m
+//  WoChuangFu
+//
+//  Created by duwl on 12/12/14.
+//  Copyright (c) 2014 asiainfo-linkage. All rights reserved.
+//
+
+#import "ShowWebVC.h"
+#import "UrlParser.h"
+#import "GTMBase64_My.h"
+
+@interface ShowWebVC ()
+
+@end
+
+@implementation ShowWebVC
+@synthesize urlStr;
+@synthesize titleStr;
+@synthesize titleBar;
+@synthesize postData;
+@synthesize isPayment;
+
+- (void)dealloc
+{
+    if(urlStr != nil){
+        [urlStr release];
+    }
+    if(titleStr != nil){
+        [titleStr release];
+    }
+    if(titleBar != nil){
+        [titleBar release];
+    }
+    if(postData != nil){
+        [postData release];
+    }
+    [super dealloc];
+}
+
+-(void)loadView
+{
+    [super loadView];
+    CGRect ScF=[UIScreen mainScreen].bounds;
+    UIView *BackV=[[UIView alloc] initWithFrame:ScF];
+    BackV.backgroundColor=[UIColor grayColor];//[ComponentsFactory createColorByHex:@"#F8F8F8"];
+    self.view = BackV;
+    [BackV release];
+    self.navigationController.navigationBarHidden=YES;
+}
+
+-(void)backAction
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)initTitleBar
+{
+    TitleBar* title = [[TitleBar alloc] initWithFramShowHome:YES ShowSearch:NO TitlePos:left_position];
+    [title setLeftIsHiden:NO];
+    if (IOS7){
+        title.frame = CGRectMake(0, 20, [AppDelegate sharePhoneWidth], TITLE_BAR_HEIGHT);
+    }
+    if(self.titleStr !=nil && self.titleStr.length >0){
+        [title setTitle:self.titleStr];
+    } else {
+        [title setTitle:@"沃创富"];
+    }
+    title.target = self;
+    self.titleBar = title;
+    [title release];
+    [self.view addSubview:self.titleBar];
+    
+}
+
+- (NSString*)encodeURL:(NSString *)string
+{
+    //CFSTR(":/?#[]@!$ &'()*+,;=\"<>%{}|\\^~`")
+    NSString *newString = (NSString *)CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,(CFStringRef)string, NULL,CFSTR(":/?#[]@!$ &'()*+,;=\"<>%{}|\\^~`"),kCFStringEncodingUTF8);
+    if (newString) {
+        return newString;
+    }
+    return @"";
+}
+
+- (NSString*)processPaymentUrl:(NSString*)payUrl
+{
+    MyLog(@"before processPaymentUrl:%@",payUrl);
+    NSMutableString* retUrl = [[[NSMutableString alloc] initWithCapacity:0] autorelease];
+    //1,按？分隔
+    NSArray* allArr = [payUrl componentsSeparatedByString:@"?"];
+    if(allArr.count >=2){
+        [retUrl appendString:allArr[0]];
+        [retUrl appendString:@"?"];
+        
+        NSArray* allParams = [allArr[1] componentsSeparatedByString:@"&"];
+        for(int i=0;i<allParams.count;i++){
+            NSArray* oneParam = [allParams[i] componentsSeparatedByString:@"="];
+            if(oneParam.count>=2){
+                [retUrl appendString:oneParam[0]];
+                [retUrl appendString:@"="];
+                
+                //对＝号左边的参数值进行转码
+                [retUrl appendString:[self encodeURL:[oneParam[1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
+                
+                [retUrl appendString:@"&"];
+            }
+        }
+    }
+    
+    MyLog(@"after processPaymentUrl:%@",retUrl);
+    return retUrl;
+}
+
+- (void)initContentView
+{
+    UIWebView* webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, TITLE_BAR_HEIGHT+SYSTEM_BAR_HEIGHT, [AppDelegate sharePhoneWidth], [AppDelegate sharePhoneHeight]-TITLE_BAR_HEIGHT-SYSTEM_BAR_HEIGHT)];
+    webView.delegate = self;
+    webView.scalesPageToFit = YES;
+    
+    indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    
+    indicator.frame = CGRectMake(webView.center.x,webView.center.y,0,0);
+    
+    UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
+    indicator.frame = CGRectMake(keyWindow.center.x,keyWindow.center.y,0,0);
+    
+    [webView addSubview:indicator];
+    [indicator release];
+    
+    NSMutableString *UrlStr=[[NSMutableString alloc] initWithCapacity:0];
+    [UrlStr setString:[self.urlStr stringByReplacingOccurrencesOfString:@"json" withString:@"appweb"]];
+    NSURL *url = nil;
+    NSString *body = nil;
+    if(self.isPayment){//如果支付界面，要进行转码
+         url = [NSURL URLWithString:[self processPaymentUrl:UrlStr]];
+    } else {
+        url = [NSURL URLWithString:[UrlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        if(self.postData == nil){
+            //[GTMBase64_My stringByEnco dingData:[[UrlStr stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding] dataUsingEncoding:NSUTF8StringEncoding]]
+//            body = [NSString stringWithFormat:@"sessionId=%@&destUrl=%@",@"",
+//                    UrlStr];
+            body = [NSString stringWithFormat:@"sessionId=%@&destUrl=%@",@"",[GTMBase64_My stringByEncodingData:[[UrlStr stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding] dataUsingEncoding:NSUTF8StringEncoding]]];
+        } else {
+            body = self.postData;
+        }
+    }
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url];
+    if(self.isPayment){
+        [request setHTTPMethod: @"GET"];
+    } else {
+        [request setHTTPMethod: @"POST"];
+        [request setHTTPBody: [body dataUsingEncoding: NSUTF8StringEncoding]];
+    }
+    [webView loadRequest: request];
+    [request release];
+    [UrlStr release];
+    [self.view addSubview:webView];
+    [webView release];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+    FIRST = 0;
+    [self initTitleBar];
+    [self initContentView];
+}
+
+- (void)webViewDidStartLoad:(UIWebView *)webView{
+    [indicator startAnimating];
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView{
+    [indicator stopAnimating];
+}
+
+-(void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error{
+    [indicator stopAnimating];
+}
+
+-(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType{
+    NSURL *url = [request URL];
+    MyLog(@"%@",url);
+    if(FIRST==0){
+        FIRST=1;
+        return YES;
+    }else{
+        if(self.isPayment){
+            return  YES;
+        } else {
+            [UrlParser gotoNewVCWithUrl:[[url absoluteString] stringByReplacingPercentEscapesUsingEncoding:CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000)]];
+            return NO;
+        }
+    }
+}
+
+@end

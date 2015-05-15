@@ -1,0 +1,282 @@
+//
+//  MyWocfVC.m
+//  WoChuangFu
+//
+//  Created by duwl on 12/27/14.
+//  Copyright (c) 2014 asiainfo-linkage. All rights reserved.
+//
+
+#import "MyWocfVC.h"
+
+#import "UserInfoView.h"
+
+#import "WealthView.h"
+#import "SideBar.h"
+#import "TitleBar.h"
+#import "UserInfoView.h"
+#import "LoginView.h"
+
+
+@interface MyWocfVC ()<TitleBarDelegate,SideBarDelegate>
+{
+    WealthView       *wealthView;
+    SideBar          *sideBar;
+    UserInfoView     *userInfoView;
+    LoginView        *loginView;
+    CGFloat          currentTranslate;
+    BOOL             _sideBarShowing;
+    int              ContentOffset;
+    int              ContentMinOffset;
+    float            MoveAnimationDuration;
+    UIView           *mainView;
+    UIScrollView     *contentView;
+    TitleBar         *titleBar;
+}
+
+@end
+
+@implementation MyWocfVC
+
+
+- (void)loadView
+{
+    self.view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.view.backgroundColor = [UIColor blackColor];
+    [self layoutV];
+}
+
+- (void)layoutV
+{
+    //侧滑栏
+    sideBar = [[SideBar alloc] initWithFrame:CGRectMake(0,20,260,PHONE_HEIGHT - 64)];
+    sideBar.delegate = self;
+    [self.view addSubview:sideBar];
+    
+    //主容器视图
+    mainView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    [self.view addSubview:mainView];
+    
+    //导航栏
+    titleBar = [[TitleBar alloc] initWithFramShowHome:YES ShowSearch:NO TitlePos:middle_position];
+    titleBar.target = self;
+    if (IOS7)
+        titleBar.frame = CGRectMake(0, 20, PHONE_WIDTH, 44);
+    [mainView addSubview:titleBar];
+    
+    //视图容器视图
+    contentView = [[UIScrollView alloc] initWithFrame:CGRectMake(0,titleBar.frame.size.height + 20, PHONE_WIDTH,PHONE_HEIGHT - titleBar.frame.size.height - 20)];
+    contentView.scrollEnabled = NO;
+    contentView.backgroundColor = [ComponentsFactory createColorByHex:@"#efeff4"];
+    contentView.contentSize = CGSizeMake(PHONE_WIDTH * 5, 0);
+    contentView.bounces = NO;
+    contentView.pagingEnabled = YES;
+    [mainView addSubview:contentView];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    self.navigationController.navigationBar.hidden = YES;
+    currentTranslate = 0;
+    _sideBarShowing = NO;
+    ContentOffset = 260;
+    ContentMinOffset = 150;
+    MoveAnimationDuration = 0.3;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    //判断是否登录
+    /*
+     *界面分布
+     *0.我的财富
+     *1.申请物料
+     *2.我的特权
+     *3.我的信息
+     *4.登陆界面
+     */
+    bussineDataService *bus = [bussineDataService sharedDataService];
+    
+    UIPanGestureRecognizer *panGes = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handelPan:)];
+    [self.view addGestureRecognizer:panGes];
+    
+    //如果已经登录
+    if (bus.HasLogIn == YES)
+    {
+        //如果已经登录
+        
+        //step1.设置sideBar用户信息
+        NSString *customName = [[NSUserDefaults standardUserDefaults] objectForKey:@"UserName"];
+        sideBar.customName = customName;
+
+        //step2.加载用户信息界面
+        if (userInfoView == nil)
+        {
+            userInfoView = [[UserInfoView alloc] initWithFrame:CGRectMake(PHONE_WIDTH*3,0,PHONE_WIDTH,PHONE_HEIGHT - 64)];
+            [contentView addSubview:userInfoView];
+            UIPanGestureRecognizer *panGes = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handelPan:)];
+            [self.view addGestureRecognizer:panGes];
+        }
+        //step3.跳转到用户信息界面
+        titleBar.title = @"我的信息";
+        [contentView setContentOffset:CGPointMake(PHONE_WIDTH*3,0) animated:NO];
+    }
+    else
+    {
+        if (loginView == nil)
+        {
+            loginView = [[LoginView alloc] initWithFrame:CGRectMake(PHONE_WIDTH*4,0,PHONE_WIDTH,PHONE_HEIGHT - 64)];
+            [contentView addSubview:loginView];
+        }
+        titleBar.title = @"用户登录";
+        [contentView setContentOffset:CGPointMake(PHONE_WIDTH*4,0) animated:NO];
+    }
+}
+
+#pragma mark - SideBarDelegate
+- (void)sideBar:(SideBar *)sideBar didSelectAtIndex:(NSInteger)index
+{
+    /*
+     *界面分布
+     *0.我的财富
+     *1.申请物料
+     *2.我的特权
+     *3.我的信息
+     *4.登陆界面
+     */
+    switch (index)
+    {
+        case 0:
+        {
+            //我的财富
+            if (wealthView == nil)
+            {
+                wealthView = [[WealthView alloc] initWithFrame:CGRectMake(0, 0, PHONE_WIDTH,PHONE_HEIGHT - 64)];
+                [contentView addSubview:wealthView];
+            }
+            titleBar.title = @"我的财富";
+            [contentView setContentOffset:CGPointMake(0,0) animated:NO];
+            [self moveAnimationWithDirection:SideBarShowDirectionNone duration:MoveAnimationDuration];
+        }
+            break;
+        case 1:
+        {
+            //申请物料
+            titleBar.title = @"申请物料";
+            [contentView setContentOffset:CGPointMake(PHONE_WIDTH*1,0) animated:NO];
+            [self ShowProgressHUDwithMessage:@"敬请期待"];
+            [self moveAnimationWithDirection:SideBarShowDirectionNone duration:MoveAnimationDuration];
+        }
+            break;
+        case 2:
+        {
+            //我的特权
+            titleBar.title = @"我的特权";
+            [contentView setContentOffset:CGPointMake(PHONE_WIDTH*2,0) animated:NO];
+            [self ShowProgressHUDwithMessage:@"敬请期待"];
+            [self moveAnimationWithDirection:SideBarShowDirectionNone duration:MoveAnimationDuration];
+        }
+            break;
+        case 3:
+        {
+            if (userInfoView == nil)
+            {
+                userInfoView = [[UserInfoView alloc] initWithFrame:CGRectMake(PHONE_WIDTH*3,0,PHONE_WIDTH,PHONE_HEIGHT - 64)];
+                [contentView addSubview:userInfoView];
+            }
+            titleBar.title = @"我的信息";
+            [contentView setContentOffset:CGPointMake(PHONE_WIDTH*3,0) animated:NO];
+           [self moveAnimationWithDirection:SideBarShowDirectionNone duration:MoveAnimationDuration];
+        }
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)userDidLogout
+{
+    
+}
+
+#pragma mark 拖动手势
+-(void)handelPan:(UIPanGestureRecognizer*)gestureRecognizer{
+    if (gestureRecognizer.state == UIGestureRecognizerStateChanged)
+    {
+        CGFloat translation = [gestureRecognizer translationInView:self.view].x;
+        
+        if(translation+currentTranslate > 0&&translation+currentTranslate<260.0)
+        {
+            mainView.transform = CGAffineTransformMakeTranslation(translation+currentTranslate, 0);
+        }
+	}
+    else if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
+		currentTranslate = mainView.transform.tx;
+        if (!_sideBarShowing) {//左边
+            if (currentTranslate<=ContentMinOffset) {
+                [self moveAnimationWithDirection:SideBarShowDirectionNone duration:MoveAnimationDuration];
+            }else if(currentTranslate>ContentMinOffset)
+            {
+                [self moveAnimationWithDirection:SideBarShowDirectionRight duration:MoveAnimationDuration];
+            }
+        }else//全屏
+        {
+            if (currentTranslate>=ContentMinOffset) {
+                [self moveAnimationWithDirection:SideBarShowDirectionRight duration:MoveAnimationDuration];
+                
+            }else if(currentTranslate<ContentMinOffset)
+            {
+                
+                [self moveAnimationWithDirection:SideBarShowDirectionNone duration:MoveAnimationDuration];
+            }
+        }
+	}
+
+}
+
+//滑动中的动画
+- (void)moveAnimationWithDirection:(SideBarShowDirection)direction duration:(float)duration
+{
+    void (^animations)(void) = ^{
+		switch (direction) {
+            case SideBarShowDirectionNone:
+            {
+                mainView.transform  = CGAffineTransformMakeTranslation(0, 0);
+            }
+                break;
+            case SideBarShowDirectionRight:
+            {
+                mainView.transform  = CGAffineTransformMakeTranslation(260, 0);
+            }
+                break;
+            default:
+                break;
+        }
+	};
+    void (^complete)(BOOL) = ^(BOOL finished) {
+        mainView.userInteractionEnabled = YES;
+        
+        if (direction == SideBarShowDirectionNone) {
+            _sideBarShowing = NO;
+        }else
+        {
+            _sideBarShowing = YES;
+        }
+        currentTranslate =mainView.transform.tx;
+	};
+    [UIView animateWithDuration:duration animations:animations completion:complete];
+}
+
+- (void)ShowProgressHUDwithMessage:(NSString *)msg
+{
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+    hud.mode = MBProgressHUDModeText;
+    hud.labelText = msg;
+    hud.dimBackground = NO;
+    hud.removeFromSuperViewOnHide = YES;
+    [hud hide:YES afterDelay:1];
+}
+
+
+@end

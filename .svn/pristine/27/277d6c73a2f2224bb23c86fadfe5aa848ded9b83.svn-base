@@ -1,0 +1,310 @@
+//
+//  ChooseNumVC.m
+//  WoChuangFu
+//
+//  Created by duwl on 12/1/14.
+//  Copyright (c) 2014 asiainfo-linkage. All rights reserved.
+//
+
+#import "ChooseNumVC.h"
+#import "CommonMacro.h"
+#import "ChooseNumCell.h"
+#import "NumberManager.h"
+#import "ZSYCommonPickerView.h"
+#import "UIImage+LXX.h"
+
+@interface ChooseNumVC() <UITableViewDataSource,UITableViewDelegate>
+
+{
+    UITableView *_tableView;
+    NSString *searchedNum;
+    NSMutableArray *_dataArray;//全部号码数据
+    NSMutableArray *_resultsData;//搜索结果数据
+    UISearchBar *mySearchBar;
+    UISearchDisplayController *mySearchDisplayController;
+}
+@property (nonatomic, strong) NSMutableArray *dataSources;
+@property (nonatomic, strong) UIView *countView;
+@property (nonatomic,retain) UILabel *countlable;          //数量标签
+
+@end
+
+@implementation ChooseNumVC
+
+@synthesize dataSources;
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    self.navigationController.navigationBarHidden = YES;
+    _dataArray = [NSMutableArray array];
+    _resultsData = [NSMutableArray array];
+    
+    [self initNav];
+//    [self initDataSource];
+    [self initTableView];
+    [self showCount];
+    
+    bussineDataService *bus = [bussineDataService  sharedDataService];
+    bus.target = self;
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                 @"222",@"phoneNum",
+                                 @"",@"pageIndex",
+                                 @"",@"pageCount",nil];
+    [bus number:dict];
+    if ([_tableView respondsToSelector:@selector(setSeparatorInset:)]) {
+        
+        [_tableView setSeparatorInset:UIEdgeInsetsZero];
+        
+    }
+    
+    UIButton *topBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [topBtn setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+    [topBtn setImage:[UIImage imageNamed:@""] forState:UIControlStateHighlighted];
+    [topBtn addTarget:self action:@selector(scrollTotop) forControlEvents:UIControlEventTouchUpInside];
+    [topBtn setFrame:CGRectMake(SCREEN_WIDTH-60, SCREEN_HEIGHT-100, 30, 30)];
+    [self.view addSubview:topBtn];
+}
+-(void)scrollTotop{
+    
+    [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+}
+
+
+
+-(void)showCount
+
+{
+    
+    _countView = [[UIView alloc] initWithFrame:CGRectMake(0, 64, SCREEN_WIDTH, 44)];
+    _countView.backgroundColor = UIColorWithRGBA(255, 249, 245, 1);
+   
+    
+    UILabel *countLable = [[UILabel alloc] init];
+    countLable.text = @"总共10件商品";
+    countLable.font = [UIFont systemFontOfSize:14.0f];
+    countLable.textAlignment = NSTextAlignmentCenter;
+    countLable.frame = CGRectMake(SCREEN_WIDTH/2-100, 64, 200, 44);
+    self.countlable = countLable;
+    _countlable.textAlignment = NSTextAlignmentCenter;
+   
+     [self.view addSubview:_countView];
+     [self.view addSubview:countLable];
+    
+    
+   
+
+}
+
+-(void)initNav{
+    //状态栏的背景颜色
+    UILabel *twoL = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 320, IOS7?64:44)];
+    twoL.backgroundColor = UIColorWithRGBA(249, 108, 0, 1);
+    [self.view addSubview:twoL];
+    
+    UILabel *navLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,IOS7?20:0, SCREEN_WIDTH, 44)];
+    navLabel.backgroundColor = [UIColor clearColor];
+    navLabel.textColor = UIColorWithRGBA(11, 104, 210, 1);
+//    navLabel.text = @"号码选择";
+    navLabel.font = [UIFont systemFontOfSize:18];
+    navLabel.textAlignment = NSTextAlignmentCenter;
+    navLabel.userInteractionEnabled = YES;
+    [self.view addSubview:navLabel];
+}
+
+
+- (void)initTableView
+{
+
+    _tableView = [[UITableView alloc] init];
+    _tableView.frame = CGRectMake(0,108, 320, 400);
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
+    _tableView.backgroundColor = [UIColor whiteColor];
+    _tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+    _tableView.showsVerticalScrollIndicator = NO;
+//    _tableView.tableHeaderView = _countView;
+    _tableView.tableHeaderView = [[UIView alloc] init];
+    [_tableView setTableHeaderView:_countView];
+    _tableView.tableFooterView = [[UIView alloc] init];
+
+    UIButton * saveButton = [[UIButton alloc]initWithFrame:CGRectMake(30, 20, SCREEN_WIDTH-60, 33)];
+    UIImage* image = [UIImage resizedImage:@"btn_alter_bg_p"];
+    //image = [image stretchableImageWithLeftCapWidth:19 topCapHeight:19];
+    [saveButton setBackgroundImage:image forState:UIControlStateNormal];
+    [saveButton setTitle:@"保存" forState:UIControlStateNormal];
+    [saveButton addTarget:self action:@selector(saveClicked) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIView *view1 = [[UIView alloc]initWithFrame:CGRectMake(0, SCREEN_HEIGHT-60, SCREEN_WIDTH, 300)];
+    view1.backgroundColor = [UIColor whiteColor];
+    [view1 addSubview:saveButton];
+    
+    
+    //[_tableView setTableFooterView:view1];
+     [self.view addSubview:_tableView];
+    [self.view addSubview:view1];
+   
+    
+    
+    if (IOS7)
+        //分割线的位置不带偏移
+        [_tableView setSeparatorInset:UIEdgeInsetsMake(0, 0, 0, 0)];
+       // separatorInset = UIEdgeInsetsZero;
+}
+
+
+-(void)requestDidFinished:(NSDictionary *)info
+{
+    bussineDataService *bus=[bussineDataService sharedDataService];
+    NSArray *phoneNums = bus.rspInfo[@"phoneNums"];
+    
+    for (NSDictionary *dict in phoneNums)
+    {
+
+        [_dataArray addObject:dict[@"phoneNum"]];
+    }
+}
+
+
+-(void)requestFailed:(NSDictionary *)info
+{
+    
+}
+
+
+////源字符串内容是否包含或等于要搜索的字符串内容
+//-(void)filterContentForSearchText:(NSString*)searchText scope:(NSString*)scope
+//{
+//    NSMutableArray *tempResults = [NSMutableArray array];
+//   _searchedNum = NSCaseInsensitiveSearch | NSDiacriticInsensitiveSearch;
+//    
+//    for (int i = 0; i < _dataArray.count; i++) {
+//      
+//        NSString *storeString = _dataArray[i];
+//        NSRange storeRange = NSMakeRange(0, storeString.length);
+//        NSRange foundRange = [storeString rangeOfString:searchText options:searchOptions range:storeRange];
+//    
+//        if (foundRange.length) {
+//            [tempResults addObject:storeString];
+//        }
+//    }
+//
+//    [_resultsData addObjectsFromArray:tempResults];
+//}
+
+#pragma mark - tableView代理
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+
+        return _dataArray.count;
+
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 50;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *myCell = @"cell_identifier";
+    ChooseNumCell *cell = [tableView dequeueReusableCellWithIdentifier:myCell];
+    
+    if (cell == nil) {
+        cell = [[ChooseNumCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:myCell];
+    }
+    
+//    while ([cell.contentView.subviews lastObject] != nil) {
+//        [(UIView *)[cell.contentView.subviews lastObject] removeFromSuperview];
+//    }
+    
+    // 显示数据
+
+
+
+    NumberModel *numb = [NumberManager shareInstance].num;
+    if(numb == nil)
+        cell.SelectedimgView.hidden = true;
+    else
+    {
+        if([numb.number isEqualToString:[_dataArray objectAtIndex:indexPath.row]])
+            cell.SelectedimgView.hidden = false;
+        else
+            cell.SelectedimgView.hidden = true;
+    }
+    NSString *search =@"73";
+    NSString *num = [_dataArray objectAtIndex:indexPath.row];
+    NSRange range  = [num rangeOfString:search];
+    NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc] initWithString:num];
+    [attrStr addAttribute:NSForegroundColorAttributeName value:[UIColor orangeColor] range:range];
+    cell.numLable.attributedText =attrStr;
+
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    return cell;
+}
+
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    // 数据项
+    NumberModel *item =[[NumberModel alloc]init];
+    item.number =  [_dataArray objectAtIndex:indexPath.row];
+    
+    // 保存到单例
+    [NumberManager shareInstance].num = item;
+    
+//    ZSYCommonPickerView *pickerView = [[ZSYCommonPickerView alloc] initWithTitle:@"AABB" includeAll:YES dataSource:[_dataArray objectForKey:@"cardType"] selectedIndexPath:0 Firstrow:@"全部" cancelButtonBlock:^{
+//        
+//    } makeSureButtonBlock:^(NSInteger indexPath) {
+//        
+//        if(indexPath==0){
+//            [SeaDic setObject:@"全部" forKey:@"支付状态"];
+//            [ZhongCodeDic setObject:[NSNull null] forKey:@"支付状态Code"];
+//            self.PayLabel.text =[SeaDic objectForKey:@"支付状态"];
+//        }else{
+//            DataDictionary_back_cart_item *item = [[pickAllDic objectForKey:@"支付状态"] objectAtIndex:indexPath-1];
+//            [SeaDic setObject:item.ITEM_NAME forKey:@"支付状态"];
+//            [ZhongCodeDic setObject:item.ITEM_CODE forKey:@"支付状态Code"];
+//            self.PayLabel.text =[SeaDic objectForKey:@"支付状态"];
+//        }
+//    }];
+//    [pickerView show];
+    
+    
+    // 刷新界面
+    [_tableView reloadData];
+    
+    
+    
+
+}
+
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+
+{
+    
+    if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
+        
+        [cell setSeparatorInset:UIEdgeInsetsZero];
+        
+    }
+    
+//    if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
+//        
+//        if (IOS8) {
+//            [cell setLayoutMargins:UIEdgeInsetsZero];
+//        }
+//        
+//        
+//    }
+    
+}
+-(void)saveClicked
+{
+    
+}
+
+
+@end

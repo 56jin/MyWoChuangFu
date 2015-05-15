@@ -1,0 +1,78 @@
+{
+    "@class": "com.ailk.app.mapp.model.GXCDatapackage",
+    "header": {
+        "@class": "com.ailk.app.mapp.model.GXCHeader",
+        "bizCode": "cf0029",
+        "identityId": "gxlt10016",
+        "respCode": "0000",
+        "respMsg": "",
+        "mode": "1",
+        "sign": null
+    },
+    "body": {
+        "@class": "com.ailk.app.mapp.model.rsp.CF0029Response",
+        "expand": null,
+        "addrs": [
+                  {
+                  "@class": "com.ailk.app.mapp.model.rsp.Area",
+                  "expand": null,
+                  "areaName": "柳州市柳江县拉堡镇-金福小苑12#",
+                  "areaCode": "105219507"
+                  },
+                  {
+                  "@class": "com.ailk.app.mapp.model.rsp.Area",
+                  "expand": null,
+                  "areaName": "柳州市柳北区北雀路67号柳化一区12栋2单元",
+                  "areaCode": "104830056"
+                  },
+                  {
+                  "@class": "com.ailk.app.mapp.model.rsp.Area",
+                  "expand": null,
+                  "areaName": "柳州市柳南区柳邕路221号宏祥苑12栋1单元6楼",
+                  "areaCode": "109339549"
+                  },
+                  {
+                  "@class": "com.ailk.app.mapp.model.rsp.Area",
+                  "expand": null,
+                  "areaName": "柳州市鱼峰区柳东路226号石尚1966艺术园区12栋",
+                  "areaCode": "106534094"
+                  },
+                  {
+                  "@class": "com.ailk.app.mapp.model.rsp.Area",
+                  "expand": null,
+                  "areaName": "柳州市鱼峰区荣军路317号物勘宿舍12栋2单元2F",
+                  "areaCode": "70236935"
+                  },
+                  {
+                  "@class": "com.ailk.app.mapp.model.rsp.Area",
+                  "expand": null,
+                  "areaName": "柳州市鱼峰区柳石路6号尔海南山御景二期12栋1单元",
+                  "areaCode": "105216843"
+                  },
+                  {
+                  "@class": "com.ailk.app.mapp.model.rsp.Area",
+                  "expand": null,
+                  "areaName": "柳州市鹿寨县城南开发区-盛世家园12栋1单元",
+                  "areaCode": "105217951"
+                  },
+                  {
+                  "@class": "com.ailk.app.mapp.model.rsp.Area",
+                  "expand": null,
+                  "areaName": "柳州市柳北区弯塘路东一巷12号单位宿舍6栋",
+                  "areaCode": "102279443"
+                  },
+                  {
+                  "@class": "com.ailk.app.mapp.model.rsp.Area",
+                  "expand": null,
+                  "areaName": "柳州市柳南区河西路12号川海碧园2栋1单元",
+                  "areaCode": "109371442"
+                  },
+                  {
+                  "@class": "com.ailk.app.mapp.model.rsp.Area",
+                  "expand": null,
+                  "areaName": "柳州市柳北区柳长路长塘镇15号松泉小苑12栋",
+                  "areaCode": "70125035"
+                  }
+                  ]
+    }
+}

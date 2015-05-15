@@ -1,0 +1,36 @@
+//
+//  CommitVC.h
+//  WoChuangFu
+//
+//  Created by duwl on 12/15/14.
+//  Copyright (c) 2014 asiainfo-linkage. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+#import "TitleBar.h"
+#import "CommitView.h"
+
+@interface CommitVC : UIViewController<
+                        UIImagePickerControllerDelegate,
+                        UINavigationControllerDelegate,
+                        CommitDelegate,
+                        NSURLConnectionDelegate,
+                        HttpBackDelegate,
+                        TitleBarDelegate>
+{
+    TitleBar* titleBar;
+    CommitView* commitView;
+    NSMutableData* receiveData;
+    UIImage*    photoImage;
+    NSString*   saveUploadPhotoId;
+    BOOL isNeedCertInfo;
+}
+
+@property(nonatomic,retain)TitleBar* titleBar;
+@property(nonatomic,retain)CommitView* commitView;
+@property(nonatomic,retain)NSMutableData* receiveData;
+@property(nonatomic,retain)UIImage*    photoImage;
+@property(nonatomic,retain)NSString*   saveUploadPhotoId;
+@property(nonatomic,assign)BOOL isNeedCertInfo;
+
+@end

@@ -1,0 +1,86 @@
+//
+//  CellStyle.m
+//  WoChuangFu
+//
+//  Created by 郑渊文 on 14/12/17.
+//  Copyright (c) 2014年 asiainfo-linkage. All rights reserved.
+//
+
+#import "CellStyle.h"
+#import "CommonMacro.h"
+#define FONT_SIZE 13
+
+@implementation CellStyle
+
+- (void)awakeFromNib {
+    // Initialization code
+}
+
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+        _label1 = [[UILabel alloc] initWithFrame:CGRectMake(30, 0, SCREEN_WIDTH/2-30, self.frame.size.height)];
+        _label1.text = @"";
+        [self.contentView addSubview:_label1];
+        _label1.font = [UIFont systemFontOfSize:13];
+//        _label2 = [[UILabel alloc] initWithFrame:CGRectMake(SCREEN_WIDTH/2-30, 0, SCREEN_WIDTH/2+30, self.frame.size.height)];
+//        _label2.text = @"111111111";
+//        [self.contentView addSubview:_label2];
+        _label2.font = [UIFont systemFontOfSize:14];
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        
+        
+        _label2 = [[UILabel alloc] initWithFrame:CGRectZero];
+        [_label2 setLineBreakMode:NSLineBreakByWordWrapping];
+        [_label2 setMinimumScaleFactor:FONT_SIZE];
+        [_label2 setNumberOfLines:0];
+        [_label2 setFont:[UIFont systemFontOfSize:FONT_SIZE]];
+        [_label2 setTag:1];
+        
+        //    [[lable layer] setBorderWidth:2.0f];
+        
+        [[self contentView] addSubview:_label2];
+        
+        CGSize constraint = CGSizeMake(SCREEN_WIDTH/2-20, 20000.0f);
+        
+        NSAttributedString *attributedText = [[NSAttributedString alloc]initWithString:@"" attributes:@{
+                                                                                                          NSFontAttributeName:[UIFont systemFontOfSize:FONT_SIZE]
+                                                                                                          }];
+        CGRect rect = [attributedText boundingRectWithSize:constraint
+                                                   options:NSStringDrawingUsesLineFragmentOrigin
+                                                   context:nil];
+        CGSize size = rect.size;
+        
+        if (!_label2)
+            _label2 = (UILabel*)[self viewWithTag:1];
+        
+        [_label2 setText:@"2222222"];
+        [_label2 setFrame:CGRectMake(SCREEN_WIDTH/2 -30, 5,  SCREEN_WIDTH/2+10, MAX(size.height, 33.0f))];
+
+    }
+    return self;
+}
+
+- (void)setLabel1Text:(NSString *)text1
+           label2Text:(NSString *)text2
+{
+    _label1.text = text1;
+    _label2.text = text2;
+    if ([text1 isEqualToString:@"查看证件:"] ||[text1 isEqualToString:@"物流查询:"]||[text1 isEqualToString:@"查看协议:"])
+    {
+        _label2.textColor = [UIColor blueColor];
+    }
+    else
+    {
+        _label2.textColor = [UIColor blackColor];
+    }
+}
+
+- (void)dealloc
+{
+    [_label1 release];
+    [_label2 release];
+    [super dealloc];
+}@end

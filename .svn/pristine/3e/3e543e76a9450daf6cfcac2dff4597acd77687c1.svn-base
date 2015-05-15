@@ -1,0 +1,185 @@
+#import "ProductCell.h"
+#import "ProductModel.h"
+#import "ComponentsFactory.h"
+#import "FileHelpers.h"
+//#import "UIImageView+WebCache.h"
+#import "CrossLineLable.h"
+
+#define ICON_WIDTH 80 //图片宽度
+#define ICON_HEIGHT 80 //图片高度
+#define ICON_POSTION_X 5 //图片X坐标
+#define ICON_POSTION_Y 3 //图片Y坐标
+#define MARGIN 5 //间距
+#define LABLE_POSTION_COMMON_X (ICON_POSTION_X + ICON_WIDTH + MARGIN)//标签公共X坐标
+#define LABLE_COMMON_HEIGHT 21 //标签公共高度
+#define FONT_SIZE(size) [UIFont systemFontOfSize:size] //字体大小
+#define LABLE_NAME_POSTION_Y 5 //名字Y坐标
+#define LABLE_LENGTH_COMMON 217 //标签公共长度
+#define LABLE_PRICE_LENGTH 100 //价格标签长度
+
+
+@interface ProductCell()
+
+@property (nonatomic,retain) UIImageView *imgView;                //图标
+@property (nonatomic,retain) UILabel   *nameLable;              //商品名称
+@property (nonatomic,retain) UILabel     *descLable;              //描述信息
+@property (nonatomic,retain) UILabel     *discountPriceLable;     //折扣价
+@property (nonatomic,retain) CrossLineLable     *sailPriceLable;         //售价
+
+@end
+
+@implementation ProductCell
+
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self)
+    {
+        [self addSubviews];
+    }
+    
+    return self;
+}
+
+- (void)addSubviews
+{
+    _imgView = [[UIImageView alloc] init];
+    _imgView.frame = CGRectMake(ICON_POSTION_X, ICON_POSTION_Y, ICON_WIDTH, ICON_HEIGHT);
+    
+    [self.contentView addSubview:_imgView];
+    [_imgView release];
+    
+    UIView *lableContentView = [[UIView alloc] initWithFrame:CGRectMake(LABLE_POSTION_COMMON_X,LABLE_NAME_POSTION_Y, LABLE_LENGTH_COMMON,LABLE_COMMON_HEIGHT)];
+    lableContentView.clipsToBounds = YES;
+    _nameLable = [[UILabel alloc] init];
+    _nameLable.frame = CGRectMake(0,0, LABLE_LENGTH_COMMON,LABLE_COMMON_HEIGHT);
+    _nameLable.font = FONT_SIZE(15.0);
+    _nameLable.textColor = [ComponentsFactory createColorByHex:@"#4b4b4b"];
+    [lableContentView addSubview:_nameLable];
+    [self.contentView addSubview:lableContentView];
+    [lableContentView release];
+    [_nameLable release];
+    
+    _descLable = [[UILabel alloc] init];
+    _descLable.frame = CGRectMake(LABLE_POSTION_COMMON_X, LABLE_NAME_POSTION_Y + LABLE_COMMON_HEIGHT, LABLE_LENGTH_COMMON,LABLE_COMMON_HEIGHT * 2);
+    _descLable.font = FONT_SIZE(14.0);
+    _descLable.textColor = [ComponentsFactory createColorByHex:@"#666666"];
+    _descLable.numberOfLines = 0;
+    [self.contentView addSubview:_descLable];
+    [_descLable release];
+    
+    _discountPriceLable = [[UILabel alloc] init];
+    _discountPriceLable.frame = CGRectMake(LABLE_POSTION_COMMON_X, LABLE_COMMON_HEIGHT * 3, LABLE_PRICE_LENGTH,LABLE_COMMON_HEIGHT);
+    _discountPriceLable.font = FONT_SIZE(14.0);
+    _discountPriceLable.textColor = [UIColor orangeColor];
+    [self.contentView addSubview:_discountPriceLable];
+    [_discountPriceLable release];
+    
+    _sailPriceLable = [[CrossLineLable alloc] init];
+    _sailPriceLable.frame = CGRectMake(LABLE_POSTION_COMMON_X + LABLE_PRICE_LENGTH, LABLE_COMMON_HEIGHT * 3,LABLE_PRICE_LENGTH,LABLE_COMMON_HEIGHT);
+    _sailPriceLable.font = FONT_SIZE(14.0);
+    _sailPriceLable.textColor = [ComponentsFactory createColorByHex:@"#999999"];
+    [self.contentView addSubview:_sailPriceLable];
+    [_sailPriceLable release];
+}
+- (void)setProduct:(ProductModel *)product
+{
+    if (_product != product)
+    {
+        _product = [product retain];
+    }
+    CGSize textSize;
+    if (IOS7) {
+        textSize = [_product.name sizeWithAttributes:@{NSFontAttributeName:self.nameLable.font}];
+    }
+    else
+    {
+        textSize = [_product.name sizeWithFont:self.nameLable.font];
+    }
+    self.nameLable.frame = CGRectMake(0, 0, textSize.width, LABLE_COMMON_HEIGHT);
+    self.nameLable.text = _product.name;
+    if (textSize.width > LABLE_LENGTH_COMMON)
+    {
+        float offset = textSize.width - LABLE_LENGTH_COMMON;
+        static float speed = 27.0f;
+        float durationTime = offset/speed;
+        [UIView beginAnimations:@"animation" context:NULL];
+        [UIView setAnimationDuration:durationTime];
+        [UIView setAnimationCurve:UIViewAnimationCurveLinear];
+        [UIView setAnimationRepeatAutoreverses:YES];
+        [UIView setAnimationRepeatCount:MAXFLOAT];
+        self.nameLable.transform =CGAffineTransformMakeTranslation(-offset, 0);
+        [UIView commitAnimations];
+        
+//        [UIView animateWithDuration:durationTime
+//                              delay:0
+//                            options:UIViewAnimationOptionRepeat|UIViewAnimationOptionCurveLinear|UIViewAnimationOptionAutoreverse
+//                         animations:^{
+//                             self.nameLable.transform =CGAffineTransformMakeTranslation(-offset, 0);
+//                         }
+//                         completion:^(BOOL finished){
+//                         }];
+    }
+    
+    self.descLable.text = _product.desc;
+    self.discountPriceLable.text = [NSString stringWithFormat:@"折扣价:￥%@",_product.discountPrice];
+    self.sailPriceLable.text = [NSString stringWithFormat:@"售价:￥%@", _product.sailPrice];
+    
+    //异步图片
+    if (hasCachedImage([NSURL URLWithString:_product.imgURL]))
+    {
+        [_imgView setImage:[UIImage imageWithContentsOfFile:pathForURL([NSURL URLWithString:_product.imgURL])]];
+    }else{
+        NSDictionary *dic=[NSDictionary dictionaryWithObjectsAndKeys:_product.imgURL,@"url",_imgView,@"imageView",nil];
+        [ComponentsFactory dispatch_process_with_thread:^{
+            UIImage* ima = [self LoadImage:dic];
+            return ima;
+        } result:^(UIImage *ima){
+            [_imgView setImage:ima];
+        }];
+    }
+}
+
+- (void)setFrame:(CGRect)frame
+{
+    frame = CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, frame.size.height - MARGIN);
+    [super setFrame:frame];
+}
+
+-(UIImage *)LoadImage:(NSDictionary*)aDic{
+    UIView* view = [aDic objectForKey:@"imageView"];
+    NSURL *aURL=[NSURL URLWithString:[aDic objectForKey:@"url"]];
+    NSFileManager *fileManager=[NSFileManager defaultManager];
+    NSData *data=[NSData dataWithContentsOfURL:aURL] ;
+    UIImage *image=[UIImage imageWithData:data];
+    if (image==nil) {
+        return nil;//[UIImage imageNamed:@"loadpicture.png"];
+    }
+    CGSize origImageSize= [image size];
+    CGRect newRect;
+    newRect.origin= CGPointZero;
+    //拉伸到多大
+    newRect.size.width=view.frame.size.width *2;
+    newRect.size.height=view.frame.size.height*2;
+    //缩放倍数
+    float ratio = MIN(newRect.size.width/origImageSize.width, newRect.size.height/origImageSize.height);
+    UIGraphicsBeginImageContext(newRect.size);
+    CGRect projectRect;
+    projectRect.size.width =ratio * origImageSize.width;
+    projectRect.size.height=ratio * origImageSize.height;
+    projectRect.origin.x= (newRect.size.width -projectRect.size.width)/2.0;
+    projectRect.origin.y= (newRect.size.height-projectRect.size.height)/2.0;
+    [image drawInRect:projectRect];
+    UIImage *small = UIGraphicsGetImageFromCurrentImageContext();
+    //压缩比例
+    NSData *smallData=UIImageJPEGRepresentation(small, 1);
+    if (smallData) {
+        [fileManager createFileAtPath:pathForURL(aURL) contents:smallData attributes:nil];
+    }
+    
+    UIGraphicsEndImageContext();
+    return small;
+}
+
+
+@end

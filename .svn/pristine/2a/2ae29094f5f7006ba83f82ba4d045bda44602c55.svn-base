@@ -1,0 +1,47 @@
+//
+//  Prefix header
+//
+//  The contents of this file are implicitly included at the beginning of every source file.
+//
+
+#import <Availability.h>
+
+#ifdef __OBJC__
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+#import "AppDelegate.h"
+#import "bussineDataService.h"
+#import "SVProgressHUD.h"
+#import "ComponentsFactory.h"
+#import "ASI/ASIHTTP.h"
+#import "SYPaginator.h"
+#import "UICustomNavigationBar.h"
+#import "ComponentsFactory.h"
+#import "MBProgressHUD.h"
+#import "NdUncaughtExceptionHandler.h"
+#import "Push/APService.h"
+#define IOS7 [[[UIDevice currentDevice] systemVersion]floatValue]>=7
+
+typedef enum _SideBarShowDirection
+{
+    SideBarShowDirectionNone = 0,
+    SideBarShowDirectionLeft = 1,
+    SideBarShowDirectionRight = 2
+}SideBarShowDirection;
+
+#endif
+
+//控制appstore和web端版本的检查更新
+#define AppStore
+//静态数据版本控制宏
+//#define STATIC_XML
+//#define service_IP                  @"http://10.37.238.187:8080/emall"
+#define service_IP                  @"http://192.168.1.145:8080/emall"
+//#define service_IP                  @"http://mall.gx10010.com"
+#define service_url                 service_IP@"/mapp/json.do"
+#define image_service_url           service_IP@"/fileUpload/phonePicUpload.do"
+#define ADVREFLASH_NOTIFICATION     @"ADVREFLASH_NOTIFICATION"
+#define MAIN_PAGE_URL_PARSE         @"MAIN_PAGE_URL_PARSE"
+
+//#define des_key                 @"AILKWOCF"
+#define des_key                 @"WOCF_DESKEY"

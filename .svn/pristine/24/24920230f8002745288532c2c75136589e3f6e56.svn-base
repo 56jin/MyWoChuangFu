@@ -1,0 +1,28 @@
+#import "CrossLineLable.h"
+
+@implementation CrossLineLable
+
+- (void)drawRect:(CGRect)rect
+{
+    [super drawRect:rect];
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    [self.textColor setStroke];
+    CGSize size;
+    if (IOS7)
+    {
+        size = [self.text sizeWithAttributes:[NSDictionary dictionaryWithObjectsAndKeys:self.font,NSFontAttributeName,nil]];
+    }
+    else
+    {
+        size = [self.text sizeWithFont:self.font];
+    }
+    CGContextMoveToPoint(context,0,size.height/2.0);
+    
+    CGContextSetLineWidth(context, 1);
+    CGContextAddLineToPoint(context,size.width,size.height/2.0);
+    
+    CGContextStrokePath(context);
+}
+
+@end

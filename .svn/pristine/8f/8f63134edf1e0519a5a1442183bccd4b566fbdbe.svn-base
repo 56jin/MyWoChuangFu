@@ -1,0 +1,39 @@
+//
+//  CommitView.h
+//  WoChuangFu
+//
+//  Created by duwl on 12/15/14.
+//  Copyright (c) 2014 asiainfo-linkage. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+#import "InsetsLabel.h"
+
+typedef enum enterDataTag{
+    UPLOAD_PHOTO_BTN = 100,
+    ENTER_NAME,
+    ENTER_CER,
+    ENTER_CONTRACT,
+    SELECT_ADDR_AREA,
+    ENTER_ADDR_DETAIL,
+    ENTER_RECEPE,
+    ENTER_MARK
+}enterDataTag;
+
+@protocol CommitDelegate<NSObject>
+@optional
+//调用相机
+-(void)showCamera;
+//提交数据
+-(void)commitRequestData:(NSDictionary*)data;
+@end
+
+@interface CommitView : UIView<UIScrollViewDelegate,UITextFieldDelegate>
+{
+    id<CommitDelegate> target;
+    BOOL showCert;
+    UIScrollView* scrollView;
+}
+@property(nonatomic,retain)id<CommitDelegate> target;
+@property(nonatomic,retain)UIScrollView* scrollView;
+@end

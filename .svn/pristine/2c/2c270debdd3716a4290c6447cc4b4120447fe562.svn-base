@@ -1,0 +1,798 @@
+//
+//  bussineDataService.m
+//  EsayBuy
+//
+//  Created by 颜 梁坚 on 13-8-20.
+//  Copyright (c) 2013年 asiainfo-linkage. All rights reserved.
+//
+
+#import "bussineDataService.h"
+#import "SVProgressHUD.h"
+#import "AppDelegate.h"
+#import "MBProgressHUD.h"
+#import "UIDevice-Reachability.h"
+#import "AreaLog.h"
+#import "CityLog.h"
+#import "ProLog.h"
+
+@implementation bussineDataService
+
+@synthesize target;
+@synthesize httpCnctor;
+@synthesize sendMessageSelector;
+@synthesize receiveString;
+@synthesize sendDataDic;
+@synthesize sendString;
+@synthesize rspInfo;
+@synthesize updateUrl;
+@synthesize HasLogIn;
+@synthesize TuiSongDic;
+@synthesize loginInfo;
+
+-(void)dealloc
+{
+	[receiveString release];
+	[sendDataDic release];
+	[sendString release];
+    [httpCnctor release];
+    [super dealloc];
+}
+
+#pragma mark -
+#pragma mark bussineDataService inferface
+
+// 单实例模式
+static bussineDataService *sharedBussineDataService = nil;
+
++(bussineDataService*)sharedDataService {
+    
+    @synchronized ([bussineDataService class]) {
+        if (sharedBussineDataService == nil) {
+			sharedBussineDataService = [[bussineDataService alloc] sharedInit];
+            return sharedBussineDataService;
+        }
+    }
+    
+    return sharedBussineDataService;
+}
+
+-(id)sharedInit
+{
+	if (self = [super init]) {
+		HttpConnector* _httpConnector = [[HttpConnector alloc] init];
+		_httpConnector.serviceUrl = service_url;
+        _httpConnector.isPostXML = NO;
+		_httpConnector.statusDelegate = self;
+        self.HasLogIn=NO;
+        [_httpConnector setTimeout:20];
+        [self setHttpCnctor:_httpConnector];
+        [_httpConnector release];
+	}
+	
+	return self;
+}
+
+- (void)sharedSendMessage:(id <MessageDelegate>)msg synchronously:(BOOL)isSynchronous
+{
+    self.httpCnctor.serviceUrl = service_url;
+    self.httpCnctor.allowCompressed = YES;
+    if([msg isHouTai]){
+        NSLog(@"请求的地址：%@",self.httpCnctor.serviceUrl);
+        [self.httpCnctor sendMessage:msg synchronously:NO SessionId:@""];
+    }else{
+        [MBProgressHUD showHUDAddedTo:[AppDelegate shareMyApplication].window animated:YES];
+#ifdef STATIC_XML
+        NSString* xmlFile = [[NSString alloc] initWithString:[[NSBundle mainBundle]
+                                                              pathForResource:[msg getBusinessCode]
+                                                              ofType:@"json"]];
+        [self.httpCnctor sendMessage_static:msg xmlFile:xmlFile];
+        [xmlFile release];
+#else
+        NSLog(@"请求的地址：%@",self.httpCnctor.serviceUrl);
+        [self.httpCnctor sendMessage:msg synchronously:NO SessionId:@""];
+#endif
+    }
+//    NSLog(@"%@\n %@",self.httpCnctor.httpRequest.requestHeaders,self.httpCnctor.httpRequest.userInfo);
+}
+
+-(NSDictionary*)handleRspInfo:(message *) msg
+{
+    NSString* rspCode = [msg getRspcode];
+    NSString* bussineCode = msg.bizCode;
+    NSString* rspDesc = [msg getMSG];
+    //key: bussineCode value :; Key:errorCode, value: key:MSG, value:
+    NSMutableDictionary* rspDic = [[[NSMutableDictionary alloc] initWithCapacity:0] autorelease];
+    [rspDic setObject:msg forKey:@"MESSAGE_OBJECT"];
+    [rspDic setObject:rspCode forKey:@"errorCode"];
+    [rspDic setObject:bussineCode forKey:@"bussineCode"];
+    if (rspDesc != nil) {
+        [rspDic setObject:rspDesc forKey:@"MSG"];
+    }
+    
+    if ([rspCode isEqualToString:@"0001"]) {
+        [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
+        UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                            message:@"登录超时，请重新登录！"//Session 过期
+                                                           delegate:self
+                                                  cancelButtonTitle:@"确定"
+                                                  otherButtonTitles:nil];
+        alertView.tag = kSessionTimeOutTag;
+        [alertView show];
+        [alertView release];
+        return nil;
+    }
+    
+    return rspDic;
+}
+
+-(void)noticeUI:(NSDictionary*)rspDic
+{
+    if (rspDic == nil) {
+        return;
+    }
+    NSString* rspCode = [rspDic objectForKey:@"errorCode"];
+    id<MessageDelegate> msg = [rspDic objectForKey:@"MESSAGE_OBJECT"];
+    
+    if ([rspCode isEqualToString:@"0001"]) {
+        [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
+        UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                            message:@"Session 过期，请重新登陆！"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"确定"
+                                                  otherButtonTitles:nil];
+        alertView.tag = kSessionTimeOutTag;
+        [alertView show];
+        [alertView release];
+        return;
+    }
+    
+    if([rspCode isEqualToString:@"0000"]){
+        if (nil != self.target && [self.target respondsToSelector:@selector(requestDidFinished:)]) {
+            [self.target performSelector:@selector(requestDidFinished:) withObject:rspDic];
+        }
+    } else {
+        if([msg isHouTai]){/*后台设置*/
+            NSString* msg = [rspDic objectForKey:@"MSG"];
+            if([rspDic objectForKey:@"MSG"] == [NSNull null]){
+                msg = @"信息检验异常，请重新登录";
+            }
+            if(nil == msg){
+                msg = @"信息检验异常，请重新登录";
+            }
+            UIAlertView *aler=[[UIAlertView alloc] initWithTitle:@"提示:" message:@"信息检验异常，请重新登录" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
+            aler.tag=50505;
+            [aler show];
+            [aler release];
+        }else{
+            if (nil != self.target && [self.target respondsToSelector:@selector(requestFailed:)]) {
+                [self.target performSelector:@selector(requestFailed:) withObject:rspDic];
+            }
+        }
+    }
+}
+
+- (void)readySharedSendMessage:(NSString*)messageClaseName
+                         param:(NSDictionary*)parameters
+                       funName:(NSString*)funName
+                 synchronously:(BOOL)synchronously
+{
+    Class class =  NSClassFromString(messageClaseName);
+    message* messageObject = (message*)[[class alloc] init];
+    messageObject.requestInfo = parameters;
+    SEL selector = NSSelectorFromString(funName);
+    [self setSendMessageSelector:selector];
+    self.sendDataDic = parameters;
+    [self sharedSendMessage:messageObject synchronously:synchronously];
+    [messageObject release];
+}
+
+- (void)readyUploadPhotoMessage:(NSString*)messageClaseName
+                         param:(NSDictionary*)parameters
+                       funName:(NSString*)funName
+                 synchronously:(BOOL)synchronously
+{
+    self.httpCnctor.serviceUrl = image_service_url;
+    self.httpCnctor.allowCompressed = NO;
+    Class class =  NSClassFromString(messageClaseName);
+    message* messageObject = (message*)[[class alloc] init];
+    messageObject.requestInfo = parameters;
+    SEL selector = NSSelectorFromString(funName);
+    [self setSendMessageSelector:selector];
+    self.sendDataDic = parameters;
+//    [self sharedSendMessage:messageObject synchronously:synchronously];
+    [self.httpCnctor uploadPhotoMessage:messageObject synchronously:NO SessionId:@""];
+    [messageObject release];
+}
+
+#pragma mark -
+#pragma mark alertview delegate
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+	if (kForceUpdateTag == alertView.tag) {
+        // 强制升级
+        if (alertView.cancelButtonIndex == buttonIndex)
+        {
+            NSLog(@"updateUrl:%@",self.updateUrl);
+            NSURL* url = [NSURL URLWithString:self.updateUrl];
+            if([[UIApplication sharedApplication] canOpenURL:url])
+            {
+                [[UIApplication sharedApplication] openURL:url];
+            }
+            exit(0);
+        }
+    }
+    
+    if (kLinkErrorTag == alertView.tag || kTimeOutErrorTag == alertView.tag) {
+        //超时或者连接错误，重试
+        if (buttonIndex == alertView.firstOtherButtonIndex) {
+            if ([self respondsToSelector:sendMessageSelector]) {
+                [self performSelector:sendMessageSelector withObject:sendDataDic];
+            }
+        }
+        
+        if (buttonIndex == alertView.cancelButtonIndex) {
+            if (nil != self.target && [self.target respondsToSelector:@selector(cancelTimeOutAndLinkError)]) {
+                [self.target cancelTimeOutAndLinkError];
+            }
+        }
+    }
+    
+    if (kSessionTimeOutTag == alertView.tag) {
+//        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"passWord"];
+//        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"logSelf"];
+//        //        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"remember"];
+//        [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"HuanCun"];
+//        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"HuanCunXinxi"];
+//        [[NSUserDefaults standardUserDefaults] synchronize];
+//        
+//        bussineDataService *bus=[bussineDataService sharedDataService];
+//        bus.IsTuisong=NO;
+//        bus.rspAddrInfo=nil;
+//        bus.rspAdInfo=nil;
+//        bus.rspStatInfo=nil;
+//        bus.rspUserInfo=nil;
+//        bus.rspInfo=nil;
+//        bus.IsHuanCun=NO;
+//        [(AppDelegate *)[UIApplication sharedApplication].delegate relogin];
+    }
+}
+
+
+#pragma mark
+#pragma mark - 检查更新
+- (void)updateVersion:(NSDictionary *)parameters
+{
+    [self readySharedSendMessage:@"VersionUpdataMessage"
+                           param:parameters
+                         funName:@"updateVersion:"
+                   synchronously:NO];
+}
+
+- (void)updateVersionFinished:(id <MessageDelegate>)msg
+{
+    VersionUpdataMessage *Msg = msg;
+    
+    NSString* rspCode = [Msg getRspcode];
+    NSString* bussineCode = [Msg getBusinessCode];
+    NSString* rspDesc = [Msg getMSG];
+    
+    if ([rspCode isEqualToString:@"0001"]) {
+        [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
+        UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                            message:@"Session 过期，请重新登陆！"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"确定"
+                                                  otherButtonTitles:nil];
+        alertView.tag = kSessionTimeOutTag;
+        [alertView show];
+        [alertView release];
+        return;
+    }
+    //key: bussineCode value :; Key:errorCode, value: key:MSG, value:
+    NSMutableDictionary* rspDic = [[NSMutableDictionary alloc] initWithCapacity:0];
+    [rspDic setObject:rspCode forKey:@"errorCode"];
+    [rspDic setObject:bussineCode forKey:@"bussineCode"];
+    if (rspDesc != nil) {
+        [rspDic setObject:rspDesc forKey:@"MSG"];
+    }
+    self.rspInfo = Msg.rspInfo;
+    
+    if([rspCode isEqualToString:@"0000"]){
+		// 版本正常
+		NSString* currentVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString*)kCFBundleVersionKey];
+		NSDictionary* versionDic = Msg.rspInfo;
+		NSString* lowestVersion = ([versionDic objectForKey:@"requiredVersion"]==[NSNull null]?nil:[versionDic objectForKey:@"requiredVersion"]);//服务器返回的最低版本号
+		NSString* lastVersion = ([versionDic objectForKey:@"version"]==[NSNull null]?nil:[versionDic objectForKey:@"version"]);//服务器返回的最高版本号
+		if (lowestVersion != nil &&lastVersion != nil &&
+			([currentVersion compare:lowestVersion] == NSOrderedAscending)) //如果当前版本号比最低版本号还小，那么强制升级
+		{
+			//强制升级
+            [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
+            NSString* updateUrl_o = [NSString stringWithFormat:@"%@",[versionDic objectForKey:@"download"]];
+            NSString* updateStr = [[NSString alloc] initWithFormat:@"%@",updateUrl_o];
+            self.updateUrl = updateStr;
+            [updateStr release];
+            
+            UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"系统需要强制升级！"
+                                                                message:[Msg.rspInfo objectForKey:@"remark"]==[NSNull null]?@"":[Msg.rspInfo objectForKey:@"remark"]
+                                                               delegate:self
+                                                      cancelButtonTitle:@"确定"
+                                                      otherButtonTitles:nil];
+            alertView.tag = kForceUpdateTag;
+            [alertView show];
+            [alertView release];
+            
+            
+		}else if(lowestVersion != nil && lastVersion != nil &&
+                 (([currentVersion compare:lowestVersion] == NSOrderedSame) || ([currentVersion compare:lowestVersion] == NSOrderedDescending))&&
+                 ([currentVersion compare:lastVersion] == NSOrderedAscending)) //如果当前版本号比最低版本大，同时比最新版本小，那么选择升级
+		{
+            //
+            NSString* updateUrl_o = [NSString stringWithFormat:@"%@",[versionDic objectForKey:@"download"]];
+            NSString* updateStr = [[NSString alloc] initWithFormat:@"%@",updateUrl_o];
+            self.updateUrl = updateStr;
+            [updateStr release];
+            [rspDic setObject:@"7777" forKey:@"errorCode"];
+            
+            if (nil != self.target && [self.target respondsToSelector:@selector(requestDidFinished:)]) {
+                [self.target performSelector:@selector(requestDidFinished:) withObject:rspDic];
+            }
+		} else {
+            if([msg isHouTai]){/*后台设置*/
+                NSString *nameStr=[[NSUserDefaults standardUserDefaults] objectForKey:@"userName"];
+                NSString *passStr=[[NSUserDefaults standardUserDefaults] objectForKey:@"passWord"];
+                if([nameStr isEqualToString:@""]||nameStr==nil){
+                    UIAlertView *aler=[[UIAlertView alloc] initWithTitle:@"提示" message:@"信息检验异常，请重新登录" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
+                    aler.tag=50505;
+                    [aler show];
+                    [aler release];
+                }else if([passStr isEqualToString:@""]||passStr==nil){
+                    UIAlertView *aler=[[UIAlertView alloc] initWithTitle:@"提示" message:@"信息检验异常，请重新登录" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
+                    aler.tag=40404;
+                    [aler show];
+                    [aler release];
+                }else{
+                    bussineDataService *bussineService = [bussineDataService sharedDataService];
+                    NSLog(@"userName_str==%@",nameStr);
+                    NSDictionary *data = [[NSDictionary alloc] initWithObjectsAndKeys:[nameStr stringByReplacingOccurrencesOfString:@"QA_" withString:@""],@"usercode",
+                                          passStr,@"pwd",
+                                          [NSNumber numberWithBool:YES],@"isHouTai",nil];
+                    [bussineService login:data];
+                    [data release];
+                }
+            }else{
+                [rspDic setObject:@"4444" forKey:@"errorCode"];
+                if (nil != self.target && [self.target respondsToSelector:@selector(requestDidFinished:)]) {
+                    [self.target performSelector:@selector(requestDidFinished:) withObject:rspDic];
+                }
+            }
+		}
+        //        [currentVersion release];
+	}else if ([rspCode isEqualToString:@"0006"]) {
+        if (nil != self.target && [self.target respondsToSelector:@selector(requestDidFinished:)]) {
+            [self.target performSelector:@selector(requestDidFinished:) withObject:rspDic];
+        }
+	} else {
+        if([msg isHouTai]){/*后台设置*/
+            NSString* msg = [rspDic objectForKey:@"MSG"];
+            if([rspDic objectForKey:@"MSG"] == [NSNull null]){
+                msg = @"信息检验异常，请重新登录";
+            }
+            if(nil == msg){
+                msg = @"信息检验异常，请重新登录";
+            }
+            UIAlertView *aler=[[UIAlertView alloc] initWithTitle:@"提示:" message:@"信息检验异常，请重新登录" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
+            aler.tag=50505;
+            [aler show];
+            [aler release];
+        }else{
+            if (nil != self.target && [self.target respondsToSelector:@selector(requestFailed:)]) {
+                [self.target performSelector:@selector(requestFailed:) withObject:rspDic];
+            }
+        }
+	}
+    [rspDic release];
+    
+}
+
+#pragma mark
+#pragma mark - 登录
+- (void)login:(NSDictionary *)paramters
+{
+    //    if ([[UIDevice currentDevice] networkAvailable]) {
+    [self readySharedSendMessage:@"LoginMessage"
+                           param:paramters
+                         funName:@"login:"
+                   synchronously:NO];
+    //    }
+}
+
+- (void)loginFinished:(id<MessageDelegate>)msg
+{
+    LoginMessage *Msg = msg;
+    NSDictionary *rspDic = [self handleRspInfo:Msg];
+    NSString* rspCode = [Msg getRspcode];
+    if([rspCode isEqualToString:@"0000"]){
+        self.rspInfo = Msg.rspInfo;
+        self.loginInfo=Msg.rspInfo;
+    }
+    [self noticeUI:rspDic];
+}
+
+#pragma mark
+#pragma mark - 主页
+- (void)zhuye:(NSDictionary *)paramters
+{
+    //    if ([[UIDevice currentDevice] networkAvailable]) {
+    [self readySharedSendMessage:@"ZhuYeMessage"
+                           param:paramters
+                         funName:@"zhuye:"
+                   synchronously:NO];
+    //    }
+}
+
+- (void)zhuyeFinished:(id<MessageDelegate>)msg
+{
+    ZhuYeMessage *Msg = msg;
+    NSDictionary *rspDic = [self handleRspInfo:Msg];
+    NSString* rspCode = [Msg getRspcode];
+    if([rspCode isEqualToString:@"0000"]){
+        self.rspInfo = Msg.rspInfo;
+    }
+    [self noticeUI:rspDic];
+}
+
+#pragma mark
+#pragma mark - 报错提交
+- (void)BaoCuoback:(NSDictionary *)paramters
+{
+    if ([[UIDevice currentDevice] networkAvailable]) {
+        [self readySharedSendMessage:@"BaoCuoMessage"
+                               param:paramters
+                             funName:@"BaoCuoback:"
+                       synchronously:NO];
+    }
+}
+
+- (void)BaoCuoFinished:(id<MessageDelegate>)msg
+{
+    BaoCuoMessage *Msg = msg;
+    NSDictionary *rspDic = [self handleRspInfo:Msg];
+    NSString* rspCode = [Msg getRspcode];
+    if([rspCode isEqualToString:@"0000"]){
+        self.rspInfo = Msg.rspInfo;
+    }
+    [self noticeUI:rspDic];
+}
+
+#pragma mark
+#pragma mark - 首页获取动态数据
+- (void)mainPage:(NSDictionary *)parameters
+{
+    if ([[UIDevice currentDevice] networkAvailable]) {
+        [self readySharedSendMessage:@"MainPageMessage"
+                               param:parameters
+                             funName:@"mainPage:"
+                       synchronously:NO];
+    }
+}
+
+-(void)mainPageFinished:(id<MessageDelegate>)msg
+{
+    MainPageMessage *Msg = msg;
+    NSDictionary *rspDic = [self handleRspInfo:Msg];
+    NSString* rspCode = [Msg getRspcode];
+    if([rspCode isEqualToString:@"0000"]){
+        self.rspInfo = Msg.rspInfo;
+    }
+    [self noticeUI:rspDic];
+}
+
+#pragma mark
+#pragma mark - 下单
+- (void)createOrder:(NSDictionary *)parameters
+{
+    if ([[UIDevice currentDevice] networkAvailable]) {
+        [self readySharedSendMessage:@"CreateOrderMessage"
+                               param:parameters
+                             funName:@"createOrder:"
+                       synchronously:NO];
+    }
+}
+
+-(void)createOrderFinished:(id<MessageDelegate>)msg
+{
+    CreateOrderMessage *Msg = msg;
+    NSDictionary *rspDic = [self handleRspInfo:Msg];
+    NSString* rspCode = [Msg getRspcode];
+    if([rspCode isEqualToString:@"0000"]){
+        self.rspInfo = Msg.rspInfo;
+    }
+    [self noticeUI:rspDic];
+}
+
+
+#pragma mark
+#pragma mark - 套餐
+- (void)package:(NSDictionary *)paramters
+{
+    //    if ([[UIDevice currentDevice] networkAvailable]) {
+    [self readySharedSendMessage:@"ChoosePackageMessage"
+                           param:paramters
+                         funName:@"package:"
+                   synchronously:NO];
+    //    }
+}
+
+- (void)packageFinished:(id<MessageDelegate>)msg
+{
+    ChoosePackageMessage *Msg = msg;
+    NSDictionary *rspDic = [self handleRspInfo:Msg];
+    NSString* rspCode = [Msg getRspcode];
+    if([rspCode isEqualToString:@"0000"]){
+        self.rspInfo = Msg.rspInfo;
+    }
+    [self noticeUI:rspDic];
+}
+
+
+#pragma mark
+#pragma mark - 号码
+- (void)number:(NSDictionary *)paramters
+{
+    //    if ([[UIDevice currentDevice] networkAvailable]) {
+    [self readySharedSendMessage:@"ChooseNumMessage"
+                           param:paramters
+                         funName:@"number:"
+                   synchronously:NO];
+    //    }
+    
+}
+
+- (void)numberFinished:(id<MessageDelegate>)msg
+{
+    ChooseNumMessage *Msg = msg;
+    NSDictionary *rspDic = [self handleRspInfo:Msg];
+    NSString* rspCode = [Msg getRspcode];
+    if([rspCode isEqualToString:@"0000"]){
+        self.rspInfo = Msg.rspInfo;
+    }
+    [self noticeUI:rspDic];
+}
+
+
+#pragma mark
+#pragma mark - 订单
+- (void)order:(NSDictionary *)paramters
+{
+    [self readySharedSendMessage:@"OrderMessage"
+                           param:paramters
+                         funName:@"order:"
+                   synchronously:NO];
+}
+
+- (void)orderFinished:(id<MessageDelegate>)msg
+{
+    OrderMessage *Msg = msg;
+    NSDictionary *rspDic = [self handleRspInfo:Msg];
+    NSString* rspCode = [Msg getRspcode];
+    if([rspCode isEqualToString:@"0000"]){
+        self.rspInfo = Msg.rspInfo;
+    }
+    [self noticeUI:rspDic];
+}
+
+#pragma mark
+#pragma mark - 上传照片
+- (void)uploadPhoto:(NSDictionary *)paramters
+{
+    [self readyUploadPhotoMessage:@"UploadPhotoMessage"
+                           param:paramters
+                         funName:@"uploadPhoto:"
+                   synchronously:NO];
+}
+
+- (void)uploadPhotoFinished:(id<MessageDelegate>)msg
+{
+    UploadPhotoMessage *Msg = msg;
+//    NSDictionary *rspDic = [self handleRspInfo:Msg];
+//    self.rspInfo = Msg.rspInfo;
+    NSDictionary *receiveData = [[NSDictionary alloc] initWithObjectsAndKeys:Msg.saveId,@"saveId", nil];
+    self.rspInfo = receiveData;
+    [receiveData release];
+    if (nil != self.target && [self.target respondsToSelector:@selector(requestDidFinished:)]) {
+        [self.target performSelector:@selector(requestDidFinished:) withObject:self.rspInfo];
+    }
+}
+
+#pragma mark
+#pragma mark - 获取商品
+- (void)getProducts:(NSDictionary *)paramters
+{
+    if ([[UIDevice currentDevice] networkAvailable]) {
+        [self readySharedSendMessage:@"ProductsMessage"
+                               param:paramters
+                             funName:@"getProducts:"
+                       synchronously:NO];
+    }
+}
+- (void)getProductsFinished:(id<MessageDelegate>)msg
+{
+    ProductsMessage *Msg = msg;
+    NSDictionary *rspDic = [self handleRspInfo:Msg];
+    NSString* rspCode = [Msg getRspcode];
+    if([rspCode isEqualToString:@"0000"]){
+        self.rspInfo = Msg.rspInfo;
+    }
+    [self noticeUI:rspDic];
+}
+#pragma mark
+#pragma mark - 获取商品详情
+- (void)getProductDetail:(NSDictionary *)paramters
+{
+    if ([[UIDevice currentDevice] networkAvailable]) {
+        [self readySharedSendMessage:@"ProductDetail"
+                               param:paramters
+                             funName:@"getProductDetail:"
+                       synchronously:NO];
+    }
+}
+- (void)getProductDetailFinished:(id<MessageDelegate>)msg
+{
+    ProductsMessage *Msg = msg;
+    NSDictionary *rspDic = [self handleRspInfo:Msg];
+    NSString* rspCode = [Msg getRspcode];
+    if([rspCode isEqualToString:@"0000"]){
+        self.rspInfo = Msg.rspInfo;
+    }
+    [self noticeUI:rspDic];
+}
+#pragma mark
+#pragma mark - 获取商品评价
+- (void)ProductEvaluate:(NSDictionary *)paramters
+{
+    if ([[UIDevice currentDevice] networkAvailable]) {
+        [self readySharedSendMessage:@"ProductEvaluateMessage"
+                               param:paramters
+                             funName:@"ProductEvaluate:"
+                       synchronously:NO];
+    }
+}
+
+- (void)ProductEvaluateFinished:(id<MessageDelegate>)msg
+{
+    ProductsMessage *Msg = msg;
+    NSDictionary *rspDic = [self handleRspInfo:Msg];
+    NSString* rspCode = [Msg getRspcode];
+    if([rspCode isEqualToString:@"0000"]){
+        self.rspInfo = Msg.rspInfo;
+    }
+    [self noticeUI:rspDic];
+}
+
+#pragma mark
+#pragma mark - 获取商品评价
+- (void)getEvaluate:(NSDictionary *)paramters
+{
+    if ([[UIDevice currentDevice] networkAvailable]) {
+        [self readySharedSendMessage:@"GetEvaluateMessage"
+                               param:paramters
+                             funName:@"getEvaluate:"
+                       synchronously:NO];
+    }
+    
+}
+- (void)getEvaluateFinished:(id<MessageDelegate>)msg
+{
+    ProductsMessage *Msg = msg;
+    NSDictionary *rspDic = [self handleRspInfo:Msg];
+    NSString* rspCode = [Msg getRspcode];
+    if([rspCode isEqualToString:@"0000"]){
+        self.rspInfo = Msg.rspInfo;
+    }
+    [self noticeUI:rspDic];
+}
+
+#pragma mark -
+#pragma mark http 回调接口
+- (void)requestDidFinished:(id<MessageDelegate>)msg
+{
+    if([msg isHouTai]){
+        NSLog(@"后台");
+    }else{
+        [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
+        NSLog(@"不是后台");
+    }
+    
+    if([[msg getBusinessCode] isEqualToString:LOGIN_BIZCODE]) {
+        [self loginFinished:msg];
+    }else if ([[msg getBusinessCode] isEqualToString:VERSION_BIZCODE]) {
+        [self updateVersionFinished:msg];
+    }else if ([[msg getBusinessCode] isEqualToString:BAOCUO_BIZCODE]) {
+        [self BaoCuoFinished:msg];
+    }else if ([[msg getBusinessCode] isEqualToString:ZHUYE_BIZCODE]) {
+        [self zhuyeFinished:msg];
+    }else if ([[msg getBusinessCode] isEqualToString:MAIN_PAGE_BIZCODE]) {
+        [self mainPageFinished:msg];
+    }else if([[msg getBusinessCode] isEqualToString:CREATE_ORDER_BIZCODE]){
+        [self createOrderFinished:msg];
+    }
+    else if ([[msg getBusinessCode] isEqualToString:CHOOSEPACKAGE_BIZCODE]) {
+        [self packageFinished:msg];
+    }
+    else if ([[msg getBusinessCode] isEqualToString:CHOOSENUMBER_BIZCODE]) {
+        [self numberFinished:msg];
+    }else if([[msg getBusinessCode] isEqualToString:ORDERMESSAGE_BIZCODE]) {
+        [self orderFinished:msg];
+    }else if([[msg getBusinessCode] isEqualToString:UPLOAD_PHOTO_BIZCODE]) {
+        [self uploadPhotoFinished:msg];
+    }
+    else if ([[msg getBusinessCode] isEqualToString:PRODUCTS_BIZCODE]) {
+        [self getProductsFinished:msg];
+    }else if ([[msg getBusinessCode] isEqualToString:PRODUCTDETAIL_BIZCODE]) {
+        [self getProductDetailFinished:msg];
+    }else if ([[msg getBusinessCode] isEqualToString:PRODUCTEVALUATE_BIZCODE]) {
+        [self ProductEvaluateFinished:msg];
+    }
+    else if ([[msg getBusinessCode] isEqualToString:GETEVALUATE_BIZCODE]) {
+        [self getEvaluateFinished:msg];
+    }
+}
+
+- (void)requestFailed:(NSDictionary*)errorInfo
+{
+	id<MessageDelegate> msg = [errorInfo objectForKey:@"MESSAGE_OBJECT"];
+    if([msg isHouTai]){
+        NSLog(@"后台");
+    }else{
+        NSLog(@"不是后台");
+        [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
+        
+        NSString* errorCode = [errorInfo objectForKey:@"STATUS_CODE"];
+        NSLog(@"%@",errorCode);
+        NSString* bussineCode = [msg getBusinessCode];
+        NSString* rspDesc = [message getRespondDescription:errorCode];
+        
+        NSMutableDictionary* rspDic = [[NSMutableDictionary alloc] initWithCapacity:0];
+        [rspDic setObject:errorCode forKey:@"errorCode"];
+        [rspDic setObject:bussineCode forKey:@"bussineCode"];
+        if (rspDesc != nil) {
+            [rspDic setObject:rspDesc forKey:@"MSG"];
+        }
+        
+        if ([[message getNetLinkErrorCode] isEqualToString:errorCode]) {
+            UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                                message:rspDesc
+                                                               delegate:self
+                                                      cancelButtonTitle:@"取消"
+                                                      otherButtonTitles:@"重试",nil];
+            alertView.tag = kLinkErrorTag;
+            [alertView show];
+            [alertView release];
+            
+            [rspDic release];
+            return;
+        }
+        
+        if ([[message getTimeOutErrorCode] isEqualToString:errorCode]) {
+            UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                                message:rspDesc
+                                                               delegate:self
+                                                      cancelButtonTitle:@"取消"
+                                                      otherButtonTitles:@"重试",nil];
+            alertView.tag = kTimeOutErrorTag;
+            [alertView show];
+            [alertView release];
+            
+            [rspDic release];
+            return;
+        }
+        
+        if (nil != self.target && [self.target respondsToSelector:@selector(requestFailed:)]) {
+            [self.target performSelector:@selector(requestFailed:) withObject:rspDic];
+        }
+        
+        [rspDic release];
+	}
+}
+
+@end

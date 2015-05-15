@@ -1,0 +1,751 @@
+#import "ChoosePackageVC.h"
+#import "SCNavTabBarController.h"
+#import "NALLabelsMatrix.h"
+#import "UIImage+LXX.h"
+#import "CommonMacro.h"
+#import "QuartzCore/QuartzCore.h"
+#import "PackVC.h"
+#import "TimeVC.h"
+#import "TimeManager.h"
+#import "PackManager.h"
+#import "TitleBar.h"
+#import "SCNavTabBar.h"
+#import "ZSYCommonPickerView.h"
+#import "DataDictionary_back_cart_item.h"
+
+#define ADDHeight 30
+
+@interface ChoosePackageVC ()<SCNavTabBarControllerDelegate,HttpBackDelegate,SCNavTabBarDelegate,TitleBarDelegate,UIAlertViewDelegate>
+{
+    UILabel *lable15; //国内语音
+    UILabel *lable16; //国内流量
+    UILabel *lable17; //国内短信
+    UILabel *lable14; //合约机总价
+    UILabel *lable7;  //套餐超出及其他业务资费
+    UILabel *lable00; //选择套餐变更
+    UILabel *lable80; //选择期限变更
+    UILabel *lable3;  //国内语音还是本地语音
+    UILabel *lable13; //首月返还
+    UILabel *lable12; //每月返还
+    
+}
+
+@property (nonatomic, strong) NSMutableArray *dataSources;
+@property (nonatomic, strong) UIScrollView * scrollview;
+@property (nonatomic,strong) SCNavTabBarController *navTabBarController;
+@property (nonatomic, strong) NSMutableArray *packStyleData;    //套餐数组
+@property (nonatomic, strong) NSMutableArray *packIdData;    //套餐ID数组
+@property (nonatomic, strong) NSString *packId;    //套餐ID
+@property (nonatomic, strong) NSString *timeStyle;    //分几期返还数据
+@property (nonatomic,strong)NSMutableArray *costsData;//每月消费数据
+@property (nonatomic,strong)NSMutableArray *pMonthData;//每月消费数据
+@property (nonatomic,strong)NSDictionary *SendDic;
+@property (nonatomic,strong)NSString *packTypeName; //选择的是什么套餐
+@property (nonatomic,strong)NSString *lowCost; //全部消费档次
+@property (nonatomic,strong)SCNavTabBar *navTabBar;
+@property (nonatomic ,strong)NSDictionary *defautData;//默认第一组数据
+@property (nonatomic ,strong)NSMutableArray *packageTypes;//套餐类型数组
+@property (nonatomic ,strong)NSMutableArray *periodData;//分多少期得数组
+@property (nonatomic,strong)NSMutableArray *validLowCost;//有效档次数组
+
+@end
+
+@implementation ChoosePackageVC
+@synthesize SendDic;
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self layoutView];
+    if (IOS7)
+    {
+        
+    }
+    
+    TitleBar *titleBar = [[TitleBar alloc]initWithFram:CGRectMake(0, 20, SCREEN_WIDTH, 44) ShowHome:YES ShowSearch:NO TitlePos:left_position];
+    titleBar.target = self;
+    titleBar.title = @"套餐选择";
+    [self.view addSubview:titleBar];
+    
+    bussineDataService *bus = [bussineDataService  sharedDataService];
+    bus.target = self;
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                 self.attributes[@"skuId"],@"skuId",
+                                 self.attributes[@"productId"],@"productId",
+                                self.attributes[@"moduleId"],@"moduleId",
+                                 @"",@"lowCost",
+                                 @"",@"pkgId",nil];
+    self.SendDic = dict;
+    [bus package:dict];
+    
+//     self.attributes[@"skuId"]
+    _packStyleData = [NSMutableArray array];
+    _packIdData = [NSMutableArray array];
+    _dataSources = [NSMutableArray array];
+    _periodData = [NSMutableArray array];
+    _validLowCost = [NSMutableArray array];
+    //    if (_packTypeName!=nil){
+    //        lable00.text = _packTypeName;
+    //        lable00.textColor = [UIColor blackColor];
+    //    }else
+    lable00.text = @"请选择套餐";
+    lable00.textColor = [UIColor grayColor];
+    lable00.textAlignment = NSTextAlignmentRight;
+    
+    //    if (_timeStyle=nil){
+    //        lable80.text = _timeStyle;
+    //        lable80.textColor = [UIColor blackColor];
+    //    }else
+    lable80.text = @"请选择期限";
+    lable80.textColor = [UIColor grayColor];
+    lable80.textAlignment = NSTextAlignmentRight;
+    
+    
+
+}
+
+- (NSMutableArray *)dataSources
+{
+    if (nil == _dataSources)
+    {
+        _dataSources = [NSMutableArray array];
+    }
+    return _dataSources;
+}
+
+- (NSMutableArray *)pMonthData
+{
+    if (nil == _pMonthData)
+    {
+        _pMonthData = [NSMutableArray array];
+    }
+    return _pMonthData;
+}
+
+- (NSArray *)packStyleData
+{
+    if (nil == _packStyleData)
+    {
+        _packStyleData = [NSMutableArray array];
+    }
+    return _packStyleData;
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    
+}
+
+
+#pragma mark 布局UI
+-(void)layoutView
+{
+//    self.view.backgroundColor = [UIColor whiteColor];
+    _scrollview = [[UIScrollView alloc]initWithFrame:CGRectMake(0,103, SCREEN_WIDTH, SCREEN_HEIGHT-20)];
+    [_scrollview setContentSize:CGSizeMake(SCREEN_WIDTH, 600)];
+    [_scrollview setShowsVerticalScrollIndicator:NO];
+    [_scrollview setBounces:YES];
+    _scrollview.backgroundColor = [UIColor whiteColor];
+    _scrollview.delegate = self;
+    
+    UIView *view3 = [[UIView alloc]initWithFrame:CGRectMake(0 ,64, SCREEN_WIDTH, 40)];
+    [self.view addSubview:view3];
+    view3.backgroundColor = [UIColor whiteColor];
+    //增加上面表格的分割线
+    UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/2, 115-33, 0.5, 90)];
+    line1.backgroundColor = UIColorWithRGBA(169, 169, 169, 0.8);
+    
+    UILabel *lable0 = [[UILabel alloc]init];
+    lable0.frame = CGRectMake(20, 48-10, SCREEN_WIDTH, 44);
+    lable0.text = @"套餐";
+    
+    UIButton * choosePack = [[UIButton alloc]initWithFrame:CGRectMake(0, 71-33, SCREEN_WIDTH, 44)];
+    choosePack.backgroundColor = [UIColor clearColor];
+    [choosePack addTarget:self action:@selector(choosePackClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [_scrollview addSubview:choosePack];
+    
+    
+    lable00 = [[UILabel alloc]init];
+    lable00.frame = CGRectMake(SCREEN_WIDTH/2, 48-10, 120, 44);
+    
+ 
+    
+    UIImageView *itemImage = [[UIImageView alloc]initWithFrame:CGRectMake(SCREEN_WIDTH-20,55, 10, 10)];
+    itemImage.image = [UIImage imageNamed:@"icon_item_right"];
+    UIImageView *itemImage1 = [[UIImageView alloc]initWithFrame:CGRectMake(SCREEN_WIDTH-20,290, 10, 10)];
+    itemImage1.image = [UIImage imageNamed:@"icon_item_right"];
+    
+    
+    UILabel *lable1 = [[UILabel alloc]init];
+    lable1.frame = CGRectMake(0, 0, SCREEN_WIDTH, 38);
+    lable1.backgroundColor =UIColorWithRGBA(236, 235, 241, 1);
+    lable1.text = @" 确定套餐类型";
+    lable1.font = [UIFont systemFontOfSize:14];
+    lable1.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    lable1.layer.borderWidth = 0.5;
+    
+    
+    UILabel *lable2 = [[UILabel alloc]init];
+    lable2.frame = CGRectMake(0, 265-30, SCREEN_WIDTH, 38);
+    lable2.backgroundColor =UIColorWithRGBA(236, 235, 241, 1);
+    lable2.text = @" 请选择适合您的合约期限";
+    lable2.font = [UIFont systemFontOfSize:14];
+    lable2.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        lable2.layer.borderWidth = 0.5;
+        lable2.lineBreakMode = NSLineBreakByCharWrapping;
+        lable2.numberOfLines = 0;
+    
+    
+    lable3 = [[UILabel alloc]init];
+    lable3.frame = CGRectMake(0,115-33, SCREEN_WIDTH, ADDHeight);
+    if ([_packTypeName isEqualToString:@"C套餐"]) {
+        lable3.text = @"本地语音";
+    }
+    lable3.text = @"    国内语音";
+    lable3.font = [UIFont systemFontOfSize:14];
+    lable3.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    lable3.layer.borderWidth = 0.5;
+    
+    lable15 = [[UILabel alloc]init];
+    lable15.frame = CGRectMake(180,115-33, SCREEN_WIDTH, ADDHeight);
+    lable15.text = @"";
+    lable15.font = [UIFont systemFontOfSize:14];
+    
+    UILabel *lable4 = [[UILabel alloc]init];
+    lable4.frame = CGRectMake(0,145-33, SCREEN_WIDTH, ADDHeight);
+    lable4.text = @"    国内流量";
+    lable4.font = [UIFont systemFontOfSize:14];
+    
+    lable16 = [[UILabel alloc]init];
+    lable16.frame = CGRectMake(180,145-33, SCREEN_WIDTH, ADDHeight);
+    lable16.text = @"";
+    lable16.font = [UIFont systemFontOfSize:14];
+    
+    UILabel *lable5 = [[UILabel alloc]init];
+    lable5.frame = CGRectMake(0,175-33, SCREEN_WIDTH, ADDHeight);
+    lable5.text = @"    国内短彩信";
+    lable5.font = [UIFont systemFontOfSize:14];
+    lable5.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    lable5.layer.borderWidth = 0.3;
+    
+    lable17 = [[UILabel alloc]init];
+    lable17.frame = CGRectMake(180,175-33, SCREEN_WIDTH, ADDHeight);
+    //    lable17.text = @"-------";
+    lable17.font = [UIFont systemFontOfSize:14];
+    
+    
+    UILabel *lable6 = [[UILabel alloc]init];
+    lable6.frame = CGRectMake(0,205-33, SCREEN_WIDTH, ADDHeight);
+    lable6.text = @"    套餐超出及其他业务资费";
+    lable6.font = [UIFont systemFontOfSize:14];
+    lable6.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    lable6.layer.borderWidth = 0.3;
+    
+    lable7 = [[UILabel alloc]init];
+    lable7.frame = CGRectMake(8,235-33, SCREEN_WIDTH-10, ADDHeight+10);
+    lable7.text = @"超出0.15元/分钟";
+    lable7.font = [UIFont systemFontOfSize:11];
+    lable7.numberOfLines = 0;
+    //    lable7.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    //    lable7.layer.borderWidth = 0.5;
+    
+    UILabel *lable8 = [[UILabel alloc]init];
+    lable8.frame = CGRectMake(0, 308-33, SCREEN_WIDTH, 44);
+    lable8.text = @"    合约期限";
+    
+    
+    UIButton * chooseTime = [[UIButton alloc]initWithFrame:CGRectMake(0, 308-33, SCREEN_WIDTH, 44)];
+    chooseTime.backgroundColor = [UIColor clearColor];
+    [chooseTime addTarget:self action:@selector(chooseTimeClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [_scrollview addSubview:chooseTime];
+    
+    
+    lable80 = [[UILabel alloc]init];
+    lable80.frame = CGRectMake(SCREEN_WIDTH/2, 308-33, 120, 44);
+//    TimeModel *time1 = [TimeManager shareInstance].time;
+//    if (time1!=nil){
+//        lable80.text = time1.time;
+//        lable80.textColor = [UIColor blueColor];
+//    }else
+//        lable80.text = @"请选择期限";
+    
+    
+    UILabel *lable9 = [[UILabel alloc]init];
+    lable9.frame = CGRectMake(0,348-33, SCREEN_WIDTH, ADDHeight);
+    lable9.text = @"    合约机总价";
+    lable9.font = [UIFont systemFontOfSize:14];
+    lable9.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    lable9.layer.borderWidth = 0.5;
+    
+    lable14 = [[UILabel alloc]init];
+    lable14.frame = CGRectMake(180,348-33, SCREEN_WIDTH, ADDHeight);
+    lable14.font = [UIFont systemFontOfSize:14];
+    NSDictionary *rangeDic = _pMonthData[0];
+    lable14.text = rangeDic[@"rangePrice"];
+    
+    //    lable14.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    //    lable14.layer.borderWidth = 0.5;
+    
+    UILabel *lable10 = [[UILabel alloc]init];
+    lable10.frame = CGRectMake(0,378-33, SCREEN_WIDTH, ADDHeight);
+    lable10.text = @"    首月返还";
+    lable10.font = [UIFont systemFontOfSize:14];
+    
+    lable13 = [[UILabel alloc]init];
+    lable13.frame = CGRectMake(180,378-33, SCREEN_WIDTH, ADDHeight);
+    lable13.text = @"100元";
+    lable13.font = [UIFont systemFontOfSize:14];
+    //    lable13.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    //    lable13.layer.borderWidth = 0.5;
+    
+    UILabel *lable11 = [[UILabel alloc]init];
+    lable11.frame = CGRectMake(0,408-33, SCREEN_WIDTH, ADDHeight);
+    lable11.text = @"    每月返还";
+    lable11.font = [UIFont systemFontOfSize:14];
+    lable11.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    lable11.layer.borderWidth = 0.5;
+    
+    lable12 = [[UILabel alloc]init];
+    lable12.frame = CGRectMake(180,408-33, SCREEN_WIDTH, ADDHeight);
+    lable12.text = @"83元";
+    lable12.font = [UIFont systemFontOfSize:14];
+    //    lable12.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    //    lable12.layer.borderWidth = 0.5;
+    
+    //增加下面表格的分割线
+    UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/2, 348-33, 0.5, 90)];
+    line2.backgroundColor = UIColorWithRGBA(169, 169, 169, 0.8);
+    
+    [_scrollview addSubview:lable0];
+    [_scrollview addSubview:lable00];
+ 
+    [_scrollview addSubview:lable1];
+    [_scrollview addSubview:lable2];
+    [_scrollview addSubview:lable3];
+    [_scrollview addSubview:lable4];
+    [_scrollview addSubview:lable5];
+    [_scrollview addSubview:lable6];
+    [_scrollview addSubview:lable7];
+    [_scrollview addSubview:lable8];
+    [_scrollview addSubview:lable80];
+    [_scrollview addSubview:lable9];
+    [_scrollview addSubview:lable10];
+    [_scrollview addSubview:lable11];
+    [_scrollview addSubview:lable12];
+    [_scrollview addSubview:lable13];
+    [_scrollview addSubview:lable14];
+    [_scrollview addSubview:lable15];
+    [_scrollview addSubview:lable16];
+    [_scrollview addSubview:lable17];
+    [_scrollview addSubview:line1];
+    [_scrollview addSubview:line2];
+    [_scrollview addSubview:itemImage];
+    [_scrollview addSubview:itemImage1];
+    
+    
+    UIButton * saveButton = [[UIButton alloc]initWithFrame:CGRectMake(30, 458-33, SCREEN_WIDTH-60, 33)];
+    UIImage* image = [UIImage resizedImage:@"btn_alter_bg_p"];
+    [saveButton setBackgroundImage:image forState:UIControlStateNormal];
+    [saveButton setTitle:@"保存" forState:UIControlStateNormal];
+    [saveButton addTarget:self action:@selector(saveClicked) forControlEvents:UIControlEventTouchUpInside];
+    [_scrollview addSubview:saveButton];
+    [self.view addSubview:_scrollview];
+    
+}
+
+
+- (void)itemDidSelectedWithIndex:(NSInteger)index
+{
+    _lowCost =_costsData[index];
+    
+    //    //判断有效消费档次是否在列表中，如果不在，就提示无数据，如果在，就发送请求获取数据
+    //    if ([_validLowCost indexOfObject:_lowCost] == NSNotFound) {
+    //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示"
+    //                                                        message:@"此档无有效数据！"
+    //                                                       delegate:self
+    //                                              cancelButtonTitle:@"确定"
+    //                                              otherButtonTitles:nil];
+    //        [alert show];
+    //
+    //    }else if([_validLowCost indexOfObject:_lowCost] != NSNotFound){
+    
+    
+//    if (_packStyleData.count>1) {
+//         lable00.text = @"请选择套餐";
+//        lable00.textColor = [UIColor grayColor];
+//    }
+//    if (_periodData.count>1) {
+//        lable80.text = @"请选择期限";
+//        lable80.textColor = [UIColor grayColor];
+//    }
+//    
+    _packTypeName=nil;
+    _timeStyle = nil;
+    NSLog(@"点击了%@",_lowCost);
+    bussineDataService *bus = [bussineDataService  sharedDataService];
+    bus.target = self;
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                  self.attributes[@"skuId"],@"skuId",
+                                  self.attributes[@"productId"],@"productId",
+                                  self.attributes[@"moduleId"],@"moduleId",
+                                 _lowCost,@"lowCost",
+                                 @"",@"pkgId",nil];
+    [bus package:dict];
+
+    }
+
+
+-(void)refresh
+{
+    //默认第一组数据
+    NSDictionary *dict = self.dataSources[0];  //进入界面默认button的index是0；
+    NSDictionary *dict1 = self.pMonthData[0];
+    lable15.text = dict[@"packageInlandVoice"];
+    lable16.text = dict[@"packageInlandFlow"];
+    lable17.text = dict[@"packageInlandMessage"];
+    lable7.text = dict[@"beyondFee"];
+    lable14.text = dict1[@"rangePrice"];
+    lable12.text = dict1[@"thawmon"];
+    lable13.text = dict1[@"innetrtnfee"];
+    
+    if (_periodData.count == 1) {
+        _timeStyle =_periodData[0];
+        lable80.text =_timeStyle;
+        lable80.textColor = [UIColor blackColor];
+    }
+    else{
+        lable80.text = @"请选择期限";
+        lable80.textColor = [UIColor grayColor];
+
+    }
+    if (_packStyleData.count == 1) {
+        _packTypeName =_packStyleData[0];
+        lable00.text = _packTypeName;
+        lable00.textColor = [UIColor blackColor];
+    }else
+    {
+        lable00.text = @"请选择套餐";
+        lable00.textColor = [UIColor grayColor];
+    }
+    
+//    lable80.text = dict1[@"period"];
+}
+
+
+#pragma mark - HttpBackDelegate获取数据
+-(void)requestDidFinished:(NSDictionary *)info
+{
+    [_pMonthData removeAllObjects];
+    [_packStyleData removeAllObjects];
+    [_dataSources removeAllObjects];
+    [_packageTypes removeAllObjects];
+    [_periodData removeAllObjects];
+    NSString* oKCode = @"0000";
+    NSString* bizCode = [info objectForKey:@"bussineCode"];
+    NSString* errCode = [info objectForKey:@"errorCode"];
+    NSString* msg = [info objectForKey:@"MSG"];
+    
+    [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
+    if([[ChoosePackageMessage getBizCode] isEqualToString:bizCode]){
+        if([oKCode isEqualToString:errCode]){
+            
+            bussineDataService *bus=[bussineDataService sharedDataService];
+            _packageTypes = bus.rspInfo[@"packageType"];
+            NSMutableArray *paMonthDatas = bus.rspInfo[@"paMonthData"];
+            _costsData = bus.rspInfo[@"validLowCost"];
+            _validLowCost = bus.rspInfo[@"validLowCost"];
+            for (NSDictionary *dict in _packageTypes)
+            {
+                [_dataSources addObject:dict];
+                [_packStyleData addObject:dict[@"packageName"]];
+                [_packIdData addObject:dict[@"pkgId"]];
+                _defautData = _packageTypes[0];
+                NSLog(@"dict的值是%@",dict);
+            }
+            //              _packStyleData = packstyle;
+            for (NSDictionary *dict1 in paMonthDatas)
+            {
+                [self.pMonthData addObject:dict1];
+                [_periodData addObject:dict1[@"period"]];
+                NSLog(@"dict的值是%@",dict1);
+            }
+            //获取数据之后创建navtabbar，显示各个档次数据
+            if (_navTabBar==nil) {
+                _navTabBar = [[SCNavTabBar alloc] initWithFrame:CGRectMake(0 ,60, SCREEN_WIDTH, 33) showArrowButton:NO];
+                _navTabBar.delegate = self;
+                _navTabBar.backgroundColor = [UIColor whiteColor];
+                _navTabBar.lineColor = [UIColor clearColor];
+                _navTabBar.itemTitles = _costsData;
+                [_navTabBar updateData];
+                [self.view addSubview:_navTabBar];
+            }else
+            {
+                
+            }
+            
+            [self refresh];
+        }
+        else{
+            if([NSNull null] == [info objectForKey:@"MSG"]){
+                msg = @"获取数据异常！";
+            }
+            if(nil == msg){
+                msg = @"获取数据异常！";
+            }
+            [self showSimpleAlertView:msg];
+        }
+    }
+    
+}
+
+-(void)requestFailed:(NSDictionary *)info
+{
+    NSString* bizCode = [info objectForKey:@"bussineCode"];
+    NSString* msg = [info objectForKey:@"MSG"];
+    [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
+    
+    if([[ChoosePackageMessage getBizCode] isEqualToString:bizCode]){
+        if([info objectForKey:@"MSG"] == [NSNull null]){
+            msg = @"获取数据失败！";
+        }
+        if(nil == msg){
+            msg = @"获取数据失败！";
+        }
+        [self showAlertViewTitle:@"提示"
+                         message:msg
+                        delegate:self
+                             tag:10101
+               cancelButtonTitle:@"取消"
+               otherButtonTitles:@"重试",nil];
+        
+    }
+}
+
+#pragma mark AlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    [alertView dismissWithClickedButtonIndex:buttonIndex animated:YES];
+    NSString *buttonTitle = [alertView buttonTitleAtIndex:buttonIndex];
+    if(alertView.tag==10101){
+        if([buttonTitle isEqualToString:@"重试"]){
+            bussineDataService *bus=[bussineDataService sharedDataService];
+            bus.target=self;
+            [bus package:self.SendDic];
+        }
+    }
+}
+
+#pragma mark -
+#pragma mark AlertView
+-(void)showAlertViewTitle:(NSString*)title message:(NSString*)message delegate:(id)delegate tag:(NSInteger)tag cancelButtonTitle:(NSString*)cancelButtonTitle otherButtonTitles:(NSString*)otherButtonTitles,...
+{
+    NSMutableArray* argsArray = [[NSMutableArray alloc] initWithCapacity:0];
+    
+    id arg;
+    va_list argList;
+    if(nil != otherButtonTitles){
+        va_start(argList, otherButtonTitles);
+        while ((arg = va_arg(argList,id))) {
+            [argsArray addObject:arg];
+        }
+        va_end(argList);
+    }
+    
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:title
+                                                    message:message
+                                                   delegate:delegate
+                                          cancelButtonTitle:cancelButtonTitle
+                                          otherButtonTitles:otherButtonTitles,nil];
+    alert.tag = tag;
+    for(int i = 0; i < [argsArray count]; i++){
+        [alert addButtonWithTitle:[argsArray objectAtIndex:i]];
+    }
+    [alert show];
+}
+
+-(void)showSimpleAlertView:(NSString*)message
+{
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示信息"
+                                                    message:message
+                                                   delegate:nil
+                                          cancelButtonTitle:@"确定"
+                                          otherButtonTitles:nil];
+    [alert show];
+}
+
+
+#pragma mark 选择套餐
+
+-(void)choosePackClicked:(id)sender
+{
+    
+//    if (_packStyleData.count>1) {
+//        [self showPackSelected];
+//    }
+    
+//    if (_packStyleData.count>1) {
+        [[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(showPackSelected) object:sender];
+        [self performSelector:@selector(showPackSelected) withObject:sender afterDelay:0.2f];
+//    }
+    
+}
+
+-(void)showPackSelected
+{
+    NSArray* sourceData = _packStyleData;
+    NSMutableArray* packData = [[NSMutableArray alloc] initWithCapacity:0];
+    for(int i=0;i<sourceData.count;i++){
+        NSDictionary *dic=[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",i],@"ITEM_CODE",sourceData[i],@"ITEM_NAME", nil];
+        DataDictionary_back_cart_item *dat=[[DataDictionary_back_cart_item alloc] initWithDataItem:dic];
+        [packData addObject:dat];
+    }
+    NSString* title = @"选择套餐";
+    ZSYCommonPickerView *pickerView = [[ZSYCommonPickerView alloc] initWithTitle:title
+                                                                      includeAll:NO
+                                                                      dataSource:packData
+                                                               selectedIndexPath:0
+                                                                        Firstrow:@"" cancelButtonBlock:^{
+                                                                            
+                                                                        } makeSureButtonBlock:^(NSInteger indexPath) {
+                                                                            _packId = _packIdData[indexPath];
+                                                                            lable00.text = _packStyleData[indexPath];                                                                                if (_packTypeName==nil){
+                                                                                _packTypeName = _packStyleData[indexPath];
+                                                                                lable00.textColor = [UIColor blackColor];
+                                                                               
+                                                                            }else
+                                                                                _packTypeName = _packStyleData[indexPath];
+                                                                                _packId = _packIdData[indexPath];
+                                                                                if ([_packTypeName isEqualToString:@"C套餐"]) {
+                                                                                    lable3.text = @"    本地语音";
+                                                                                }else
+                                                                                    lable3.text = @"    国内语音";
+                                                                                [lable00 setTextColor:[UIColor blueColor]];
+                                                                            
+                                                                            
+                                                                            NSDictionary *dict1 = _dataSources[indexPath];
+                                                                            lable15.text = dict1[@"packageInlandVoice"];
+                                                                            lable16.text = dict1[@"packageInlandFlow"];
+                                                                            lable17.text = dict1[@"packageInlandMediaMessage"];
+                                                                            lable7.text = dict1[@"beyondFee"];
+                                                                        }];
+    
+    
+    
+    
+    [pickerView show];
+    
+    
+}
+
+#pragma mark 选择期限
+-(void)chooseTimeClicked:(id)sender
+{
+    
+//    if (_periodData.count>1) {
+//        [self showMonthSelected];
+//
+//    }
+    
+   
+        [[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(showMonthSelected) object:sender];
+        [self performSelector:@selector(showMonthSelected) withObject:sender afterDelay:0.2f];
+    
+ 
+}
+
+-(void)showMonthSelected
+{
+    NSArray* sourceData = _periodData;
+    NSMutableArray* periodData = [[NSMutableArray alloc] initWithCapacity:0];
+    for(int i=0;i<sourceData.count;i++){
+        NSDictionary *dic=[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",i],@"ITEM_CODE",sourceData[i],@"ITEM_NAME", nil];
+        DataDictionary_back_cart_item *dat=[[DataDictionary_back_cart_item alloc] initWithDataItem:dic];
+        [periodData addObject:dat];
+    }
+    NSString* title = @"选择期限";
+    ZSYCommonPickerView *pickerView = [[ZSYCommonPickerView alloc] initWithTitle:title
+                                                                      includeAll:NO
+                                                                      dataSource:periodData
+                                                               selectedIndexPath:0
+                                                                        Firstrow:@"" cancelButtonBlock:^{
+                                                                            [self refresh];
+                                                                        } makeSureButtonBlock:^(NSInteger indexPath) {
+//                                                                            _packId = _packIdData[indexPath];
+                                                                            _timeStyle = _periodData[indexPath];
+                                                                           // lable00.text = _packStyleData[indexPath];
+                                                                            if (_timeStyle==nil){
+                                                                           lable80.text = @"请选择合约期限";
+                                                                                lable80.textColor = [UIColor grayColor];
+                                                                            }else
+                                                                            [lable80 setTextColor:[UIColor blueColor]];
+                                                                            NSDictionary *dict1 = _pMonthData[indexPath];
+                                                                            
+                                                                            lable14.text = dict1[@"rangePrice"];
+                                                                            lable12.text = dict1[@"thawmon"];
+                                                                            lable13.text = dict1[@"innetrtnfee"];
+                                                                            lable80.text = dict1[@"period"];
+                                                                        }];
+    [pickerView show];
+    
+}
+
+
+- (void)saveClicked{
+    
+//    判断选择条件是否全部搞定
+//    if([_validLowCost indexOfObject:_lowCost] != NSNotFound){
+
+    if (_packTypeName==nil&&_timeStyle!=nil) {
+ 
+        [self ShowProgressHUDwithMessage:@"请选择套餐！"];
+    }else if(_packTypeName!=nil&&_timeStyle==nil){
+
+        [self ShowProgressHUDwithMessage:@"请选择期限！"];
+        
+    }else if(_packTypeName==nil&&_timeStyle==nil){
+
+        [self ShowProgressHUDwithMessage:@"请选择套餐期限！"];
+    }else {
+        [self ShowProgressHUDwithMessage:@"保存成功"];
+         [self backAction];
+        NSString *str = [NSString stringWithFormat:@"%@/%@/%@个月", _packTypeName,_timeStyle,_packId];
+        if (self.block)
+        {
+            self.block(str);
+        }
+   
+    }
+
+   
+}
+
+
+
+#pragma mark - HUD
+- (void)ShowProgressHUDwithMessage:(NSString *)msg
+{
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+    hud.mode = MBProgressHUDModeText;
+    hud.labelText = msg;
+    hud.dimBackground = NO;
+    hud.removeFromSuperViewOnHide = YES;
+    [hud hide:YES afterDelay:1];
+}
+- (void)didPresentAlertView:(UIAlertView *)alertView
+{
+    if ((_packTypeName!=nil&&_timeStyle!=nil)) {
+        [self backAction];
+    }
+    
+}
+
+-(void)backAction
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+-(void)homeAction
+{
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
+@end

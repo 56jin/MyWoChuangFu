@@ -1,0 +1,236 @@
+//
+//  MainVC.m
+//  WoChuangFu
+//
+//  Created by duwl on 12/8/14.
+//  Copyright (c) 2014 asiainfo-linkage. All rights reserved.
+//
+
+#import "MainVC.h"
+
+@interface MainVC ()<HttpBackDelegate>
+
+@end
+
+@implementation MainVC
+
+@synthesize titleBar;
+@synthesize mainView;
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:MAIN_PAGE_URL_PARSE object:nil];
+    [super dealloc];
+}
+
+- (void)loadView
+{
+    [super loadView];
+    CGRect ScF=[UIScreen mainScreen].bounds;
+    UIView *BackV=[[UIView alloc] initWithFrame:ScF];
+    BackV.backgroundColor=[UIColor blackColor];//[ComponentsFactory createColorByHex:@"#F8F8F8"];
+    self.view = BackV;
+    [BackV release];
+    self.navigationController.navigationBarHidden=YES;
+    [self configView];
+    
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainPageItemClick:) name:MAIN_PAGE_URL_PARSE object:nil];
+    [self checkVersion];
+}
+
+- (void)mainPageItemClick:(NSNotification*)vc
+{
+    if(vc != nil){
+        [self.navigationController pushViewController:[vc object] animated:YES];
+        //        [vc release];
+    }
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+-(void)configView
+{
+    //1,布局titleBar
+    TitleBar* bar = [[TitleBar alloc] initWithFramShowHome:NO ShowSearch:NO TitlePos:middle_position];
+    if (IOS7){
+        bar.frame = CGRectMake(0, 20, [AppDelegate sharePhoneWidth], TITLE_BAR_HEIGHT);
+    }
+    self.titleBar = bar;
+    [bar setTitle:@"沃创富"];
+    [bar setLeftIsHiden:YES];
+    [bar release];
+    [self.view addSubview:self.titleBar];
+    //    [self.navigationController setView:self.titleBar];
+    
+    //2,布局界面显示
+    UIView* view = [[UIView alloc] initWithFrame:CGRectMake(0, TITLE_BAR_HEIGHT+20,
+                                                                [AppDelegate sharePhoneWidth],
+                                                                [AppDelegate sharePhoneHeight]-TITLE_BAR_HEIGHT-20-TAB_BAR_HEIGHT)];
+    view.backgroundColor = [UIColor whiteColor];
+    view.tag = 30204;
+    [self.view addSubview:view];
+
+    UIImage *image = [UIImage imageNamed:@"has_no_content"];
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+    imageView.center = view.center;
+    [view addSubview:imageView];
+    [imageView release];
+    [view release];
+}
+- (void)layoutView
+{
+//    //1,布局titleBar
+//    TitleBar* bar = [[TitleBar alloc] initWithFramShowHome:NO ShowSearch:NO TitlePos:middle_position];
+//    if (IOS7){
+//        bar.frame = CGRectMake(0, 20, [AppDelegate sharePhoneWidth], TITLE_BAR_HEIGHT);
+//    }
+//    self.titleBar = bar;
+//    [bar setTitle:@"沃创富"];
+//    [bar setLeftIsHiden:YES];
+//    [bar release];
+//    [self.view addSubview:self.titleBar];
+    //    [self.navigationController setView:self.titleBar];
+    
+    //2,布局界面显示
+//    MainView* view = [[MainView alloc] initWithFrame:CGRectMake(0, TITLE_BAR_HEIGHT+20,
+//                                                                [AppDelegate sharePhoneWidth],
+//                                                                [AppDelegate sharePhoneHeight]-TITLE_BAR_HEIGHT-20-TAB_BAR_HEIGHT)];
+    UIView *bgView = [self.view viewWithTag:30204];
+    MainView* view = [[MainView alloc] initWithFrame:[bgView bounds]];
+    self.mainView = view;
+    [view release];
+    [bgView addSubview:self.mainView];
+}
+
+-(void)checkVersion
+{
+    bussineDataService *bussineService = [bussineDataService sharedDataService];
+    bussineService.target = self;
+    [bussineService updateVersion:nil];
+}
+- (BOOL)userLogin
+{
+    bussineDataService *bus=[bussineDataService sharedDataService];
+    bus.target=self;
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *userName = [userDefaults objectForKey:@"UserName"];
+    NSString *passWord = [userDefaults objectForKey:@"PassWord"];
+    NSString *userId = [userDefaults objectForKey:@"userId"];
+    NSString *userType = [userDefaults objectForKey:@"userType"];
+    
+    if (userName == nil ||passWord == nil||userId==nil||userType==nil)
+    {
+        return false;
+    }
+    else
+    {
+        NSDictionary *dic=[[NSDictionary alloc] initWithObjectsAndKeys:
+                           passWord,@"passWd",
+                           userName,@"userCode",
+                           userType,@"type",
+                           nil];
+        [bus login:dic];
+        return YES;
+    }
+}
+//key: bussineCode value :; Key:errorCode, value: key:MSG, value:
+- (void)requestDidFinished:(NSDictionary*)info
+{
+    NSString* bizCode = [info objectForKey:@"bussineCode"];
+    NSString* errCode = [info objectForKey:@"errorCode"];
+    [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
+    if([[VersionUpdataMessage getBizCode] isEqualToString:bizCode])
+    {
+        if([@"7777" isEqualToString:errCode])
+        {
+            //可选升级
+            bussineDataService *bus=[bussineDataService sharedDataService];
+            [self showAlertViewTitle:@"有新版本发布，是否升级？"
+                             message:[bus.rspInfo objectForKey:@"remark"]==[NSNull null]?@"":[bus.rspInfo objectForKey:@"remark"]
+                            delegate:self
+                                 tag:10106
+                   cancelButtonTitle:@"取消"
+                   otherButtonTitles:@"确定", nil];
+        }
+        if ([self userLogin]== false)
+        {
+            [self layoutView];
+        }
+    }
+    if ([[LoginMessage getBizCode] isEqualToString:bizCode])
+    {
+        [self layoutView];
+    }
+}
+- (void)requestFailed:(NSDictionary*)info
+{
+    NSString* bizCode = [info objectForKey:@"bussineCode"];
+    if ([[VersionUpdataMessage getBizCode] isEqualToString:bizCode])
+    {
+        if ([self userLogin]== false)
+        {
+            [self layoutView];
+        }
+    }
+    else if([[LoginMessage getBizCode] isEqualToString:bizCode])
+    {
+        [self layoutView];
+    }
+}
+
+#pragma mark -
+#pragma mark AlertView
+-(void)showAlertViewTitle:(NSString*)title message:(NSString*)message delegate:(id)delegate tag:(NSInteger)tag cancelButtonTitle:(NSString*)cancelButtonTitle otherButtonTitles:(NSString*)otherButtonTitles,...
+{
+    NSMutableArray* argsArray = [[NSMutableArray alloc] initWithCapacity:0];
+    
+    id arg;
+    va_list argList;
+    if(nil != otherButtonTitles){
+        va_start(argList, otherButtonTitles);
+        while ((arg = va_arg(argList,id))) {
+            [argsArray addObject:arg];
+        }
+        va_end(argList);
+    }
+    
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:title
+                                                    message:message
+                                                   delegate:delegate
+                                          cancelButtonTitle:cancelButtonTitle
+                                          otherButtonTitles:otherButtonTitles,nil];
+    alert.tag = tag;
+    for(int i = 0; i < [argsArray count]; i++){
+        [alert addButtonWithTitle:[argsArray objectAtIndex:i]];
+    }
+    [alert show];
+    [alert release];
+    
+    [argsArray release];
+}
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSString *buttonTitle = [alertView buttonTitleAtIndex:buttonIndex];
+    if(alertView.tag==10106){
+        if([buttonTitle isEqualToString:@"确定"]){
+            bussineDataService *bus=[bussineDataService sharedDataService];
+            NSURL* url = [NSURL URLWithString:bus.updateUrl];
+            if([[UIApplication sharedApplication] canOpenURL:url])
+            {
+                [[UIApplication sharedApplication] openURL:url];
+                exit(0);
+            }
+        }
+    }
+}
+
+@end

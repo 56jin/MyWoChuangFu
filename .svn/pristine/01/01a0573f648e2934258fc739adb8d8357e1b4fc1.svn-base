@@ -1,0 +1,60 @@
+//
+//  InfoCell.m
+//  WoChuangFu
+//
+//  Created by 郑渊文 on 14/12/30.
+//  Copyright (c) 2014年 asiainfo-linkage. All rights reserved.
+//
+
+#import "InfoCell.h"
+#import "CommonMacro.h"
+
+@implementation InfoCell
+
+
+
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self)
+    {
+        [self addSubviews];
+    }
+    
+    return self;
+}
+- (void)awakeFromNib {
+    // Initialization code
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
+}
+
+
+- (void)addSubviews
+{
+    _rightStr = [[UILabel alloc] init];
+    _rightStr.frame = CGRectMake(SCREEN_WIDTH/2-20, 5, SCREEN_WIDTH/2-10, 40);
+    _rightStr.font = [UIFont systemFontOfSize:15.0];
+    _rightStr.textColor = [UIColor grayColor];
+    _rightStr.textAlignment = NSTextAlignmentRight;
+    [self.contentView addSubview:_rightStr];
+
+    
+    _leftStr = [[UILabel alloc] init];
+    _leftStr.frame = CGRectMake(10, 5, 200,40);
+    _leftStr.font = [UIFont systemFontOfSize:15.0];
+    // _numLable.textColor = [ComponentsFactory createColorByHex:@"#4b4b4b"];
+    [self.contentView addSubview:_leftStr];
+    
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, self.contentView.frame.size.height - 1, self.contentView.frame.size.width,0.5)];
+    imageView.backgroundColor = [UIColor lightGrayColor];
+    
+    [self.contentView addSubview:imageView];
+
+}
+
+@end

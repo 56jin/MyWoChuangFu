@@ -1,0 +1,73 @@
+#import "MayYouLikeVC.h"
+#import "MayYouLikeCell.h"
+static NSString *identifier = @"MayYouLikeCell";
+
+@interface MayYouLikeVC ()
+
+@end
+
+@implementation MayYouLikeVC
+
+- (id)initWithCollectionViewLayout:(UICollectionViewLayout *)layout
+{
+    UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
+    flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+    self = [super initWithCollectionViewLayout:flowLayout];
+    return self;
+}
+
+- (id)init
+{
+    UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
+    flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+    self = [super initWithCollectionViewLayout:flowLayout];
+    return self;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    self.collectionView.showsVerticalScrollIndicator = NO;
+    self.collectionView.backgroundColor = [UIColor clearColor];
+    [self.collectionView registerClass:[MayYouLikeCell class] forCellWithReuseIdentifier:identifier];
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+}
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+    return self.dataSources.count;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    MayYouLikeCell *cell = (MayYouLikeCell *)[collectionView dequeueReusableCellWithReuseIdentifier:identifier forIndexPath:indexPath];
+    cell.dataDict = self.dataSources[indexPath.item];
+    return cell;
+}
+
+-(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    return CGSizeMake(100, 100);
+}
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
+{
+    return 5.0f;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *clickUrl =  self.dataSources[indexPath.item][@"clickUrl"];
+#warning 此处选中猜你喜欢的商品，执行跳转操作
+}
+
+- (void)setDataSources:(NSMutableArray *)dataSources
+{
+    _dataSources = dataSources;
+    [self.collectionView reloadData];
+}
+
+@end

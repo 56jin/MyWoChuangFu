@@ -1,0 +1,25 @@
+#import <UIKit/UIKit.h>
+
+//五星评价工具条
+@class StarView;
+
+@protocol StarViewDelegate <NSObject>
+
+@optional
+-(void)starView:(StarView *)starView score:(int)score;
+
+@end
+
+@interface StarView : UIView
+
+@property (nonatomic, readonly) int numberOfStar;
+@property (nonatomic, weak) id <StarViewDelegate> delegate;
+@property (nonatomic, assign) NSInteger currScore;
+
+- (id)initWithFrame:(CGRect)frame numberOfStar:(int)number;
+
+- (id)initWithFrame:(CGRect)frame score:(NSInteger)score;
+
+
+
+@end

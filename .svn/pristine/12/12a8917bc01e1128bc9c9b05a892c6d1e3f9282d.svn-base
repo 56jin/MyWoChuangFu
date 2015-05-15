@@ -1,0 +1,29 @@
+{
+    "@class": "com.ailk.gx.mapp.model.GXCDatapackage",
+    "header":
+    {
+        "@class": "com.ailk.gx.mapp.model.GXCHeader",
+        "bizCode": "cf0011",
+        "identityId": null,
+        "respCode": "0000",
+        "respMsg": "",
+        "mode": "1",
+        "sign": null
+    },
+    "body":
+    {
+        "@class": "com.ailk.gx.mapp.model.rsp.cf0011Response",
+        "expand": null,
+        "productDetail":
+        {
+            "imgURL":"",
+            "name":"",
+            "desc":"",
+            "sellCount":"",
+            "gift":
+            {
+                @"giftDetail":
+            }
+        }
+    }
+}

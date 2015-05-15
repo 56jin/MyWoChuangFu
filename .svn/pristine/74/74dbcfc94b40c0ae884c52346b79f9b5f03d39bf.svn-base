@@ -1,0 +1,29 @@
+//
+//  LoginView.h
+//  WoChuangFu
+//
+//  Created by 郑渊文 on 14/12/31.
+//  Copyright (c) 2014年 asiainfo-linkage. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@protocol LoginViewDelegate<NSObject>
+
+@optional
+
+- (void)didClickedRegister;
+- (void)loginSuccess:(NSArray *)menus;
+
+@end
+
+@interface LoginView : UIView<HttpBackDelegate,UITextFieldDelegate>
+{
+    int loginType;
+}
+@property(nonatomic,retain)   UITextField *NameTextField;
+@property(nonatomic,retain)   UITextField *PassTextField;
+@property(nonatomic,assign) id<LoginViewDelegate> delegate;
+@property(nonatomic,retain) NSDictionary          *SendDic;
+
+@end

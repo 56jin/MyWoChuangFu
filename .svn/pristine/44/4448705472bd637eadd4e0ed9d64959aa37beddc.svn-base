@@ -1,0 +1,10 @@
+#import <UIKit/UIKit.h>
+
+@interface WebProductDetailVC : UIViewController
+{
+    NSString *productDetailUrl; //商品详情url
+}
+
+@property(nonatomic,copy) NSString *productDetailUrl;
+
+@end

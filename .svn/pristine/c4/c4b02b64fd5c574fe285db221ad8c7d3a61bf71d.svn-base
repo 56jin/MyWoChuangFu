@@ -1,0 +1,100 @@
+#import "ProductCell.h"
+#import "ProductModel.h"
+#import "ComponentsFactory.h"
+#import "FileHelpers.h"
+//#import "UIImageView+WebCache.h"
+#import "CrossLineLable.h"
+
+#define ICON_WIDTH 80 //图片宽度
+#define ICON_HEIGHT 80 //图片高度
+#define ICON_POSTION_X 5 //图片X坐标
+#define ICON_POSTION_Y 3 //图片Y坐标
+#define MARGIN 5 //间距
+#define LABLE_POSTION_COMMON_X (ICON_POSTION_X + ICON_WIDTH + MARGIN)//标签公共X坐标
+#define LABLE_COMMON_HEIGHT 21 //标签公共高度
+#define FONT_SIZE(size) [UIFont systemFontOfSize:size] //字体大小
+#define LABLE_NAME_POSTION_Y 5 //名字Y坐标
+#define LABLE_LENGTH_COMMON 217 //标签公共长度
+#define LABLE_PRICE_LENGTH 70 //价格标签长度
+
+
+@interface ProductCell()
+
+@property (nonatomic,retain) UIImageView *imgView;                //图标
+@property (nonatomic,retain) UILabel     *nameLable;              //商品名称
+@property (nonatomic,retain) UILabel     *descLable;              //描述信息
+@property (nonatomic,retain) UILabel     *discountPriceLable;     //折扣价
+@property (nonatomic,retain) CrossLineLable     *sailPriceLable;         //售价
+
+@end
+
+@implementation ProductCell
+
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self)
+    {
+        [self addSubviews];
+    }
+    
+    return self;
+}
+
+- (void)addSubviews
+{
+    _imgView = [[UIImageView alloc] init];
+    _imgView.frame = CGRectMake(ICON_POSTION_X, ICON_POSTION_Y, ICON_WIDTH, ICON_HEIGHT);
+    
+    [self.contentView addSubview:_imgView];
+    [_imgView release];
+    
+    _nameLable = [[UILabel alloc] init];
+    _nameLable.frame = CGRectMake(LABLE_POSTION_COMMON_X,LABLE_NAME_POSTION_Y, LABLE_LENGTH_COMMON,LABLE_COMMON_HEIGHT);
+    _nameLable.font = FONT_SIZE(15.0);
+    _nameLable.textColor = [ComponentsFactory createColorByHex:@"#4b4b4b"];
+    [self.contentView addSubview:_nameLable];
+    [_nameLable release];
+    
+    _descLable = [[UILabel alloc] init];
+    _descLable.frame = CGRectMake(LABLE_POSTION_COMMON_X, LABLE_NAME_POSTION_Y + LABLE_COMMON_HEIGHT, LABLE_LENGTH_COMMON,LABLE_COMMON_HEIGHT * 2);
+    _descLable.font = FONT_SIZE(14.0);
+    _descLable.textColor = [ComponentsFactory createColorByHex:@"#666666"];
+    _descLable.numberOfLines = 0;
+    [self.contentView addSubview:_descLable];
+    [_descLable release];
+    
+    _discountPriceLable = [[UILabel alloc] init];
+    _discountPriceLable.frame = CGRectMake(LABLE_POSTION_COMMON_X, LABLE_COMMON_HEIGHT * 3, LABLE_PRICE_LENGTH,LABLE_COMMON_HEIGHT);
+    _discountPriceLable.font = FONT_SIZE(17.0);
+    _discountPriceLable.textColor = [UIColor orangeColor];
+    [self.contentView addSubview:_discountPriceLable];
+    [_discountPriceLable release];
+    
+    _sailPriceLable = [[CrossLineLable alloc] init];
+    _sailPriceLable.frame = CGRectMake(LABLE_POSTION_COMMON_X + LABLE_PRICE_LENGTH, LABLE_COMMON_HEIGHT * 3,LABLE_PRICE_LENGTH,LABLE_COMMON_HEIGHT);
+    _sailPriceLable.font = FONT_SIZE(17.0);
+    _sailPriceLable.textColor = [ComponentsFactory createColorByHex:@"#999999"];
+    [self.contentView addSubview:_sailPriceLable];
+    [_sailPriceLable release];
+}
+- (void)setProduct:(ProductModel *)product
+{
+    if (_product != product)
+    {
+        _product = [product retain];
+    }
+    self.nameLable.text = _product.name;
+    self.descLable.text = _product.desc;
+    self.discountPriceLable.text = _product.discountPrice;
+    self.sailPriceLable.text = _product.sailPrice;
+    //[_imgView setImageWithURL:[NSURL URLWithString:_product.imgURL] placeholderImage:[UIImage imageNamed:@"icon"] options:SDWebImageRetryFailed|SDWebImageLowPriority|SDWebImageProgressiveDownload|SDWebImageRefreshCached];
+}
+
+- (void)setFrame:(CGRect)frame
+{
+    frame = CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, frame.size.height - MARGIN);
+    [super setFrame:frame];
+}
+
+@end

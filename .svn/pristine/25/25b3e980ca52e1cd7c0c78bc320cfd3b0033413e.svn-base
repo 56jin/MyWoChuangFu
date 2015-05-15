@@ -1,0 +1,8 @@
+#import <UIKit/UIKit.h>
+
+//评价信息cell
+@interface EvaluationCell : UITableViewCell
+
+@property (nonatomic,strong) NSDictionary *dict;
+
+@end

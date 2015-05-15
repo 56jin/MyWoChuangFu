@@ -1,0 +1,26 @@
+//
+//  SideBar.h
+//  WoChuangFu
+//
+//  Created by 李新新 on 14-12-30.
+//  Copyright (c) 2014年 asiainfo-linkage. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@class SideBar;
+@protocol SideBarDelegate <NSObject>
+
+@optional
+
+- (void)sideBar:(SideBar *)sideBar didSelectAtIndex:(NSInteger)index;
+
+@end
+
+@interface SideBar : UIView<UITableViewDataSource,UITableViewDelegate>
+
+@property(nonatomic,strong) NSMutableArray *dataSources;
+
+@property(nonatomic,weak) id<SideBarDelegate> delegate;
+
+@end

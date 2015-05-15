@@ -1,0 +1,149 @@
+//
+//  bussineDataService.h
+//  EsayBuy
+//
+//  Created by 颜 梁坚 on 13-8-20.
+//  Copyright (c) 2013年 asiainfo-linkage. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+#import "httpConnector/HttpStatus.h"
+#import "httpConnector/HttpConnector.h"
+#import "message_def.h"
+
+#define kForceUpdateTag         100
+#define kLinkErrorTag           101
+#define kTimeOutErrorTag        102
+#define kSessionTimeOutTag      103
+
+@protocol HttpBackDelegate<NSObject>
+
+@required
+//key: bussineCode value :; Key:errorCode, value: key:MSG, value:
+- (void)requestDidFinished:(NSDictionary*)info;
+//key: bussineCode value :; Key:errorCode, value: key:MSG, value:
+- (void)requestFailed:(NSDictionary*)info;
+
+@optional
+//点击超时或者连接错误提示上的取消按钮的回调接口
+- (void)cancelTimeOutAndLinkError;
+@end
+
+@interface bussineDataService : NSObject<UIAlertViewDelegate, HttpStatus>
+{
+    NSString*			receiveString;
+	NSDictionary*		sendDataDic;
+	NSString*			sendString;
+	
+	id<HttpBackDelegate>  target;
+    SEL sendMessageSelector;
+    HttpConnector* httpCnctor;
+    
+    // 一般都是第一级的节点的键值对，例如：RspCode=0000 ,key:"RspCode" value:"0000"
+    NSDictionary*       rspInfo;
+}
+
+@property (nonatomic,assign) id<HttpBackDelegate> target;
+@property (nonatomic,retain) HttpConnector* httpCnctor;
+@property (nonatomic,assign) SEL sendMessageSelector;
+@property (nonatomic,retain) NSString*		receiveString;
+@property (nonatomic,retain) NSDictionary*	sendDataDic;
+@property (nonatomic,retain) NSString*		sendString;
+@property (nonatomic,retain) NSDictionary*  rspInfo;
+@property (nonatomic,retain) NSString *updateUrl;
+@property (assign) BOOL HasLogIn;//判断是不是已经登录
+@property (nonatomic,retain) NSDictionary* TuiSongDic;
+@property (nonatomic,retain) NSDictionary* loginInfo;
+
++(bussineDataService *) sharedDataService;
+
+#pragma mark
+#pragma mark - 登陆模块
+- (void)login:(NSDictionary *)paramters;
+
+#pragma mark
+#pragma mark - 检查更新
+- (void)updateVersion:(NSDictionary *)parameters;
+
+#pragma mark
+#pragma mark - 报错提交
+- (void)BaoCuoback:(NSDictionary *)paramters;
+
+#pragma mark
+#pragma mark - 主页
+- (void)zhuye:(NSDictionary *)paramters;
+
+#pragma mark
+#pragma mark - 首页获取动态数据
+- (void)mainPage:(NSDictionary *)parameters;
+
+#pragma mark
+#pragma mark - 下单
+- (void)createOrder:(NSDictionary *)parameters;
+
+#pragma mark
+#pragma mark - 套餐
+- (void)package:(NSDictionary *)paramters;
+
+#pragma mark
+#pragma mark - 号码
+- (void)number:(NSDictionary *)paramters;
+
+#pragma mark
+#pragma mark - 订单
+- (void)order:(NSDictionary *)paramters;
+
+#pragma mark
+#pragma mark - 手机意外保
+- (void)creatInsurance:(NSDictionary *)paramters;
+
+#pragma mark
+#pragma mark - 获取商品
+- (void)getProducts:(NSDictionary *)paramters;
+
+#pragma mark
+#pragma mark - 上传照片
+- (void)uploadPhoto:(NSDictionary *)paramters;
+
+#pragma mark
+#pragma mark - 获取商品详情
+- (void)getProductDetail:(NSDictionary *)paramters;
+
+#pragma mark
+#pragma mark - 商品评价
+- (void)ProductEvaluate:(NSDictionary *)paramters;
+
+#pragma mark
+#pragma mark - 获取商品评价
+- (void)getEvaluate:(NSDictionary *)paramters;
+
+#pragma mark
+#pragma mark - 选择地区
+- (void)chooseArea:(NSDictionary *)paramters;
+
+#pragma mark
+#pragma mark - 验证码
+- (void)checkNum:(NSDictionary *)paramters;
+
+#pragma mark
+#pragma mark - 注册
+- (void)regist:(NSDictionary *)paramters;
+
+#pragma mark
+#pragma mark - 用户信息
+- (void)getInfo:(NSDictionary *)paramters;
+
+
+#pragma mark
+#pragma mark - 获取支付url
+-(void)paymentUrl:(NSDictionary*)paramters url:(NSString*)url key:(NSString*)key;
+
+#pragma mark
+#pragma mark - 过滤地址
+-(void)filterAddress:(NSDictionary *)paramters;
+
+#pragma mark
+#pragma mark - 过滤地址
+-(void)filterAddressPackage:(NSDictionary *)paramters;
+
+@end

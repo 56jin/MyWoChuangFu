@@ -1,0 +1,185 @@
+//
+//  CommitVC.m
+//  WoChuangFu
+//
+//  Created by duwl on 12/15/14.
+//  Copyright (c) 2014 asiainfo-linkage. All rights reserved.
+//
+
+#import "CommitVC.h"
+#import "GTMBase64_My.h"
+
+#define TWITTERFON_FORM_BOUNDARY  @"imgBase64"
+
+@interface CommitVC ()
+
+@end
+
+@implementation CommitVC
+
+@synthesize titleBar;
+@synthesize commitView;
+@synthesize receiveData;
+@synthesize photoImage;
+@synthesize saveUploadPhotoId;
+
+- (void)dealloc
+{
+    [titleBar release];
+    [commitView release];
+    if(receiveData != nil){
+        [receiveData release];
+    }
+    if(photoImage != nil){
+        [photoImage release];
+    }
+    if(saveUploadPhotoId != nil){
+        [saveUploadPhotoId release];
+    }
+    [super dealloc];
+}
+
+-(void)loadView
+{
+    [super loadView];
+    CGRect ScF=[UIScreen mainScreen].bounds;
+    UIView *BackV=[[UIView alloc] initWithFrame:ScF];
+    BackV.backgroundColor=[UIColor grayColor];//[ComponentsFactory createColorByHex:@"#F8F8F8"];
+    self.view = BackV;
+    [BackV release];
+    self.navigationController.navigationBarHidden=YES;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+    [self initTitleBar];
+    [self initContentView];
+}
+
+- (void)initTitleBar
+{
+    TitleBar* title = [[TitleBar alloc] initWithFramShowHome:YES ShowSearch:NO TitlePos:left_position];
+    [title setLeftIsHiden:NO];
+    [title setTitle:@"提交订单"];
+    title.target = self;
+    self.titleBar = title;
+    [title release];
+    [self.view addSubview:self.titleBar];
+    
+}
+
+- (void)initContentView
+{
+    CommitView* commit = [[CommitView alloc] initWithFrame:CGRectMake(0, TITLE_BAR_HEIGHT, [AppDelegate sharePhoneWidth], [AppDelegate sharePhoneContentHeight]-TITLE_BAR_HEIGHT)];
+    commit.target = self;
+    self.commitView = commit;
+    [commit release];
+    [self.view addSubview:self.commitView];
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+#pragma
+#pragma TitleBarDelegate
+-(void)backAction
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+-(void)homeAction
+{
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
+
+#pragma
+#pragma 相机调用
+-(void) showCameraForPhoto
+{
+    UIImagePickerControllerSourceType sourceType = UIImagePickerControllerSourceTypeCamera;
+    if (![UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera]) {
+        sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    }
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.delegate = self;
+    picker.allowsEditing = NO;
+    picker.sourceType = sourceType;
+    //    self.imgPicker = picker;
+#ifdef __IPHONE_6_0
+//    [self presentModalViewController:picker animated:YES];
+    [self presentViewController:picker animated:YES completion:nil];
+#else
+    [self presentModalViewController:picker animated:YES];
+#endif
+    [picker release];
+}
+
+- (void) imagePickerController: (UIImagePickerController*) picker
+ didFinishPickingMediaWithInfo: (NSDictionary*) info
+{
+    UIImage *photoImg = [info objectForKey:UIImagePickerControllerOriginalImage];
+    if(photoImg==nil){
+        return;
+    }
+    self.photoImage = photoImg;
+    [picker dismissModalViewControllerAnimated:YES];
+    
+    [((UIButton*)[self.view viewWithTag:UPLOAD_PHOTO_BTN])
+     setImage:self.photoImage forState:UIControlStateNormal];
+    
+    [[self.view viewWithTag:UPLOAD_PHOTO_IMG] setHidden:YES];
+//    [self uploadPhotoRequest];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    [picker dismissModalViewControllerAnimated:YES];
+}
+
+-(void)showCamera
+{
+    [self showCameraForPhoto];
+}
+
+#pragma
+#pragma 创建订单
+-(void)commitRequestData:(NSDictionary*)data
+{
+    
+}
+
+#pragma
+#pragma 照片上传
+- (void)uploadPhotoRequest
+{
+    NSString *str = [GTMBase64_My stringByEncodingData:UIImageJPEGRepresentation(self.photoImage,0.01)];
+    NSDictionary *dic = [[NSDictionary alloc] initWithObjectsAndKeys:str,@"photoStr", nil];
+    
+    bussineDataService *buss = [bussineDataService sharedDataService];
+    buss.target = self;
+    [buss uploadPhoto:dic];
+    [dic release];
+}
+
+//key: bussineCode value :; Key:errorCode, value: key:MSG, value:
+- (void)requestDidFinished:(NSDictionary*)info
+{
+    NSLog(@"%@",info);
+    if(info != nil){
+        NSString* saveId = [info objectForKey:@"saveId"];
+        if(saveId != nil && saveId.length > 0){
+            self.saveUploadPhotoId = saveId;
+        }
+    }
+}
+//key: bussineCode value :; Key:errorCode, value: key:MSG, value:
+- (void)requestFailed:(NSDictionary*)info
+{
+    NSLog(@"%@",info);
+}
+@end

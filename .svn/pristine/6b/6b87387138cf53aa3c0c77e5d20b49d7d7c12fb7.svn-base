@@ -1,0 +1,6 @@
+#import <UIKit/UIKit.h>
+
+@interface ProductDetailVC : UIViewController
+
+@property(nonatomic,retain) NSDictionary *params;
+@end

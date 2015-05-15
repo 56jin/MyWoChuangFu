@@ -1,0 +1,178 @@
+{
+    "@class": "com.ailk.app.mapp.model.GXCDatapackage",
+    "header": {
+        "@class": "com.ailk.app.mapp.model.GXCHeader",
+        "bizCode": "cf0011",
+        "identityId": null,
+        "respCode": "0000",
+        "respMsg": "",
+        "mode": "1",
+        "sign": null
+    },
+    "body": {
+        "@class": "com.ailk.app.mapp.model.rsp.CF0011Response",
+        "expand": {},
+        "moduleId": "1001",
+        "productDetail": {
+            "@class": "com.ailk.app.mapp.model.rsp.ProductDetail",
+            "expand": null,
+            "imgURL": "http://121.31.40.3:80/gxImg/picts/INCOMING/mall/imgpath/U2014060916310000007.jpg",
+            "name": "苹果iPhone 4S 8G版 3G手机",
+            "desc": "iPhone中的经典，值得拥有！全新升级的iOS7操作系统！",
+            "sellCount": null,
+            "gifts": [
+                      {
+                      "@class": "com.ailk.app.mapp.model.rsp.Gift",
+                      "expand": null,
+                      "giftDetail": "赠送24G广西区内流量（每月赠送1G，共送24个月）"
+                      }
+                      ],
+            "discountPrice": "2499",
+            "sailPrice": "2699",
+            "allDetailUrl": "http://192.168.1.145:8080/emall/emallorder/getProductDetail.do?productId=10017&moduleId=1001",
+            "evaluateResult": {
+                "@class": "com.ailk.app.mapp.model.rsp.EvaluateResult",
+                "expand": null,
+                "evaluateCount": "23",
+                "evaluateNiceCount": "22",
+                "evaluateNeutralCoun": "0",
+                "evaluateNegativeCoun": "1"
+            },
+            "maybeYourLiker": [
+                               {
+                               "@class": "com.ailk.app.mapp.model.rsp.MaybeYourLiker",
+                               "expand": null,
+                               "maybeYourLikerImgUrl": "http://121.31.40.3:80/gxImg/picts/INCOMING/mall/imgpath/U2014061314400000006.jpg",
+                               "maybeYourLikerName": "手机路由器_婓讯FIR 303B",
+                               "maybeYourLikerPrice": "128",
+                               "clickUrl": "http://mall.gx10010.com/emallorder/choiceTreatyDetail.do?productId=10031&developId=gxlt10016"
+                               },
+                               {
+                               "@class": "com.ailk.app.mapp.model.rsp.MaybeYourLiker",
+                               "expand": null,
+                               "maybeYourLikerImgUrl": "http://121.31.40.3:80/gxImg/picts/INCOMING/mall/imgpath/U2014061620020000033.jpg",
+                               "maybeYourLikerName": "手机路由器_婓讯FIR 303B",
+                               "maybeYourLikerPrice": "33",
+                               "clickUrl": "http://mall.gx10010.com/emallorder/choiceTreatyDetail.do?productId=10048&developId=gxlt10016"
+                               },
+                               {
+                               "@class": "com.ailk.app.mapp.model.rsp.MaybeYourLiker",
+                               "expand": null,
+                               "maybeYourLikerImgUrl": "http://121.31.40.3:80/gxImg/picts/INCOMING/mall/imgpath/U2014061620020000006.jpg",
+                               "maybeYourLikerName": "内存卡_金士顿8G内存卡",
+                               "maybeYourLikerPrice": "48",
+                               "clickUrl": "http://mall.gx10010.com/emallorder/choiceTreatyDetail.do?productId=10050&developId=gxlt10016"
+                               },
+                               {
+                               "@class": "com.ailk.app.mapp.model.rsp.MaybeYourLiker",
+                               "expand": null,
+                               "maybeYourLikerImgUrl": "http://121.31.40.3:80/gxImg/picts/INCOMING/mall/imgpath/U2014061620020000011.jpg",
+                               "maybeYourLikerName": "内存卡_金士顿16G内存卡",
+                               "maybeYourLikerPrice": "68",
+                               "clickUrl": "http://mall.gx10010.com/emallorder/choiceTreatyDetail.do?productId=10051&developId=gxlt10016"
+                               },
+                               {
+                               "@class": "com.ailk.app.mapp.model.rsp.MaybeYourLiker",
+                               "expand": null,
+                               "maybeYourLikerImgUrl": "http://121.31.40.3:80/gxImg/picts/INCOMING/mall/imgpath/U2014061620020000017.jpg",
+                               "maybeYourLikerName": "移动电源_纽曼移动电源M6",
+                               "maybeYourLikerPrice": "98",
+                               "clickUrl": "http://mall.gx10010.com/emallorder/choiceTreatyDetail.do?productId=10049&developId=gxlt10016"
+                               }
+                               ],
+            "developerId": null,
+            "proDuctTypeId": null,
+            "totalInventory": "19992"
+        },
+        "phoneDetail": {
+            "@class": "com.ailk.app.mapp.model.rsp.PhoneDetail",
+            "expand": null,
+            "propertyList": [
+                             {
+                             "@class": "com.ailk.app.mapp.model.rsp.Property",
+                             "expand": null,
+                             "propertyId": "1",
+                             "propertyName": "颜色",
+                             "propertyValueList": [
+                                                   {
+                                                   "propertyValue": "黑色",
+                                                   "propertyValueId": "1002"
+                                                   },
+                                                   {
+                                                   "propertyValue": "白色",
+                                                   "propertyValueId": "1001"
+                                                   }
+                                                   ]
+                             },
+                             {
+                             "@class": "com.ailk.app.mapp.model.rsp.Property",
+                             "expand": null,
+                             "propertyId": "4",
+                             "propertyName": "内存",
+                             "propertyValueList": [
+                                                   {
+                                                   "propertyValue": "8G",
+                                                   "propertyValueId": "4003"
+                                                   }
+                                                   ]
+                             }
+                             ],
+            "skuList": [
+                        {
+                        "@class": "com.ailk.app.mapp.model.rsp.Sku",
+                        "expand": null,
+                        "skuId": "20060",
+                        "sailPrice": "2699",
+                        "contractPrice": "2599",
+                        "discountPrice": "2499",
+                        "ginsengPremium": "null",
+                        "inventory": "9999",
+                        "propertyList": [
+                                         {
+                                         "@class": "com.ailk.app.mapp.model.rsp.Property",
+                                         "expand": null,
+                                         "propertyId": "1002",
+                                         "propertyName": "黑色",
+                                         "propertyValueList": null
+                                         },
+                                         {
+                                         "@class": "com.ailk.app.mapp.model.rsp.Property",
+                                         "expand": null,
+                                         "propertyId": "4003",
+                                         "propertyName": "8G",
+                                         "propertyValueList": null
+                                         }
+                                         ]
+                        },
+                        {
+                        "@class": "com.ailk.app.mapp.model.rsp.Sku",
+                        "expand": null,
+                        "skuId": "20061",
+                        "sailPrice": "2699",
+                        "contractPrice": null,
+                        "discountPrice": "2499",
+                        "ginsengPremium": "null",
+                        "inventory": "9993",
+                        "propertyList": [
+                                         {
+                                         "@class": "com.ailk.app.mapp.model.rsp.Property",
+                                         "expand": null,
+                                         "propertyId": "1001",
+                                         "propertyName": "白色",
+                                         "propertyValueList": null
+                                         },
+                                         {
+                                         "@class": "com.ailk.app.mapp.model.rsp.Property",
+                                         "expand": null,
+                                         "propertyId": "4003",
+                                         "propertyName": "8G",
+                                         "propertyValueList": null
+                                         }
+                                         ]
+                        }
+                        ]
+        },
+        "simDetail": null,
+        "netDetail": null
+    }
+}

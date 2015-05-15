@@ -1,0 +1,98 @@
+//
+//  UrlParse.m
+//  WoChuangFu
+//
+//  Created by duwl on 12/1/14.
+//  Copyright (c) 2014 asiainfo-linkage. All rights reserved.
+//
+
+#import "UrlParser.h"
+#import "ShowWebVC.h"
+#import "ProductsVC.h"
+#import "ProductDetailVC.h"
+#import "SeachedTermVC.h"
+#import "CommitVC.h"
+#import "ChoosePackageVC.h"
+#import "ChooseNumVC.h"
+
+@implementation UrlParser
+
++(void)gotoNewVCWithUrl:(NSString*)clickUrlStr
+{
+    [self gotoNewVCWithUrl:clickUrlStr VC:nil];
+}
+
+//URL解析并实界面跳转
+//解析规则：？后面的为参数，前面的以最后两个/中的内容决定跳转界面
++(void)gotoNewVCWithUrl:(NSString*)clickUrlStr VC:(UIViewController*)startVC{
+    NSURL *url=[NSURL URLWithString:[clickUrlStr stringByReplacingPercentEscapesUsingEncoding:CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000)]];
+    NSLog(@"%@",url);
+    NSLog(@"Path components as array: %@", [url pathComponents]);
+    NSLog(@"Query: %@", [url query]);
+    
+    UIViewController* gotoVC = nil;// [[[ShowWebVC alloc] init] autorelease];
+//    ((ShowWebVC*)gotoVC).urlStr = clickUrlStr;
+    
+    //根据[url pathComponents]确定下一个跳转界面
+    NSArray* urlCom = [url pathComponents];
+    NSArray* paramsArr = [[url query] componentsSeparatedByString:@"&"];
+    
+    NSMutableDictionary* paramsDic = [[NSMutableDictionary alloc] init];
+    if([urlCom count] >2){
+        
+        if([[urlCom objectAtIndex:[urlCom count]-2] isEqualToString:@"emallorder"]){
+            if([[urlCom objectAtIndex:[urlCom count]-1] isEqualToString:@"choiceTreaty.do"]||[[urlCom objectAtIndex:[urlCom count]-1] isEqualToString:@"choiceTreatyDetail.do"]){
+                //判断是否带有productId
+                BOOL isDetail = NO;
+                
+                for(int i=0;i<paramsArr.count;i++){
+                    if([[paramsArr objectAtIndex:i] rangeOfString:@"productId="].length > 0){
+                        NSLog(@"productId: %@", [paramsArr objectAtIndex:i]);
+                        isDetail = YES;
+                    }
+                    
+                    NSArray* keyV = [[paramsArr objectAtIndex:i] componentsSeparatedByString:@"="];
+                    if(keyV.count >1){
+                        [paramsDic setObject:[keyV objectAtIndex:1] forKey:[keyV objectAtIndex:0]];
+                    }
+                }
+                
+                if(isDetail){//详情界面
+                    [paramsDic setObject:@"1" forKey:@""];
+                    gotoVC = [[[ProductDetailVC alloc] init] autorelease];
+                    ((ProductDetailVC*)gotoVC).params = paramsDic;
+                } else {//列表界面
+                    gotoVC = [[[ProductsVC alloc] init] autorelease];
+                    ((ProductsVC*)gotoVC).params = paramsDic;
+                }
+            }
+        }else if([[urlCom objectAtIndex:[urlCom count]-2] isEqualToString:@"netPostionController"]){
+            if([[urlCom objectAtIndex:[urlCom count]-1] isEqualToString:@"initMap.do"]){
+                //周边营业厅
+            }
+        }else if([[urlCom objectAtIndex:[urlCom count]-2] isEqualToString:@"emallfloworder"]){
+            if([[urlCom objectAtIndex:[urlCom count]-1] isEqualToString:@"jhllb.do"]){
+                //订流量
+            }
+        }
+    } else if([urlCom count] > 0){
+        if([[urlCom objectAtIndex:[urlCom count]-1] isEqualToString:@"qry"]){//查询订单
+            gotoVC = [[[ChooseNumVC alloc] init] autorelease];
+        }
+    }
+    
+    [paramsDic release];
+    
+    if(gotoVC == nil){
+        gotoVC = [[[ShowWebVC alloc] init] autorelease];
+    }
+    
+    //根据[url query]获取传给下一个界面的参数
+    if(startVC == nil){
+        [[NSNotificationCenter defaultCenter] postNotificationName:MAIN_PAGE_URL_PARSE object:gotoVC];
+    } else {
+        [startVC.navigationController pushViewController:gotoVC animated:YES];
+    }
+}
+
+@end

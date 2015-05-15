@@ -1,0 +1,71 @@
+#import "EvaluationCell.h"
+#import "ComponentsFactory.h"
+#import "StarView.h"
+
+@interface EvaluationCell()
+{
+    UILabel *evaluateContent; //评价内容
+    UILabel *evaluateUser;     //用户帐号
+    UILabel *evaluateTime;    //评论时间
+    StarView *evaluateStar;   //评分
+    UITextView *replyContent; //回复内容
+    UILabel *replyName;       //回复人
+}
+
+@end
+
+@implementation EvaluationCell
+
+
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self)
+    {
+        [self initConfig];
+    }
+    return self;
+}
+
+-(void)initConfig
+{
+    //评价内容
+    evaluateContent = [[UILabel alloc] init];
+    evaluateContent.frame = CGRectMake(9, 15, 320 - 18, 30);
+    evaluateContent.numberOfLines = 0;
+    evaluateContent.text = @"支持国货，继续加油";
+    [evaluateContent setTextColor:[ComponentsFactory createColorByHex:@"#1b1a1a"]];
+    [self.contentView addSubview:evaluateContent];
+    
+    //用户帐号
+    evaluateUser = [[UILabel alloc] init];
+    evaluateUser.text = @"pan********63.com";
+    [evaluateUser setFont:[UIFont systemFontOfSize:14]];
+    evaluateUser.frame = CGRectMake(9, 43, 120, 30);
+    [evaluateUser setTextColor:[ComponentsFactory createColorByHex:@"#b8b8b8"]];
+    [self.contentView addSubview:evaluateUser];
+    
+    //评论时间
+    evaluateTime = [[UILabel alloc] init];
+    evaluateTime.text = @"2014-06-15";
+    evaluateTime.frame = CGRectMake(129, 43, 130, 30);
+    [evaluateTime setFont:[UIFont systemFontOfSize:14]];
+    [evaluateTime setTextColor:[ComponentsFactory createColorByHex:@"#b8b8b8"]];
+    [self.contentView addSubview:evaluateTime];
+    
+    //评价等级
+    evaluateStar = [[StarView alloc] initWithFrame:CGRectMake(220, 45, 80, 20)];
+
+    [self.contentView addSubview:evaluateStar];
+}
+
+- (void)setDict:(NSDictionary *)dict
+{
+    _dict = dict;
+    evaluateContent.text = _dict[@"evaluateContent"] == [NSNull null] ? @"":_dict[@"evaluateContent"];
+    evaluateUser.text = _dict[@"evaluateUser"]== [NSNull null] ? @"":_dict[@"evaluateUser"];
+    evaluateTime.text = _dict[@"evalateTime"]== [NSNull null] ? @"":_dict[@"evalateTime"];
+    evaluateStar.currScore = _dict[@"evaluatesStar"]== [NSNull null] ? 1:[_dict[@"evaluatesStar"] intValue];
+}
+
+@end

@@ -1,0 +1,155 @@
+//
+//  MyWocfVC.m
+//  WoChuangFu
+//
+//  Created by duwl on 12/27/14.
+//  Copyright (c) 2014 asiainfo-linkage. All rights reserved.
+//
+
+#import "MyWocfVC.h"
+
+#import "UserInfoView.h"
+
+#import "WealthView.h"
+#import "SideBar.h"
+#import "TitleBar.h"
+#import "UserInfoView.h"
+
+
+@interface MyWocfVC ()<TitleBarDelegate>
+{
+    WealthView *wealthView;
+    SideBar *sideBar;
+    CGFloat currentTranslate;
+    BOOL _sideBarShowing;
+    int ContentOffset;
+    int ContentMinOffset;
+    float MoveAnimationDuration;
+    UserInfoView *userInfoView;
+}
+
+@end
+
+@implementation MyWocfVC
+
+
+- (void)loadView
+{
+    self.view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    [self layoutV];
+    
+}
+
+- (void)layoutV
+{
+    TitleBar *titleBar = [[TitleBar alloc] initWithFramShowHome:YES ShowSearch:NO TitlePos:middle_position];
+    titleBar.target = self;
+    if (IOS7)
+        titleBar.frame = CGRectMake(0, 20, PHONE_WIDTH, 44);
+    [self.view addSubview:titleBar];
+    
+    sideBar = [[SideBar alloc] initWithFrame:CGRectMake(0,64,260,PHONE_HEIGHT - 64)];
+    [self.view addSubview:sideBar];
+    
+    wealthView = [[WealthView alloc] initWithFrame:CGRectMake(0, 64, 320,PHONE_HEIGHT - 64)];
+    [self.view addSubview:wealthView];
+    
+//    userInfoView = [[UserInfoView alloc] initWithFrame:CGRectMake(0, 64, 320,PHONE_HEIGHT - 64)];
+//    [self.view addSubview:userInfoView];
+
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+
+//    UserInfoView *infoview = [[UserInfoView alloc]initWithFrame:CGRectMake(0, 64, 320, 568)];
+//    [self.view addSubview:infoview];
+    
+    // Do any additional setup after loading the view.
+
+    self.navigationController.navigationBar.hidden = YES;
+    currentTranslate = 0;
+    _sideBarShowing= NO;
+    ContentOffset = 260;
+    ContentMinOffset = 150;
+    MoveAnimationDuration = 0.3;
+    
+    UIPanGestureRecognizer *panGes = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handelPan:)];
+    [self.view addGestureRecognizer:panGes];
+
+}
+
+#pragma mark 拖动手势
+-(void)handelPan:(UIPanGestureRecognizer*)gestureRecognizer{
+    if (gestureRecognizer.state == UIGestureRecognizerStateChanged)
+    {
+        CGFloat translation = [gestureRecognizer translationInView:self.view].x;
+        
+        if(translation+currentTranslate > 0&&translation+currentTranslate<260.0)
+        {
+            NSLog(@"%f",translation+currentTranslate);
+            wealthView.transform = CGAffineTransformMakeTranslation(translation+currentTranslate, 0);
+        }
+	}
+    else if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
+		currentTranslate = wealthView.transform.tx;
+        if (!_sideBarShowing) {//左边
+            if (currentTranslate<=ContentMinOffset) {
+                [self moveAnimationWithDirection:SideBarShowDirectionNone duration:MoveAnimationDuration];
+            }else if(currentTranslate>ContentMinOffset)
+            {
+                [self moveAnimationWithDirection:SideBarShowDirectionRight duration:MoveAnimationDuration];
+            }
+        }else//全屏
+        {
+            if (currentTranslate>=ContentMinOffset) {
+                [self moveAnimationWithDirection:SideBarShowDirectionRight duration:MoveAnimationDuration];
+                
+            }else if(currentTranslate<ContentMinOffset)
+            {
+                
+                [self moveAnimationWithDirection:SideBarShowDirectionNone duration:MoveAnimationDuration];
+            }
+        }
+	}
+
+}
+
+//滑动中的动画
+- (void)moveAnimationWithDirection:(SideBarShowDirection)direction duration:(float)duration
+{
+    void (^animations)(void) = ^{
+		switch (direction) {
+            case SideBarShowDirectionNone:
+            {
+                wealthView.transform  = CGAffineTransformMakeTranslation(0, 0);
+//                self.tabBarController.tabBar.hidden = NO;
+            }
+                break;
+            case SideBarShowDirectionRight:
+            {
+                wealthView.transform  = CGAffineTransformMakeTranslation(260, 0);
+//                self.tabBarController.tabBar.hidden = YES;
+            }
+                break;
+            default:
+                break;
+        }
+	};
+    void (^complete)(BOOL) = ^(BOOL finished) {
+        wealthView.userInteractionEnabled = YES;
+        
+        if (direction == SideBarShowDirectionNone) {
+            _sideBarShowing = NO;
+        }else
+        {
+            _sideBarShowing = YES;
+        }
+        currentTranslate =wealthView.transform.tx;
+	};
+    [UIView animateWithDuration:duration animations:animations completion:complete];
+}
+
+
+@end

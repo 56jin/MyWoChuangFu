@@ -1,0 +1,64 @@
+#import "EvaluateCellFrame.h"
+#import "EvaluateModel.h"
+
+#define FONTSIZE(size) [UIFont systemFontOfSize:(size)]   //字体大小
+#define LEFT_MARGIN 15                                    //内容左边距
+#define CONTENT_TOP_MARGIN 15                             //评价内容上边距
+#define USER_TOP_MARGIN 15
+#define REPLY_CONTENT_TOP_MARGIN 5                       //回复内容上边距
+#define REPLY_NAME_TOP_MARGIN 20                         //回复人上边距
+#define REPLY_NAME_BOTTOM_MARGIN 10                      //回复人上边距
+#define EVELUATETIME_LEFT_MARGIN 10                      //评价时间左边距
+#define CELL_BOTTOM_MARGIN 10
+
+@implementation EvaluateCellFrame
+
+
+- (void)setEvaluateModel:(EvaluateModel *)evaluateModel
+{
+    _evaluateModel = evaluateModel;
+    
+    CGFloat cellWidth = [[UIScreen mainScreen] bounds].size.width;
+    
+    //评论内容;
+    CGRect contentRect = [_evaluateModel.evaluateContent boundingRectWithSize:CGSizeMake(cellWidth - LEFT_MARGIN *2, MAXFLOAT)
+                                                                      options:NSStringDrawingUsesLineFragmentOrigin
+                                                                   attributes:@{NSFontAttributeName:FONTSIZE(16.0f)}
+                                                                      context:nil];
+    
+    _evaluateContentFrame = (CGRect){{LEFT_MARGIN,CONTENT_TOP_MARGIN},contentRect.size};
+    _cellHeight = contentRect.size.height+CONTENT_TOP_MARGIN;
+    
+    //评价用户
+    CGSize userSize = [_evaluateModel.evaluateUser sizeWithAttributes:@{NSFontAttributeName:FONTSIZE(14.0)}];
+    _evaluateUserFrame = (CGRect){{LEFT_MARGIN,USER_TOP_MARGIN+contentRect.size.height+CONTENT_TOP_MARGIN},userSize};
+    _cellHeight += userSize.height + USER_TOP_MARGIN;
+    
+    //评论时间
+    CGSize timeSize = [_evaluateModel.evalateTime sizeWithAttributes:@{NSFontAttributeName:FONTSIZE(14.0)}];
+    _evalateTimeFrame = (CGRect){{LEFT_MARGIN+userSize.width+EVELUATETIME_LEFT_MARGIN,USER_TOP_MARGIN+contentRect.size.height+ CONTENT_TOP_MARGIN},timeSize};
+    
+    //评价星
+    //LEFT_MARGIN + userSize.width + 30 + timeSize.width
+    _evaluatesStarFrame = (CGRect){{cellWidth-100,USER_TOP_MARGIN+contentRect.size.height-5+ CONTENT_TOP_MARGIN},CGSizeMake(80, 20)};
+        if (_evaluateModel.replyContent != nil &&![_evaluateModel.replyContent isEqualToString:@""])
+    {
+        // 回复内容
+        CGRect replyContentRect = [_evaluateModel.replyContent boundingRectWithSize:CGSizeMake(cellWidth - LEFT_MARGIN *2, MAXFLOAT)
+                                                                            options:NSStringDrawingUsesLineFragmentOrigin
+                                                                         attributes:@{NSFontAttributeName:FONTSIZE(15.0f)}
+                                                                            context:nil];
+        // 回复姓名
+        CGSize replyNametSize = [_evaluateModel.replyName sizeWithAttributes:@{NSFontAttributeName:FONTSIZE(12.0)}];
+        _replyNameFrame = (CGRect){{LEFT_MARGIN,USER_TOP_MARGIN+contentRect.size.height+ CONTENT_TOP_MARGIN+userSize.height+REPLY_CONTENT_TOP_MARGIN+REPLY_NAME_TOP_MARGIN + replyContentRect.size.height},CGSizeMake(replyContentRect.size.width, replyNametSize.height)};
+        
+        _replyContentFrame = (CGRect){{LEFT_MARGIN,USER_TOP_MARGIN+contentRect.size.height+ CONTENT_TOP_MARGIN+userSize.height+REPLY_CONTENT_TOP_MARGIN},CGSizeMake(replyContentRect.size.width, replyContentRect.size.height + REPLY_NAME_TOP_MARGIN + REPLY_NAME_BOTTOM_MARGIN + replyNametSize.height)};
+        
+        _cellHeight += replyContentRect.size.height + REPLY_NAME_TOP_MARGIN + REPLY_NAME_BOTTOM_MARGIN;
+        _cellHeight += replyNametSize.height;
+        
+    }
+    _cellHeight += CELL_BOTTOM_MARGIN;
+}
+
+@end

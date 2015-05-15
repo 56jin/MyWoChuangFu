@@ -1,0 +1,316 @@
+#import "ChoosePackageVC.h"
+#import "SCNavTabBarController.h"
+#import "NALLabelsMatrix.h"
+#import "UIImage+LXX.h"
+#import "CommonMacro.h"
+#import "QuartzCore/QuartzCore.h"
+#import "PackVC.h"
+
+@interface ChoosePackageVC ()<SCNavTabBarControllerDelegate,HttpBackDelegate>
+{
+    UILabel *lable15;
+    UILabel *lable16;
+    UILabel *lable17;
+    UILabel *lable14;
+}
+
+@property (nonatomic, strong) NSMutableArray *dataSources;
+@property (nonatomic, strong) UIScrollView * scrollview;
+@property (nonatomic,strong) SCNavTabBarController *navTabBarController;
+
+@end
+
+@implementation ChoosePackageVC
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    bussineDataService *bus = [bussineDataService  sharedDataService];
+    bus.target = self;
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                 @"",@"skuId",
+                                 @"",@"productId",nil];
+    [bus package:dict];
+    
+    
+}
+
+- (NSMutableArray *)dataSources
+{
+    if (nil == _dataSources)
+    {
+        _dataSources = [NSMutableArray array];
+    }
+    return _dataSources;
+}
+
+//- (void)steupMatrixArray
+//{
+//    _array1 = @[@[@"国内语音", @"300分钟"],@[@"国内语音", @"400分钟"],@[@"国内语音", @"500分钟"],@[@"国内语音", @"600分钟"]];
+//    _array2 = @[@[@"国内流量", @"800MB"],@[@"国内流量", @"900MB"],@[@"国内流量", @"1000MB"],@[@"国内流量", @"1100MB"]];
+//    _array3 = @[@[@"国内短彩/信", @"----"],@[@"国内短彩/信", @"----"],@[@"国内短彩/信", @"----"],@[@"国内短彩/信", @"----"]];
+//    _array4 =@[@[@"套餐超出及其他业务资费",@"超出0.15元/分钟；超出0.3元/MB"],@[@"套餐超出及其他业务资费",@"超出0.15元/分钟；超出0.4元/MB"],@[@"套餐超出及其他业务资费",@"超出0.15元/分钟；超出0.5元/MB"],@[@"套餐超出及其他业务资费",@"超出0.15元/分钟；超出0.6元/MB"]];
+//}
+
+-(void)layoutView
+{
+    _navTabBarController = [[SCNavTabBarController alloc] init];
+    _navTabBarController.subTitles = @[@"46元", @"76元", @"106元", @"136元", @"166元", @"196元", @"226元", @"256元"];
+    _navTabBarController.delegate = self;
+    [_navTabBarController addParentController:self];
+    
+    self.view.backgroundColor = [UIColor whiteColor];
+    
+    // UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 568)];
+    
+    _scrollview = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 33, SCREEN_WIDTH, SCREEN_HEIGHT-20)];
+    [_scrollview setContentSize:CGSizeMake(320, 600)];
+    [_scrollview setShowsVerticalScrollIndicator:NO];
+    [_scrollview setBounces:YES];
+    _scrollview.delegate = self;
+    
+    UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/2, 115, 0.5, 90)];
+    line1.backgroundColor = UIColorWithRGBA(169, 169, 169, 0.8);
+    
+    
+    UILabel *lable0 = [[UILabel alloc]init];
+    lable0.frame = CGRectMake(20, 71, SCREEN_WIDTH, 44);
+    lable0.text = @"套餐";
+    
+    UIButton * choosePack = [[UIButton alloc]initWithFrame:CGRectMake(0, 71, SCREEN_WIDTH, 44)];
+    choosePack.backgroundColor = [UIColor clearColor];
+    [choosePack addTarget:self action:@selector(choosePackClicked) forControlEvents:UIControlEventTouchUpInside];
+    [_scrollview addSubview:choosePack];
+    
+    
+    UILabel *lable00 = [[UILabel alloc]init];
+    lable00.frame = CGRectMake(SCREEN_WIDTH-120, 71, SCREEN_WIDTH, 44);
+    lable00.text = @"请选择套餐";
+    lable00.textColor = [UIColor grayColor];
+    
+    UIImageView *itemImage = [[UIImageView alloc]initWithFrame:CGRectMake(SCREEN_WIDTH-20,87, 10, 10)];
+    itemImage.image = [UIImage imageNamed:@"icon_item_right"];
+    
+    UIImageView *itemImage1 = [[UIImageView alloc]initWithFrame:CGRectMake(SCREEN_WIDTH-20,322, 10, 10)];
+    itemImage1.image = [UIImage imageNamed:@"icon_item_right"];
+    
+    
+    UILabel *lable1 = [[UILabel alloc]init];
+    lable1.frame = CGRectMake(0, 33, SCREEN_WIDTH, 38);
+    lable1.backgroundColor =UIColorWithRGBA(236, 235, 241, 1);
+    lable1.text = @"确定套餐类型";
+    lable1.font = [UIFont systemFontOfSize:14];
+    lable1.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    lable1.layer.borderWidth = 0.5;
+    
+    
+    UILabel *lable2 = [[UILabel alloc]init];
+    lable2.frame = CGRectMake(0, 265, SCREEN_WIDTH, 38);
+    lable2.backgroundColor =UIColorWithRGBA(236, 235, 241, 1);
+    lable2.text = @"请选择适合您的合约期限";
+    lable2.font = [UIFont systemFontOfSize:14];
+    lable2.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    //    lable2.layer.borderWidth = 0.5;
+    //    lable2.lineBreakMode = NSLineBreakByCharWrapping;
+    //    lable2.numberOfLines = 0;
+    
+    
+    UILabel *lable3 = [[UILabel alloc]init];
+    lable3.frame = CGRectMake(0,115, SCREEN_WIDTH, 30);
+    lable3.text = @"    国内语音";
+    lable3.font = [UIFont systemFontOfSize:14];
+    lable3.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    lable3.layer.borderWidth = 0.5;
+    
+    lable15 = [[UILabel alloc]init];
+    lable15.frame = CGRectMake(180,115, SCREEN_WIDTH, 30);
+    lable15.text = @"400分钟";
+    lable15.font = [UIFont systemFontOfSize:14];
+    
+    UILabel *lable4 = [[UILabel alloc]init];
+    lable4.frame = CGRectMake(0,145, SCREEN_WIDTH, 30);
+    lable4.text = @"    国内流量";
+    lable4.font = [UIFont systemFontOfSize:14];
+    
+    lable16 = [[UILabel alloc]init];
+    lable16.frame = CGRectMake(180,145, SCREEN_WIDTH, 30);
+    lable16.text = @"800M";
+    lable16.font = [UIFont systemFontOfSize:14];
+    
+    UILabel *lable5 = [[UILabel alloc]init];
+    lable5.frame = CGRectMake(0,175, SCREEN_WIDTH, 30);
+    lable5.text = @"    国内短彩信";
+    lable5.font = [UIFont systemFontOfSize:14];
+    lable5.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    lable5.layer.borderWidth = 0.5;
+    
+    lable17 = [[UILabel alloc]init];
+    lable17.frame = CGRectMake(180,175, SCREEN_WIDTH, 30);
+    lable17.text = @"-------";
+    lable17.font = [UIFont systemFontOfSize:14];
+    
+    
+    UILabel *lable6 = [[UILabel alloc]init];
+    lable6.frame = CGRectMake(0,205, SCREEN_WIDTH, 30);
+    lable6.text = @"    套餐超出及其他业务资费";
+    lable6.font = [UIFont systemFontOfSize:14];
+    
+    UILabel *lable7 = [[UILabel alloc]init];
+    lable7.frame = CGRectMake(0,235, SCREEN_WIDTH, 30);
+    lable7.text = @"    超出0.15元/分钟";
+    lable7.font = [UIFont systemFontOfSize:14];
+    lable7.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    lable7.layer.borderWidth = 0.5;
+    
+    UILabel *lable8 = [[UILabel alloc]init];
+    lable8.frame = CGRectMake(0, 308, SCREEN_WIDTH, 44);
+    lable8.text = @"    合约期限";
+    
+    UILabel *lable80 = [[UILabel alloc]init];
+    lable80.frame = CGRectMake(SCREEN_WIDTH-100, 308, SCREEN_WIDTH, 44);
+    lable80.text = @"12个月";
+    lable80.textColor = [UIColor blueColor];
+    
+    UILabel *lable9 = [[UILabel alloc]init];
+    lable9.frame = CGRectMake(0,348, SCREEN_WIDTH, 30);
+    lable9.text = @"    合约机总价";
+    lable9.font = [UIFont systemFontOfSize:14];
+    lable9.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    lable9.layer.borderWidth = 0.5;
+    
+    lable14 = [[UILabel alloc]init];
+    lable14.frame = CGRectMake(160,348, SCREEN_WIDTH, 30);
+    lable14.text = @"    5499元";
+    lable14.font = [UIFont systemFontOfSize:14];
+    lable14.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    lable14.layer.borderWidth = 0.5;
+    
+    UILabel *lable10 = [[UILabel alloc]init];
+    lable10.frame = CGRectMake(0,378, SCREEN_WIDTH, 30);
+    lable10.text = @"    首月返还";
+    lable10.font = [UIFont systemFontOfSize:14];
+    
+    UILabel *lable13 = [[UILabel alloc]init];
+    lable13.frame = CGRectMake(160,378, SCREEN_WIDTH, 30);
+    lable13.text = @"    100元";
+    lable13.font = [UIFont systemFontOfSize:14];
+    lable13.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    lable13.layer.borderWidth = 0.5;
+    
+    UILabel *lable11 = [[UILabel alloc]init];
+    lable11.frame = CGRectMake(0,408, SCREEN_WIDTH, 30);
+    lable11.text = @"    每月返还";
+    lable11.font = [UIFont systemFontOfSize:14];
+    lable11.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    lable11.layer.borderWidth = 0.5;
+    
+    UILabel *lable12 = [[UILabel alloc]init];
+    lable12.frame = CGRectMake(160,408, SCREEN_WIDTH, 30);
+    lable12.text = @"  83元";
+    lable12.font = [UIFont systemFontOfSize:14];
+    lable12.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    lable12.layer.borderWidth = 0.5;
+    
+    
+    
+    
+    [_scrollview addSubview:lable0];
+    [_scrollview addSubview:lable00];
+    [_scrollview addSubview:itemImage];
+    [_scrollview addSubview:itemImage1];
+    [_scrollview addSubview:lable1];
+    [_scrollview addSubview:lable2];
+    [_scrollview addSubview:lable3];
+    [_scrollview addSubview:lable4];
+    [_scrollview addSubview:lable5];
+    [_scrollview addSubview:lable6];
+    
+    [_scrollview addSubview:lable7];
+    [_scrollview addSubview:lable8];
+    [_scrollview addSubview:lable80];
+    [_scrollview addSubview:lable9];
+    [_scrollview addSubview:lable10];
+    [_scrollview addSubview:lable11];
+    [_scrollview addSubview:lable12];
+    [_scrollview addSubview:lable13];
+    [_scrollview addSubview:lable14];
+    [_scrollview addSubview:lable15];
+    [_scrollview addSubview:lable16];
+    [_scrollview addSubview:lable17];
+    
+    
+    UIButton * saveButton = [[UIButton alloc]initWithFrame:CGRectMake(30, 458, SCREEN_WIDTH-60, 33)];
+    UIImage* image = [UIImage resizedImage:@"btn_alter_bg_p"];
+    [saveButton setBackgroundImage:image forState:UIControlStateNormal];
+    [saveButton setTitle:@"保存" forState:UIControlStateNormal];
+    [saveButton addTarget:self action:@selector(saveClicked) forControlEvents:UIControlEventTouchUpInside];
+    [_scrollview addSubview:saveButton];
+    
+    [self.view addSubview:_navTabBarController.view];
+    [self.view addSubview:_scrollview];
+    // [view addSubview:navTabBarController.view];
+    [_scrollview addSubview:line1];
+    
+    
+    
+    
+}
+
+
+- (void)itemDidSelectedWithIndex:(NSInteger)index
+{
+    
+    NSLog(@"选中了按钮%d",index);
+    NSDictionary *dict = self.dataSources[index];
+    lable15.text = dict[@"packageInlandVoice"];
+    lable16.text = dict[@"packageInlandFlow"];
+    lable17.text = dict[@"packageInlandMessage"];
+    
+}
+
+#pragma mark - HttpBackDelegate
+
+-(void)requestDidFinished:(NSDictionary *)info
+{
+    bussineDataService *bus=[bussineDataService sharedDataService];
+    NSArray *packageTypes = bus.rspInfo[@"package"][@"packageTypes"];
+    for (NSDictionary *dict in packageTypes)
+    {
+        [self.dataSources addObject:dict];
+    }
+    [self layoutView];
+    
+}
+
+-(void)requestFailed:(NSDictionary *)info
+{
+    
+}
+
+
+- (void)saveClicked{
+    // if (share == nil) {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                    message:@"请先选择套餐！"
+                                                   delegate:self
+                                          cancelButtonTitle:@"确定"
+                                          otherButtonTitles:nil];
+    //  }
+    //    else{
+    //    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示"
+    //                                                    message:@"保存成功！"
+    //                                                   delegate:self
+    //                                          cancelButtonTitle:@"确定"
+    //                                                              otherButtonTitles:nil];
+    //    }
+    [alert show];
+}
+
+-(void)choosePackClicked
+{
+    NSLog(@"点击了button");
+    PackVC *pack = [[PackVC alloc]init];
+    [self.navigationController pushViewController:pack animated:YES];
+}
+
+
+@end

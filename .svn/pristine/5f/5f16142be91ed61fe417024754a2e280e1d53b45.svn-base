@@ -1,0 +1,28 @@
+//
+//  UserInfoView.h
+//  WoChuangFu
+//
+//  Created by 李新新 on 14-12-30.
+//  Copyright (c) 2014年 asiainfo-linkage. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface UserInfoView : UIView<UITableViewDelegate,UITableViewDataSource,HttpBackDelegate>
+
+@property(nonatomic,strong)NSString *name;
+@property(nonatomic,strong)NSString *city;
+@property(nonatomic,strong)NSString *qqEmail;
+@property(nonatomic,strong)NSString *phoneNum;
+@property(nonatomic,strong)NSString *senderNum;
+@property(nonatomic,strong)NSString *partyId;
+@property(nonatomic,strong)NSString *partyName;
+
+@property(nonatomic,strong)UITableView *mytable;
+@property(nonatomic,strong)NSMutableArray *infoData;
+
+@property (nonatomic,strong) NSMutableDictionary *requestDict;      //请求参数字典
+@property (nonatomic,strong) NSMutableArray *groupCount;      //请求参数字典
+@property(nonatomic,retain)NSDictionary *SendDic;
+
+@end

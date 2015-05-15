@@ -1,0 +1,125 @@
+//
+//  ChooseSubView.m
+//  WoChuangFu
+//
+//  Created by 郑渊文 on 14/12/22.
+//  Copyright (c) 2014年 asiainfo-linkage. All rights reserved.
+//
+
+#import "ChooseAreaSubView.h"
+#import "ChooseNumVC.h"
+#import "ChooseCellSubView.h"
+#import "AreaManager.h"
+#import "CommonMacro.h"
+
+@implementation ChooseAreaSubView
+{
+    UIScrollView *myScrollView;
+    
+    NSMutableArray *areaList;
+     NSMutableArray *areaIdList;
+}
+
++(CGSize)sizeOfView
+{
+    return CGSizeMake(SCREEN_WIDTH, 270);
+}
+
+// 重写这个方法
+- (id)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self)
+    {
+        // 娶地址列表
+        areaList = [AreaManager shareInstance].areaList;
+        areaIdList = [AreaManager shareInstance].areaIdList;
+        [self showAreaList];
+    }
+    return self;
+}
+
+// 显示列表
+-(void)showAreaList
+{
+    [myScrollView removeFromSuperview];
+    myScrollView = [[UIScrollView alloc] initWithFrame:self.bounds];
+    [myScrollView setShowsVerticalScrollIndicator:NO];
+    [self addSubview:myScrollView];
+    
+    int top = 0;
+    
+   //NSString *areaName1 = [AreaManager shareInstance].areaName;
+    NSString *areaID = [AreaManager shareInstance].areaId;
+
+    for(int i=0; i<areaList.count; i++)
+    {
+        NSString *area1 = [areaList objectAtIndex:i];
+        NSString *area2 = [areaIdList objectAtIndex:i];
+        // cell 的大小
+        CGSize size = [ChooseCellSubView sizeOfView];
+        // cell 的位置
+        CGRect frame = CGRectMake(0, top, size.width, size.height);
+        // 创建 cell
+        ChooseCellSubView *cellView = [[ChooseCellSubView alloc] initWithFrame:frame];
+        // 设置 cell 的显示内容
+        cellView.lblTttle.text = area1;
+
+        // 判断是否为选中状态
+        if([areaID isEqualToString:area2])
+        {
+            [cellView.lblTttle setTextColor:[UIColor colorWithRed:1 green:102./255 blue:0 alpha:1]];
+        }
+        
+        // 配置 cell 中的 选中按钮
+        cellView.btnSelect.tag = i;
+        // 设置 cell 的frame
+        cellView.frame = frame;
+        // 把 cell 添加到 滚动视图
+        [myScrollView addSubview:cellView];
+        
+        // 按钮事件
+        [cellView.btnSelect addTarget:self action:@selector(btnSelectClicked:) forControlEvents:UIControlEventTouchUpInside];
+        
+        // 修改top值
+        top += size.height;
+    }
+    
+    // 设置 滚动视图的 内容大小
+    myScrollView.contentSize = CGSizeMake(self.bounds.size.width, top);
+}
+-(void)btnSelectClicked:(id)sender
+{
+    // 发送者 为 按钮
+    UIButton *btn = (UIButton *)sender;
+    
+    // 根据 按钮的tag 取 地区
+    NSString *area1 = [areaList objectAtIndex:btn.tag];
+    NSString *area2 = [areaIdList objectAtIndex:btn.tag];
+    
+    NSString *lastarea = [AreaManager shareInstance].areaName;
+    if([lastarea isEqualToString:area1]==false)
+    {
+        // 保存 当前的 地区
+        [AreaManager shareInstance].areaName = area1;
+        [AreaManager shareInstance].areaId = area2;
+        
+        // 重新加载地区列表
+
+    }
+    else
+    {
+        // 取消选中
+        [AreaManager shareInstance].areaName = nil;
+        [AreaManager shareInstance].areaId = nil;
+        
+        // 重新加载地区列表
+
+    }
+    
+    // 隐藏自己
+    self.hidden = true;
+}
+
+
+@end

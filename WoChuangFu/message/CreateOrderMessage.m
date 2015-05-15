@@ -1,0 +1,80 @@
+//
+//  CreateOrderMessage.m
+//  WoChuangFu
+//
+//  Created by duwl on 12/10/14.
+//  Copyright (c) 2014 asiainfo-linkage. All rights reserved.
+//
+
+#import "CreateOrderMessage.h"
+
+@implementation CreateOrderMessage
+- (NSString *)getRequest
+{
+    NSDictionary *headerData = [[NSDictionary alloc] initWithObjectsAndKeys:CREATE_ORDER_BIZCODE,@"bizCode",nil];
+    
+    NSString *requestClass = [[NSString alloc] initWithFormat:JSON_BODY_REUEST,[CREATE_ORDER_BIZCODE uppercaseString]];
+    
+    NSDictionary *requestDict = self.requestInfo;
+    
+    NSDictionary *bodyData = [[NSDictionary alloc] initWithObjectsAndKeys:
+                              requestClass,@"@class",
+                              [requestInfo objectForKey:@"expand"]==nil?[NSNull null]:[requestInfo objectForKey:@"expand"],@"expand",
+                              [requestDict objectForKey:@"addrInfo"]==nil?[NSNull null]:[requestDict objectForKey:@"addrInfo"],@"addrInfo",
+                              [requestDict objectForKey:@"payInfo"]==nil?[NSNull null]:[requestDict objectForKey:@"payInfo"],@"payInfo",
+                              [requestDict objectForKey:@"productInfo"]==nil?[NSNull null]:[requestDict objectForKey:@"productInfo"],@"productInfo",nil];
+    [requestClass release];
+    
+    NSString *requestStr = [self getRequestJSONFromHeader:headerData
+                                                 withBody:bodyData];
+    [headerData release];
+    [bodyData release];
+    MyLog(@"请求报文:%@",requestStr);
+	return requestStr;//[message hexStringDes:requestStr withEncrypt:YES];
+}
+
+-(void)parseOther
+{
+    [super parseOther];
+    [self parseMessage];
+}
+
+- (void)parseResponse:(NSString *)responseMessage
+{
+    [self parse:responseMessage];
+}
+
++ (NSString*)getBizCode
+{
+    return CREATE_ORDER_BIZCODE;
+}
+
+- (NSString*)getBusinessCode
+{
+	return CREATE_ORDER_BIZCODE;
+}
+
+-(void)parseMessage
+{
+    //需要解析在此处解析
+    NSArray *keyArray = [[NSArray alloc] initWithObjects:
+                         @"orderCode",@"postData",@"postUrl",@"expand",nil];
+    if (self.rspInfo != nil && [self.rspInfo isKindOfClass:[NSDictionary class]]) {
+        NSMutableDictionary *rInfo = [[NSMutableDictionary alloc] initWithCapacity:0];
+        NSInteger cnt = [keyArray count];
+        for (int i=0; i<cnt; i++) {
+            NSString *keyStr = [keyArray objectAtIndex:i];
+            NSString *valueStr = [rspInfo objectForKey:keyStr];
+            if (valueStr) {
+                [rInfo setObject:valueStr forKey:keyStr];
+            }
+        }
+        if ([rInfo count] > 0) {
+            self.rspInfo = rInfo;
+        }
+        [rInfo release];
+    }
+    [keyArray release];
+    
+}
+@end

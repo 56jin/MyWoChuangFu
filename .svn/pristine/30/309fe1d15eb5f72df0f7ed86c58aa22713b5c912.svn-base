@@ -1,0 +1,191 @@
+//
+//  MyWocfVC.m
+//  WoChuangFu
+//
+//  Created by duwl on 12/27/14.
+//  Copyright (c) 2014 asiainfo-linkage. All rights reserved.
+//
+
+#import "MyWocfVC.h"
+
+#import "UserInfoView.h"
+
+#import "WealthView.h"
+#import "SideBar.h"
+#import "TitleBar.h"
+#import "UserInfoView.h"
+#import "LoginView.h"
+
+
+@interface MyWocfVC ()<TitleBarDelegate,SideBarDelegate>
+{
+    WealthView *wealthView;
+    SideBar *sideBar;
+    CGFloat currentTranslate;
+    BOOL _sideBarShowing;
+    int ContentOffset;
+    int ContentMinOffset;
+    float MoveAnimationDuration;
+    UserInfoView *userInfoView;
+    LoginView *loginView;
+    UIView *contenView;
+}
+
+@end
+
+@implementation MyWocfVC
+
+
+- (void)loadView
+{
+    self.view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    [self layoutV];
+    
+}
+
+- (void)layoutV
+{
+    TitleBar *titleBar = [[TitleBar alloc] initWithFramShowHome:YES ShowSearch:NO TitlePos:middle_position];
+    titleBar.target = self;
+    if (IOS7)
+        titleBar.frame = CGRectMake(0, 20, PHONE_WIDTH, 44);
+    [self.view addSubview:titleBar];
+    
+    sideBar = [[SideBar alloc] initWithFrame:CGRectMake(0,64,260,PHONE_HEIGHT - 64)];
+    sideBar.delegate = self;
+    [self.view addSubview:sideBar];
+    
+    contenView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    [self.view addSubview:contenView];
+    
+    wealthView = [[WealthView alloc] initWithFrame:CGRectMake(0, 64, 320,PHONE_HEIGHT - 64)];
+    [contenView addSubview:wealthView];
+    wealthView.hidden = YES;
+    
+    userInfoView = [[UserInfoView alloc] initWithFrame:CGRectMake(0, 64, 320,PHONE_HEIGHT - 64)];
+    [contenView addSubview:userInfoView];
+    userInfoView.hidden = YES;
+    
+    loginView = [[LoginView alloc] initWithFrame:CGRectMake(0, 64, 320,PHONE_HEIGHT - 64)];
+    [contenView addSubview:loginView];
+    loginView.hidden = NO;
+
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    self.navigationController.navigationBar.hidden = YES;
+    currentTranslate = 0;
+    _sideBarShowing= NO;
+    ContentOffset = 260;
+    ContentMinOffset = 150;
+    MoveAnimationDuration = 0.3;
+    
+    bussineDataService *bus = [bussineDataService sharedDataService];
+//    if (bus.HasLogIn == YES)
+//    {
+//        userInfoView.hidden = NO;
+//        wealthView.hidden = YES;
+//        loginView.hidden = YES;
+//        
+//        UIPanGestureRecognizer *panGes = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handelPan:)];
+//        [self.view addGestureRecognizer:panGes];
+//    }
+//    else
+//    {
+//        userInfoView.hidden = YES;
+//        wealthView.hidden = YES;
+//        loginView.hidden = NO;
+//    }
+        UIPanGestureRecognizer *panGes = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handelPan:)];
+        [self.view addGestureRecognizer:panGes];
+
+}
+
+#pragma mark - SideBarDelegate
+- (void)sideBar:(SideBar *)sideBar didSelectAtIndex:(NSInteger)index
+{
+    if (index == 0)
+    {
+        wealthView.hidden = NO;
+        loginView.hidden = YES;
+        userInfoView.hidden = YES;
+    }
+    [self moveAnimationWithDirection:SideBarShowDirectionNone duration:MoveAnimationDuration];
+}
+
+#pragma mark 拖动手势
+-(void)handelPan:(UIPanGestureRecognizer*)gestureRecognizer{
+    if (gestureRecognizer.state == UIGestureRecognizerStateChanged)
+    {
+        CGFloat translation = [gestureRecognizer translationInView:self.view].x;
+        
+        if(translation+currentTranslate > 0&&translation+currentTranslate<260.0)
+        {
+            NSLog(@"%f",translation+currentTranslate);
+            contenView.transform = CGAffineTransformMakeTranslation(translation+currentTranslate, 0);
+        }
+	}
+    else if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
+		currentTranslate = contenView.transform.tx;
+        if (!_sideBarShowing) {//左边
+            if (currentTranslate<=ContentMinOffset) {
+                [self moveAnimationWithDirection:SideBarShowDirectionNone duration:MoveAnimationDuration];
+            }else if(currentTranslate>ContentMinOffset)
+            {
+                [self moveAnimationWithDirection:SideBarShowDirectionRight duration:MoveAnimationDuration];
+            }
+        }else//全屏
+        {
+            if (currentTranslate>=ContentMinOffset) {
+                [self moveAnimationWithDirection:SideBarShowDirectionRight duration:MoveAnimationDuration];
+                
+            }else if(currentTranslate<ContentMinOffset)
+            {
+                
+                [self moveAnimationWithDirection:SideBarShowDirectionNone duration:MoveAnimationDuration];
+            }
+        }
+	}
+
+}
+
+//滑动中的动画
+- (void)moveAnimationWithDirection:(SideBarShowDirection)direction duration:(float)duration
+{
+    void (^animations)(void) = ^{
+		switch (direction) {
+            case SideBarShowDirectionNone:
+            {
+                contenView.transform  = CGAffineTransformMakeTranslation(0, 0);
+//                self.tabBarController.tabBar.hidden = NO;
+            }
+                break;
+            case SideBarShowDirectionRight:
+            {
+                contenView.transform  = CGAffineTransformMakeTranslation(260, 0);
+//                self.tabBarController.tabBar.hidden = YES;
+            }
+                break;
+            default:
+                break;
+        }
+	};
+    void (^complete)(BOOL) = ^(BOOL finished) {
+        contenView.userInteractionEnabled = YES;
+        
+        if (direction == SideBarShowDirectionNone) {
+            _sideBarShowing = NO;
+        }else
+        {
+            _sideBarShowing = YES;
+        }
+        currentTranslate =contenView.transform.tx;
+	};
+    [UIView animateWithDuration:duration animations:animations completion:complete];
+}
+
+
+@end

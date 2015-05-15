@@ -1,0 +1,8 @@
+#import <UIKit/UIKit.h>
+@class ProductModel;
+
+@interface ProductCell : UITableViewCell
+
+@property (nonatomic,retain) ProductModel *product;
+
+@end

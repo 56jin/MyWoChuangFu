@@ -1,0 +1,110 @@
+{
+    "@class": "com.ailk.app.mapp.model.GXCDatapackage",
+    "header": {
+        "@class": "com.ailk.app.mapp.model.GXCHeader",
+        "bizCode": "cf0010",
+        "identityId": null,
+        "respCode": "0000",
+        "respMsg": "",
+        "mode": "1",
+        "sign": null
+    },
+    "body": {
+        "@class": "com.ailk.app.mapp.model.rsp.CF0010Response",
+        "expand": null,
+        "dataList": [
+                     {
+                     "@class": "com.ailk.app.mapp.model.rsp.CF0010Response$DataList",
+                     "expand": null,
+                     "productId": "10017",
+                     "imgURL": "http://121.31.40.3:80/gxImg/picts/INCOMING/mall/imgpath/U2014060916310000007.jpg",
+                     "name": "苹果iPhone 4S 8G版 3G手机",
+                     "desc": "iPhone中的经典，值得拥有！全新升级的iOS7操作系统！",
+                     "sellCount": "3",
+                     "sailPrice": "2699",
+                     "contractPrice": "2399",
+                     "discountPrice": "2499",
+                     "clickUrl": "http://mall.gx10010.com/emallorder/choiceTreatyDetail.do?productId=10017&developId=1001"
+                     },
+                     {
+                     "@class": "com.ailk.app.mapp.model.rsp.CF0010Response$DataList",
+                     "expand": null,
+                     "productId": "10004",
+                     "imgURL": "http://121.31.40.3:80/gxImg/picts/INCOMING/mall/imgpath/U2014052315430110065.jpg",
+                     "name": "华为 Ascend G6 3G手机（一年免话费套餐）",
+                     "desc": "P6迷你版，高通四核处理器，800W+500W摄像头！",
+                     "sellCount": "1",
+                     "sailPrice": "1599",
+                     "contractPrice": "999",
+                     "discountPrice": "1499",
+                     "clickUrl": "http://mall.gx10010.com/emallorder/choiceTreatyDetail.do?productId=10004&developId=1001"
+                     },
+                     {
+                     "@class": "com.ailk.app.mapp.model.rsp.CF0010Response$DataList",
+                     "expand": null,
+                     "productId": "10026",
+                     "imgURL": "http://121.31.40.3:80/gxImg/picts/INCOMING/mall/imgpath/U2014060916320000011.jpg",
+                     "name": "三星 Galaxy Note3 N9002 16G双卡 3G手机",
+                     "desc": "5.7英寸高清屏，2.3GHZ四核处理器，1300万像素摄像头，双卡双待双通！",
+                     "sellCount": "1",
+                     "sailPrice": "5499",
+                     "contractPrice": "5399",
+                     "discountPrice": "5399",
+                     "clickUrl": "http://mall.gx10010.com/emallorder/choiceTreatyDetail.do?productId=10026&developId=1001"
+                     },
+                     {
+                     "@class": "com.ailk.app.mapp.model.rsp.CF0010Response$DataList",
+                     "expand": null,
+                     "productId": "10021",
+                     "imgURL": "http://121.31.40.3:80/gxImg/picts/INCOMING/mall/imgpath/test/U2014111413302068900.jpg",
+                     "name": "酷派 7295C 3G手机",
+                     "desc": "5英寸四核神器，极速强劲四核CPU动力，1G+4G超大内存， 双卡双待。",
+                     "sellCount": "1",
+                     "sailPrice": "1099",
+                     "contractPrice": "1099",
+                     "discountPrice": "999",
+                     "clickUrl": "http://mall.gx10010.com/emallorder/choiceTreatyDetail.do?productId=10021&developId=1001"
+                     },
+                     {
+                     "@class": "com.ailk.app.mapp.model.rsp.CF0010Response$DataList",
+                     "expand": null,
+                     "productId": "10019",
+                     "imgURL": "http://121.31.40.3:80/gxImg/picts/INCOMING/mall/imgpath/U2014060916310000009.jpg",
+                     "name": "苹果iPhone 5s 16G版 3G手机",
+                     "desc": "指纹识别传感器、64 位架构的全新A7芯片+ M7协处理器、铝金属外壳！",
+                     "sellCount": "1",
+                     "sailPrice": "5599",
+                     "contractPrice": "4999",
+                     "discountPrice": "5499",
+                     "clickUrl": "http://mall.gx10010.com/emallorder/choiceTreatyDetail.do?productId=10019&developId=1001"
+                     },
+                     {
+                     "@class": "com.ailk.app.mapp.model.rsp.CF0010Response$DataList",
+                     "expand": null,
+                     "productId": "31285",
+                     "imgURL": "http://121.31.40.3:80/gxImg/picts/INCOMING/mall/imgpath/test/U2014111309585118000.jpg",
+                     "name": "手机合约13",
+                     "desc": "手机合约13",
+                     "sellCount": "0",
+                     "sailPrice": "335",
+                     "contractPrice": "3",
+                     "discountPrice": "33",
+                     "clickUrl": "http://mall.gx10010.com/emallorder/choiceTreatyDetail.do?productId=31285&developId=1001"
+                     },
+                     {
+                     "@class": "com.ailk.app.mapp.model.rsp.CF0010Response$DataList",
+                     "expand": null,
+                     "productId": "31299",
+                     "imgURL": "http://121.31.40.3:80/gxImg/picts/INCOMING/mall/imgpath/test/U2014111320211356100.jpg",
+                     "name": "裸机12",
+                     "desc": "22",
+                     "sellCount": "0",
+                     "sailPrice": "22",
+                     "contractPrice": "0",
+                     "discountPrice": "22",
+                     "clickUrl": "http://mall.gx10010.com/emallorder/choiceTreatyDetail.do?productId=31299&developId=1001"
+                     }
+                     ],
+        "productType": null
+    }
+}

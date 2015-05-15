@@ -1,0 +1,75 @@
+#import "WebProductDetailVC.h"
+#import "TitleBar.h"
+
+#define PHONE_WIDTH [AppDelegate sharePhoneWidth]    //手机宽度
+#define PHONE_HEIGHT [AppDelegate sharePhoneHeight]  //手机高度
+#define NAV_BAR_GEIGHT IOS7?64:44
+
+@interface WebProductDetailVC ()<TitleBarDelegate,UIWebViewDelegate>
+{
+    __weak UIWebView *myWebView;
+    UIActivityIndicatorView *indicatorView;
+}
+@property(nonatomic,weak) UIWebView *myWebView;
+
+@end
+
+@implementation WebProductDetailVC
+
+@synthesize productDetailUrl;
+@synthesize myWebView;
+
+- (void)loadView
+{
+    self.view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    [self layoutVC];
+}
+
+- (void)layoutVC
+{
+    TitleBar *titleBar = [[TitleBar alloc] initWithFramShowHome:YES ShowSearch:NO TitlePos:middle_position];
+    titleBar.title = @"商品图文详情";
+    titleBar.target = self;
+    if (IOS7)
+        titleBar.frame = CGRectMake(0, 20, PHONE_WIDTH, 44);
+    [self.view addSubview:titleBar];
+    
+    UIWebView *webView = [[UIWebView alloc] init];
+    webView.delegate = self;
+    webView.backgroundColor = [ComponentsFactory createColorByHex:@"#f2f0eb"];
+    [webView setFrame:CGRectMake(0,NAV_BAR_GEIGHT,PHONE_WIDTH,PHONE_HEIGHT)];
+    self.myWebView = webView;
+    [self.view addSubview:webView];
+    
+    indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    indicatorView.frame = CGRectMake(webView.center.x,webView.center.y,0,0);
+    [webView addSubview:indicatorView];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    [self.myWebView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:self.productDetailUrl]]];
+}
+
+#pragma mark - TitleBarDelegate
+-(void)backAction
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+-(void)homeAction
+{
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
+
+#pragma mark - UIWebViewDelegate
+- (void)webViewDidStartLoad:(UIWebView *)webView
+{
+    [indicatorView startAnimating];
+}
+- (void)webViewDidFinishLoad:(UIWebView *)webView
+{
+    [indicatorView stopAnimating];
+}
+
+@end

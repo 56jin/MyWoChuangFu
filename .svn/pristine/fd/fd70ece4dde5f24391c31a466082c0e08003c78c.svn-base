@@ -1,0 +1,20 @@
+#import "MayYouLikeView.h"
+
+@implementation MayYouLikeView
+
+- (id)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self)
+    {
+        [self addSubviews];
+    }
+    return self;
+}
+
+- (void)addSubviews
+{
+    
+}
+
+@end

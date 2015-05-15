@@ -1,0 +1,23 @@
+//
+//  ShowWebVC.h
+//  WoChuangFu
+//
+//  Created by duwl on 12/12/14.
+//  Copyright (c) 2014 asiainfo-linkage. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+#import "TitleBar.h"
+
+@interface ShowWebVC : UIViewController<UIWebViewDelegate>
+{
+    NSString* urlStr;
+    NSString* titleStr;
+    TitleBar* titleBar;
+}
+
+@property(nonatomic,retain)NSString* urlStr;
+@property(nonatomic,retain)NSString* titleStr;
+@property(nonatomic,retain)TitleBar* titleBar;
+
+@end

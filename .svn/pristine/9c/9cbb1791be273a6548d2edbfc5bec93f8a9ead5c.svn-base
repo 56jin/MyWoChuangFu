@@ -1,0 +1,6 @@
+#import <UIKit/UIKit.h>
+
+//商品评价界面
+@interface ProductEvaluationVC : UIViewController
+
+@end

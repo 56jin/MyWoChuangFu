@@ -1,0 +1,18 @@
+//
+//  LoginVC.h
+//  WoChuangFu
+//
+//  Created by 颜 梁坚 on 14-7-10.
+//  Copyright (c) 2014年 asiainfo-linkage. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+#import "webVC.h"
+
+@interface LoginVC : UIViewController<HttpBackDelegate,UITextFieldDelegate>{
+    UITextField *NameTextField;
+    UITextField *PassTextField;
+    int loginType;
+}
+
+@end

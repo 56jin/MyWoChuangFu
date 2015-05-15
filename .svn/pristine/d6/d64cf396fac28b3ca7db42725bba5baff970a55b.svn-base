@@ -1,0 +1,21 @@
+//
+//  LoginView.h
+//  WoChuangFu
+//
+//  Created by 郑渊文 on 14/12/31.
+//  Copyright (c) 2014年 asiainfo-linkage. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+//#import "TitleBar.h"
+@interface LoginView : UIView<HttpBackDelegate,UITextFieldDelegate>
+{
+    UITextField *NameTextField;
+    UITextField *PassTextField;
+    int loginType;
+//    TitleBar* titleBar;
+}
+//@property(nonatomic,retain)TitleBar* titleBar;
+@property(nonatomic,retain)NSDictionary *SendDic;
+
+@end

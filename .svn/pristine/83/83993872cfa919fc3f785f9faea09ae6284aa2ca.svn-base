@@ -1,0 +1,306 @@
+#import "ProductDetailVC.h"
+#import "ComponentsFactory.h"
+#import "UIImage+LXX.h"
+#import "CrossLineLable.h"
+#import "AppDelegate.h"
+#import "TitleBar.h"
+
+#define PHONE_WIDTH [AppDelegate sharePhoneWidth]    //手机宽度
+#define PHONE_HEIGHT [AppDelegate sharePhoneHeight]  //手机高度
+#define NAVBAR_HEIGHT 64                             //导航栏高度
+#define PRODUCT_IMAGE_HEIGHT 190                     //商品图片高度
+#define PRODUCT_DESC_HEIGHT 58                       //商品描述高度
+#define PRICE_CONTENTVIEW_HEIGHT 60                  //价格标签容器视图高度
+#define BTN_CONTENTVIEW_HEIGHT 50                    //按钮容器高度
+#define PRICELABEL_HEIGHT 20                         //价格标签高度
+
+
+#import "AppDelegate.h"
+
+@interface ProductDetailVC ()<UITableViewDataSource,UITableViewDelegate>
+
+@property(nonatomic,weak)UIImageView *productImgView;    //产品图片
+@property(nonatomic,weak)UILabel *descLable;             //产品描述
+@property(nonatomic,weak)UIView *priceShowView;          //价格显示视图
+@property(nonatomic,weak)CrossLineLable *oldPriceLable;  //原价
+@property(nonatomic,weak)UILabel *nowPriceLable;         //现价
+@property(nonatomic,weak)UIImageView *ifHaveView;        //存货数量标签
+@property(nonatomic,weak)UITableView *dataTable;         //表单
+
+@end
+
+static NSString *identifier = @"CustomCell";
+
+@implementation ProductDetailVC
+{
+    NSMutableArray *_dataSources_ZP;//赠品
+    NSMutableArray *_dataSources_SX;//商品属性
+    CGRect tableFrame;              //表单frame
+    bool isShow;                    //赠品栏是否收缩
+    UIView *headerView;             //section视图
+    UIImageView *headImgView;       //section收缩箭头
+}
+
+//- (void)loadView
+//{
+//    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, PHONE_WIDTH, PHONE_HEIGHT)];
+//    self.view = view;
+//}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    isShow = NO;
+    _dataSources_ZP = [NSMutableArray array];
+    [_dataSources_ZP addObject:@"手机屏幕碎保一年"];
+    [_dataSources_ZP addObject:@"贝斯特BEsiter普罗米双 USB聚合移动电源12000毫安 白色"];
+    [_dataSources_ZP addObject:@"dostyle HS301 入耳式金属耳机手机/PC适用 香槟金"];
+    
+    _dataSources_SX = [NSMutableArray array];
+    [_dataSources_SX addObject:@"颜色"];
+    [_dataSources_SX addObject:@"内存"];
+    [_dataSources_SX addObject:@"号码"];
+    [_dataSources_SX addObject:@"方式"];
+    [self layoutViews];
+}
+
+
+- (void)layoutViews
+{
+    if (IOS7)
+    {
+        self.edgesForExtendedLayout = UIRectEdgeBottom;
+    }
+    
+    TitleBar *titleBar = [[TitleBar alloc] initWithFramShowHome:YES ShowSearch:YES TitlePos:middle_position];
+    [self.view addSubview:titleBar];
+    //滚动视图
+    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, NAVBAR_HEIGHT, PHONE_WIDTH,PHONE_HEIGHT - NAVBAR_HEIGHT)];
+    scrollView.contentSize = CGSizeMake(PHONE_WIDTH, 700);
+    scrollView.backgroundColor = [ComponentsFactory createColorByHex:@"#f0eff4"];
+    scrollView.showsVerticalScrollIndicator = NO;
+    
+    //商品图片
+    UIImageView *productImgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, PHONE_WIDTH, PRODUCT_IMAGE_HEIGHT)];
+    productImgView.backgroundColor = [UIColor redColor];
+    self.productImgView = productImgView;
+    [scrollView addSubview:productImgView];
+    
+    //商品描述
+    UILabel *descLable = [[UILabel alloc] initWithFrame:CGRectMake(10, PRODUCT_IMAGE_HEIGHT,PHONE_WIDTH - 20, PRODUCT_DESC_HEIGHT)];
+    descLable.text = @"苹果iPhone 6 4.7英寸6.9mm超薄，配备A8芯片，搭载ios8系统";
+    descLable.numberOfLines = 0;
+    descLable.backgroundColor = [UIColor clearColor];
+    self.descLable = descLable;
+    [scrollView addSubview:descLable];
+    
+    //价格信息视图
+    UIView *priceShowView = [[UIView alloc] initWithFrame:CGRectMake(0, PRODUCT_IMAGE_HEIGHT + PRODUCT_DESC_HEIGHT, PHONE_WIDTH, PRICE_CONTENTVIEW_HEIGHT)];
+    priceShowView.backgroundColor = [UIColor whiteColor];
+    self.priceShowView = priceShowView;
+    [scrollView addSubview:priceShowView];
+    
+    //现价
+    UILabel *nowPriceLable = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 160, PRICELABEL_HEIGHT)];
+    nowPriceLable.font = [UIFont systemFontOfSize:16.0f];
+    nowPriceLable.textColor = [ComponentsFactory createColorByHex:@"#d73902"];
+    nowPriceLable.text = @"4860.00 - 5380.00元";
+    self.nowPriceLable = nowPriceLable;
+    
+    //原价
+    CrossLineLable *oldPriceLable = [[CrossLineLable alloc] initWithFrame:CGRectMake(10, 30, 180, PRICELABEL_HEIGHT)];
+    oldPriceLable.font = [UIFont systemFontOfSize:14.0f];
+    oldPriceLable.textColor = [UIColor lightGrayColor];
+    oldPriceLable.text = @"价格:4860.00 - 5380.00元";
+    self.oldPriceLable = oldPriceLable;
+    
+    //是否有货
+    UIImageView *ifHaveView = [[UIImageView alloc] initWithFrame:CGRectMake(175, 13, 27, 13)];
+    ifHaveView.image = [UIImage imageNamed:@"lable_content_sku_y"];
+    self.ifHaveView = ifHaveView;
+    
+    //分割线
+    UIImageView *lineView = [[UIImageView alloc] initWithFrame:CGRectMake(240, 5, 1, 50)];
+    lineView.image = [UIImage imageNamed:@"list_nav_line_s"];
+    
+    //分享按钮
+    UIButton *shareBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [shareBtn setFrame:CGRectMake(237, 0, 83, 60)];
+    [shareBtn setImage:[UIImage imageNamed:@"btn_share_n.png"] forState:UIControlStateNormal];
+    [shareBtn setImage:[UIImage imageNamed:@"btn_share_p.png"] forState:UIControlStateHighlighted];
+    shareBtn.imageEdgeInsets = UIEdgeInsetsMake(-10, 15, 10, -15);
+    [shareBtn.titleLabel setFont:[UIFont systemFontOfSize:14]];
+    [shareBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [shareBtn setTitleColor:[UIColor orangeColor] forState:UIControlStateHighlighted];
+    [shareBtn setTitle:@"分享" forState:UIControlStateNormal];
+    shareBtn.titleEdgeInsets = UIEdgeInsetsMake(13, -18, -20, 0);
+    
+    //添加事件监听
+    [shareBtn addTarget:self action:@selector(share:) forControlEvents:UIControlEventTouchUpInside];
+    
+    //创建表格
+    UITableView *dataTable = [[UITableView alloc] initWithFrame:CGRectMake(0, 315, PHONE_WIDTH, 360) style:UITableViewStylePlain];
+    [dataTable registerClass:[UITableViewCell class] forCellReuseIdentifier:identifier];
+    self.dataTable = dataTable;
+    dataTable.delegate = self;
+    dataTable.dataSource = self;
+    dataTable.scrollEnabled = NO;
+    dataTable.backgroundColor = [UIColor clearColor];
+    dataTable.separatorStyle = UITableViewCellSeparatorStyleNone;
+    tableFrame = dataTable.frame;
+    
+    [scrollView addSubview:dataTable];
+    
+    [priceShowView addSubview:shareBtn];
+    [priceShowView addSubview:lineView];
+    [priceShowView addSubview:ifHaveView];
+    [priceShowView addSubview:nowPriceLable];
+    [priceShowView addSubview:oldPriceLable];
+    
+    [self.view addSubview:scrollView];
+    //按钮界面
+    UIView *btnView = [[UIView alloc] initWithFrame:CGRectMake(0, PHONE_HEIGHT - BTN_CONTENTVIEW_HEIGHT, PHONE_WIDTH,BTN_CONTENTVIEW_HEIGHT)];
+    btnView.backgroundColor = [UIColor whiteColor];
+    
+    UIButton *btnTalk = [UIButton buttonWithType:UIButtonTypeCustom];
+    [btnTalk setTitle:@"在线咨询" forState:UIControlStateNormal];
+    btnTalk.frame = CGRectMake(7, 8, 104, 33);
+    [btnTalk setBackgroundImage:[UIImage resizedImage:@"bnt_content_second_n.png"] forState:UIControlStateNormal];
+    [btnView addSubview:btnTalk];
+    [btnTalk addTarget:self action:@selector(OnlineConsulting) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIButton *btnBuy = [UIButton buttonWithType:UIButtonTypeCustom];
+    [btnBuy setTitle:@"立即购买" forState:UIControlStateNormal];
+    btnBuy.frame = CGRectMake(118, 8, 195, 33);
+    [btnBuy setBackgroundImage:[UIImage resizedImage:@"bnt_content_primary_n.png"] forState:UIControlStateNormal];
+    [btnBuy addTarget:self action:@selector(BuyProduct) forControlEvents:UIControlEventTouchUpInside];
+    [btnView addSubview:btnBuy];
+    
+    [self.view addSubview:btnView];
+}
+
+#pragma mark - UITableViewDataSource
+
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 2;
+}
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if (section == 0)
+    {
+        if (isShow) {
+            return _dataSources_ZP.count;
+        }
+        else
+            return 0;
+    }
+    else
+        return _dataSources_SX.count;
+    
+    return 0;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
+    if (indexPath.section == 0) {
+        cell.textLabel.text = _dataSources_ZP[indexPath.row];
+    }
+    else
+        cell.textLabel.text = _dataSources_SX[indexPath.row];
+    cell.textLabel.font = [UIFont systemFontOfSize:15.0];
+    cell.textLabel.numberOfLines = 0;
+    [cell.textLabel setTintColor:[ComponentsFactory createColorByHex:@"#4a4a4a"]];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.layer.shadowOffset = CGSizeMake(0, -2);
+    cell.layer.shadowOpacity = 0.3;
+    return cell;
+}
+
+#pragma mark - UITableViewDelegate
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 44.0;
+}
+
+//选中单元格时调用
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    if (0 == section)
+    {
+        if (headerView == nil)
+        {
+            headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, PHONE_WIDTH, 44)];
+            headerView.backgroundColor = [UIColor whiteColor];
+            
+            UILabel *lable = [[UILabel alloc] initWithFrame:CGRectMake(20, 10, 100, 30)];
+            lable.text = @"赠品";
+            lable.tintColor = [ComponentsFactory createColorByHex:@"#000000"];
+            [headerView addSubview:lable];
+            UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+            button.frame = headerView.frame;
+            [button addTarget:self action:@selector(showDataCell:) forControlEvents:UIControlEventTouchUpInside];
+            headImgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"btn_content_up_n.png"]];
+            headImgView.frame = CGRectMake(290, 20, 13, 8);
+            [headerView addSubview:headImgView];
+            [headerView addSubview:button];
+        }
+        headImgView.image = [UIImage imageNamed:isShow?@"btn_content_up_n.png":@"btn_content_down_n.png"];
+        return headerView;
+    }
+    else
+        return nil;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    
+    return section == 0 ? 44:10;
+}
+
+//赠品收缩
+- (void)showDataCell:(UIButton *)sender
+{
+    if (isShow)
+    {
+        NSInteger rowsNum = [self.dataTable numberOfRowsInSection:0];
+        [UIView animateWithDuration:0.1f animations:^{
+            self.dataTable.frame = (CGRect){self.dataTable.frame.origin,CGSizeMake(PHONE_WIDTH, self.dataTable.frame.size.height- rowsNum * 44)};
+        }];
+    }
+    else
+    {
+        [UIView animateWithDuration:0.1f animations:^{
+            self.dataTable.frame = tableFrame;
+        }];
+    }
+    isShow = !isShow;
+    [self.dataTable reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
+}
+
+//分享
+- (void)share:(UIButton *)sender
+{
+    NSLog(@"share");
+}
+
+//在线咨询
+- (void)OnlineConsulting
+{
+    NSLog(@"在线咨询");
+}
+
+//立即购买
+- (void)BuyProduct
+{
+    NSLog(@"立即购买");
+}
+
+
+@end

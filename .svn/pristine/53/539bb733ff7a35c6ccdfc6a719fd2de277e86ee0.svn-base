@@ -1,0 +1,19 @@
+//
+//  ChooseNumVC.h
+//  WoChuangFu
+//
+//  Created by duwl on 12/1/14.
+//  Copyright (c) 2014 asiainfo-linkage. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface ChooseNumVC : UIViewController<HttpBackDelegate>
+
+@property (nonatomic,copy)void(^block)(NSString *str);
+
+// 用于外层回调
++(ChooseNumVC *)shareInstance;
+
+
+@end

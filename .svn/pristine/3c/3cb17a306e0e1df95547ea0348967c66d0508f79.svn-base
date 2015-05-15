@@ -1,0 +1,170 @@
+//
+//  MainSearchVC.m
+//  WoChuangFu
+//
+//  Created by duwl on 12/27/14.
+//  Copyright (c) 2014 asiainfo-linkage. All rights reserved.
+//
+
+#import "MainSearchVC.h"
+#import "ProductsVC.h"
+
+@interface MainSearchVC ()
+{
+    TitleBar* titleBar;
+}
+
+@property(nonatomic,retain)TitleBar* titleBar;
+
+@end
+
+@implementation MainSearchVC
+@synthesize titleBar;
+
+- (void)dealloc
+{
+    [titleBar release];
+    [super dealloc];
+}
+
+-(void)loadView
+{
+    [super loadView];
+    CGRect ScF=[UIScreen mainScreen].bounds;
+    UIView *BackV=[[UIView alloc] initWithFrame:ScF];
+    BackV.backgroundColor=[UIColor blackColor];//[ComponentsFactory createColorByHex:@"#F8F8F8"];
+    self.view = BackV;
+    [BackV release];
+    self.navigationController.navigationBarHidden=YES;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+    [self initTitleBar];
+    [self initContentView];
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+- (void)initTitleBar
+{
+    TitleBar* title = [[TitleBar alloc] initWithFramShowHome:NO ShowSearch:NO TitlePos:left_position];
+    [title setLeftIsHiden:YES];
+//    [title setTitle:@"提交订单"];
+    [title setSearchShow];
+    if (IOS7){
+        title.frame = CGRectMake(0, 20, [AppDelegate sharePhoneWidth], TITLE_BAR_HEIGHT);
+    }
+    title.target = self;
+    self.titleBar = title;
+    [title release];
+    [self.view addSubview:self.titleBar];
+    
+}
+
+- (void)initContentView
+{
+    UIScrollView* contentView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, TITLE_BAR_HEIGHT+20, [AppDelegate sharePhoneWidth], [AppDelegate sharePhoneHeight]-TITLE_BAR_HEIGHT-20-TAB_BAR_HEIGHT)];
+    contentView.backgroundColor = [UIColor whiteColor];
+    contentView.delegate = self;
+    UITapGestureRecognizer* scrollGest = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(gestureAction:)];
+    
+    [contentView addGestureRecognizer:scrollGest];
+    [self.view addSubview:contentView];
+    [contentView release];
+}
+
+- (void)gestureAction:(UIGestureRecognizer*)gestureRecognizer
+{
+    switch (gestureRecognizer.state) {
+        case UIGestureRecognizerStateEnded:
+            [self.titleBar endSearching];
+            break;
+        default:break;
+    }
+}
+
+-(void)searchAction:(NSString*)key
+{
+    NSDictionary* passParams = [[NSDictionary alloc] initWithObjectsAndKeys:@"",@"",@"",@"", nil];
+    
+    ProductsVC* vc = [[ProductsVC alloc] init];
+    vc.params = passParams;
+    [passParams release];
+    self.navigationController.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:vc animated:YES];
+//    NSDictionary *bodyData = [[NSDictionary alloc] initWithObjectsAndKeys:
+//                              [NSNull null],@"expand",
+//                              [NSNull null],@"filter",
+//                              [NSNull null],@"searchKey",
+//                              [NSNull null],@"moduleId",
+//                              [NSNull null],@"developerId",
+//                              [NSNull null],@"sortType",
+//                              @"1",@"pageIndex",
+//                              @"20",@"pageCount",
+//                              @"1",@"needType",
+//                              [NSNull null],@"speciseId",
+//                              [NSNull null],@"requestType",
+//                              nil];
+//    [self.titleBar endSearching];
+//    bussineDataService* buss = [bussineDataService sharedDataService];
+//    buss.target = self;
+//    [buss getProducts:bodyData];
+//    [bodyData release];
+}
+
+-(void)showSimpleAlertView:(NSString*)message
+{
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示信息"
+                                                    message:message
+                                                   delegate:nil
+                                          cancelButtonTitle:@"确定"
+                                          otherButtonTitles:nil];
+    [alert show];
+    [alert release];
+}
+
+//key: bussineCode value :; Key:errorCode, value: key:MSG, value:
+- (void)requestDidFinished:(NSDictionary*)info
+{
+    MyLog(@"%@",info);
+    NSString* oKCode = @"0000";
+    NSString* bizCode = [info objectForKey:@"bussineCode"];
+    NSString* errCode = [info objectForKey:@"errorCode"];
+    NSString* msg = [info objectForKey:@"MSG"];
+    
+    if([bizCode isEqualToString:[ProductsMessage getBizCode]]){
+        if([oKCode isEqualToString:errCode]){
+            
+        } else {
+            if(nil == msg || [info objectForKey:@"MSG"] == [NSNull null]){
+                msg = @"搜索失败！";
+            }
+            [self showSimpleAlertView:msg];
+        }
+    } 
+    
+}
+//key: bussineCode value :; Key:errorCode, value: key:MSG, value:
+- (void)requestFailed:(NSDictionary*)info
+{
+    MyLog(@"%@",info);
+    NSString* bizCode = [info objectForKey:@"bussineCode"];
+    NSString* msg = [info objectForKey:@"MSG"];
+    
+    if([[ProductsMessage getBizCode] isEqualToString:bizCode]){
+        if(nil == msg || [info objectForKey:@"MSG"] == [NSNull null]){
+            msg = @"搜索失败！";
+        }
+        [self showSimpleAlertView:msg];
+        
+    }
+}
+
+@end

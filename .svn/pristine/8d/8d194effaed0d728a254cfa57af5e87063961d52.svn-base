@@ -1,0 +1,261 @@
+//
+//  UserInfoView.m
+//  WoChuangFu
+//
+//  Created by 李新新 on 14-12-30.
+//  Copyright (c) 2014年 asiainfo-linkage. All rights reserved.
+//
+
+#import "UserInfoView.h"
+#import "TitleBar.h"
+#import "CommonMacro.h"
+#import "InfoCell.h"
+
+
+@implementation UserInfoView
+
+- (id)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        [self LayoutV];
+                // Initialization code
+    }
+    return self;
+}
+
+
+
+-(void)LayoutV
+{
+    bussineDataService *bus = [bussineDataService  sharedDataService];
+    bus.target = self;
+    _requestDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                    @"260817412",@"userCode",
+                    @"1",@"userType",nil];
+    [bus getInfo:_requestDict];
+
+    
+    _groupCount = [NSMutableArray array];
+//    _infoData = [NSMutableArray arrayWithObjects:@"姓名",@"城市",@"QQ邮箱",@"手机号码",@"推广码",@"机构吗",@"机构名称",nil];
+    
+    UILabel *one = [[UILabel alloc]initWithFrame:CGRectMake(10,0 ,100, 30)];
+    one.text = @"个人信息";
+    one.font = [UIFont systemFontOfSize:15];
+    one.textColor = [UIColor grayColor];
+    [self addSubview:one];
+    UIView *bgView = [[UIView alloc]initWithFrame:CGRectMake(0, 30, SCREEN_WIDTH, SCREEN_HEIGHT)];
+    [self addSubview:bgView];
+    _mytable = [[UITableView alloc]initWithFrame:CGRectMake(0,0, SCREEN_WIDTH, SCREEN_HEIGHT-150)];
+    _mytable.dataSource = self;
+    _mytable.delegate = self;
+    _mytable.backgroundColor = [UIColor whiteColor];
+    _mytable.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+    _mytable.showsVerticalScrollIndicator = NO;
+    _mytable.scrollEnabled = YES;
+    [bgView addSubview:_mytable];
+    _mytable.backgroundColor = UIColorWithRGBA(240, 239, 245, 1);
+    self.backgroundColor = UIColorWithRGBA(240, 239, 245, 1);
+    
+//    if ([_mytable respondsToSelector:@selector(setSeparatorInset:)]) {
+//        [_mytable setSeparatorInset:UIEdgeInsetsMake(0,0,0,0)];
+//    }
+//    
+//    if ([_mytable respondsToSelector:@selector(setLayoutMargins:)]) {
+//        [_mytable setLayoutMargins:UIEdgeInsetsMake(0,0,0,0)];
+//    }
+    
+    if ([_mytable respondsToSelector:@selector(setSeparatorInset:)]) {
+        [_mytable setSeparatorInset:UIEdgeInsetsZero];
+    }
+    _mytable.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    
+    _mytable.separatorStyle = UITableViewCellSeparatorStyleNone;
+
+}
+
+
+
+
+- (NSMutableArray *)groupCount
+{
+    if (nil == _groupCount)
+    {
+        _groupCount = [NSMutableArray array];
+    }
+    return _groupCount;
+}
+
+
+#pragma mark - tableView代理
+
+
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    
+    return _groupCount.count;
+    
+}
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+ 
+    NSDictionary *dict =  _groupCount[section];
+    NSMutableArray *array = dict[@"infos"];
+    return array.count;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (section==0) {
+        return 0;
+    }
+    return 30;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 44;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *myCell = @"cell_identifier";
+    InfoCell *cell = [tableView dequeueReusableCellWithIdentifier:myCell];
+    
+    if (cell == nil) {
+        cell = [[InfoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:myCell];
+    }
+    
+    NSDictionary *dict = _groupCount[indexPath.section];
+    NSDictionary *dict1 =dict[@"infos"][indexPath.row];
+    NSString *leftStr = dict1[@"itemName"];
+    cell.leftStr.text= leftStr;
+    
+    NSString *rightSt = nil;
+    if (dict1[@"itemValue"]==[NSNull null]) {
+        rightSt = @"";
+    }
+    else
+        rightSt = dict1[@"itemValue"];
+    cell.rightStr.text= rightSt;
+
+//    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    return cell;
+}
+
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+
+}
+
+//- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    
+//    if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
+//        
+//        [cell setSeparatorInset:UIEdgeInsetsZero];
+//        
+//    }
+//
+//}
+
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
+        [cell setSeparatorInset:UIEdgeInsetsZero];
+    }
+    
+//    if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
+//        [cell setLayoutMargins:UIEdgeInsetsZero];
+//    }
+}
+
+
+-(void)requestDidFinished:(NSDictionary *)info
+
+{
+    bussineDataService *bus=[bussineDataService sharedDataService];
+    
+    self.groupCount= bus.rspInfo[@"models"];
+    NSLog(@"");
+    
+    [_mytable reloadData];
+}
+
+-(void)requestFailed:(NSDictionary *)info
+{
+    NSString* bizCode = [info objectForKey:@"bussineCode"];
+    NSString* msg = [info objectForKey:@"MSG"];
+    [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
+    
+    if([[InfoMessage getBizCode] isEqualToString:bizCode]){
+        if([info objectForKey:@"MSG"] == [NSNull null]){
+            msg = @"获取数据失败！";
+        }
+        if(nil == msg){
+            msg = @"获取数据失败！";
+        }
+        [self showAlertViewTitle:@"提示"
+                         message:msg
+                        delegate:self
+                             tag:10101
+               cancelButtonTitle:@"取消"
+               otherButtonTitles:@"重试",nil];
+        
+    }
+}
+
+#pragma mark AlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    [alertView dismissWithClickedButtonIndex:buttonIndex animated:YES];
+    NSString *buttonTitle = [alertView buttonTitleAtIndex:buttonIndex];
+    if(alertView.tag==10101){
+        if([buttonTitle isEqualToString:@"重试"]){
+            bussineDataService *bus=[bussineDataService sharedDataService];
+            bus.target=self;
+            [bus getInfo:self.SendDic];
+        }
+    }
+}
+
+#pragma mark -
+#pragma mark AlertView
+-(void)showAlertViewTitle:(NSString*)title message:(NSString*)message delegate:(id)delegate tag:(NSInteger)tag cancelButtonTitle:(NSString*)cancelButtonTitle otherButtonTitles:(NSString*)otherButtonTitles,...
+{
+    NSMutableArray* argsArray = [[NSMutableArray alloc] initWithCapacity:0];
+    
+    id arg;
+    va_list argList;
+    if(nil != otherButtonTitles){
+        va_start(argList, otherButtonTitles);
+        while ((arg = va_arg(argList,id))) {
+            [argsArray addObject:arg];
+        }
+        va_end(argList);
+    }
+    
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:title
+                                                    message:message
+                                                   delegate:delegate
+                                          cancelButtonTitle:cancelButtonTitle
+                                          otherButtonTitles:otherButtonTitles,nil];
+    alert.tag = tag;
+    for(int i = 0; i < [argsArray count]; i++){
+        [alert addButtonWithTitle:[argsArray objectAtIndex:i]];
+    }
+    [alert show];
+}
+
+-(void)showSimpleAlertView:(NSString*)message
+{
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示信息"
+                                                    message:message
+                                                   delegate:nil
+                                          cancelButtonTitle:@"确定"
+                                          otherButtonTitles:nil];
+    [alert show];
+}
+
+
+@end
