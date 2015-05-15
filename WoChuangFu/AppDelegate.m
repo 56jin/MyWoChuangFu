@@ -109,9 +109,12 @@
     {
         locationManager = [[CLLocationManager alloc] init];
         locationManager.delegate = self;
-#ifdef __IPHONE_8_0
-        [locationManager requestAlwaysAuthorization];//添加这句
-#endif
+//#ifdef __IPHONE_8_1
+        if(IOS8) {
+            [locationManager requestAlwaysAuthorization];//添加这句®
+        }
+        
+//#endif
     }
     [locationManager startUpdatingLocation];
 }
