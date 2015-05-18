@@ -123,6 +123,9 @@
         //step1.加载加载登录界面
         [self showLoginView];
     }
+    
+    
+
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -217,11 +220,13 @@
 
 - (void)loginSuccessReture:(NSString *)loginString {
     
-    
+     titleBar.title = @"我的财富";
+    [titleBar setLeftIsHiden:YES];
     
     self.navigationController.navigationBar.hidden = YES;
     CGRect frame = [[UIScreen mainScreen] bounds];
-    frame.size.height -= 45;
+//    frame.size.height -= 64;
+//    frame.origin.y -= 64;
     if (loginSuccessView == nil){
         
 //        ShowWebVC *gotoVC = [[ShowWebVC alloc] init];
@@ -236,7 +241,7 @@
 //        gotoVC.URL = loginString;
 //        [self.view addSubview:gotoVC.view];
         
-        loginSuccessView = [[LoginSuccessView alloc]initWithFrame:frame];
+        loginSuccessView = [[LoginSuccessView alloc]initWithFrame:CGRectMake(0, 64, frame.size.width, frame.size.height)];
         loginSuccessView.urlLogin = loginString;
         [loginSuccessView builtView];
         [loginSuccessView showView];
@@ -261,7 +266,7 @@
     
     
     if ([AppDelegate shareMyApplication].isSeleat == YES) {
-        [self.tabBarController setSelectedIndex:1];
+        [self.tabBarController setSelectedIndex: [AppDelegate shareMyApplication].selectInteger == 3 ? 3 :1];
     }
     
 }

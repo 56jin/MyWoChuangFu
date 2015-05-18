@@ -234,6 +234,9 @@ static bussineDataService *sharedBussineDataServicee = nil;
     SEL selector = NSSelectorFromString(funName);
     [self setSendMessageSelector:selector];
     self.sendDataDic = parameters;
+    
+    NSLog(@"\n\n  %@     ",self.sendDataDic);
+    
     [self sharedSendMessage:messageObject synchronously:synchronously];
     [messageObject release];
 }
@@ -1078,7 +1081,7 @@ static bussineDataService *sharedBussineDataServicee = nil;
 
 -(void)getAddJiGouFinished:(id<MessageDelegate>)msg
 {
-    GetMsgCenterData *Msg = msg;
+    GetAddJiGouMessage *Msg = msg;
     NSDictionary *rspDic = [self handleRspInfo:Msg];
     NSString* rspCode = [Msg getRspcode];
     if([rspCode isEqualToString:@"0000"]){
@@ -1100,7 +1103,7 @@ static bussineDataService *sharedBussineDataServicee = nil;
 
 -(void)getSelectJiGouFinished:(id<MessageDelegate>)msg
 {
-    GetMsgCenterData *Msg = msg;
+    GetSelectJiGouMessage *Msg = msg;
     NSDictionary *rspDic = [self handleRspInfo:Msg];
     NSString* rspCode = [Msg getRspcode];
     if([rspCode isEqualToString:@"0000"]){
@@ -1179,7 +1182,10 @@ static bussineDataService *sharedBussineDataServicee = nil;
         [self qiankaLoginFinished:msg];
     }else if([[msg getBusinessCode] isEqualToString:GetSelectJiGouMessage_BIZCODE]) {
         [self getSelectJiGouFinished:msg];
+    }else if([[msg getBusinessCode] isEqualToString:GetAddJiGouMessage_BIZCODE]) {
+        [self getAddJiGouFinished:msg];
     }
+
 }
 
 - (void)requestFailed:(NSDictionary*)errorInfo

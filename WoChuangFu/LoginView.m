@@ -30,7 +30,7 @@
         UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(resignAllFirstResponder)];
         [self addGestureRecognizer:tapGestureRecognizer];
        [self LayoutV];
-       [self login];
+//       [self login];  //取消自动登录
     }
     return self;
 }
@@ -162,6 +162,7 @@
         NSDictionary *dic=[[NSDictionary alloc] initWithObjectsAndKeys:
                            PassTextField.text,@"passWd",
                            NameTextField.text,@"userCode",
+//                           @"99",@"jgid",
                            nil];
         [buss qiankaLogin:dic];
     }

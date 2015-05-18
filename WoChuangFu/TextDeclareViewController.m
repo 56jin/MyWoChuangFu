@@ -39,6 +39,11 @@
 
 - (void)initTitleBar
 {
+//    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [AppDelegate sharePhoneWidth], 20)];
+//    view.backgroundColor = [UIColor blackColor];
+//    [self.view addSubview:view];
+//    [view release];
+    
     TitleBar* title = [[TitleBar alloc] initWithFramShowHome:NO ShowSearch:NO TitlePos:middle_position];
     [title setLeftIsHiden:YES];
     if (IOS7){
@@ -49,7 +54,7 @@
 //    } else {
 //        [title setTitle:@"沃创富"];
 //    }
-    [title setTitle:@"沃创富"];
+    [title setTitle:@"精选"];
     title.target = self;
    
    
@@ -117,7 +122,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-//    [self initTitleBar];
+     
+    
+    [self initTitleBar];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 //    self.navigationController.navigationBarHidden = YES;
 //    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];

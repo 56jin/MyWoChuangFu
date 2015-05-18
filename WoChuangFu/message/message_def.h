@@ -40,5 +40,6 @@
 #import "QiankaShareMessage.h"
 #import "ShareMessage.h"
 #import "GetSelectJiGouMessage.h"
+#import "GetAddJiGouMessage.h"
 
 #endif

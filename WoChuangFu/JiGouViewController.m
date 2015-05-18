@@ -30,13 +30,16 @@
     titleBar.target = self;
 
     
-    bussineDataService *buss=[bussineDataService sharedDataService];
+    [AppDelegate shareMyApplication].selectInteger = 0;
+    
+    
+    bussineDataService *buss=[bussineDataService sharedDataServicee];
     buss.target=self;
     
     NSString *session = [[NSUserDefaults standardUserDefaults] objectForKey:@"sessionid"];
     NSLog(@"~~~~~id  %@",session);
     SendDic = [[NSDictionary alloc] initWithObjectsAndKeys:
-                       session,@"sessionid",
+                       session,@"sessionId",
                        nil];
     [buss selectJigou:SendDic];
     // Do any additional setup after loading the view from its nib.
@@ -58,9 +61,18 @@
     if([[GetSelectJiGouMessage getBizCode] isEqualToString:bizCode]){
         if([oKCode isEqualToString:errCode]){
             
-            bussineDataService *bus=[bussineDataService sharedDataService];
+            bussineDataService *bus=[bussineDataService sharedDataServicee];
 
             NSLog(@"bus,rspInfo是%@",bus.rspInfo);
+            
+            if([bus.rspInfo[@"flag"] integerValue] == 1) {
+                self.nameLabel.text = [NSString stringWithFormat:@"%@",bus.rspInfo[@"agency"]];
+                _theVIew.hidden = NO;
+                
+            }
+            else {
+                _theVIew.hidden = NO;
+            }
             
         }else{
             if([NSNull null] == [info objectForKey:@"MSG"]){
@@ -72,6 +84,34 @@
             [self showSimpleAlertView:msg];
         }
     }
+    
+    if([[GetAddJiGouMessage getBizCode] isEqualToString:bizCode]){
+        if([oKCode isEqualToString:errCode]){
+            
+            bussineDataService *bus=[bussineDataService sharedDataServicee];
+            
+            NSLog(@"bus,rspInfo是%@",bus.rspInfo);
+            
+            if([bus.rspInfo[@"flag"] integerValue] == 1) {
+                self.nameLabel.text = [NSString stringWithFormat:@"%@",bus.rspInfo[@"agency"]];
+                _theVIew.hidden = YES;
+                
+            }
+            else {
+                _theVIew.hidden = NO;
+            }
+            
+        }else{
+            if([NSNull null] == [info objectForKey:@"MSG"]){
+                msg = @"登录异常！";
+            }
+            if(nil == msg){
+                msg = @"登录异常！";
+            }
+            [self showSimpleAlertView:msg];
+        }
+    }
+
 }
 
 - (void)requestFailed:(NSDictionary*)info
@@ -86,19 +126,29 @@
     
     if([[GetSelectJiGouMessage getBizCode] isEqualToString:bizCode]){
         if([info objectForKey:@"MSG"] == [NSNull null]){
-            msg = @"登陆失败！";
+            msg = @"登录失败！";
         }
         if(nil == msg){
-            msg = @"登陆失败！";
+            msg = @"登录失败！";
         }
-        [self showAlertViewTitle:@"提示"
-                         message:msg
-                        delegate:self
-                             tag:10101
-               cancelButtonTitle:@"取消"
-               otherButtonTitles:@"重试",nil];
-        
     }
+    
+    if([[GetAddJiGouMessage getBizCode] isEqualToString:bizCode]){
+        if([info objectForKey:@"MSG"] == [NSNull null]){
+            msg = @"提交失败！";
+        }
+        if(nil == msg){
+            msg = @"提交失败！";
+        }
+    }
+
+    
+    [self showAlertViewTitle:@"提示"
+                     message:msg
+                    delegate:self
+                         tag:10101
+           cancelButtonTitle:@"取消"
+           otherButtonTitles:@"重试",nil];
 }
 
 
@@ -151,9 +201,15 @@
     NSString *buttonTitle = [alertView buttonTitleAtIndex:buttonIndex];
     if(alertView.tag==10101){
         if([buttonTitle isEqualToString:@"重试"]){
-            bussineDataService *bus=[bussineDataService sharedDataService];
+            bussineDataService *bus=[bussineDataService sharedDataServicee];
             bus.target=self;
-            [bus selectJigou:SendDic];
+            if (SendDic.count >= 2) {
+                [bus addJigou:SendDic];
+
+            }
+            else
+                [bus selectJigou:SendDic];
+            
         }
     }
 }
@@ -176,6 +232,26 @@
 
 - (IBAction)sureButton:(id)sender {
      [self.view endEditing:YES];
+    
+    if([self.JiGouCoreText.text length] == 0 || [self.JiGouCoreText.text isEqualToString:@""]) {
+        [self showSimpleAlertView:@"请先输入机构代码"];
+        return;
+    }
+    
+    NSLog(@"%@",self.JiGouCoreText.text);
+    
+    bussineDataService *buss=[bussineDataService sharedDataServicee];
+    buss.target=self;
+    
+    NSString *session = [[NSUserDefaults standardUserDefaults] objectForKey:@"sessionid"];
+    if (SendDic) {
+        SendDic = nil;
+    }
+    SendDic = [[NSDictionary alloc] initWithObjectsAndKeys:
+               session,@"sessionId",self.JiGouCoreText.text,@"jgid",
+               nil];
+    [buss addJigou:SendDic];
+
 }
 
 - (void)dealloc {

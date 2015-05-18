@@ -6,9 +6,9 @@
 //  Copyright (c) 2015年 asiainfo-linkage. All rights reserved.
 //
 
-#import "QianKaLoginMessage.h"
+#import "GetAddJiGouMessage.h"
 
-@implementation QianKaLoginMessage
+@implementation GetAddJiGouMessage
 
 
 -(void)dealloc
@@ -18,18 +18,18 @@
 
 - (NSString *)getRequest
 {
-    NSDictionary *headerData = [[NSDictionary alloc] initWithObjectsAndKeys:QIANKALOGIN_BIZCODE,@"bizCode",nil];
+    NSDictionary *headerData = [[NSDictionary alloc] initWithObjectsAndKeys:GetAddJiGouMessage_BIZCODE,@"bizCode",nil];
     
-    NSString *requestClass = [[NSString alloc] initWithFormat:JSON_BODY_REUEST,[QIANKALOGIN_BIZCODE uppercaseString]];
+    NSString *requestClass = [[NSString alloc] initWithFormat:JSON_BODY_REUEST,[GetAddJiGouMessage_BIZCODE uppercaseString]];
     
     NSDictionary *bodyData = [[NSDictionary alloc] initWithObjectsAndKeys:
                               requestClass,@"@class",
                               [requestInfo objectForKey:@"expand"]==nil?[NSNull null]:
                               [requestInfo objectForKey:@"expand"],@"expand",
-//                              [requestInfo objectForKey:@"sessionId"],@"sessionId",
-                              [requestInfo objectForKey:@"userCode"],@"userCode",
-                              [requestInfo objectForKey:@"passWd"],@"passWd",
-//                              [requestInfo objectForKey:@"jgid"],@"jgid",
+                              [requestInfo objectForKey:@"sessionId"],@"sessionId",
+//                              [requestInfo objectForKey:@"userCode"],@"userCode",
+//                              [requestInfo objectForKey:@"passWd"],@"passWd",
+                              [requestInfo objectForKey:@"jgid"],@"jgid",
                               nil];
     
     
@@ -61,12 +61,12 @@
 
 + (NSString*)getBizCode
 {
-    return QIANKALOGIN_BIZCODE;
+    return GetAddJiGouMessage_BIZCODE;
 }
 
 - (NSString*)getBusinessCode
 {
-    return QIANKALOGIN_BIZCODE;
+    return GetAddJiGouMessage_BIZCODE;
 }
 
 -(void)parseMessage

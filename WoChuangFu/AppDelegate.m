@@ -206,7 +206,8 @@
     tabBarVC.viewControllers = ncArr;
 #ifdef __IPHONE_7_0
 //    tabBarVC.tabBar.barTintColor = [ComponentsFactory createColorByHex:@"#2b2c2d"];
-    tabBarVC.tabBar.barTintColor = UIColorFromRGB(240,239,245);
+//    tabBarVC.tabBar.barTintColor = UIColorFromRGB(240,239,245);
+    tabBarVC.tabBar.barTintColor = UIColorFromRGB(255,255,255);
 
 #else
     tabBarVC.tabBar.barStyle = UIBarStyleBlack;

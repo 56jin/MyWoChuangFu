@@ -42,7 +42,7 @@
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <view contentMode="scaleToFill" id="vay-nP-z5V">
+                <view hidden="YES" contentMode="scaleToFill" id="vay-nP-z5V">
                     <rect key="frame" x="0.0" y="141" width="320" height="119"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                     <subviews>

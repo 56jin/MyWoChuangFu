@@ -71,7 +71,10 @@
 
 - (void)begin
 {
-    [self initTabBar];
+    [[AppDelegate shareMyApplication] initTabBar];
+    
+    [[NSUserDefaults standardUserDefaults] setObject:@"NO" forKey:@"isFirst"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 -(void)initTabBar

@@ -103,6 +103,17 @@
 //        [aler textFieldAtIndex:0].placeholder = @"请输入机构代码";
 //        aler.tag = 2377;
 //        [aler show];
+        
+        if ([AppDelegate shareMyApplication].isLogin == NO) {
+            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"请先登录" delegate:self cancelButtonTitle:nil otherButtonTitles:@"马上登录", nil];
+            alert.tag = 20015;
+            [alert show];
+            
+            return;
+        }
+
+        
+        
         JiGouViewController *jigou = [[JiGouViewController alloc]initWithNibName:@"JiGouViewController" bundle:nil];
         jigou.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:jigou animated:YES];
@@ -199,7 +210,20 @@
             
         }
     }
+    
+    else if(alertView.tag == 20015)
+    {
+        
+        [AppDelegate shareMyApplication].selectInteger = 3;
 
+        [AppDelegate shareMyApplication].isSeleat = YES;
+        [self.tabBarController setSelectedIndex:2];
+            
+        
+    }
+
+
+    
 }
 
 - (void)requestFailed:(NSDictionary*)info

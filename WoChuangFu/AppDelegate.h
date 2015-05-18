@@ -27,6 +27,7 @@
 @property (strong, nonatomic) UIWindow *window;
 @property (nonatomic,assign) BOOL isLogin;  //判断是否已登录
 @property (nonatomic,assign) BOOL isSeleat;  //判断是否在精选页面跳转登录页面
+@property (nonatomic,assign) NSInteger selectInteger;  //判断是否在精选页面跳转登录页面
 
 +(AppDelegate*)shareMyApplication;
 //屏幕高度
@@ -37,4 +38,8 @@
 + (CGFloat)sharePhoneBarHeight;
 //屏幕高度除去手机工具栏高度
 + (CGFloat)sharePhoneContentHeight;
+
+- (void)initTabBar;  //初始化tabbar控制器
+
+
 @end
