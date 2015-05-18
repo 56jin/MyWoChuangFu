@@ -25,44 +25,56 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.backgroundColor = UIColorWithRGBA(240, 112, 33, 1);
+//        self.backgroundColor = UIColorWithRGBA(240, 112, 33, 1);
 
     }
     return self;
 }
 
 - (void)builtView {
-    _seachButton = [[BMWaveButton alloc] initWithType:BMWaveButtonDefault Image:@"logo_key_safari2"];
-    //    [_seachButton setBackgroundImage:[UIImage imageNamed:@"safari_azul"] forState:UIControlStateNormal];
-    [_seachButton setTitle:nil forState:UIControlStateNormal];
-    [_seachButton addTarget:self action:@selector(searchedClicked) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:_seachButton];
+//    _seachButton = [[BMWaveButton alloc] initWithType:BMWaveButtonDefault Image:@"logo_key_safari2"];
+//    //    [_seachButton setBackgroundImage:[UIImage imageNamed:@"safari_azul"] forState:UIControlStateNormal];
+//    [_seachButton setTitle:nil forState:UIControlStateNormal];
+//    [_seachButton addTarget:self action:@selector(searchedClicked) forControlEvents:UIControlEventTouchUpInside];
+//    [self addSubview:_seachButton];
+//    
+//    
+//    UIImageView *chuangimg = [[UIImageView alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/2-60, SCREEN_HEIGHT-180, 120 , 32)];
+//    chuangimg.image = [UIImage imageNamed:@"logo_key_wocf"];
+//    [self addSubview:chuangimg];
+//    
+//    UIImageView *chuowo = [[UIImageView alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/2+40, SCREEN_HEIGHT/2-150, 50 , 40)];
+//    chuowo.image = [UIImage imageNamed:@"chuowo"];
+//    [self addSubview:chuowo];
+//    
+//    UIImageView *textImg = [[UIImageView alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/2-112, SCREEN_HEIGHT-140, 225 , 35)];
+//    textImg.image = [UIImage imageNamed:@"txt_key_coryright"];
+//    [self addSubview:textImg];
+//    
+//    
+//    UILabel *lable2 = [[UILabel alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/2-50, SCREEN_HEIGHT-100, 100, 40)];
+//    lable2.text = [NSString stringWithFormat:@"版本号：%@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]];
+//    lable2.textAlignment = NSTextAlignmentCenter;
+//    lable2.font = [UIFont systemFontOfSize:10];
+//    lable2.textColor = [UIColor blackColor];
+//    lable2.backgroundColor = [UIColor clearColor];
+//    [self addSubview:lable2];
     
     
-    UIImageView *chuangimg = [[UIImageView alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/2-60, SCREEN_HEIGHT-180, 120 , 32)];
-    chuangimg.image = [UIImage imageNamed:@"logo_key_wocf"];
-    [self addSubview:chuangimg];
-    
-    UIImageView *chuowo = [[UIImageView alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/2+40, SCREEN_HEIGHT/2-150, 50 , 40)];
-    chuowo.image = [UIImage imageNamed:@"chuowo"];
-    [self addSubview:chuowo];
-    
-    UIImageView *textImg = [[UIImageView alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/2-112, SCREEN_HEIGHT-140, 225 , 35)];
-    textImg.image = [UIImage imageNamed:@"txt_key_coryright"];
-    [self addSubview:textImg];
+    //去掉左右滚动条
+    self.scrollView.showsHorizontalScrollIndicator = NO;
+    //去掉左右滚动条
+    self.scrollView.showsVerticalScrollIndicator = NO;
     
     
-    UILabel *lable2 = [[UILabel alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/2-50, SCREEN_HEIGHT-100, 100, 40)];
-    lable2.text = [NSString stringWithFormat:@"版本号：%@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]];
-    lable2.textAlignment = NSTextAlignmentCenter;
-    lable2.font = [UIFont systemFontOfSize:10];
-    lable2.textColor = [UIColor blackColor];
-    lable2.backgroundColor = [UIColor clearColor];
-    [self addSubview:lable2];
+
 }
 
 - (void)showView {
-    
+    NSURL* url = [NSURL URLWithString:self.urlLogin];//创建URL
+    NSURLRequest* request = [NSURLRequest requestWithURL:url];//创建NSURLRequest
+    [self loadRequest:request];//加载
+
 }
 
 - (void)searchedClicked

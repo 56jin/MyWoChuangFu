@@ -22,7 +22,7 @@
 #define LEFT_BAR_WIDTH 90
 #define TITLE_HEIGHT (TITLE_BAR_HEIGHT+[[UIScreen mainScreen] applicationFrame].origin.y)
 
-@interface NewMainSearchVC ()<SearchTypeBarDelegate,UISearchBarDelegate,HttpBackDelegate>{
+@interface NewMainSearchVC ()<SearchTypeBarDelegate,UISearchBarDelegate,HttpBackDelegate,TitleBarDelegate>{
     TextDeclareViewController *gotoVC;
 }
 
@@ -44,62 +44,66 @@
 
 - (void)loadView
 {
-//    CGRect ScF=[UIScreen mainScreen].bounds;
-//    UIView *BackV=[[UIView alloc] initWithFrame:ScF];
-//    BackV.backgroundColor=[UIColor blackColor];
-//    self.view = BackV;
-//    self.navigationController.navigationBarHidden=YES;
+    CGRect ScF=[UIScreen mainScreen].bounds;
+    UIView *BackV=[[UIView alloc] initWithFrame:ScF];
+    BackV.backgroundColor=[UIColor blackColor];
+    self.view = BackV;
+    self.navigationController.navigationBarHidden=YES;
     
-//    [self initTitleBar];
-//    [self initLeftBar];
-//    [self initRightView];
+    [self initTitleBar];
+    [self initLeftBar];
+    [self initRightView];
 }
+
+
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     
-    if ([AppDelegate shareMyApplication].isLogin == NO) {
-        
-        [self.tabBarController setSelectedIndex:2];
-    }
-    else{
-        
-        self.navigationController.navigationBarHidden = YES;
-        if (gotoVC == nil) {
-            gotoVC = [[TextDeclareViewController alloc] initWithNibName:@"TextDeclareViewController" bundle:nil];
-        }
-        NSString *sessionid = [[NSUserDefaults standardUserDefaults] objectForKey:@"sessionid"];
-        gotoVC.URL = [NSString stringWithFormat:@"%@/mall/goods?sessionid=%@",service_IPqq,sessionid];
-        
-        [self.navigationController pushViewController:gotoVC animated:NO];
-//        [UrlParser gotoNewVCWithUrl:[NSString stringWithFormat:@"%@/mall/goods",service_IPqq] VC: self];
-    }
-    
-    
-    
-//    NSString *groupName = [self.groups[self.currentIndex] objectForKey:@"groupName"];
-//    if ([groupName isEqualToString:@"历史搜索"]) {
-//        self.searchHistoryList = [self getSearchHistoryList];
-//        if (self.searchHistoryList != nil &&self.searchHistoryList.count!=0) {
-//            self.noSearchHistoryImageview.hidden = YES;
-//            UITableView *table = (UITableView *)[self.view viewWithTag:TABLEVIEW_TAG];
-//            [self.dataSources removeAllObjects];
-//            [table reloadData];
-//            self.dataSources = [NSMutableArray arrayWithArray:self.searchHistoryList];
-//            [self updateTableWithDataSources:self.dataSources];
-//            table.tableFooterView.hidden = NO;
-//        }else{
-//            self.noSearchHistoryImageview.hidden = NO;
-//        }
+//    if ([AppDelegate shareMyApplication].isLogin == NO) {
+//        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"请先登录" delegate:self cancelButtonTitle:nil otherButtonTitles:@"马上登录", nil];
+//        [alert show];
+//        
 //    }
+//    else{
+//        
+//        self.navigationController.navigationBarHidden = YES;
+//        if (gotoVC == nil) {
+//            gotoVC = [[TextDeclareViewController alloc] initWithNibName:@"TextDeclareViewController" bundle:nil];
+//            NSString *sessionid = [[NSUserDefaults standardUserDefaults] objectForKey:@"sessionid"];
+//            gotoVC.URL = [NSString stringWithFormat:@"%@/mall/goods?sessionid=%@",service_IPqq,sessionid];
+//            
+//           
+//        }
+//         [self.navigationController pushViewController:gotoVC animated:NO];
+////        [UrlParser gotoNewVCWithUrl:[NSString stringWithFormat:@"%@/mall/goods",service_IPqq] VC: self];
+//    }
+    
+    
+    
+    NSString *groupName = [self.groups[self.currentIndex] objectForKey:@"groupName"];
+    if ([groupName isEqualToString:@"历史搜索"]) {
+        self.searchHistoryList = [self getSearchHistoryList];
+        if (self.searchHistoryList != nil &&self.searchHistoryList.count!=0) {
+            self.noSearchHistoryImageview.hidden = YES;
+            UITableView *table = (UITableView *)[self.view viewWithTag:TABLEVIEW_TAG];
+            [self.dataSources removeAllObjects];
+            [table reloadData];
+            self.dataSources = [NSMutableArray arrayWithArray:self.searchHistoryList];
+            [self updateTableWithDataSources:self.dataSources];
+            table.tableFooterView.hidden = NO;
+        }else{
+            self.noSearchHistoryImageview.hidden = NO;
+        }
+    }
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-//        [self sendSeachPageInfoRequest];
+        [self sendSeachPageInfoRequest];
 }
 
 - (void)didReceiveMemoryWarning
@@ -119,9 +123,32 @@
 
 #pragma mark
 #pragma mark - 初始化视图
+-(void)backAction {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+
 - (void)initTitleBar
 {
-    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 20, [AppDelegate sharePhoneWidth], TITLE_BAR_HEIGHT)];
+    
+    TitleBar* title = [[TitleBar alloc] initWithFramShowHome:NO ShowSearch:NO TitlePos:middle_position];
+    [title setLeftIsHiden:NO];
+    if (IOS7){
+        title.frame = CGRectMake(0, 20, [AppDelegate sharePhoneWidth], TITLE_BAR_HEIGHT);
+    }
+    //    if(self.titleStr !=nil && self.titleStr.length >0){
+    //        [title setTitle:self.titleStr];
+    //    } else {
+    //        [title setTitle:@"沃创富"];
+    //    }
+    //    [title setTitle:@"沃创富"];
+    title.target = self;
+    
+    
+    [self.view addSubview:title];
+
+    
+    UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(40, 20, [AppDelegate sharePhoneWidth] - 40, TITLE_BAR_HEIGHT)];
     searchBar.placeholder = @"请输入搜索关键字";
     searchBar.tag = SEARCHBAR_TAG;
     for (UIView *subView in searchBar.subviews)
@@ -138,18 +165,21 @@
     searchBar.delegate = self;
     searchBar.backgroundColor = [UIColor orangeColor];
     [self.view addSubview:searchBar];
+    
+    
+
 }
 
 - (void)initLeftBar
 {
-    SearchTypeBar *searchTypeBar = [[SearchTypeBar alloc] initWithFrame:CGRectMake(0,TITLE_HEIGHT,LEFT_BAR_WIDTH, [AppDelegate sharePhoneHeight]-TITLE_HEIGHT-TAB_BAR_HEIGHT)];
+    SearchTypeBar *searchTypeBar = [[SearchTypeBar alloc] initWithFrame:CGRectMake(0,TITLE_HEIGHT,LEFT_BAR_WIDTH, [AppDelegate sharePhoneHeight])];
     searchTypeBar.delegate = self;
     searchTypeBar.tag = LEFT_BAR_TAG;
     [self.view addSubview:searchTypeBar];
 }
 - (void)initRightView
 {
-    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(LEFT_BAR_WIDTH,TITLE_HEIGHT,[AppDelegate sharePhoneWidth]-LEFT_BAR_WIDTH, [AppDelegate sharePhoneHeight]-TITLE_HEIGHT-TAB_BAR_HEIGHT) style:UITableViewStylePlain];
+    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(LEFT_BAR_WIDTH,TITLE_HEIGHT,[AppDelegate sharePhoneWidth]-LEFT_BAR_WIDTH, [AppDelegate sharePhoneHeight]) style:UITableViewStylePlain];
     tableView.tag = TABLEVIEW_TAG;
     tableView.delegate = self;
     tableView.dataSource = self;

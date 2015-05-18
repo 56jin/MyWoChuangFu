@@ -1060,6 +1060,55 @@ static bussineDataService *sharedBussineDataServicee = nil;
     [self noticeUI:rspDic];
 }
 
+#pragma mark - 加入机构
+- (void)addJigou:(NSDictionary *)paramters{
+    if ([[UIDevice currentDevice] networkAvailable]) {
+        [self readySharedSendMessage:@"GetAddJiGouMessage"
+                               param:paramters
+                             funName:@"getAddJiGou:"
+                       synchronously:NO];
+//        [self readySharedSendMessage:@"QianKaLoginMessage"
+//                               param:paramters
+//                             funName:@"qiankaLogin:"
+//                       synchronously:NO];
+
+    }
+
+}
+
+-(void)getAddJiGouFinished:(id<MessageDelegate>)msg
+{
+    GetMsgCenterData *Msg = msg;
+    NSDictionary *rspDic = [self handleRspInfo:Msg];
+    NSString* rspCode = [Msg getRspcode];
+    if([rspCode isEqualToString:@"0000"]){
+        self.rspInfo = Msg.rspInfo;
+    }
+    [self noticeUI:rspDic];
+}
+
+#pragma mark - 机构查询
+- (void)selectJigou:(NSDictionary *)paramters{
+    if ([[UIDevice currentDevice] networkAvailable]) {
+        [self readySharedSendMessage:@"GetSelectJiGouMessage"
+                               param:paramters
+                             funName:@"getSelectJiGou:"
+                       synchronously:NO];
+    }
+
+}
+
+-(void)getSelectJiGouFinished:(id<MessageDelegate>)msg
+{
+    GetMsgCenterData *Msg = msg;
+    NSDictionary *rspDic = [self handleRspInfo:Msg];
+    NSString* rspCode = [Msg getRspcode];
+    if([rspCode isEqualToString:@"0000"]){
+        self.rspInfo = Msg.rspInfo;
+    }
+    [self noticeUI:rspDic];
+}
+
 #pragma mark -
 #pragma mark http 回调接口
 - (void)requestDidFinished:(id<MessageDelegate>)msg
@@ -1128,6 +1177,8 @@ static bussineDataService *sharedBussineDataServicee = nil;
         [self getMsgCenterDataFinished:msg];
     }else if([[msg getBusinessCode] isEqualToString:QIANKALOGIN_BIZCODE]) {
         [self qiankaLoginFinished:msg];
+    }else if([[msg getBusinessCode] isEqualToString:GetSelectJiGouMessage_BIZCODE]) {
+        [self getSelectJiGouFinished:msg];
     }
 }
 

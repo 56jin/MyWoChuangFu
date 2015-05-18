@@ -54,17 +54,26 @@
 
 -(void)backAction
 {
+    if (self.isLogin) {
+        return;
+    }
     [self.navigationController popViewControllerAnimated:YES];
 }
 -(void)homeAction
 {
+    if (self.isLogin) {
+        return;
+    }
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 - (void)initTitleBar
 {
-    TitleBar* title = [[TitleBar alloc] initWithFramShowHome:YES ShowSearch:NO TitlePos:left_position];
-    [title setLeftIsHiden:NO];
+    
+  
+    
+    TitleBar* title = [[TitleBar alloc] initWithFramShowHome:self.isLogin ? NO : YES ShowSearch:NO TitlePos: self.isLogin ? middle_position : left_position];
+    [title setLeftIsHiden: self.isLogin ? YES : NO];
     if (IOS7){
         title.frame = CGRectMake(0, 20, [AppDelegate sharePhoneWidth], TITLE_BAR_HEIGHT);
     }
@@ -121,7 +130,12 @@
 
 - (void)initContentView
 {
-    UIWebView* webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, TITLE_BAR_HEIGHT+SYSTEM_BAR_HEIGHT, [AppDelegate sharePhoneWidth], [AppDelegate sharePhoneHeight]-TITLE_BAR_HEIGHT-SYSTEM_BAR_HEIGHT)];
+    CGFloat heiht = [AppDelegate sharePhoneHeight]-TITLE_BAR_HEIGHT-SYSTEM_BAR_HEIGHT;
+    if (self.isLogin) {
+        [self.view setFrame:CGRectMake(0, 0, [AppDelegate sharePhoneWidth], [AppDelegate sharePhoneHeight] )];
+        heiht += 45;
+    }
+    UIWebView* webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, TITLE_BAR_HEIGHT+SYSTEM_BAR_HEIGHT, [AppDelegate sharePhoneWidth], heiht)];
     webView.delegate = self;
     webView.scalesPageToFit = YES;
     

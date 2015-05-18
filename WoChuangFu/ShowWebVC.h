@@ -25,5 +25,7 @@
 @property(nonatomic,retain)TitleBar* titleBar;
 @property(nonatomic,retain)NSString* postData;
 @property(nonatomic,assign)BOOL isPayment;
+@property(nonatomic,assign)BOOL isLogin;
+
 
 @end

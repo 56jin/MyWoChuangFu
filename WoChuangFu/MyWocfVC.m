@@ -19,6 +19,8 @@
 #import "GetBackPassWordVC.h"
 #include "UrlParser.h"
 #import "LoginSuccessView.h"
+#import "ShowWebVC.h"
+
 
 @interface MyWocfVC ()<TitleBarDelegate,SideBarDelegate,LoginViewDelegate>
 {
@@ -215,13 +217,29 @@
 
 - (void)loginSuccessReture:(NSString *)loginString {
     
+    
+    
     self.navigationController.navigationBar.hidden = YES;
     CGRect frame = [[UIScreen mainScreen] bounds];
     frame.size.height -= 45;
     if (loginSuccessView == nil){
+        
+//        ShowWebVC *gotoVC = [[ShowWebVC alloc] init];
+//        gotoVC.urlStr = loginString;
+//        gotoVC.isLogin = YES;
+//        [self.navigationController pushViewController:gotoVC animated:NO];
+        
+        
+//        [UrlParser gotoNewVCWithUrl:loginString VC: self];
+//
+//        TextDeclareViewController *gotoVC = [[TextDeclareViewController alloc] initWithNibName:@"TextDeclareViewController" bundle:nil];
+//        gotoVC.URL = loginString;
+//        [self.view addSubview:gotoVC.view];
+        
         loginSuccessView = [[LoginSuccessView alloc]initWithFrame:frame];
         loginSuccessView.urlLogin = loginString;
         [loginSuccessView builtView];
+        [loginSuccessView showView];
         [self.view addSubview:loginSuccessView];
         
         [loginSuccessView returnText:^(NSString *showText) {
@@ -233,12 +251,17 @@
         }];
         
        
-        return;
+//        return;
     }
     
-    if (loginSuccessView) {
-        [UrlParser gotoNewVCWithUrl:loginString VC: self];
-
+//    if (loginSuccessView) {
+//        [UrlParser gotoNewVCWithUrl:loginString VC: self];
+//
+//    }
+    
+    
+    if ([AppDelegate shareMyApplication].isSeleat == YES) {
+        [self.tabBarController setSelectedIndex:1];
     }
     
 }

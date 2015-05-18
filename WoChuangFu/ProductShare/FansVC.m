@@ -391,9 +391,11 @@
 
 -(void)backAction
 {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:_params[@"return"]]];
-    QkFirstPageVC *firstPage = [[QkFirstPageVC alloc]init];
-    [UIApplication sharedApplication].keyWindow.rootViewController = firstPage;
+//    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:_params[@"return"]]];
+//    QkFirstPageVC *firstPage = [[QkFirstPageVC alloc]init];
+//    [UIApplication sharedApplication].keyWindow.rootViewController = firstPage;
+    
+    [self.navigationController popViewControllerAnimated:YES];
 //    exit(0);
 }
 @end

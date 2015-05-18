@@ -1515,10 +1515,12 @@ typedef enum{
                                                       url:paramsDict[@"shareurl"]
                                               description:paramsDict[@"name"]
                                                 mediaType:SSPublishContentMediaTypeNews];
-        
-        NSArray *shareList = [ShareSDK getShareListWithType:ShareTypeWeixiSession,ShareTypeWeixiTimeline,ShareTypeSMS,ShareTypeQQ,ShareTypeQQSpace,ShareTypeTencentWeibo,ShareTypeSinaWeibo,nil];
+        //创建弹出菜单容器
+        id<ISSContainer> container = [ShareSDK container];
+        [container setIPadContainerWithView:self.view arrowDirect:UIPopoverArrowDirectionAny];
+        NSArray *shareList = [ShareSDK getShareListWithType:ShareTypeWeixiSession,ShareTypeWeixiTimeline,ShareTypeQQ,ShareTypeQQSpace,ShareTypeTencentWeibo,ShareTypeSinaWeibo,ShareTypeSMS,nil];
         //2.调用分享菜单分享
-        [ShareSDK showShareActionSheet:nil
+        [ShareSDK showShareActionSheet:container
                              shareList:shareList
                                content:publishContent
                          statusBarTips:YES

@@ -13,7 +13,7 @@
 
 typedef void (^ReturnTextBlock)(NSString *showText);
 
-@interface LoginSuccessView : UIView
+@interface LoginSuccessView : UIWebView 
 
 @property (nonatomic,copy) NSString *urlLogin;
 @property (nonatomic,strong) BMWaveButton *seachButton;

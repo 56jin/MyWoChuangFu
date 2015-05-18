@@ -18,10 +18,10 @@
 #import "Push/APService.h"
 #import <ShareSDK/ShareSDK.h>
 #import "WXApi.h"
-#import "YXApi.h"
+//#import "YXApi.h"
 #import "TencentOpenAPI/QQApi.h"
 #import "WeiboSDK.h"
-#import "RennSDK/RennSDK.h"
+//#import "RennSDK/RennSDK.h"
 #import "WeiboApi.h"
 #import "TencentOpenAPI/QQApiInterface.h"
 #import "TencentOpenAPI/TencentOAuth.h"
@@ -36,6 +36,8 @@
 #import "FansVC.h"
 #import "ProductShareVC.h"
 #import "KeychainItemWrapper.h"
+#import "TextDeclareViewController.h"
+
 
 @implementation AppDelegate
 
@@ -153,8 +155,9 @@
     
     self.window.rootViewController = tabBarVC;
     //search
-    NewMainSearchVC* searchVC = [[NewMainSearchVC alloc] init];
-    searchVC.tabBarItem.title = @"搜索";
+//    NewMainSearchVC* searchVC = [[NewMainSearchVC alloc] init];
+    TextDeclareViewController *searchVC = [[TextDeclareViewController alloc] initWithNibName:@"TextDeclareViewController" bundle:nil];
+    searchVC.tabBarItem.title = @"精选";
     searchVC.tabBarItem.image = [UIImage imageNamed:@"icon_navbar_search.png"];
 //    searchVC.tabBarController.tabBar.backgroundColor = [UIColor redColor];
 //    [searchVC.tabBarController.tabBar setTranslucent:YES];
@@ -175,7 +178,7 @@
     [mainVC release];
     //my wocf
     MyWocfVC* myWocfVC = [[MyWocfVC alloc] init];
-    myWocfVC.tabBarItem.title = @"登陆";
+    myWocfVC.tabBarItem.title = @"我的";
     myWocfVC.tabBarItem.image = [UIImage imageNamed:@"icon_navbar_Diamond.png"];
 //    myWocfVC.tabBarItem = [[[UITabBarItem alloc] initWithTitle:@"登陆"
 //                                                      image:[UIImage imageNamed:@"icon_navbar_Diamond.png"]
@@ -202,7 +205,9 @@
     }
     tabBarVC.viewControllers = ncArr;
 #ifdef __IPHONE_7_0
-    tabBarVC.tabBar.barTintColor = [ComponentsFactory createColorByHex:@"#2b2c2d"];
+//    tabBarVC.tabBar.barTintColor = [ComponentsFactory createColorByHex:@"#2b2c2d"];
+    tabBarVC.tabBar.barTintColor = UIColorFromRGB(240,239,245);
+
 #else
     tabBarVC.tabBar.barStyle = UIBarStyleBlack;
 #endif
@@ -216,10 +221,18 @@
      连接新浪微博开放平台应用以使用相关功能，此应用需要引用SinaWeiboConnection.framework
      http://open.weibo.com上注册新浪微博开放平台应用，并将相关信息填写到以下字段
      **/
+//    [ShareSDK connectSinaWeiboWithAppKey:@"568898243"
+//                               appSecret:@"38a4f8204cc784f81f9f0daaf31e02e3"
+//                             redirectUri:@"http://www.sharesdk.cn"];
+    //添加新浪微博应用 注册网址 http://open.weibo.com
     [ShareSDK connectSinaWeiboWithAppKey:@"568898243"
                                appSecret:@"38a4f8204cc784f81f9f0daaf31e02e3"
                              redirectUri:@"http://www.sharesdk.cn"];
-    
+    //当使用新浪微博客户端分享的时候需要按照下面的方法来初始化新浪的平台
+    [ShareSDK  connectSinaWeiboWithAppKey:@"568898243"
+                                appSecret:@"38a4f8204cc784f81f9f0daaf31e02e3"
+                              redirectUri:@"http://www.sharesdk.cn"
+                              weiboSDKCls:[WeiboSDK class]];
     /**
      连接腾讯微博开放平台应用以使用相关功能，此应用需要引用TencentWeiboConnection.framework
      http://dev.t.qq.com上注册腾讯微博开放平台应用，并将相关信息填写到以下字段
@@ -256,12 +269,16 @@
      http://mobile.qq.com/api/上注册应用，并将相关信息填写到以下字段
      **/
     //旧版中申请的AppId（如：QQxxxxxx类型），可以通过下面方法进行初始化
-    [ShareSDK connectQQWithAppId:@"QQ41D2C7E2" qqApiCls:[QQApi class]];
+//    [ShareSDK connectQQWithAppId:@"QQ41D2C7E2" qqApiCls:[QQApi class]];
     
-    [ShareSDK connectQQWithQZoneAppKey:@"QQ41D2C7E2"
+//    [ShareSDK connectQQWithQZoneAppKey:@"QQ41D2C7E2"
+//                     qqApiInterfaceCls:[QQApiInterface class]
+//                       tencentOAuthCls:[TencentOAuth class]];
+    
+    //添加QQ应用  注册网址  http://open.qq.com/
+    [ShareSDK connectQQWithQZoneAppKey:@"1104332770"
                      qqApiInterfaceCls:[QQApiInterface class]
                        tencentOAuthCls:[TencentOAuth class]];
-    
     /**
      连接人人网应用以使用相关功能，此应用需要引用RenRenConnection.framework
      http://dev.renren.com上注册人人网开放平台应用，并将相关信息填写到以下字段
@@ -551,13 +568,18 @@
         if ([showType isEqualToString:@"2"]) {
             ContractVC *ContVC = [[ContractVC alloc]init];
             ContVC.myDic = paramsDict;
-            self.window.rootViewController = ContVC;
+//            self.window.rootViewController = ContVC;
+            ContVC.hidesBottomBarWhenPushed = YES;
+            [(ChildNavigationController *)tabBarVC.selectedViewController pushViewController: ContVC animated:YES];
         }
         
         else{
             [ProDuctShareManager shareInstance].productShareDta = paramsDict;
             NSLog(@"哈哈%@",[ProDuctShareManager shareInstance].productShareDta);
-            self.window.rootViewController = [[ProductShareVC alloc]init];
+//            self.window.rootViewController = [[ProductShareVC alloc]init];
+            ProductShareVC *product = [[ProductShareVC alloc]init];
+            product.hidesBottomBarWhenPushed = YES;
+            [(ChildNavigationController *)tabBarVC.selectedViewController pushViewController: product animated:YES];
         }
     }
     
@@ -609,7 +631,11 @@
         qkLogin.pass_Url = str;
         [ProDuctShareManager shareInstance].authKey = strUUID;
         qkLogin.returnUrl =paramsDict[@"return"];
-        self.window.rootViewController = qkLogin;
+//        self.window.rootViewController = qkLogin;
+        
+        qkLogin.hidesBottomBarWhenPushed = YES;
+        [(ChildNavigationController *)tabBarVC.selectedViewController pushViewController: qkLogin animated:YES];
+        
     }
     
     
@@ -673,7 +699,10 @@
         //        NSLog(@"哈哈%@",[ProDuctShareManager shareInstance].productShareDta);
         FansVC *fansVC = [[FansVC alloc]init];
         fansVC.params = paramsDict;
-        self.window.rootViewController = fansVC;
+//        self.window.rootViewController = fansVC;
+        
+        fansVC.hidesBottomBarWhenPushed = YES;
+        [(ChildNavigationController *)tabBarVC.selectedViewController pushViewController: fansVC animated:YES];
     }
   
     

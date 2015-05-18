@@ -102,7 +102,7 @@
     UIView *productView = [[UIView alloc]initWithFrame:CGRectMake(0, 20, SCREEN_WIDTH, 100)];
     [self.view addSubview:bgView];
     productView.backgroundColor = [UIColor whiteColor];
-    bgView.backgroundColor = UIColorWithRGBA(35, 139, 190, 1);
+    bgView.backgroundColor = UIColorWithRGBA(255, 126, 12, 1);
     self.view.backgroundColor = [UIColor blackColor];
     
     UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(0, 95, SCREEN_WIDTH, 1)];
@@ -296,6 +296,99 @@
 
 -(void)shareClicked:(UIButton *)sender
 {
+//    ShareType type = 0;
+//    switch (sender.tag) {
+//        case 1:
+//            type = ShareTypeWeixiSession;
+//            break;
+//        case 2:
+//            type = ShareTypeWeixiTimeline
+//            ;
+//            break;
+//        case 3:
+//            type = ShareTypeWeixiFav;
+//            break;
+//        case 4:
+//            type = ShareTypeSinaWeibo;
+//            break;
+//        case 5:
+//            type = ShareTypeQQ;
+//            break;
+//        case 6:
+//            type = ShareTypeQQSpace;
+//            break;
+//        default:
+//        break;
+//    }
+//    
+//    
+//    NSLog(@"\n\n选择了那个  %u    \n\n",type);
+//    
+//    //1.定制分享的内容
+////    NSString* path = [[NSBundle mainBundle]pathForResource:@"ShareSDK" ofType:@"jpg"];
+//    id<ISSContent> publishContent = [ShareSDK content:[NSString stringWithFormat:@"%@,%@",_myDic[@"name"],_myDic[@"desc"]] defaultContent:[NSString stringWithFormat:@"%@,%@",_myDic[@"name"],_myDic[@"desc"]] image:[ShareSDK imageWithUrl:[NSString stringWithFormat:@"%@",_myDic[@"img"]]] title:[NSString stringWithFormat:@"%@",_myDic[@"name"]] url:_shareUrl description:_desc mediaType:SSPublishContentMediaTypeNews];
+//    //2.分享
+//    [ShareSDK showShareViewWithType:type container:nil content:publishContent statusBarTips:YES authOptions:nil shareOptions:nil result:^(ShareType type, SSResponseState state, id<ISSPlatformShareInfo> statusInfo, id<ICMErrorInfo> error, BOOL end) {
+//        //如果分享成功
+//
+//        if (state == SSResponseStateSuccess) {
+//            
+//            bussineDataService *bus = [bussineDataService  sharedDataService];
+//            bus.target = self;
+//            
+//            NSString *userId = _myDic[@"userid"];
+//            NSString *wcfProductId = _myDic[@"wcfProductId"];
+//            NSString *sharePlat = [NSString stringWithFormat:@"%d",sender.tag];
+//            
+//            NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+//                                         //                                         @"expand",@"expand",
+//                                         userId,@"useId",
+//                                         _authKey,@"authKey",
+//                                         @"ios",@"clientKey",
+//                                         wcfProductId,@"productId",
+//                                         @"1",@"sharedStatus",
+//                                         sharePlat,@"sharePlat",
+//                                         nil];
+//            
+//            [bus qiankaShare:dict];
+//
+//            
+//            NSLog(@"%d",type);
+//            NSLog(@"分享成功");
+////            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"分享成功" message:nil delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+////            [alert show];
+//        }
+//        //如果分享失败
+//        if (state == SSResponseStateFail) {
+//            
+//            
+//            bussineDataService *bus = [bussineDataService  sharedDataService];
+//            bus.target = self;
+//            
+//            NSString *userId = _myDic[@"userid"];
+//            NSString *wcfProductId = _myDic[@"wcfProductId"];
+//            NSString *sharePlat = [NSString stringWithFormat:@"%d",sender.tag];
+//            
+//            NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+//                                         //                                         @"expand",@"expand",
+//                                         userId,@"useId",
+//                                         _authKey,@"authKey",
+//                                         @"ios",@"clientKey",
+//                                         wcfProductId,@"productId",
+//                                         @"0",@"sharedStatus",
+//                                         sharePlat,@"sharePlat",
+//                                         nil];
+//            
+//            [bus qiankaShare:dict];
+//
+//             NSLog(@"%d",type);
+//            NSLog(@"分享失败,错误码:%ld,错误描述%@",(long)[error errorCode],[error errorDescription]);
+////            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"分享失败" message:@"分享失败，请看日记错误描述" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+////            [alert show];
+//        }
+//    }];
+//    //3.没了，就是这么简单
+    
     ShareType type = 0;
     switch (sender.tag) {
         case 1:
@@ -315,20 +408,20 @@
             type = ShareTypeQQ;
             break;
         case 6:
-            type = ShareTypeSMS;
+            type = ShareTypeQQSpace;
             break;
         default:
-        break;
+            break;
     }
     
     //1.定制分享的内容
-//    NSString* path = [[NSBundle mainBundle]pathForResource:@"ShareSDK" ofType:@"jpg"];
+    //    NSString* path = [[NSBundle mainBundle]pathForResource:@"ShareSDK" ofType:@"jpg"];
     id<ISSContent> publishContent = [ShareSDK content:[NSString stringWithFormat:@"%@,%@",_myDic[@"name"],_myDic[@"desc"]] defaultContent:[NSString stringWithFormat:@"%@,%@",_myDic[@"name"],_myDic[@"desc"]] image:[ShareSDK imageWithUrl:[NSString stringWithFormat:@"%@",_myDic[@"img"]]] title:[NSString stringWithFormat:@"%@",_myDic[@"name"]] url:_shareUrl description:_desc mediaType:SSPublishContentMediaTypeNews];
     //2.分享
     [ShareSDK showShareViewWithType:type container:nil content:publishContent statusBarTips:YES authOptions:nil shareOptions:nil result:^(ShareType type, SSResponseState state, id<ISSPlatformShareInfo> statusInfo, id<ICMErrorInfo> error, BOOL end) {
         //如果分享成功
-
         if (state == SSResponseStateSuccess) {
+            
             
             bussineDataService *bus = [bussineDataService  sharedDataService];
             bus.target = self;
@@ -348,12 +441,11 @@
                                          nil];
             
             [bus qiankaShare:dict];
-
             
-            NSLog(@"%d",type);
+            
             NSLog(@"分享成功");
-//            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"分享成功" message:nil delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-//            [alert show];
+            //            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"分享成功" message:nil delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            //            [alert show];
         }
         //如果分享失败
         if (state == SSResponseStateFail) {
@@ -377,14 +469,13 @@
                                          nil];
             
             [bus qiankaShare:dict];
-
-             NSLog(@"%d",type);
+            
             NSLog(@"分享失败,错误码:%ld,错误描述%@",(long)[error errorCode],[error errorDescription]);
-//            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"分享失败" message:@"分享失败，请看日记错误描述" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-//            [alert show];
+            //            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"分享失败" message:@"分享失败，请看日记错误描述" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            //            [alert show];
         }
     }];
-    //3.没了，就是这么简单
+
 }
 
 -(void)requestDidFinished:(NSDictionary *)info
@@ -408,8 +499,11 @@
 
 -(void)backAction
 {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:_returnUrl]];
-    QkFirstPageVC *firstPage = [[QkFirstPageVC alloc]init];
-    [UIApplication sharedApplication].keyWindow.rootViewController = firstPage;
+//    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:_returnUrl]];   //旧的
+    
+//    QkFirstPageVC *firstPage = [[QkFirstPageVC alloc]init];
+//    [UIApplication sharedApplication].keyWindow.rootViewController = firstPage;
+    
+    [self.navigationController popViewControllerAnimated:YES];
 }
 @end

@@ -25,6 +25,10 @@
 #define IOS8 IOS_VERSION >= 8
 #define IOS7 [[[UIDevice currentDevice] systemVersion]floatValue]>=7
 
+#define UIColorFromRGBA(R,G,B,A) [UIColor colorWithRed:R/255.0 green:G/255.0 blue:B/255.0 alpha:A]
+
+#define UIColorFromRGB(R,G,B) UIColorFromRGBA(R,G,B,1.0)
+
 typedef enum _SideBarShowDirection
 {
     SideBarShowDirectionNone = 0,
@@ -51,7 +55,7 @@ typedef enum _SideBarShowDirection
 //#define service_IP                 @"http://10.37.238.239:8080/emall/"
 
 #define service_IP                 @"http://221.7.252.48:15613/"
-
+//#define service_IP                 @"http://221.7.252.48:15613/"
 
 //#define service_IP                @"http://221.7.252.48:15613"
 //#define service_IP                @"http://133.0.191.9:15613"

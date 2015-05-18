@@ -174,4 +174,11 @@
 #pragma mark - 钱咖分享
 - (void)qiankaShare:(NSDictionary *)paramters;
 
+
+#pragma mark
+#pragma mark - 加入机构
+- (void)addJigou:(NSDictionary *)paramters;
+#pragma mark - 机构查询
+- (void)selectJigou:(NSDictionary *)paramters;
+
 @end

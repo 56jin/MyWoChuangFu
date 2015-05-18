@@ -7,6 +7,9 @@
 //
 
 #import "MainVC.h"
+#import "NewMainSearchVC.h"
+
+
 
 @interface MainVC ()<HttpBackDelegate>
 
@@ -107,7 +110,11 @@
 
 - (void)gotoSearch
 {
-    [self.tabBarController setSelectedIndex:1];
+//    [self.tabBarController setSelectedIndex:1];
+    
+     NewMainSearchVC* searchVC = [[NewMainSearchVC alloc] init];
+    searchVC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:searchVC animated:YES];
 }
 
 -(void)checkVersion

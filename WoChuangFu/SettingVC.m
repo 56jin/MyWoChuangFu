@@ -11,6 +11,7 @@
 #import "CommonMacro.h"
 #import "FileHelpers.h"
 #import "MessageCenterVC.h"
+#import "JiGouViewController.h"
 
 @interface SettingVC ()<UITableViewDataSource,UITableViewDelegate,TitleBarDelegate,HttpBackDelegate>
 @property(nonatomic,strong)UITableView *myTable;
@@ -35,7 +36,7 @@
 
 -(void)layoutV
 {
-    _dataSource = [NSMutableArray arrayWithObjects:@"消息中心",@"系统更新", @"清除缓存",nil];
+    _dataSource = [NSMutableArray arrayWithObjects:@"消息中心",@"系统更新", @"清除缓存",@"加入机构",nil];//@"加入机构",
     TitleBar *titleBar = [[TitleBar alloc] initWithFramShowHome:NO ShowSearch:NO TitlePos:0];
     [titleBar setLeftIsHiden:YES];
     titleBar.title = @"设置";
@@ -95,9 +96,24 @@
         aler.tag=2324;
         [aler show];
     }
+    else if ([_dataSource[indexPath.row] isEqualToString:@"加入机构"]){
+        
+//        UIAlertView *aler = [[UIAlertView alloc]initWithTitle:@"加入机构" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+//        [aler setAlertViewStyle:UIAlertViewStylePlainTextInput];
+//        [aler textFieldAtIndex:0].placeholder = @"请输入机构代码";
+//        aler.tag = 2377;
+//        [aler show];
+        JiGouViewController *jigou = [[JiGouViewController alloc]initWithNibName:@"JiGouViewController" bundle:nil];
+        jigou.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:jigou animated:YES];
+
+
+    }
     else
         [self ShowProgressHUDwithMessage:@"敬请期待"];
 }
+
+
 
 - (void)updataVersion
 {
@@ -166,6 +182,24 @@
            [self ShowProgressHUDwithMessage:@"已清除缓存"];
        }
     }
+    else if(alertView.tag == 2377)
+    {
+        if([buttonTitle isEqualToString:@"确定"])
+        {
+            //得到输入框
+            NSString *beiZhu = [alertView textFieldAtIndex:0].text;
+            //        NSLog(@"备注：%@",beiZhu);
+            if (beiZhu.length != 0 || ![beiZhu isEqualToString:@""]) {
+                [self ShowProgressHUDwithMessage:@"已加入机构"];
+            }
+            else {
+                [self ShowProgressHUDwithMessage:@"请先输入机构代码"];
+            }
+
+            
+        }
+    }
+
 }
 
 - (void)requestFailed:(NSDictionary*)info

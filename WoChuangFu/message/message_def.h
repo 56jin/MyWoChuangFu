@@ -39,5 +39,6 @@
 #import "QianKaLoginMessage.h"
 #import "QiankaShareMessage.h"
 #import "ShareMessage.h"
+#import "GetSelectJiGouMessage.h"
 
 #endif
