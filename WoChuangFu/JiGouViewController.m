@@ -67,7 +67,7 @@
             
             if([bus.rspInfo[@"flag"] integerValue] == 1) {
                 self.nameLabel.text = [NSString stringWithFormat:@"%@",bus.rspInfo[@"agency"]];
-                _theVIew.hidden = NO;
+                _theVIew.hidden = YES;
                 
             }
             else {
