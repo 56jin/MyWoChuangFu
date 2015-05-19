@@ -20,6 +20,7 @@
 #include "UrlParser.h"
 #import "LoginSuccessView.h"
 #import "ShowWebVC.h"
+#import "AppDelegate.h"
 
 
 @interface MyWocfVC ()<TitleBarDelegate,SideBarDelegate,LoginViewDelegate>
@@ -128,6 +129,18 @@
 
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    if ([AppDelegate shareMyApplication].isFailToLogin == YES) {
+        [AppDelegate shareMyApplication].isFailToLogin = NO;
+        if (loginSuccessView) {
+            [loginSuccessView removeFromSuperview];
+            loginSuccessView = nil;
+        }
+    }
+}
+
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -220,8 +233,11 @@
 
 - (void)loginSuccessReture:(NSString *)loginString {
     
-     titleBar.title = @"我的财富";
+     titleBar.title = @"我的";
     [titleBar setLeftIsHiden:YES];
+    
+//    NSLog(@"\n\n\n登录成功地址%@",loginString);
+    
     
     self.navigationController.navigationBar.hidden = YES;
     CGRect frame = [[UIScreen mainScreen] bounds];
@@ -241,7 +257,7 @@
 //        gotoVC.URL = loginString;
 //        [self.view addSubview:gotoVC.view];
         
-        loginSuccessView = [[LoginSuccessView alloc]initWithFrame:CGRectMake(0, 64, frame.size.width, frame.size.height)];
+        loginSuccessView = [[LoginSuccessView alloc]initWithFrame:CGRectMake(0, 64, frame.size.width, frame.size.height - 110)];
         loginSuccessView.urlLogin = loginString;
         [loginSuccessView builtView];
         [loginSuccessView showView];

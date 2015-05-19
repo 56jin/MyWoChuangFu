@@ -496,11 +496,19 @@
 }
 
 
+- (BOOL)application:(UIApplication *)application
+      handleOpenURL:(NSURL *)url
+{
+    return [ShareSDK handleOpenURL:url
+                        wxDelegate:self];
+}
+
+
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
     
     NSString*str =  [[url absoluteString] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    
+    NSLog(@"~~~~~\n\n  传的参数   %@        ----    %@",str,sourceApplication);
 //    if ([str rangeOfString:@"wcfHomeIndex"].location!=NSNotFound)
 //    {
 //        
@@ -508,7 +516,26 @@
 //        self.window.rootViewController = mainVC;
 //    }
     
+    
+    if(self.isShare) {
+        self.isShare = NO;
+        return [ShareSDK handleOpenURL:url
+                     sourceApplication:sourceApplication
+                            annotation:annotation
+                            wxDelegate:self];
+
+    }
+    
+    
+    
+    
+    
     if (([str rangeOfString:@"wb568898243"].location!=NSNotFound)||([str rangeOfString:@"wx77c3392f8f7c9fdf"].location!=NSNotFound)||([str rangeOfString:@"QQ41d2c848"].location!=NSNotFound)) {
+        return [ShareSDK handleOpenURL:url
+                     sourceApplication:sourceApplication
+                            annotation:annotation
+                            wxDelegate:self];
+        
         return [ShareSDK handleOpenURL:url
                      sourceApplication:sourceApplication
                             annotation:annotation
@@ -640,7 +667,7 @@
     }
     
     
-    if ([str rangeOfString:@"wcfmallshareapp"].location!=NSNotFound)
+    if ([str rangeOfString:@"wcfmallshareapp"].location != NSNotFound)
     {
         paramsDict = [NSMutableDictionary dictionary];
         NSString *decodeQuery = [query stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
@@ -706,6 +733,18 @@
         [(ChildNavigationController *)tabBarVC.selectedViewController pushViewController: fansVC animated:YES];
     }
   
+    if ([str rangeOfString:@"wcfmallopenapp"].location != NSNotFound) {
+        
+        
+        
+        self.isFailToLogin = YES;
+        MyWocfVC* myWocfVC = [[MyWocfVC alloc] init];
+        [(ChildNavigationController *)tabBarVC.selectedViewController pushViewController: myWocfVC animated:YES];
+        
+        return YES;
+    }
+
+    
     
     //    else if ([str rangeOfString:@"heyuelist"].location!=NSNotFound)
     //    {

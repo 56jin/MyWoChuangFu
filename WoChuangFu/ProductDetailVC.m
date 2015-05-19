@@ -1453,6 +1453,7 @@ enum DetailType
 //分享
 - (void)share:(UIButton *)sender
 {
+    [AppDelegate shareMyApplication].isShare = YES;
     //构造分享内容
     id<ISSContent> publishContent = [ShareSDK content:self.saveProductDesc
                                        defaultContent:@""
@@ -1473,9 +1474,11 @@ enum DetailType
                                 if (state == SSResponseStateSuccess)
                                 {
                                     MyLog(@"分享成功");
+                                    [AppDelegate shareMyApplication].isShare = NO;
                                 }
                                 else if (state == SSResponseStateFail)
                                 {
+                                    [AppDelegate shareMyApplication].isShare = NO;
                                     MyLog(@"分享失败,错误码:%d,错误描述:%@", [error errorCode], [error errorDescription]);
                                     UIAlertView *alter = [[UIAlertView alloc] initWithTitle:@"错误提示"
                                                                                     message:[error errorDescription]

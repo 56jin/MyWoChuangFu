@@ -28,6 +28,9 @@
 @property (nonatomic,assign) BOOL isLogin;  //判断是否已登录
 @property (nonatomic,assign) BOOL isSeleat;  //判断是否在精选页面跳转登录页面
 @property (nonatomic,assign) NSInteger selectInteger;  //判断是否在精选页面跳转登录页面
+@property (nonatomic,assign) BOOL isFailToLogin;  //判断是否在登录过时
+
+@property (nonatomic,assign) BOOL isShare;  //判断是否在分享
 
 +(AppDelegate*)shareMyApplication;
 //屏幕高度

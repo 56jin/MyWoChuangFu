@@ -75,12 +75,13 @@
     
     [self.view addSubview:bgView];
     productView.backgroundColor = [UIColor whiteColor];
-    bgView.backgroundColor = UIColorWithRGBA(30, 139, 190, 1);
+//    bgView.backgroundColor = UIColorWithRGBA(30, 139, 190, 1);
+     bgView.backgroundColor = UIColorWithRGBA(255, 126, 12, 1);
     self.view.backgroundColor = [UIColor blackColor];
     
 
     UIImageView *chageImgView = [[UIImageView alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/2-125, 30, 250, 180)];
-    chageImgView.image = [UIImage imageNamed:@"fsxf"];
+    chageImgView.image = [UIImage imageNamed:@"envolope@2x"];
     [bgView addSubview:chageImgView];
     
     UILabel *idlable = [[UILabel alloc]initWithFrame:CGRectMake(40, 108, 170, 15)];
@@ -157,6 +158,7 @@
 
 -(void)shareClicked:(UIButton *)sender
 {
+    [AppDelegate shareMyApplication].isShare = YES;
     ShareType type = 0;
     switch (sender.tag) {
         case 1:
@@ -189,7 +191,7 @@
     [ShareSDK showShareViewWithType:type container:nil content:publishContent statusBarTips:YES authOptions:nil shareOptions:nil result:^(ShareType type, SSResponseState state, id<ISSPlatformShareInfo> statusInfo, id<ICMErrorInfo> error, BOOL end) {
         //如果分享成功
         if (state == SSResponseStateSuccess) {
-            
+            [AppDelegate shareMyApplication].isShare = NO;
                         NSLog(@"分享成功");
             bussineDataService *bus = [bussineDataService  sharedDataService];
             bus.target = self;
@@ -228,7 +230,7 @@
         //如果分享失败
         if (state == SSResponseStateFail) {
             
-            
+            [AppDelegate shareMyApplication].isShare = NO;
 //            _myDic = dict;
 
             NSString *str = [NSString stringWithFormat:@"wcfPlatform=%d&wcfProductId=%@&wcfUserid=%@&wcfFlag=0",sender.tag,_params[@"wcfProductId"],_params[@"userid"]];

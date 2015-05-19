@@ -101,7 +101,7 @@
         }
        
         NSString *sessionid = [[NSUserDefaults standardUserDefaults] objectForKey:@"sessionid"];
-        URL = [NSString stringWithFormat:@"%@/mallwcf/goods?sessionid=%@",service_IPqq,sessionid];
+        URL = [NSString stringWithFormat:@"%@/mallwcf/goods?flag=1&sessionid=%@",service_IPqq,sessionid];
         //去掉左右滚动条
         self.myWebView.scrollView.showsHorizontalScrollIndicator = NO;
         //去掉左右滚动条

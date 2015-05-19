@@ -1532,6 +1532,9 @@ typedef enum{
                                         //                NSLog(@"分享成功");
                                         UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:@"分享成功" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
                                         [alert show];
+                                        
+                                        
+                                        
                                     }
                                     //如果分享失败
                                     if (state == SSResponseStateFail) {
