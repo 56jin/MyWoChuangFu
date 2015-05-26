@@ -58,4 +58,6 @@ enum title_position{
 - (void)setSearchShow;
 - (void)endSearching;
 - (NSString*)getSearchText;
+-(void)setLeftText:(NSString *)textStr;
+
 @end

@@ -162,13 +162,26 @@
             {
                 sessionId = @"";
             }
+            
+             body = [NSString stringWithFormat:@"sessionId=%@&destUrl=%@",sessionId,[self encodeURL:self.urlStr]];
+            
+            if ([self.urlStr rangeOfString:@"school"].location != NSNotFound) {
+                 sessionId = @"";  //临时加
+                NSLog(@"这个字符串中有a");
+                 body = [NSString stringWithFormat:@"destUrl=%@",[self encodeURL:self.urlStr]];
+                
+            }
+            
+           
         
-            body = [NSString stringWithFormat:@"sessionId=%@&destUrl=%@",sessionId,[self encodeURL:self.urlStr]];
+           
         } else {
             //            [GTMBase64_My stringByEncodingData:[[self.urlStr stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding] dataUsingEncoding:NSUTF8StringEncoding]]
             body = self.postData;
         }
     }
+    
+
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url];
     if(self.isPayment){

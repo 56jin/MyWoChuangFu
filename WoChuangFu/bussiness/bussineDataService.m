@@ -1112,6 +1112,28 @@ static bussineDataService *sharedBussineDataServicee = nil;
     [self noticeUI:rspDic];
 }
 
+#pragma mark - 退出登录
+- (void)usrtLogout:(NSDictionary *)paramters {
+    if ([[UIDevice currentDevice] networkAvailable]) {
+        [self readySharedSendMessage:@"UserLogoutMessage"
+                               param:paramters
+                             funName:@"userLogout:"
+                       synchronously:NO];
+    }
+
+}
+
+-(void)userLogoutFinished:(id<MessageDelegate>)msg
+{
+    UserLogoutMessage *Msg = msg;
+    NSDictionary *rspDic = [self handleRspInfo:Msg];
+    NSString* rspCode = [Msg getRspcode];
+    if([rspCode isEqualToString:@"0000"]){
+        self.rspInfo = Msg.rspInfo;
+    }
+    [self noticeUI:rspDic];
+}
+
 #pragma mark -
 #pragma mark http 回调接口
 - (void)requestDidFinished:(id<MessageDelegate>)msg
@@ -1184,7 +1206,10 @@ static bussineDataService *sharedBussineDataServicee = nil;
         [self getSelectJiGouFinished:msg];
     }else if([[msg getBusinessCode] isEqualToString:GetAddJiGouMessage_BIZCODE]) {
         [self getAddJiGouFinished:msg];
+    }else if([[msg getBusinessCode] isEqualToString:UserLogoutMessage_BIZCODE]) {
+        [self userLogoutFinished:msg];
     }
+
 
 }
 

@@ -738,8 +738,11 @@
         
         
         self.isFailToLogin = YES;
-        MyWocfVC* myWocfVC = [[MyWocfVC alloc] init];
-        [(ChildNavigationController *)tabBarVC.selectedViewController pushViewController: myWocfVC animated:YES];
+        self.isSeleat = YES;
+//        MyWocfVC* myWocfVC = [[MyWocfVC alloc] init];
+//        [(ChildNavigationController *)tabBarVC.selectedViewController pushViewController: myWocfVC animated:YES];
+        
+        tabBarVC.selectedIndex = 2;
         
         return YES;
     }

@@ -22,10 +22,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    
+    [UIApplication sharedApplication].statusBarHidden=NO;
+    [UIApplication sharedApplication].statusBarStyle=UIStatusBarStyleDefault;
+    
+    self.navigationController.navigationBarHidden = YES;
     TitleBar *titleBar = [[TitleBar alloc] initWithFramShowHome:NO ShowSearch:NO TitlePos:0];
     [titleBar setLeftIsHiden:NO];
     titleBar.title = @"加入机构";
-    titleBar.frame = CGRectMake(0,0, SCREEN_WIDTH,TITLE_BAR_HEIGHT);
+    titleBar.frame = CGRectMake(0,20, SCREEN_WIDTH,TITLE_BAR_HEIGHT);
     [self.view addSubview:titleBar];
     titleBar.target = self;
 
@@ -45,6 +50,11 @@
     // Do any additional setup after loading the view from its nib.
 }
 
+
+- (void) viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [UIApplication sharedApplication].statusBarStyle=UIStatusBarStyleBlackOpaque;
+}
 
 #pragma mark -
 #pragma mark HttpBackDelegate

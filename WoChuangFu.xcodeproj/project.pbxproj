@@ -323,6 +323,7 @@
 		63F3283F1A4300D000BF7335 /* TimeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 63F3283A1A4300D000BF7335 /* TimeManager.m */; };
 		63F328401A4300D000BF7335 /* TimeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 63F3283C1A4300D000BF7335 /* TimeModel.m */; };
 		63F328411A4300D000BF7335 /* TimeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 63F3283E1A4300D000BF7335 /* TimeVC.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		8501C9E51B12F83B00FF44D2 /* UserLogoutMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8501C9E41B12F83B00FF44D2 /* UserLogoutMessage.m */; };
 		8549B58F1B098C9F0035BE83 /* xf.png in Resources */ = {isa = PBXBuildFile; fileRef = 8549B58D1B098C9F0035BE83 /* xf.png */; };
 		8549B5901B098C9F0035BE83 /* xf@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8549B58E1B098C9F0035BE83 /* xf@2x.png */; };
 		8549B5931B09CCF00035BE83 /* GetAddJiGouMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8549B5921B09CCF00035BE83 /* GetAddJiGouMessage.m */; };
@@ -1075,6 +1076,8 @@
 		63F3283C1A4300D000BF7335 /* TimeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeModel.m; sourceTree = "<group>"; };
 		63F3283D1A4300D000BF7335 /* TimeVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeVC.h; sourceTree = "<group>"; };
 		63F3283E1A4300D000BF7335 /* TimeVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeVC.m; sourceTree = "<group>"; };
+		8501C9E31B12F83B00FF44D2 /* UserLogoutMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserLogoutMessage.h; sourceTree = "<group>"; };
+		8501C9E41B12F83B00FF44D2 /* UserLogoutMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserLogoutMessage.m; sourceTree = "<group>"; };
 		8549B58D1B098C9F0035BE83 /* xf.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = xf.png; sourceTree = "<group>"; };
 		8549B58E1B098C9F0035BE83 /* xf@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "xf@2x.png"; sourceTree = "<group>"; };
 		8549B5911B09CCF00035BE83 /* GetAddJiGouMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetAddJiGouMessage.h; sourceTree = "<group>"; };
@@ -2162,6 +2165,8 @@
 		5CA60F301A2C153900AA0533 /* oldMessage */ = {
 			isa = PBXGroup;
 			children = (
+				8501C9E31B12F83B00FF44D2 /* UserLogoutMessage.h */,
+				8501C9E41B12F83B00FF44D2 /* UserLogoutMessage.m */,
 				85A367D11B0747F9009E4AEC /* GetSelectJiGouMessage.h */,
 				85A367D21B0747F9009E4AEC /* GetSelectJiGouMessage.m */,
 				8549B5911B09CCF00035BE83 /* GetAddJiGouMessage.h */,
@@ -3538,6 +3543,7 @@
 				5CEB03A81A3A958400410858 /* ShowWebVC.m in Sources */,
 				5C05D2A81A41BE1E00B111DA /* EvaluateCell.m in Sources */,
 				3949A02F196E2FB50043B5FC /* qrspec.c in Sources */,
+				8501C9E51B12F83B00FF44D2 /* UserLogoutMessage.m in Sources */,
 				3949A024196E2FB50043B5FC /* UIDevice-Reachability.m in Sources */,
 				5CEB03941A38634C00410858 /* SCNavTabBar.m in Sources */,
 				3949A02C196E2FB50043B5FC /* QRCodeGenerator.m in Sources */,

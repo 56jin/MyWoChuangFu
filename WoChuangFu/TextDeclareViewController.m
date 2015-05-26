@@ -89,18 +89,40 @@
     [UIApplication sharedApplication].statusBarStyle=UIStatusBarStyleDefault;
     
     self.navigationController.navigationBarHidden = YES;
-    if ([AppDelegate shareMyApplication].isLogin == NO) {
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"请先登录" delegate:self cancelButtonTitle:nil otherButtonTitles:@"马上登录", nil];
-        [alert show];
+//    if ([AppDelegate shareMyApplication].isLogin == NO) {
+//        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"请先登录" delegate:self cancelButtonTitle:nil otherButtonTitles:@"马上登录", nil];
+//        [alert show];
+//        
+//    }
+//    else{
+//        [AppDelegate shareMyApplication].isSeleat = NO; //已登录
+    
+    
+    if ([AppDelegate shareMyApplication].isSeleat == YES) {
+        NSString *sessionid = [[NSUserDefaults standardUserDefaults] objectForKey:@"sessionid"];
         
+//        NSLog(@"%@",sessionid);
+        
+        URL = [NSString stringWithFormat:@"%@/mallwcf/goods?flag=1&sessionid=%@",service_IPqq,sessionid];
+        //去掉左右滚动条
+        self.myWebView.scrollView.showsHorizontalScrollIndicator = NO;
+        //去掉左右滚动条
+        self.myWebView.scrollView.showsVerticalScrollIndicator = NO;
+        [AppDelegate shareMyApplication].isSeleat = NO;
+        NSURL* url = [NSURL URLWithString:URL];//创建URL
+        NSURLRequest* request = [NSURLRequest requestWithURL:url];//创建NSURLRequest
+        [self.myWebView loadRequest:request];//加载
+        return;
     }
-    else{
-        [AppDelegate shareMyApplication].isSeleat = NO; //已登录
+    
         if (URL) {
             return;
         }
-       
+    
         NSString *sessionid = [[NSUserDefaults standardUserDefaults] objectForKey:@"sessionid"];
+    
+        NSLog(@"  !!!%@",sessionid);
+    
         URL = [NSString stringWithFormat:@"%@/mallwcf/goods?flag=1&sessionid=%@",service_IPqq,sessionid];
         //去掉左右滚动条
         self.myWebView.scrollView.showsHorizontalScrollIndicator = NO;
@@ -113,7 +135,7 @@
         
 
             
-    }
+//    }
 
 }
 

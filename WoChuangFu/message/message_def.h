@@ -41,5 +41,5 @@
 #import "ShareMessage.h"
 #import "GetSelectJiGouMessage.h"
 #import "GetAddJiGouMessage.h"
-
+#import "UserLogoutMessage.h"
 #endif

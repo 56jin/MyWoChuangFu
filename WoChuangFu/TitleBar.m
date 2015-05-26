@@ -262,6 +262,20 @@
     [(UIButton*)[self viewWithTag:LEFT_BUTTON_TAG] setHidden:hide];
 }
 
+-(void)setLeftText:(NSString *)textStr
+{
+   UIButton *leftBtn = (UIButton*)[self viewWithTag:LEFT_BUTTON_TAG];
+    [leftBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [leftBtn setTitle:textStr forState:UIControlStateNormal];
+    [leftBtn setImage:nil forState:UIControlStateNormal];
+    [leftBtn setBackgroundImage:nil forState:UIControlStateNormal];
+    CGRect frame = leftBtn.frame;
+    frame.origin.x = 250;
+    frame.size.width = 70;
+    leftBtn.frame = frame;
+    
+}
+
 -(NSString*)getSearchText
 {
     return ((UITextField*)[self viewWithTag:EDIT_TEXT_TAG]).text;

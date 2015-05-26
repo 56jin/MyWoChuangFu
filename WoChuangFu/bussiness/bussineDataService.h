@@ -180,5 +180,7 @@
 - (void)addJigou:(NSDictionary *)paramters;
 #pragma mark - 机构查询
 - (void)selectJigou:(NSDictionary *)paramters;
+#pragma mark - 退出登录
+- (void)usrtLogout:(NSDictionary *)paramters;
 
 @end
