@@ -77,12 +77,21 @@
             
             if([bus.rspInfo[@"flag"] integerValue] == 1) {
                 self.nameLabel.text = [NSString stringWithFormat:@"%@",bus.rspInfo[@"agency"]];
-                _theVIew.hidden = YES;
+                _theVIew.hidden = NO;
                 
             }
             else {
                 _theVIew.hidden = NO;
             }
+            
+            NSString *str = [NSString stringWithFormat:@"%@",bus.rspInfo[@"agencyEffectMsg"]];
+            
+            
+            //
+            [self showagencyEffectLabel:![str isEqualToString:@"<null>"] agencyEffectMsg:str];
+
+            
+            
             
         }else{
             if([NSNull null] == [info objectForKey:@"MSG"]){
@@ -104,12 +113,22 @@
             
             if([bus.rspInfo[@"flag"] integerValue] == 1) {
                 self.nameLabel.text = [NSString stringWithFormat:@"%@",bus.rspInfo[@"agency"]];
-                _theVIew.hidden = YES;
-                
+                _theVIew.hidden = NO;
             }
             else {
                 _theVIew.hidden = NO;
             }
+            
+            if ([bus.rspInfo[@"flag"] integerValue ] == 3) {
+                 NSString *str = [NSString stringWithFormat:@"%@",bus.rspInfo[@"agencyEffectMsg"]];                
+            [self showagencyEffectLabel:![str isEqualToString:@"<null>"] agencyEffectMsg:str];
+                
+
+             
+            }else{
+                
+            }
+            
             
         }else{
             if([NSNull null] == [info objectForKey:@"MSG"]){
@@ -268,14 +287,54 @@
     [_JiGouCoreText release];
     [_nameLabel release];
     [_theVIew release];
+    [_agenEffectLabel release];
     [super dealloc];
 }
 
 - (void)viewDidUnload {
+    
     [self setJiGouCoreText:nil];
     [self setNameLabel:nil];
     [self setTheVIew:nil];
+    [self setAgenEffectLabel:nil];
     [super viewDidUnload];
 }
+
+//显示提示
+-(void)showagencyEffectLabel:(BOOL) isShow agencyEffectMsg:(NSString*)agencyEffectMsg{
+    [self setAutofitLabel:self.agenEffectLabel text:agencyEffectMsg];
+    CGRect theViewFrame = self.theVIew.frame;
+    CGRect angeLabelFrame = self.agenEffectLabel.frame;
+    if (isShow) {
+        
+        theViewFrame.origin.y = angeLabelFrame.origin.y+angeLabelFrame.size.height+18;
+        self.theVIew.frame = theViewFrame;
+        self.agenEffectLabel.hidden = NO;
+    }else{
+        theViewFrame.origin.y = angeLabelFrame.origin.y;
+        self.theVIew.frame = theViewFrame;
+        self.agenEffectLabel.hidden = YES;
+    }
+}
+//label自适应
+-(void)setAutofitLabel:(UILabel*)label text:(NSString*)text{
+    label.text = text;
+    label.lineBreakMode = UILineBreakModeWordWrap;
+    label.numberOfLines = 0;
+    label.font = [UIFont fontWithName:@"Helvetica" size:12];
+    [label setTextColor:[UIColor redColor]];
+    CGSize maximumSize = CGSizeMake(300, CGFLOAT_MAX);
+    CGSize expectedLabelSize = [text sizeWithFont:label.font
+                                constrainedToSize:maximumSize
+                                    lineBreakMode:UILineBreakModeWordWrap];
+    CGRect newFrame = label.frame;
+    newFrame.size.height = expectedLabelSize.height;
+    newFrame.size.width = self.view.frame.size.width-10;
+    label.frame = newFrame;
+    [label sizeToFit];
+}
+
+
+
 
 @end

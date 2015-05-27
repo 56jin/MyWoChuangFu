@@ -11,7 +11,7 @@
 #import "CommonMacro.h"
 #import "FileHelpers.h"
 #import "MessageCenterVC.h"
-#import "JiGouViewController.h"
+#import "JiGouWebViewControler.h"
 
 @interface SettingVC ()<UITableViewDataSource,UITableViewDelegate,TitleBarDelegate,HttpBackDelegate>
 @property(nonatomic,strong)UITableView *myTable;
@@ -114,7 +114,7 @@
 
         
         
-        JiGouViewController *jigou = [[JiGouViewController alloc]initWithNibName:@"JiGouViewController" bundle:nil];
+        JiGouWebViewControler *jigou = [[JiGouWebViewControler alloc]init];
         jigou.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:jigou animated:YES];
 

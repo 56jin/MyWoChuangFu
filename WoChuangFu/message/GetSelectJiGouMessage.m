@@ -27,8 +27,8 @@
                               [requestInfo objectForKey:@"expand"]==nil?[NSNull null]:
                               [requestInfo objectForKey:@"expand"],@"expand",
                               [requestInfo objectForKey:@"sessionId"],@"sessionId",
-                              [requestInfo objectForKey:@"userCode"],@"userCode",
-                              [requestInfo objectForKey:@"passWd"],@"passWd",
+//                              [requestInfo objectForKey:@"userCode"],@"userCode",
+//                              [requestInfo objectForKey:@"passWd"],@"passWd",
                               nil];
     
     

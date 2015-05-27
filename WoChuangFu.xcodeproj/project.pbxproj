@@ -374,9 +374,8 @@
 		85A367C91B07057E009E4AEC /* ShareSDKiPhoneSimpleShareViewUI.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 85A367A31B07057E009E4AEC /* ShareSDKiPhoneSimpleShareViewUI.bundle */; };
 		85A367CA1B07057E009E4AEC /* ShareSDKiPhoneSimpleShareViewUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85A367A41B07057E009E4AEC /* ShareSDKiPhoneSimpleShareViewUI.framework */; };
 		85A367CB1B07057E009E4AEC /* ShareSDKShareActionSheet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85A367A51B07057E009E4AEC /* ShareSDKShareActionSheet.framework */; };
-		85A367CF1B072B8E009E4AEC /* JiGouViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85A367CD1B072B8E009E4AEC /* JiGouViewController.m */; };
-		85A367D01B072B8E009E4AEC /* JiGouViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85A367CE1B072B8E009E4AEC /* JiGouViewController.xib */; };
 		85A367D31B0747F9009E4AEC /* GetSelectJiGouMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 85A367D21B0747F9009E4AEC /* GetSelectJiGouMessage.m */; };
+		85A88FFE1B15BFC300EF2507 /* JiGouWebViewControler.m in Sources */ = {isa = PBXBuildFile; fileRef = 85A88FFD1B15BFC300EF2507 /* JiGouWebViewControler.m */; };
 		85B9D50B1B0ACB1E002B0DF6 /* envolope@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85B9D50A1B0ACB1E002B0DF6 /* envolope@2x.png */; };
 		C601173D1A7B2DCF000ED2DA /* FilterView.m in Sources */ = {isa = PBXBuildFile; fileRef = C601173C1A7B2DCF000ED2DA /* FilterView.m */; };
 		C601C8631A7A1292005E8751 /* GetBackPwdMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = C601C8621A7A1292005E8751 /* GetBackPwdMessage.m */; };
@@ -1177,11 +1176,10 @@
 		85A367A31B07057E009E4AEC /* ShareSDKiPhoneSimpleShareViewUI.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ShareSDKiPhoneSimpleShareViewUI.bundle; sourceTree = "<group>"; };
 		85A367A41B07057E009E4AEC /* ShareSDKiPhoneSimpleShareViewUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShareSDKiPhoneSimpleShareViewUI.framework; sourceTree = "<group>"; };
 		85A367A51B07057E009E4AEC /* ShareSDKShareActionSheet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShareSDKShareActionSheet.framework; sourceTree = "<group>"; };
-		85A367CC1B072B8E009E4AEC /* JiGouViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JiGouViewController.h; sourceTree = "<group>"; };
-		85A367CD1B072B8E009E4AEC /* JiGouViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JiGouViewController.m; sourceTree = "<group>"; };
-		85A367CE1B072B8E009E4AEC /* JiGouViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JiGouViewController.xib; sourceTree = "<group>"; };
 		85A367D11B0747F9009E4AEC /* GetSelectJiGouMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetSelectJiGouMessage.h; sourceTree = "<group>"; };
 		85A367D21B0747F9009E4AEC /* GetSelectJiGouMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetSelectJiGouMessage.m; sourceTree = "<group>"; };
+		85A88FFC1B15BFC300EF2507 /* JiGouWebViewControler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JiGouWebViewControler.h; sourceTree = "<group>"; };
+		85A88FFD1B15BFC300EF2507 /* JiGouWebViewControler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JiGouWebViewControler.m; sourceTree = "<group>"; };
 		85B9D50A1B0ACB1E002B0DF6 /* envolope@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "envolope@2x.png"; sourceTree = "<group>"; };
 		C601173C1A7B2DCF000ED2DA /* FilterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilterView.m; sourceTree = "<group>"; };
 		C601C8611A7A1292005E8751 /* GetBackPwdMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetBackPwdMessage.h; sourceTree = "<group>"; };
@@ -2138,9 +2136,8 @@
 				63C32F771A52E3FC00542DF3 /* SettingVC.m */,
 				5C548F3D1A4EA0AC007CC5BB /* SystemSetVC.h */,
 				5C548F3E1A4EA0AC007CC5BB /* SystemSetVC.m */,
-				85A367CC1B072B8E009E4AEC /* JiGouViewController.h */,
-				85A367CD1B072B8E009E4AEC /* JiGouViewController.m */,
-				85A367CE1B072B8E009E4AEC /* JiGouViewController.xib */,
+				85A88FFC1B15BFC300EF2507 /* JiGouWebViewControler.h */,
+				85A88FFD1B15BFC300EF2507 /* JiGouWebViewControler.m */,
 			);
 			name = Set;
 			sourceTree = "<group>";
@@ -3342,7 +3339,6 @@
 				C60BDB831A6C9F1B00EA5E81 /* no_search_history@2x.png in Resources */,
 				5C23F4F61A52F3A200B0DAA8 /* icon_navbar_search.png in Resources */,
 				5CEB03B21A3EBE4800410858 /* btn_navbar_more_n.png in Resources */,
-				85A367D01B072B8E009E4AEC /* JiGouViewController.xib in Resources */,
 				C639664A1A53003B000D970C /* images@2x.png in Resources */,
 				C60DFBAE1A79D1C10056296F /* icon_login_account@2x.png in Resources */,
 				637253161A4309EC00B0CD8A /* sifeBar_line_s@2x.png in Resources */,
@@ -3612,6 +3608,7 @@
 				63E2FB7B1A4D51E80071DE34 /* InsuranceVC.m in Sources */,
 				63C6DC9C1A3B1DC1000E85CE /* NumberModel.m in Sources */,
 				C6EBE17C1A372CEF0005D2D1 /* UIScrollView+MJExtension.m in Sources */,
+				85A88FFE1B15BFC300EF2507 /* JiGouWebViewControler.m in Sources */,
 				3949A023196E2FB50043B5FC /* wwanconnect.c in Sources */,
 				3949A042196E2FB50043B5FC /* GifView.m in Sources */,
 				3949A033196E2FB50043B5FC /* MyEGORefreshTableHeaderView.m in Sources */,
@@ -3707,7 +3704,6 @@
 				5C05D2A91A41BE1E00B111DA /* EvaluateCellFrame.m in Sources */,
 				C6EAD9E01A78EA4800302434 /* RegisterVC.m in Sources */,
 				C6B0789F1A75D33F0000FC87 /* ModulesManager.m in Sources */,
-				85A367CF1B072B8E009E4AEC /* JiGouViewController.m in Sources */,
 				3949A036196E2FB50043B5FC /* SVProgressHUD.m in Sources */,
 				63C6DCA51A3B1E62000E85CE /* MyHeader.m in Sources */,
 				3949A03F196E2FB50043B5FC /* ComponentsFactory.m in Sources */,

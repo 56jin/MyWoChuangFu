@@ -17,6 +17,9 @@
 
 @property (retain, nonatomic) IBOutlet UILabel *nameLabel;
 
+
+@property (retain,nonatomic) IBOutlet UILabel *agenEffectLabel;
+
 - (IBAction)sureButton:(id)sender;
 
 
