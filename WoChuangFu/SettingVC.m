@@ -128,9 +128,9 @@
 
 - (void)updataVersion
 {
-    bussineDataService *bussineService = [bussineDataService sharedDataService];
-    bussineService.target = self;
-    [bussineService updateVersion:nil];
+    bussineDataService *bus=[bussineDataService sharedDataService];
+    bus.target=self;
+    [bus updateVersion:nil];
 }
 - (void)ShowProgressHUDwithMessage:(NSString *)msg
 {
@@ -176,6 +176,7 @@
     {
         if([buttonTitle isEqualToString:@"确定"]){
             bussineDataService *bus=[bussineDataService sharedDataService];
+             NSLog(@"更新地址 %@",bus.updateUrl);
             NSURL* url = [NSURL URLWithString:bus.updateUrl];
             if([[UIApplication sharedApplication] canOpenURL:url])
             {
@@ -265,5 +266,7 @@
     for(int i = 0; i < [argsArray count]; i++){
         [alert addButtonWithTitle:[argsArray objectAtIndex:i]];
     }
+    [alert show];
+    
 }
 @end

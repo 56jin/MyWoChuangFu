@@ -803,6 +803,7 @@
     }else if(alertView.tag==10106){
         if([buttonTitle isEqualToString:@"确定"]){
             bussineDataService *bus=[bussineDataService sharedDataService];
+            NSLog(@"更新地址 %@",bus.updateUrl);
             NSURL* url = [NSURL URLWithString:bus.updateUrl];
             if([[UIApplication sharedApplication] canOpenURL:url])
             {

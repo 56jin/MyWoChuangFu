@@ -165,7 +165,11 @@
             
              body = [NSString stringWithFormat:@"sessionId=%@&destUrl=%@",sessionId,[self encodeURL:self.urlStr]];
             
-            if ([self.urlStr rangeOfString:@"school"].location != NSNotFound) {
+            
+            
+            if ([self.urlStr rangeOfString:@"school"].location != NSNotFound
+                || [self.urlStr rangeOfString:@"jhllb"].location != NSNotFound
+                ) {
                  sessionId = @"";  //临时加
                 NSLog(@"这个字符串中有a");
                  body = [NSString stringWithFormat:@"destUrl=%@",[self encodeURL:self.urlStr]];
