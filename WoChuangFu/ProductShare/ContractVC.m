@@ -106,7 +106,8 @@
     
     [self.view addSubview:bgView];
     productView.backgroundColor = [UIColor whiteColor];
-    bgView.backgroundColor = UIColorWithRGBA(30, 139, 190, 1);
+//    bgView.backgroundColor = UIColorWithRGBA(30, 139, 190, 1);
+    bgView.backgroundColor = UIColorWithRGBA(255, 126, 12, 1);
     self.view.backgroundColor = [UIColor blackColor];
     
     
@@ -142,13 +143,14 @@
         moneyBackGround.layer.shadowOpacity = 0.5f;
         
         moneyBackGround.layer.shadowPath = shadowPath.CGPath;
-        //        moneyBackGround.backgroundColor =[UIColor redColor];
+//        moneyBackGround.backgroundColor = UIColorWithRGBA(255, 126, 12, 1);
         [bgView addSubview:moneyBackGround];
         
         UILabel *idlable = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH-20, 50)];
 //        idlable.layer.borderColor = [UIColor whiteColor].CGColor;
 //        idlable.layer.borderWidth = 1.0;
         idlable.backgroundColor = [ComponentsFactory createColorByHex:@"#2badeb"];
+//        idlable.backgroundColor = UIColorWithRGBA(255, 126, 12, 1);
         idlable.font = [UIFont systemFontOfSize:17];
         idlable.text = [NSString stringWithFormat:@"ID:%@",_myDic[@"userid"]];
         idlable.textAlignment = NSTextAlignmentCenter;
@@ -181,12 +183,14 @@
         taocan.textColor = [UIColor whiteColor];
         taocan.textAlignment = NSTextAlignmentCenter;
         taocan.backgroundColor = [ComponentsFactory createColorByHex:@"#1a9fde"];
+//        taocan.backgroundColor = UIColorWithRGBA(255, 126, 12, 1);
         [moneyBackGround addSubview:taocan];
         
         
         UILabel *fanli =[[UILabel alloc]initWithFrame:CGRectMake(0, 110, COLLECTIONWIDTH+1, 60)];
         fanli.font = [UIFont systemFontOfSize:17];
         fanli.backgroundColor = [ComponentsFactory createColorByHex:@"#1a9fde"];
+//        fanli.backgroundColor = UIColorWithRGBA(255, 126, 12, 1);
         fanli.text = @"返利";
         //    fanli.textColor = [ComponentsFactory createColorByHex:@"#666666"];
         fanli.textColor = [UIColor whiteColor];
@@ -202,7 +206,7 @@
             
             UIView * collectionView = [[UIView alloc]initWithFrame:CGRectMake((count1-1)*cellWidth+1+COLLECTIONWIDTH, 50, cellWidth, 120)];
             collectionView.backgroundColor = [UIColor clearColor];
-            
+//            collectionView.backgroundColor = UIColorWithRGBA(255, 126, 12, 1);
 
 //            UIView *line2 = [[UIView alloc]initWithFrame:CGRectMake(i*cellWidth+COLLECTIONWIDTH-1, 50, 1, 120)];
 //            line2.backgroundColor = [UIColor whiteColor];
@@ -210,9 +214,11 @@
             UILabel *taocanLable = [[UILabel alloc]initWithFrame:CGRectMake(i*cellWidth+1+COLLECTIONWIDTH, 50, cellWidth, 60)];
             if (i%2==0) {
                 taocanLable.backgroundColor = [ComponentsFactory createColorByHex:@"#1794cf"];
+//                taocanLable.backgroundColor = UIColorWithRGBA(255, 126, 12, 1);
             }
             else{
                 taocanLable.backgroundColor = [ComponentsFactory createColorByHex:@"#1a9fde"];
+//                taocanLable.backgroundColor = UIColorWithRGBA(255, 126, 12, 1);
             }
             if (i>_moneyData.count) {
                 taocanLable.text = @"";
@@ -228,9 +234,11 @@
             UILabel *fanxianLable = [[UILabel alloc]initWithFrame:CGRectMake(i*cellWidth+1+COLLECTIONWIDTH, 110, cellWidth, 60)];
             if (i%2==0) {
                 fanxianLable.backgroundColor = [ComponentsFactory createColorByHex:@"#1794cf"];
+//                 fanxianLable.backgroundColor = UIColorWithRGBA(255, 126, 12, 1);
             }
             else{
                 fanxianLable.backgroundColor = [ComponentsFactory createColorByHex:@"#1a9fde"];
+//                 fanxianLable.backgroundColor = UIColorWithRGBA(255, 126, 12, 1);
             }
             if (i>_moneyData.count) {
                 fanxianLable.text = @"";
@@ -534,9 +542,11 @@
 
 -(void)backAction
 {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:_returnUrl]];
-    QkFirstPageVC *firstPage = [[QkFirstPageVC alloc]init];
-    [UIApplication sharedApplication].keyWindow.rootViewController = firstPage;
+//    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:_returnUrl]];
+//    QkFirstPageVC *firstPage = [[QkFirstPageVC alloc]init];
+//    [UIApplication sharedApplication].keyWindow.rootViewController = firstPage;
 //    exit(0);
+    
+    [self.navigationController popViewControllerAnimated:YES];
 }
 @end
