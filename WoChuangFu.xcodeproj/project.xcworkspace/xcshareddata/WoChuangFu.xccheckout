@@ -10,8 +10,6 @@
 	<string>WoChuangFu</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>13390ad2-ed54-11e3-bc33-67707ac4ae21++4162</key>
-		<string>http://133.0.192.193:18031/svn/GXUWEG/Trunk/GXUWEG_DEV/woego_app/ios/WoChuangFu_APP/WoChuangFu/tools/ShareSDK/Extend/YiXinSDK</string>
 		<key>98E11448CA8FE8FC281AABA50FAE4E57E99EDD2F</key>
 		<string>https://github.com/lewis180777/MyWoChuangFu.git</string>
 	</dict>
@@ -19,15 +17,8 @@
 	<string>WoChuangFu.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>13390ad2-ed54-11e3-bc33-67707ac4ae21++4162</key>
-		<string>../..WoChuangFu/tools/ShareSDK/Extend/YiXinSDK</string>
 		<key>98E11448CA8FE8FC281AABA50FAE4E57E99EDD2F</key>
 		<string>../..</string>
-	</dict>
-	<key>IDESourceControlProjectRepositoryRootDictionary</key>
-	<dict>
-		<key>13390ad2-ed54-11e3-bc33-67707ac4ae21++4162</key>
-		<string>http://133.0.192.193:18031/svn/GXUWEG</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://github.com/lewis180777/MyWoChuangFu.git</string>
@@ -44,14 +35,6 @@
 			<string>98E11448CA8FE8FC281AABA50FAE4E57E99EDD2F</string>
 			<key>IDESourceControlWCCName</key>
 			<string>MyWoChuangFu</string>
-		</dict>
-		<dict>
-			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
-			<string>public.vcs.subversion</string>
-			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>13390ad2-ed54-11e3-bc33-67707ac4ae21++4162</string>
-			<key>IDESourceControlWCCName</key>
-			<string>YiXinSDK</string>
 		</dict>
 	</array>
 </dict>

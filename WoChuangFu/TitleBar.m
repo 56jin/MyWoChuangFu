@@ -71,7 +71,7 @@
     UILabel* titleLab = [[UILabel alloc] initWithFrame:mid_frame];
     titleLab.backgroundColor = [UIColor clearColor];
     [titleLab setTextColor:[UIColor whiteColor]];
-    [titleLab setFont:[UIFont systemFontOfSize:17.0]];
+    [titleLab setFont:[UIFont systemFontOfSize:18.0]];
     if(titlePos == left_position){//title居左显示
 #ifdef __IPHONE_6_0
         [titleLab setTextAlignment:NSTextAlignmentLeft];
@@ -274,6 +274,13 @@
     frame.size.width = 70;
     leftBtn.frame = frame;
     
+}
+
+-(void)setRightImage:(NSString *)textStr {
+    UIButton *rightBtn = (UIButton*)[self viewWithTag:RIGHT_BUTTON_TAG2];
+    [rightBtn setImage:[ResourceGetter getAddustImageResourceWitnId:textStr ]
+             forState:UIControlStateNormal];
+
 }
 
 -(NSString*)getSearchText

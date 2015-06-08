@@ -280,7 +280,10 @@ static bussineDataService *sharedBussineDataServicee = nil;
     
     if (kLinkErrorTag == alertView.tag || kTimeOutErrorTag == alertView.tag) {
         //超时或者连接错误，重试
-        if (buttonIndex == alertView.firstOtherButtonIndex) {
+        if (buttonIndex == alertView.firstOtherButtonIndex || buttonIndex == 1) {
+            
+            NSLog(@"\n\n\n\n\n\n\n\n点击了重试\n\n\n\n\n\n");
+            
             if ([self respondsToSelector:sendMessageSelector]) {
                 [self performSelector:sendMessageSelector withObject:sendDataDic];
             }
@@ -1134,6 +1137,53 @@ static bussineDataService *sharedBussineDataServicee = nil;
     [self noticeUI:rspDic];
 }
 
+#pragma mark - 判断是否有权限进入实名返档
+- (void)isRootPush:(NSDictionary *)paramters {
+    if ([[UIDevice currentDevice] networkAvailable]) {
+        [self readySharedSendMessage:@"RealNameYesOrNoMessage"
+                               param:paramters
+                             funName:@"realNameYesOrNo:"
+                       synchronously:NO];
+    }
+
+}
+
+-(void)realNameYesOrNoFinished:(id<MessageDelegate>)msg
+{
+    RealNameYesOrNoMessage *Msg = msg;
+    NSDictionary *rspDic = [self handleRspInfo:Msg];
+    NSString* rspCode = [Msg getRspcode];
+    if([rspCode isEqualToString:@"0000"]){
+        self.rspInfo = Msg.rspInfo;
+    }
+    [self noticeUI:rspDic];
+}
+
+#pragma mark - 实名返档
+- (void)sureGuiDang:(NSDictionary *)paramters {
+    if ([[UIDevice currentDevice] networkAvailable]) {
+        [self readySharedSendMessage:@"RealFangDangMessage"
+                               param:paramters
+                             funName:@"realFangDang:"
+                       synchronously:NO];
+    }
+
+    
+}
+
+-(void)realFangDangFinished:(id<MessageDelegate>)msg
+{
+    RealFangDangMessage *Msg = msg;
+    NSDictionary *rspDic = [self handleRspInfo:Msg];
+    NSString* rspCode = [Msg getRspcode];
+    if([rspCode isEqualToString:@"0000"]){
+        self.rspInfo = Msg.rspInfo;
+    }
+    [self noticeUI:rspDic];
+}
+
+
+
 #pragma mark -
 #pragma mark http 回调接口
 - (void)requestDidFinished:(id<MessageDelegate>)msg
@@ -1208,7 +1258,12 @@ static bussineDataService *sharedBussineDataServicee = nil;
         [self getAddJiGouFinished:msg];
     }else if([[msg getBusinessCode] isEqualToString:UserLogoutMessage_BIZCODE]) {
         [self userLogoutFinished:msg];
+    }else if([[msg getBusinessCode] isEqualToString:RealNameYesOrNoMessage_BIZCODE]) {
+        [self realNameYesOrNoFinished:msg];
+    }else if([[msg getBusinessCode] isEqualToString:RealFangDangMessage_BIZCODE]) {
+        [self realFangDangFinished:msg];
     }
+
 
 
 }

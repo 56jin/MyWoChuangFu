@@ -10,4 +10,8 @@
 
 @interface SettingVC : UIViewController
 
+
+
+@property (copy,nonatomic) NSString *isYesOrNo;
+
 @end

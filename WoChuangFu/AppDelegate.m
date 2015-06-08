@@ -187,7 +187,7 @@
     [myWocfVC release];
     //system set
     SettingVC* setVC = [[SettingVC alloc] init];
-    setVC.tabBarItem.title = @"设置";
+    setVC.tabBarItem.title = @"工具";
     setVC.tabBarItem.image = [UIImage imageNamed:@"icon_navbar_set.png"];
 //    setVC.tabBarItem = [[[UITabBarItem alloc] initWithTitle:@"设置"
 //                                                        image:[UIImage imageNamed:@"icon_navbar_set.png"]

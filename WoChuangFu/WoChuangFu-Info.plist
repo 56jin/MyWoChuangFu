@@ -119,6 +119,11 @@
 	<string>YES</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>YES</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>bluetooth-peripheral</string>
+		<string>bluetooth-central</string>
+	</array>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>

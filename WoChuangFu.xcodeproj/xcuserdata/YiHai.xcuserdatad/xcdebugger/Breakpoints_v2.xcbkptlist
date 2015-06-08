@@ -202,11 +202,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WoChuangFu/bussiness/bussineDataService.m"
-            timestampString = "454229178.917742"
+            timestampString = "455001544.44846"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1206"
-            endingLineNumber = "1206"
+            startingLineNumber = "1253"
+            endingLineNumber = "1253"
             landmarkName = "-requestDidFinished:"
             landmarkType = "5">
          </BreakpointContent>
@@ -378,12 +378,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WoChuangFu/SettingVC.m"
-            timestampString = "454474730.200753"
+            timestampString = "455001544.44846"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "149"
-            endingLineNumber = "149"
-            landmarkName = "-requestDidFinished:"
+            startingLineNumber = "198"
+            endingLineNumber = "198"
+            landmarkName = "-ShowProgressHUDwithMessage:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -394,12 +394,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "WoChuangFu/SettingVC.m"
-            timestampString = "454475820.127709"
+            timestampString = "455001544.44846"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "248"
-            endingLineNumber = "248"
-            landmarkName = "-showAlertViewTitle:message:delegate:tag:cancelButtonTitle:otherButtonTitles:"
+            startingLineNumber = "329"
+            endingLineNumber = "329"
+            landmarkName = "-requestFailed:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

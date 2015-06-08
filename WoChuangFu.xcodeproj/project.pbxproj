@@ -376,7 +376,16 @@
 		85A367CB1B07057E009E4AEC /* ShareSDKShareActionSheet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85A367A51B07057E009E4AEC /* ShareSDKShareActionSheet.framework */; };
 		85A367D31B0747F9009E4AEC /* GetSelectJiGouMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 85A367D21B0747F9009E4AEC /* GetSelectJiGouMessage.m */; };
 		85A88FFE1B15BFC300EF2507 /* JiGouWebViewControler.m in Sources */ = {isa = PBXBuildFile; fileRef = 85A88FFD1B15BFC300EF2507 /* JiGouWebViewControler.m */; };
+		85AB504F1B1E9EB700750405 /* RealFangDangMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AB504C1B1E9EB700750405 /* RealFangDangMessage.m */; };
+		85AB50501B1E9EB700750405 /* RealNameYesOrNoMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AB504E1B1E9EB700750405 /* RealNameYesOrNoMessage.m */; };
+		85AB50531B1EC1AE00750405 /* MySettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AB50521B1EC1AE00750405 /* MySettingViewController.m */; };
+		85AB50641B1ECB8400750405 /* libbtReader.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 85AB50571B1ECB8400750405 /* libbtReader.a */; };
+		85AB50651B1ECB8400750405 /* libRWSimCard.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 85AB50591B1ECB8400750405 /* libRWSimCard.a */; };
 		85B9D50B1B0ACB1E002B0DF6 /* envolope@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85B9D50A1B0ACB1E002B0DF6 /* envolope@2x.png */; };
+		85FED3271B1D83F10025988B /* RealNameCarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85FED3251B1D83F10025988B /* RealNameCarViewController.m */; };
+		85FED3281B1D83F10025988B /* RealNameCarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85FED3261B1D83F10025988B /* RealNameCarViewController.xib */; };
+		85FED32C1B1D97760025988B /* fandang.png in Resources */ = {isa = PBXBuildFile; fileRef = 85FED32B1B1D97760025988B /* fandang.png */; };
+		85FED3421B1DA8F40025988B /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85FED3411B1DA8F40025988B /* CoreBluetooth.framework */; };
 		C601173D1A7B2DCF000ED2DA /* FilterView.m in Sources */ = {isa = PBXBuildFile; fileRef = C601173C1A7B2DCF000ED2DA /* FilterView.m */; };
 		C601C8631A7A1292005E8751 /* GetBackPwdMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = C601C8621A7A1292005E8751 /* GetBackPwdMessage.m */; };
 		C601C8671A7A1716005E8751 /* GetSearchInfoMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = C601C8661A7A1716005E8751 /* GetSearchInfoMessage.m */; };
@@ -1180,7 +1189,30 @@
 		85A367D21B0747F9009E4AEC /* GetSelectJiGouMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetSelectJiGouMessage.m; sourceTree = "<group>"; };
 		85A88FFC1B15BFC300EF2507 /* JiGouWebViewControler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JiGouWebViewControler.h; sourceTree = "<group>"; };
 		85A88FFD1B15BFC300EF2507 /* JiGouWebViewControler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JiGouWebViewControler.m; sourceTree = "<group>"; };
+		85AB504B1B1E9EB700750405 /* RealFangDangMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RealFangDangMessage.h; sourceTree = "<group>"; };
+		85AB504C1B1E9EB700750405 /* RealFangDangMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RealFangDangMessage.m; sourceTree = "<group>"; };
+		85AB504D1B1E9EB700750405 /* RealNameYesOrNoMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RealNameYesOrNoMessage.h; sourceTree = "<group>"; };
+		85AB504E1B1E9EB700750405 /* RealNameYesOrNoMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RealNameYesOrNoMessage.m; sourceTree = "<group>"; };
+		85AB50511B1EC1AE00750405 /* MySettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MySettingViewController.h; sourceTree = "<group>"; };
+		85AB50521B1EC1AE00750405 /* MySettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MySettingViewController.m; sourceTree = "<group>"; };
+		85AB50561B1ECB8400750405 /* btReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = btReader.h; sourceTree = "<group>"; };
+		85AB50571B1ECB8400750405 /* libbtReader.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libbtReader.a; sourceTree = "<group>"; };
+		85AB50591B1ECB8400750405 /* libRWSimCard.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libRWSimCard.a; sourceTree = "<group>"; };
+		85AB505B1B1ECB8400750405 /* BluetoothReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BluetoothReader.h; sourceTree = "<group>"; };
+		85AB505C1B1ECB8400750405 /* ICardReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICardReader.h; sourceTree = "<group>"; };
+		85AB505D1B1ECB8400750405 /* ICardReaderEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICardReaderEvent.h; sourceTree = "<group>"; };
+		85AB505E1B1ECB8400750405 /* IDCardInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IDCardInfo.h; sourceTree = "<group>"; };
+		85AB505F1B1ECB8400750405 /* IDCardReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IDCardReader.h; sourceTree = "<group>"; };
+		85AB50601B1ECB8400750405 /* ReaderDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderDelegate.h; sourceTree = "<group>"; };
+		85AB50611B1ECB8400750405 /* RWSimCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RWSimCard.h; sourceTree = "<group>"; };
+		85AB50621B1ECB8400750405 /* SimCardReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimCardReader.h; sourceTree = "<group>"; };
+		85AB50631B1ECB8400750405 /* Tools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tools.h; sourceTree = "<group>"; };
 		85B9D50A1B0ACB1E002B0DF6 /* envolope@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "envolope@2x.png"; sourceTree = "<group>"; };
+		85FED3241B1D83F10025988B /* RealNameCarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RealNameCarViewController.h; sourceTree = "<group>"; };
+		85FED3251B1D83F10025988B /* RealNameCarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RealNameCarViewController.m; sourceTree = "<group>"; };
+		85FED3261B1D83F10025988B /* RealNameCarViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RealNameCarViewController.xib; sourceTree = "<group>"; };
+		85FED32B1B1D97760025988B /* fandang.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fandang.png; sourceTree = "<group>"; };
+		85FED3411B1DA8F40025988B /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		C601173C1A7B2DCF000ED2DA /* FilterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilterView.m; sourceTree = "<group>"; };
 		C601C8611A7A1292005E8751 /* GetBackPwdMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetBackPwdMessage.h; sourceTree = "<group>"; };
 		C601C8621A7A1292005E8751 /* GetBackPwdMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetBackPwdMessage.m; sourceTree = "<group>"; };
@@ -1407,6 +1439,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				85FED3421B1DA8F40025988B /* CoreBluetooth.framework in Frameworks */,
 				856ACE7E1B06F7E400745374 /* Accounts.framework in Frameworks */,
 				856ACE7C1B06F7D600745374 /* Social.framework in Frameworks */,
 				394C86881980FD0B00327C82 /* Security.framework in Frameworks */,
@@ -1454,8 +1487,10 @@
 				3949A05B196E31590043B5FC /* CFNetwork.framework in Frameworks */,
 				39499F37196E2E9C0043B5FC /* CoreGraphics.framework in Frameworks */,
 				39499F39196E2E9C0043B5FC /* UIKit.framework in Frameworks */,
+				85AB50641B1ECB8400750405 /* libbtReader.a in Frameworks */,
 				39499F35196E2E9C0043B5FC /* Foundation.framework in Frameworks */,
 				859F337B1B03299A00B72337 /* libHttpConnector-d.a in Frameworks */,
+				85AB50651B1ECB8400750405 /* libRWSimCard.a in Frameworks */,
 				85A367C11B07057E009E4AEC /* ShareSDKFlatShareViewUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1476,6 +1511,7 @@
 		39499F28196E2E9C0043B5FC = {
 			isa = PBXGroup;
 			children = (
+				85AB50541B1ECB8400750405 /* ReaderShenfengzheng */,
 				859F33451B03299900B72337 /* lib */,
 				39499F3A196E2E9C0043B5FC /* WoChuangFu */,
 				39499F53196E2E9C0043B5FC /* WoChuangFuTests */,
@@ -1496,6 +1532,7 @@
 		39499F33196E2E9C0043B5FC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				85FED3411B1DA8F40025988B /* CoreBluetooth.framework */,
 				856ACE7D1B06F7E400745374 /* Accounts.framework */,
 				856ACE7B1B06F7D600745374 /* Social.framework */,
 				631410CD1AD6A5BB001E369C /* libz.1.1.3.dylib */,
@@ -2134,10 +2171,16 @@
 				C6F1F4501A7646B9006FB01A /* MessageCenter */,
 				63C32F761A52E3FC00542DF3 /* SettingVC.h */,
 				63C32F771A52E3FC00542DF3 /* SettingVC.m */,
+				85AB50511B1EC1AE00750405 /* MySettingViewController.h */,
+				85AB50521B1EC1AE00750405 /* MySettingViewController.m */,
 				5C548F3D1A4EA0AC007CC5BB /* SystemSetVC.h */,
 				5C548F3E1A4EA0AC007CC5BB /* SystemSetVC.m */,
 				85A88FFC1B15BFC300EF2507 /* JiGouWebViewControler.h */,
 				85A88FFD1B15BFC300EF2507 /* JiGouWebViewControler.m */,
+				85FED3241B1D83F10025988B /* RealNameCarViewController.h */,
+				85FED3251B1D83F10025988B /* RealNameCarViewController.m */,
+				85FED3261B1D83F10025988B /* RealNameCarViewController.xib */,
+				85FED32B1B1D97760025988B /* fandang.png */,
 			);
 			name = Set;
 			sourceTree = "<group>";
@@ -2162,6 +2205,10 @@
 		5CA60F301A2C153900AA0533 /* oldMessage */ = {
 			isa = PBXGroup;
 			children = (
+				85AB504B1B1E9EB700750405 /* RealFangDangMessage.h */,
+				85AB504C1B1E9EB700750405 /* RealFangDangMessage.m */,
+				85AB504D1B1E9EB700750405 /* RealNameYesOrNoMessage.h */,
+				85AB504E1B1E9EB700750405 /* RealNameYesOrNoMessage.m */,
 				8501C9E31B12F83B00FF44D2 /* UserLogoutMessage.h */,
 				8501C9E41B12F83B00FF44D2 /* UserLogoutMessage.m */,
 				85A367D11B0747F9009E4AEC /* GetSelectJiGouMessage.h */,
@@ -2878,6 +2925,49 @@
 			path = UI;
 			sourceTree = "<group>";
 		};
+		85AB50541B1ECB8400750405 /* ReaderShenfengzheng */ = {
+			isa = PBXGroup;
+			children = (
+				85AB50551B1ECB8400750405 /* btReaderlibs */,
+				85AB50581B1ECB8400750405 /* include */,
+			);
+			path = ReaderShenfengzheng;
+			sourceTree = "<group>";
+		};
+		85AB50551B1ECB8400750405 /* btReaderlibs */ = {
+			isa = PBXGroup;
+			children = (
+				85AB50561B1ECB8400750405 /* btReader.h */,
+				85AB50571B1ECB8400750405 /* libbtReader.a */,
+			);
+			path = btReaderlibs;
+			sourceTree = "<group>";
+		};
+		85AB50581B1ECB8400750405 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				85AB50591B1ECB8400750405 /* libRWSimCard.a */,
+				85AB505A1B1ECB8400750405 /* RWSimCard */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		85AB505A1B1ECB8400750405 /* RWSimCard */ = {
+			isa = PBXGroup;
+			children = (
+				85AB505B1B1ECB8400750405 /* BluetoothReader.h */,
+				85AB505C1B1ECB8400750405 /* ICardReader.h */,
+				85AB505D1B1ECB8400750405 /* ICardReaderEvent.h */,
+				85AB505E1B1ECB8400750405 /* IDCardInfo.h */,
+				85AB505F1B1ECB8400750405 /* IDCardReader.h */,
+				85AB50601B1ECB8400750405 /* ReaderDelegate.h */,
+				85AB50611B1ECB8400750405 /* RWSimCard.h */,
+				85AB50621B1ECB8400750405 /* SimCardReader.h */,
+				85AB50631B1ECB8400750405 /* Tools.h */,
+			);
+			path = RWSimCard;
+			sourceTree = "<group>";
+		};
 		C601C8601A7A126F005E8751 /* GetBackPassWord */ = {
 			isa = PBXGroup;
 			children = (
@@ -3185,6 +3275,11 @@
 				TargetAttributes = {
 					39499F30196E2E9C0043B5FC = {
 						DevelopmentTeam = FKNQ7ZDS8B;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					39499F4B196E2E9C0043B5FC = {
 						DevelopmentTeam = FKNQ7ZDS8B;
@@ -3272,6 +3367,7 @@
 				5C68F1061A0B196E0040B288 /* login_type_sheet_a.png in Resources */,
 				859F33391B02FACE00B72337 /* logo_key_safari2.png in Resources */,
 				C63646D11A43CA3A006F79F0 /* btn_list_top_n.png in Resources */,
+				85FED32C1B1D97760025988B /* fandang.png in Resources */,
 				395D9B94197673F000C1B1B2 /* Log.png in Resources */,
 				39499F3F196E2E9C0043B5FC /* InfoPlist.strings in Resources */,
 				C6F1F44E1A762CC9006FB01A /* btn_index_nav_more.png in Resources */,
@@ -3455,6 +3551,7 @@
 				63C32F9B1A52EEAD00542DF3 /* ios_sidebar_bg_p@2x.png in Resources */,
 				C6F477301A45596C00D4EAF2 /* lable_content_sku_s.png in Resources */,
 				6372530B1A4309EC00B0CD8A /* btn_content_down_n.png in Resources */,
+				85FED3281B1D83F10025988B /* RealNameCarViewController.xib in Resources */,
 				C63646D01A43CA3A006F79F0 /* bnt_content_second_n.png in Resources */,
 				C63646DF1A43CA46006F79F0 /* btn_share_p.png in Resources */,
 				C6091FB81A89F737001007E1 /* GuidePage3@2x.png in Resources */,
@@ -3584,6 +3681,7 @@
 				C6FFF5B01A51898800C923AF /* ChooseAddressVC.m in Sources */,
 				C601C86B1A7A2310005E8751 /* GetMsgCenterData.m in Sources */,
 				3949AA211977CCFD0043F06C /* webVC.m in Sources */,
+				85AB504F1B1E9EB700750405 /* RealFangDangMessage.m in Sources */,
 				C6EAD9D31A78D65900302434 /* GetBackPassWordVC.m in Sources */,
 				C6EBE17D1A372CEF0005D2D1 /* UIScrollView+MJRefresh.m in Sources */,
 				6354D5461AFA0CE400F4966D /* ProDuctShareManager.m in Sources */,
@@ -3613,6 +3711,7 @@
 				3949A042196E2FB50043B5FC /* GifView.m in Sources */,
 				3949A033196E2FB50043B5FC /* MyEGORefreshTableHeaderView.m in Sources */,
 				5CA60F341A2C15AC00AA0533 /* ProductsMessage.m in Sources */,
+				85AB50501B1E9EB700750405 /* RealNameYesOrNoMessage.m in Sources */,
 				3949A045196E2FB50043B5FC /* MyScrollView.m in Sources */,
 				C63DF7131A82536200A028C4 /* SIMPackageChooseVC.m in Sources */,
 				5C05D2B51A41BF2E00B111DA /* TabBar.m in Sources */,
@@ -3658,6 +3757,7 @@
 				3949A050196E2FB50043B5FC /* RemoteImageView.m in Sources */,
 				3949A04D196E2FB50043B5FC /* PullRefreshView.m in Sources */,
 				3949A039196E2FB50043B5FC /* SYPageView.m in Sources */,
+				85FED3271B1D83F10025988B /* RealNameCarViewController.m in Sources */,
 				3949A013196E2FB50043B5FC /* NdUncaughtExceptionHandler.m in Sources */,
 				3949A02B196E2FB50043B5FC /* mask.c in Sources */,
 				C6091FAD1A89EA30001007E1 /* GuidePageVC.m in Sources */,
@@ -3699,6 +3799,7 @@
 				5CA60F3F1A2C166100AA0533 /* ProductDetailVC.m in Sources */,
 				3949AA1E1977BA910043F06C /* ZhuYeMessage.m in Sources */,
 				5C2415B61A44045A00B17C01 /* ChooseAreaVC.m in Sources */,
+				85AB50531B1EC1AE00750405 /* MySettingViewController.m in Sources */,
 				C6EBE1621A372C690005D2D1 /* ProductCell.m in Sources */,
 				3949A053196E2FB50043B5FC /* UIKeywordView.m in Sources */,
 				5C05D2A91A41BE1E00B111DA /* EvaluateCellFrame.m in Sources */,
@@ -3865,6 +3966,8 @@
 					"$(PROJECT_DIR)/WoChuangFu/tools/ShareSDK/Extend/WeChatSDK",
 					"$(PROJECT_DIR)/WoChuangFu/tools/ShareSDK/Extend/YiXinSDK",
 					"$(PROJECT_DIR)/lib",
+					"$(PROJECT_DIR)/ReaderShenfengzheng/btReaderlibs",
+					"$(PROJECT_DIR)/ReaderShenfengzheng/include",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (
@@ -4013,6 +4116,8 @@
 					"$(PROJECT_DIR)/WoChuangFu/tools/ShareSDK/Extend/WeChatSDK",
 					"$(PROJECT_DIR)/WoChuangFu/tools/ShareSDK/Extend/YiXinSDK",
 					"$(PROJECT_DIR)/lib",
+					"$(PROJECT_DIR)/ReaderShenfengzheng/btReaderlibs",
+					"$(PROJECT_DIR)/ReaderShenfengzheng/include",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (
@@ -4062,6 +4167,8 @@
 					"$(PROJECT_DIR)/WoChuangFu/tools/ShareSDK/Extend/WeChatSDK",
 					"$(PROJECT_DIR)/WoChuangFu/tools/ShareSDK/Extend/YiXinSDK",
 					"$(PROJECT_DIR)/lib",
+					"$(PROJECT_DIR)/ReaderShenfengzheng/btReaderlibs",
+					"$(PROJECT_DIR)/ReaderShenfengzheng/include",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (

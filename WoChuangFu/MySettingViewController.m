@@ -1,31 +1,30 @@
 //
-//  SettingVC.m
+//  MySettingViewController.m
 //  WoChuangFu
 //
-//  Created by 郑渊文 on 14/12/30.
-//  Copyright (c) 2014年 asiainfo-linkage. All rights reserved.
+//  Created by 陈亦海 on 15/6/3.
+//  Copyright (c) 2015年 asiainfo-linkage. All rights reserved.
 //
 
-#import "SettingVC.h"
+#import "MySettingViewController.h"
+
 #import "TitleBar.h"
 #import "CommonMacro.h"
 #import "FileHelpers.h"
 #import "MessageCenterVC.h"
 #import "JiGouWebViewControler.h"
 
-#import "MySettingViewController.h"
+@interface MySettingViewController ()<UITableViewDataSource,UITableViewDelegate,TitleBarDelegate,HttpBackDelegate>
 
-
-
-@interface SettingVC ()<UITableViewDataSource,UITableViewDelegate,TitleBarDelegate,HttpBackDelegate>
 @property(nonatomic,strong)UITableView *myTable;
 
-@property(nonatomic,strong)NSMutableArray *dataSource;
+@property(nonatomic,strong) NSMutableArray *dataSource;
+
 @end
 
-@implementation SettingVC
+@implementation MySettingViewController
 
-
+@synthesize dataSource = dataSource;
 
 - (void)loadView
 {
@@ -36,42 +35,29 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-     self.navigationController.navigationBarHidden=YES;;
+    self.navigationController.navigationBarHidden=YES;;
     // Do any additional setup after loading the view.
 }
 
 -(void)layoutV
 {
-    
-    
-    if ([self.isYesOrNo isEqualToString:@"YES"]) {
-        _dataSource = [NSMutableArray arrayWithObjects:@"消息中心",@"系统更新", @"清除缓存",@"加入机构",nil];//@"加入机构",
-    }
-    else {
-        _dataSource = [NSMutableArray arrayWithObjects:@"实名返档",nil];//@"加入机构",
-    }
-//    else {
-//        UIButton *rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-//        [rightBtn setBackgroundColor:[UIColor clearColor]];
-//        [rightBtn setFrame: (CGRect){280,5,40,44}];
-//        [rightBtn setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
-//        [rightBtn setTitle:@"设置" forState:UIControlStateNormal];
-//        [rightBtn addTarget:self action:@selector(rightBtnEven) forControlEvents:UIControlEventTouchUpInside];
-//        
-//        UIBarButtonItem *right = [[UIBarButtonItem alloc]initWithCustomView:rightBtn];
-//        [self.navigationController.navigationItem setRightBarButtonItem:right];
-//    }
-    
-   
-    TitleBar *titleBar = [[TitleBar alloc] initWithFramShowHome:self.isYesOrNo ? NO : YES ShowSearch: NO  TitlePos:0];
-    [titleBar setRightImage: self.isYesOrNo ? @"btn_navbar_home_n":@"icon_navbar_set"];
-    [titleBar setLeftIsHiden:self.isYesOrNo ? NO : YES];
-    titleBar.title = self.isYesOrNo ? @"设置" : @"工具";
+  
+    dataSource = [NSMutableArray arrayWithObjects:@"消息中心",@"系统更新", @"清除缓存",@"加入机构",nil];//@"加入机构",
+//    dataSource = [NSMutableArray array];
+//    [dataSource addObject:@"消息中心"];
+//    [dataSource addObject:@"系统更新"];
+//    [dataSource addObject:@"清除缓存"];
+//    [dataSource addObject:@"加入机构"];
+  
+    TitleBar *titleBar = [[TitleBar alloc] initWithFramShowHome: NO  ShowSearch: NO  TitlePos:0];
+  
+    [titleBar setLeftIsHiden: NO ];
+    titleBar.title =  @"设置" ;
     titleBar.frame = CGRectMake(0,[UIScreen mainScreen].applicationFrame.origin.y, SCREEN_WIDTH,TITLE_BAR_HEIGHT);
     [self.view addSubview:titleBar];
     titleBar.target = self;
     
-    _myTable = [[UITableView alloc]initWithFrame:CGRectMake(0,[UIScreen mainScreen].applicationFrame.origin.y+TITLE_BAR_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT-[UIScreen mainScreen].applicationFrame.origin.y-TITLE_BAR_HEIGHT- (self.isYesOrNo ? 0 : 49))];
+    _myTable = [[UITableView alloc]initWithFrame:CGRectMake(0,[UIScreen mainScreen].applicationFrame.origin.y+TITLE_BAR_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT-[UIScreen mainScreen].applicationFrame.origin.y-TITLE_BAR_HEIGHT)];
     _myTable.dataSource = self;
     _myTable.delegate = self;
     _myTable.backgroundColor = [ComponentsFactory createColorByHex:@"#efeff4"];
@@ -88,19 +74,18 @@
 }
 
 -(void)homeAction {
-    
-//    MySettingViewController *setVC = [[MySettingViewController alloc]init];
-     SettingVC *setVC = [[SettingVC alloc]init];
-    setVC.isYesOrNo = @"YES";
-    setVC.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:setVC animated:YES];
+   
 }
 
 #pragma mark - UITableViewDataSource
 
+//- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+//    return 1;
+//}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return _dataSource.count;
+    return dataSource.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -112,37 +97,42 @@
         cell.textLabel.font = [UIFont systemFontOfSize:16.0f];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
-    cell.textLabel.text = _dataSource[indexPath.row];
-
+    cell.textLabel.text = dataSource[indexPath.row];
+    
     return cell;
 }
 #pragma mark - UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if ([_dataSource[indexPath.row] isEqualToString:@"系统更新"])
+    
+    NSLog(@"   ---- %d",indexPath.row);
+    
+    NSInteger row = indexPath.row;
+    
+    if (row == 1)
     {
         [self updataVersion];
     }
-    else if ([_dataSource[indexPath.row] isEqualToString:@"消息中心"])
+    else if (row == 0)
     {
         MessageCenterVC *messageCenter = [[MessageCenterVC alloc] init];
         messageCenter.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:messageCenter animated:YES];
     }
-    else if ([_dataSource[indexPath.row] isEqualToString:@"清除缓存"])
+    else if (row == 2)
     {
         UIAlertView *aler=[[UIAlertView alloc] initWithTitle:@"提示" message:@"确定清除缓存？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
         aler.tag=2324;
         [aler show];
     }
-    else if ([_dataSource[indexPath.row] isEqualToString:@"加入机构"]){
+    else if (row == 3){
         
-//        UIAlertView *aler = [[UIAlertView alloc]initWithTitle:@"加入机构" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-//        [aler setAlertViewStyle:UIAlertViewStylePlainTextInput];
-//        [aler textFieldAtIndex:0].placeholder = @"请输入机构代码";
-//        aler.tag = 2377;
-//        [aler show];
+        //        UIAlertView *aler = [[UIAlertView alloc]initWithTitle:@"加入机构" message:nil delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+        //        [aler setAlertViewStyle:UIAlertViewStylePlainTextInput];
+        //        [aler textFieldAtIndex:0].placeholder = @"请输入机构代码";
+        //        aler.tag = 2377;
+        //        [aler show];
         
         if ([AppDelegate shareMyApplication].isLogin == NO) {
             UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"请先登录" delegate:self cancelButtonTitle:nil otherButtonTitles:@"马上登录", nil];
@@ -151,38 +141,36 @@
             
             return;
         }
-
+        
         
         
         JiGouWebViewControler *jigou = [[JiGouWebViewControler alloc]init];
         jigou.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:jigou animated:YES];
-
-
+        
+        
     }
-    else if ([_dataSource[indexPath.row] isEqualToString:@"实名返档"])
+    else if (row == 4)
     {
         
-        [self isRootGuidang];
-       
+        bussineDataService *buss=[bussineDataService sharedDataService];
+        buss.target=self;
+        NSString *session = [[NSUserDefaults standardUserDefaults] objectForKey:@"sessionid"];
+        
+        NSDictionary *SendDic = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                 session,@"sessionId",
+                                 nil];
+        [buss isRootPush:SendDic];
+        
+        //        RealNameCarViewController *realName = [[RealNameCarViewController alloc]initWithNibName:@"RealNameCarViewController" bundle:nil];
+        //        realName.hidesBottomBarWhenPushed = YES;
+        //        [self.navigationController pushViewController:realName animated:YES];
+        
     }
     else
         [self ShowProgressHUDwithMessage:@"敬请期待"];
 }
 
-
-- (void)isRootGuidang {
-    bussineDataService *buss=[bussineDataService sharedDataService];
-    buss.target=self;
-    NSString *session = [[NSUserDefaults standardUserDefaults] objectForKey:@"sessionid"];
-    
-    NSDictionary *SendDic = [[NSDictionary alloc] initWithObjectsAndKeys:
-                             session,@"sessionId",
-                             @"realNameReturn",@"menuName",
-                             nil];
-    [buss isRootPush:SendDic];
-
-}
 
 
 - (void)updataVersion
@@ -231,23 +219,20 @@
     if([[RealNameYesOrNoMessage getBizCode] isEqualToString:bizCode])
     {
         
-         bussineDataService *bus=[bussineDataService sharedDataService];
+        bussineDataService *bus=[bussineDataService sharedDataService];
         NSLog(@"是否有权限 ：%@",bus.rspInfo);
-        if([bus.rspInfo[@"respCode"] integerValue] == 0)
+        if([@"7777" isEqualToString:errCode])
         {
-           
-            RealNameCarViewController *realName = [[RealNameCarViewController alloc]initWithNibName:@"RealNameCarViewController" bundle:nil];
-            realName.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:realName animated:YES];
-
-           
+            
+            
+            
         }
         else
         {
-            [self ShowProgressHUDwithMessage:@"对不起，您暂无权限查看"];
+            
         }
     }
-
+    
 }
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
@@ -256,7 +241,7 @@
     {
         if([buttonTitle isEqualToString:@"确定"]){
             bussineDataService *bus=[bussineDataService sharedDataService];
-             NSLog(@"更新地址 %@",bus.updateUrl);
+            NSLog(@"更新地址 %@",bus.updateUrl);
             NSURL* url = [NSURL URLWithString:bus.updateUrl];
             if([[UIApplication sharedApplication] canOpenURL:url])
             {
@@ -267,12 +252,12 @@
     }
     else if(alertView.tag == 2324)
     {
-       if([buttonTitle isEqualToString:@"确定"])
-       {
-           [[NSFileManager defaultManager] removeItemAtPath:pathInCacheDirectory(@"com.xmly") error:nil];
-           [[NSFileManager defaultManager] createDirectoryAtPath:pathInCacheDirectory(@"com.xmly") withIntermediateDirectories:YES attributes:nil error:nil];
-           [self ShowProgressHUDwithMessage:@"已清除缓存"];
-       }
+        if([buttonTitle isEqualToString:@"确定"])
+        {
+            [[NSFileManager defaultManager] removeItemAtPath:pathInCacheDirectory(@"com.xmly") error:nil];
+            [[NSFileManager defaultManager] createDirectoryAtPath:pathInCacheDirectory(@"com.xmly") withIntermediateDirectories:YES attributes:nil error:nil];
+            [self ShowProgressHUDwithMessage:@"已清除缓存"];
+        }
     }
     else if(alertView.tag == 2377)
     {
@@ -287,7 +272,7 @@
             else {
                 [self ShowProgressHUDwithMessage:@"请先输入机构代码"];
             }
-
+            
             
         }
     }
@@ -296,25 +281,14 @@
     {
         
         [AppDelegate shareMyApplication].selectInteger = 3;
-
+        
         [AppDelegate shareMyApplication].isSeleat = YES;
         [self.tabBarController setSelectedIndex:2];
-            
+        
         
     }
     
-    else if(alertView.tag == 10101)
-    {
-        
-        if([buttonTitle isEqualToString:@"重试"]){
-            [self isRootGuidang];
-        }
-        
-        
-    }
-
-
-
+    
     
 }
 
@@ -337,30 +311,13 @@
     if([[RealNameYesOrNoMessage getBizCode] isEqualToString:bizCode]){
         if(msg == nil || msg.length <= 0){
             msg = @"获取数据失败!";
-//            [self ShowProgressHUDwithMessage:msg];
+            [self ShowProgressHUDwithMessage:msg];
+        }else {
+            [self ShowProgressHUDwithMessage:msg];
+            
         }
-//        else {
-//            [self ShowProgressHUDwithMessage:msg];
-//
-//        }
-//        [self showAlertViewTitle:@"提示"
-//                         message:msg
-//                        delegate:self
-//                             tag:10101
-//               cancelButtonTitle:@"取消"
-//               otherButtonTitles:@"重试",nil];
-        
-        
-        NSLog(@"\n\n\n\n   chaoshi  :  %@  \n\n\n",msg);
-        
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:msg delegate:self cancelButtonTitle:nil otherButtonTitles:@"确定", nil];
-        alert.tag = 10101;
-        [alert show];
-    
-
-        
     }
-
+    
 }
 
 #pragma mark -
@@ -390,6 +347,7 @@
     }
     [alert show];
     
-    
 }
+
+
 @end

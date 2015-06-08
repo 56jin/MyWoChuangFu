@@ -42,4 +42,8 @@
 #import "GetSelectJiGouMessage.h"
 #import "GetAddJiGouMessage.h"
 #import "UserLogoutMessage.h"
+#import "RealFangDangMessage.h"
+#import "RealNameYesOrNoMessage.h"
+
+
 #endif

@@ -182,5 +182,10 @@
 - (void)selectJigou:(NSDictionary *)paramters;
 #pragma mark - 退出登录
 - (void)usrtLogout:(NSDictionary *)paramters;
+#pragma mark - 判断是否有权限进入实名返档
+- (void)isRootPush:(NSDictionary *)paramters;
+#pragma mark - 实名返档
+- (void)sureGuiDang:(NSDictionary *)paramters;
+
 
 @end
