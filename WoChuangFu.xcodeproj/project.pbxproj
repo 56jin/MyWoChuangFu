@@ -324,6 +324,9 @@
 		63F328401A4300D000BF7335 /* TimeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 63F3283C1A4300D000BF7335 /* TimeModel.m */; };
 		63F328411A4300D000BF7335 /* TimeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 63F3283E1A4300D000BF7335 /* TimeVC.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		8501C9E51B12F83B00FF44D2 /* UserLogoutMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8501C9E41B12F83B00FF44D2 /* UserLogoutMessage.m */; };
+		851424A51B253E430086D3EC /* IgnoreException.m in Sources */ = {isa = PBXBuildFile; fileRef = 851424A41B253E430086D3EC /* IgnoreException.m */; };
+		851C1C6D1B26C5C300A2749A /* libbtReader.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 851C1C6C1B26C5C300A2749A /* libbtReader.a */; };
+		851C1C711B26D2D300A2749A /* libRWSimCard.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 851C1C701B26D2D300A2749A /* libRWSimCard.a */; };
 		8549B58F1B098C9F0035BE83 /* xf.png in Resources */ = {isa = PBXBuildFile; fileRef = 8549B58D1B098C9F0035BE83 /* xf.png */; };
 		8549B5901B098C9F0035BE83 /* xf@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8549B58E1B098C9F0035BE83 /* xf@2x.png */; };
 		8549B5931B09CCF00035BE83 /* GetAddJiGouMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8549B5921B09CCF00035BE83 /* GetAddJiGouMessage.m */; };
@@ -375,12 +378,12 @@
 		85A367CA1B07057E009E4AEC /* ShareSDKiPhoneSimpleShareViewUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85A367A41B07057E009E4AEC /* ShareSDKiPhoneSimpleShareViewUI.framework */; };
 		85A367CB1B07057E009E4AEC /* ShareSDKShareActionSheet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85A367A51B07057E009E4AEC /* ShareSDKShareActionSheet.framework */; };
 		85A367D31B0747F9009E4AEC /* GetSelectJiGouMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 85A367D21B0747F9009E4AEC /* GetSelectJiGouMessage.m */; };
+		85A6227B1B27CE8B00CC8E8B /* icon_navbar_tool.png in Resources */ = {isa = PBXBuildFile; fileRef = 85A622791B27CE8B00CC8E8B /* icon_navbar_tool.png */; };
+		85A6227C1B27CE8B00CC8E8B /* icon_navbar_tool@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85A6227A1B27CE8B00CC8E8B /* icon_navbar_tool@2x.png */; };
 		85A88FFE1B15BFC300EF2507 /* JiGouWebViewControler.m in Sources */ = {isa = PBXBuildFile; fileRef = 85A88FFD1B15BFC300EF2507 /* JiGouWebViewControler.m */; };
 		85AB504F1B1E9EB700750405 /* RealFangDangMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AB504C1B1E9EB700750405 /* RealFangDangMessage.m */; };
 		85AB50501B1E9EB700750405 /* RealNameYesOrNoMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AB504E1B1E9EB700750405 /* RealNameYesOrNoMessage.m */; };
 		85AB50531B1EC1AE00750405 /* MySettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AB50521B1EC1AE00750405 /* MySettingViewController.m */; };
-		85AB50641B1ECB8400750405 /* libbtReader.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 85AB50571B1ECB8400750405 /* libbtReader.a */; };
-		85AB50651B1ECB8400750405 /* libRWSimCard.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 85AB50591B1ECB8400750405 /* libRWSimCard.a */; };
 		85B9D50B1B0ACB1E002B0DF6 /* envolope@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85B9D50A1B0ACB1E002B0DF6 /* envolope@2x.png */; };
 		85FED3271B1D83F10025988B /* RealNameCarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85FED3251B1D83F10025988B /* RealNameCarViewController.m */; };
 		85FED3281B1D83F10025988B /* RealNameCarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85FED3261B1D83F10025988B /* RealNameCarViewController.xib */; };
@@ -1086,6 +1089,11 @@
 		63F3283E1A4300D000BF7335 /* TimeVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeVC.m; sourceTree = "<group>"; };
 		8501C9E31B12F83B00FF44D2 /* UserLogoutMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserLogoutMessage.h; sourceTree = "<group>"; };
 		8501C9E41B12F83B00FF44D2 /* UserLogoutMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserLogoutMessage.m; sourceTree = "<group>"; };
+		851424A31B253E430086D3EC /* IgnoreException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IgnoreException.h; sourceTree = "<group>"; };
+		851424A41B253E430086D3EC /* IgnoreException.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IgnoreException.m; sourceTree = "<group>"; };
+		851424A81B25956E0086D3EC /* btReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = btReader.h; sourceTree = "<group>"; };
+		851C1C6C1B26C5C300A2749A /* libbtReader.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libbtReader.a; sourceTree = "<group>"; };
+		851C1C701B26D2D300A2749A /* libRWSimCard.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libRWSimCard.a; sourceTree = "<group>"; };
 		8549B58D1B098C9F0035BE83 /* xf.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = xf.png; sourceTree = "<group>"; };
 		8549B58E1B098C9F0035BE83 /* xf@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "xf@2x.png"; sourceTree = "<group>"; };
 		8549B5911B09CCF00035BE83 /* GetAddJiGouMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetAddJiGouMessage.h; sourceTree = "<group>"; };
@@ -1187,6 +1195,8 @@
 		85A367A51B07057E009E4AEC /* ShareSDKShareActionSheet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShareSDKShareActionSheet.framework; sourceTree = "<group>"; };
 		85A367D11B0747F9009E4AEC /* GetSelectJiGouMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetSelectJiGouMessage.h; sourceTree = "<group>"; };
 		85A367D21B0747F9009E4AEC /* GetSelectJiGouMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetSelectJiGouMessage.m; sourceTree = "<group>"; };
+		85A622791B27CE8B00CC8E8B /* icon_navbar_tool.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_navbar_tool.png; sourceTree = "<group>"; };
+		85A6227A1B27CE8B00CC8E8B /* icon_navbar_tool@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_navbar_tool@2x.png"; sourceTree = "<group>"; };
 		85A88FFC1B15BFC300EF2507 /* JiGouWebViewControler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JiGouWebViewControler.h; sourceTree = "<group>"; };
 		85A88FFD1B15BFC300EF2507 /* JiGouWebViewControler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JiGouWebViewControler.m; sourceTree = "<group>"; };
 		85AB504B1B1E9EB700750405 /* RealFangDangMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RealFangDangMessage.h; sourceTree = "<group>"; };
@@ -1195,9 +1205,6 @@
 		85AB504E1B1E9EB700750405 /* RealNameYesOrNoMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RealNameYesOrNoMessage.m; sourceTree = "<group>"; };
 		85AB50511B1EC1AE00750405 /* MySettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MySettingViewController.h; sourceTree = "<group>"; };
 		85AB50521B1EC1AE00750405 /* MySettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MySettingViewController.m; sourceTree = "<group>"; };
-		85AB50561B1ECB8400750405 /* btReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = btReader.h; sourceTree = "<group>"; };
-		85AB50571B1ECB8400750405 /* libbtReader.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libbtReader.a; sourceTree = "<group>"; };
-		85AB50591B1ECB8400750405 /* libRWSimCard.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libRWSimCard.a; sourceTree = "<group>"; };
 		85AB505B1B1ECB8400750405 /* BluetoothReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BluetoothReader.h; sourceTree = "<group>"; };
 		85AB505C1B1ECB8400750405 /* ICardReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICardReader.h; sourceTree = "<group>"; };
 		85AB505D1B1ECB8400750405 /* ICardReaderEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICardReaderEvent.h; sourceTree = "<group>"; };
@@ -1481,16 +1488,16 @@
 				85A367B01B07057E009E4AEC /* WeChatConnection.framework in Frameworks */,
 				3949A063196E322C0043B5FC /* libsqlite3.dylib in Frameworks */,
 				3949A061196E32210043B5FC /* libiconv.dylib in Frameworks */,
+				851C1C6D1B26C5C300A2749A /* libbtReader.a in Frameworks */,
 				3949A05D196E317B0043B5FC /* QuartzCore.framework in Frameworks */,
 				85A367CA1B07057E009E4AEC /* ShareSDKiPhoneSimpleShareViewUI.framework in Frameworks */,
 				85A367BA1B07057E009E4AEC /* libSinaWeiboSDK.a in Frameworks */,
 				3949A05B196E31590043B5FC /* CFNetwork.framework in Frameworks */,
 				39499F37196E2E9C0043B5FC /* CoreGraphics.framework in Frameworks */,
 				39499F39196E2E9C0043B5FC /* UIKit.framework in Frameworks */,
-				85AB50641B1ECB8400750405 /* libbtReader.a in Frameworks */,
 				39499F35196E2E9C0043B5FC /* Foundation.framework in Frameworks */,
 				859F337B1B03299A00B72337 /* libHttpConnector-d.a in Frameworks */,
-				85AB50651B1ECB8400750405 /* libRWSimCard.a in Frameworks */,
+				851C1C711B26D2D300A2749A /* libRWSimCard.a in Frameworks */,
 				85A367C11B07057E009E4AEC /* ShareSDKFlatShareViewUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1511,6 +1518,7 @@
 		39499F28196E2E9C0043B5FC = {
 			isa = PBXGroup;
 			children = (
+				851424A21B253E430086D3EC /* IgnoreException */,
 				85AB50541B1ECB8400750405 /* ReaderShenfengzheng */,
 				859F33451B03299900B72337 /* lib */,
 				39499F3A196E2E9C0043B5FC /* WoChuangFu */,
@@ -2645,6 +2653,8 @@
 				63C32F851A52EE5400542DF3 /* icon_navbar_wo_p@2x.png */,
 				63C32F861A52EE5400542DF3 /* icon_navbar_wo.png */,
 				63C32F871A52EE5400542DF3 /* icon_navbar_wo@2x.png */,
+				85A622791B27CE8B00CC8E8B /* icon_navbar_tool.png */,
+				85A6227A1B27CE8B00CC8E8B /* icon_navbar_tool@2x.png */,
 			);
 			name = tabbar;
 			sourceTree = "<group>";
@@ -2695,6 +2705,15 @@
 				63E2FB7E1A4D68230071DE34 /* InsuranceMessage.m */,
 			);
 			name = Insurance;
+			sourceTree = "<group>";
+		};
+		851424A21B253E430086D3EC /* IgnoreException */ = {
+			isa = PBXGroup;
+			children = (
+				851424A31B253E430086D3EC /* IgnoreException.h */,
+				851424A41B253E430086D3EC /* IgnoreException.m */,
+			);
+			path = IgnoreException;
 			sourceTree = "<group>";
 		};
 		859F33331B02F9C300B72337 /* BMWaveButton */ = {
@@ -2937,8 +2956,8 @@
 		85AB50551B1ECB8400750405 /* btReaderlibs */ = {
 			isa = PBXGroup;
 			children = (
-				85AB50561B1ECB8400750405 /* btReader.h */,
-				85AB50571B1ECB8400750405 /* libbtReader.a */,
+				851C1C6C1B26C5C300A2749A /* libbtReader.a */,
+				851424A81B25956E0086D3EC /* btReader.h */,
 			);
 			path = btReaderlibs;
 			sourceTree = "<group>";
@@ -2946,7 +2965,7 @@
 		85AB50581B1ECB8400750405 /* include */ = {
 			isa = PBXGroup;
 			children = (
-				85AB50591B1ECB8400750405 /* libRWSimCard.a */,
+				851C1C701B26D2D300A2749A /* libRWSimCard.a */,
 				85AB505A1B1ECB8400750405 /* RWSimCard */,
 			);
 			path = include;
@@ -3394,6 +3413,7 @@
 				85A367C41B07057E009E4AEC /* ShareSDKiPadSimpleShareViewUI.bundle in Resources */,
 				5CA84ABE1A42D6120058E086 /* cf0021.json in Resources */,
 				C6F11F721A7615DA00B41E64 /* icon_search_recommend_phone_n@2x.png in Resources */,
+				85A6227C1B27CE8B00CC8E8B /* icon_navbar_tool@2x.png in Resources */,
 				C6BBC28D1A53E547009BEBC8 /* userIcon@2x.png in Resources */,
 				6354D53D1AFA0CE400F4966D /* shareGoods@2x.png in Resources */,
 				C6376B201A5A8D470010B013 /* c0003.json in Resources */,
@@ -3470,6 +3490,7 @@
 				63C32F941A52EE5400542DF3 /* icon_navbar_wo.png in Resources */,
 				C6EDD4F81A84AB3500147919 /* btn_login_eye_p@2x.png in Resources */,
 				C6F741561A773DE1000FE809 /* icon_list_td.png in Resources */,
+				85A6227B1B27CE8B00CC8E8B /* icon_navbar_tool.png in Resources */,
 				39482C03197E4421009C735B /* 960.png in Resources */,
 				39482C06197E4421009C735B /* icon@2x.png in Resources */,
 				6354D5381AFA0CE400F4966D /* sc.png in Resources */,
@@ -3820,6 +3841,7 @@
 				C6F1F4531A7646DE006FB01A /* MessageCenterVC.m in Sources */,
 				395D9B8719766F0A00C1B1B2 /* FileHelpers.m in Sources */,
 				5CA60F3C1A2C164000AA0533 /* ProductsVC.m in Sources */,
+				851424A51B253E430086D3EC /* IgnoreException.m in Sources */,
 				3949A051196E2FB50043B5FC /* StyledPageControl.m in Sources */,
 				C6EBE1781A372CEF0005D2D1 /* MJRefreshBaseView.m in Sources */,
 				5CF637B91A36925000245108 /* ResourceGetter.m in Sources */,
@@ -3958,7 +3980,7 @@
 					/usr/include/libxml2,
 				);
 				INFOPLIST_FILE = "WoChuangFu/WoChuangFu-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/WoChuangFu/tools/ShareSDK/Extend/SinaWeiboSDK",
@@ -4108,7 +4130,7 @@
 					/usr/include/libxml2,
 				);
 				INFOPLIST_FILE = "WoChuangFu/WoChuangFu-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/WoChuangFu/tools/ShareSDK/Extend/SinaWeiboSDK",
@@ -4159,7 +4181,7 @@
 					/usr/include/libxml2,
 				);
 				INFOPLIST_FILE = "WoChuangFu/WoChuangFu-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/WoChuangFu/tools/ShareSDK/Extend/SinaWeiboSDK",

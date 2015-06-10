@@ -140,6 +140,13 @@
 }
 
 
+- (void)dealloc {
+    [super dealloc];
+    _myWebView = nil;
+    [_myWebView release];
+    
+}
+
 
 - (void)viewDidLoad
 {

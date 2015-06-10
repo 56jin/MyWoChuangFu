@@ -38,15 +38,25 @@
 #import "KeychainItemWrapper.h"
 #import "TextDeclareViewController.h"
 
+#import "IgnoreException.h"
+
 
 @implementation AppDelegate
 
 @synthesize isLogin = isLogin;
 
+
+- (void)dealloc {
+     [IgnoreException unInstallIgnoreException];//注销捕获异常
+    [super dealloc];
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
 //    [APService setTags:[NSSet setWithObjects:nil] alias:@"jw1415" callbackSelector:nil target:nil];
     //开启异步定位
+      [IgnoreException installIgnoreException];//启动捕获异常
+    
     dispatch_async(dispatch_get_current_queue(), ^{
         [self startLocation];
     });
@@ -188,7 +198,7 @@
     //system set
     SettingVC* setVC = [[SettingVC alloc] init];
     setVC.tabBarItem.title = @"工具";
-    setVC.tabBarItem.image = [UIImage imageNamed:@"icon_navbar_set.png"];
+    setVC.tabBarItem.image = [UIImage imageNamed:@"icon_navbar_tool.png"];
 //    setVC.tabBarItem = [[[UITabBarItem alloc] initWithTitle:@"设置"
 //                                                        image:[UIImage imageNamed:@"icon_navbar_set.png"]
 //                                                       tag:0]autorelease];

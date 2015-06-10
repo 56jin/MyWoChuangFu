@@ -31,7 +31,7 @@
 @interface btReader : NSObject
 
 @property (strong, nonatomic) id<btReaderDelegate> delegate;
--(int)openReader:(NSString*)name;
+-(void)openReader:(NSString*)name;
 -(void)closeReader;
 -(int)readid:(NSString*)srvAddr port:(int)port retry:(int)retry_count;
 -(int)getSerialNum:(uint8_t*)serialNum length:(int*)serlen;
