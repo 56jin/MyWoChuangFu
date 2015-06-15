@@ -60,8 +60,8 @@ typedef enum _SideBarShowDirection
 
 //#define service_IP                 @"http://10.37.238.71:8080/emall/"
 
-#define service_IP                 @"http://221.7.252.48:15613/"   //测试环境
-//#define service_IP                 @"http://mall.gx10010.com/"      //正式环境
+//#define service_IP                 @"http://221.7.252.48:15613/"   //测试环境
+#define service_IP                 @"http://mall.gx10010.com/"      //正式环境
 
 //#define service_IP                 @"http://221.7.252.48:15613/"
 

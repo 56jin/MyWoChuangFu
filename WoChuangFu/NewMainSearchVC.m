@@ -172,14 +172,14 @@
 
 - (void)initLeftBar
 {
-    SearchTypeBar *searchTypeBar = [[SearchTypeBar alloc] initWithFrame:CGRectMake(0,TITLE_HEIGHT,LEFT_BAR_WIDTH, [AppDelegate sharePhoneHeight])];
+    SearchTypeBar *searchTypeBar = [[SearchTypeBar alloc] initWithFrame:CGRectMake(0,TITLE_HEIGHT,LEFT_BAR_WIDTH, [AppDelegate sharePhoneHeight] - 45)];
     searchTypeBar.delegate = self;
     searchTypeBar.tag = LEFT_BAR_TAG;
     [self.view addSubview:searchTypeBar];
 }
 - (void)initRightView
 {
-    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(LEFT_BAR_WIDTH,TITLE_HEIGHT,[AppDelegate sharePhoneWidth]-LEFT_BAR_WIDTH, [AppDelegate sharePhoneHeight]) style:UITableViewStylePlain];
+    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(LEFT_BAR_WIDTH,TITLE_HEIGHT,[AppDelegate sharePhoneWidth]-LEFT_BAR_WIDTH, [AppDelegate sharePhoneHeight] - 45) style:UITableViewStylePlain];
     tableView.tag = TABLEVIEW_TAG;
     tableView.delegate = self;
     tableView.dataSource = self;

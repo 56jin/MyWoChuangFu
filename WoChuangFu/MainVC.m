@@ -113,7 +113,7 @@
 //    [self.tabBarController setSelectedIndex:1];
     
      NewMainSearchVC* searchVC = [[NewMainSearchVC alloc] init];
-    searchVC.hidesBottomBarWhenPushed = YES;
+//    searchVC.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:searchVC animated:YES];
 }
 
