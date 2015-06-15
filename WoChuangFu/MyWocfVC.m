@@ -131,6 +131,8 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+     NSString *session = [[NSUserDefaults standardUserDefaults] objectForKey:@"sessionid"];
+    
     if ([AppDelegate shareMyApplication].isFailToLogin == YES) {
         [AppDelegate shareMyApplication].isFailToLogin = NO;
         if (loginSuccessView) {
@@ -138,13 +140,12 @@
             loginSuccessView = nil;
         }
     }
-    else {
-//        titleBar.title = @"沃创富用户登录";
-//        [titleBar setLeftIsHiden:YES];
-//        if (loginSuccessView) {
-//            [loginSuccessView removeFromSuperview];
-//            loginSuccessView = nil;
-//        }
+    else if(!session){
+        titleBar.title = @"沃创富用户登录";
+        if (loginSuccessView) {
+            [loginSuccessView removeFromSuperview];
+            loginSuccessView = nil;
+        }
         
     }
 }
@@ -276,8 +277,8 @@
 - (void)loginSuccessReture:(NSString *)loginString {
     
      titleBar.title = @"我的";
-    [titleBar setLeftIsHiden:NO];
-    [titleBar setLeftText:@"退出"];
+//    [titleBar setLeftIsHiden:NO];
+//    [titleBar setLeftText:@"退出"];
 //    NSLog(@"\n\n\n登录成功地址%@",loginString);
     
     

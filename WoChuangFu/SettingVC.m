@@ -12,12 +12,16 @@
 #import "FileHelpers.h"
 #import "MessageCenterVC.h"
 #import "JiGouWebViewControler.h"
-
-#import "MySettingViewController.h"
+#import "WoSchoolViewController.h"
+#import "RealnameVC.h"
+//#import "MySettingViewController.h"
 
 
 
 @interface SettingVC ()<UITableViewDataSource,UITableViewDelegate,TitleBarDelegate,HttpBackDelegate>
+{
+    NSString *TabStr;
+}
 @property(nonatomic,strong)UITableView *myTable;
 
 @property(nonatomic,strong)NSMutableArray *dataSource;
@@ -26,6 +30,11 @@
 @implementation SettingVC
 
 
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [_myTable reloadData];
+}
 
 - (void)loadView
 {
@@ -48,7 +57,7 @@
         _dataSource = [NSMutableArray arrayWithObjects:@"消息中心",@"系统更新", @"清除缓存",@"加入机构",nil];//@"加入机构",
     }
     else {
-        _dataSource = [NSMutableArray arrayWithObjects:@"实名返档",nil];//@"加入机构",
+        _dataSource = [NSMutableArray arrayWithObjects:@"实名返档",nil];//@"沃校园办理",@"现场开户",
     }
 //    else {
 //        UIButton *rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -116,10 +125,38 @@
 
     return cell;
 }
+
+-(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    return 80;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    UIView *footView = [[UIView alloc]initWithFrame:CGRectMake(0, 20, MainWidth, 60)];
+    footView.backgroundColor = [UIColor clearColor];
+    
+    UIButton *realBtn = [[UIButton alloc]initWithFrame:CGRectMake(10, 10, 300, 44)];
+    realBtn.backgroundColor = [UIColor orangeColor];
+     NSString *session = [[NSUserDefaults standardUserDefaults] objectForKey:@"sessionid"];
+    
+    [realBtn setTitle:session ? @"退出登录" : @"请登录" forState:UIControlStateNormal];
+//    [realBtn setImage:[UIImage imageNamed:@"fandang.png"] forState:UIControlStateNormal];
+    [realBtn.layer setMasksToBounds:YES];
+    [realBtn.layer setCornerRadius:4];
+    [realBtn addTarget:self action:@selector(LogoutEven) forControlEvents:UIControlEventTouchUpInside];
+//    realBtn.imageEdgeInsets = UIEdgeInsetsMake(5, 0, 0, 5);
+    [realBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [realBtn setTitleColor:[UIColor darkGrayColor] forState:UIControlStateHighlighted];
+    [footView addSubview:realBtn];
+    return footView;
+}
+
 #pragma mark - UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    TabStr = _dataSource[indexPath.row];
+    
     if ([_dataSource[indexPath.row] isEqualToString:@"系统更新"])
     {
         [self updataVersion];
@@ -166,8 +203,38 @@
         [self isRootGuidang];
        
     }
+    else if ([_dataSource[indexPath.row] isEqualToString:@"沃校园办理"])
+    {
+        
+        [self isRootGuidang];
+        
+    }
+    else if ([_dataSource[indexPath.row] isEqualToString:@"现场开户"])
+    {
+        
+        [self isRootGuidang];
+        
+    }
+
     else
         [self ShowProgressHUDwithMessage:@"敬请期待"];
+}
+
+- (void)LogoutEven {
+    
+     NSString *session = [[NSUserDefaults standardUserDefaults] objectForKey:@"sessionid"];
+    if(!session) {
+        [self.tabBarController setSelectedIndex:2];
+        return;
+   
+    }
+    
+    bussineDataService *buss=[bussineDataService sharedDataServicee];
+    buss.target=self;
+    NSDictionary *SendDic = [[NSDictionary alloc] initWithObjectsAndKeys:
+                             session,@"sessionId",
+                             nil];
+    [buss usrtLogout:SendDic];
 }
 
 
@@ -198,13 +265,14 @@
     hud.labelText = msg;
     hud.dimBackground = NO;
     hud.removeFromSuperViewOnHide = YES;
-    [hud hide:YES afterDelay:1];
+    [hud hide:YES afterDelay:2];
 }
 
 #pragma mark -
 #pragma mark HttpBackDelegate
 - (void)requestDidFinished:(NSDictionary*)info
 {
+     NSString* oKCode = @"0000";
     NSString* bizCode = [info objectForKey:@"bussineCode"];
     NSString* errCode = [info objectForKey:@"errorCode"];
     [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
@@ -236,19 +304,74 @@
         if([bus.rspInfo[@"respCode"] integerValue] == 0)
         {
            
-            RealNameCarViewController *realName = [[RealNameCarViewController alloc]initWithNibName:@"RealNameCarViewController" bundle:nil];
-            realName.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:realName animated:YES];
-
-           
+ 
+            if ( [TabStr isEqualToString:@"沃校园办理"]) {
+               WoSchoolViewController * WoSchoolView = [[WoSchoolViewController alloc]init];
+                WoSchoolView.hidesBottomBarWhenPushed = YES;
+                [self.navigationController pushViewController:WoSchoolView animated:YES];
+            }
+            else if( [TabStr isEqualToString:@"实名返档"]) {
+//               RealNameCarViewController *realName = [[RealNameCarViewController alloc]initWithNibName:@"RealNameCarViewController" bundle:nil];
+                RealnameVC *realName = [[RealnameVC alloc]init];
+                realName.hidesBottomBarWhenPushed = YES;
+                [self.navigationController pushViewController:realName animated:YES];
+                
+            }
+            
         }
         else
         {
             [self ShowProgressHUDwithMessage:@"对不起，您暂无权限查看"];
         }
     }
+    
+    if([[UserLogoutMessage getBizCode] isEqualToString:bizCode]){
+        NSString *msg = nil;
+        if([oKCode isEqualToString:errCode]){
+            
+            bussineDataService *bus=[bussineDataService sharedDataServicee];
+            
+            NSLog(@"bus,rspInfo是%@",bus.rspInfo);
+            [self userLogout];
+            
+        }else{
+            if([NSNull null] == [info objectForKey:@"MSG"]){
+                msg = @"退出异常！";
+            }
+            if(nil == msg){
+                msg = @"退出异常！";
+            }
+            [self showSimpleAlertView:msg];
+        }
+    }
+
 
 }
+
+
+-(void)showSimpleAlertView:(NSString*)message
+{
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"提示信息"
+                                                    message:message
+                                                   delegate:nil
+                                          cancelButtonTitle:@"确定"
+                                          otherButtonTitles:nil];
+    [alert show];
+    
+    
+}
+
+- (void)userLogout {
+    
+   
+    
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"sessionid"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+     [self.tabBarController setSelectedIndex:2];
+    
+        
+}
+
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     NSString *buttonTitle = [alertView buttonTitleAtIndex:buttonIndex];
@@ -312,6 +435,16 @@
         
         
     }
+    else if(alertView.tag == 10108)
+    {
+        
+        if([buttonTitle isEqualToString:@"重试"]){
+            [self LogoutEven];
+        }
+        
+        
+    }
+
 
 
 
@@ -360,7 +493,27 @@
 
         
     }
+    
+    if([[UserLogoutMessage getBizCode] isEqualToString:bizCode]){
+        if([info objectForKey:@"MSG"] == [NSNull null]){
+            msg = @"退出失败！";
+        }
+        if(nil == msg){
+            msg = @"退出失败！";
+        }
+        
+        [self showAlertViewTitle:@"提示"
+                         message:msg
+                        delegate:self
+                             tag:10108
+               cancelButtonTitle:@"取消"
+               otherButtonTitles:@"重试",nil];
+        
 
+    }
+    
+    
+   
 }
 
 #pragma mark -

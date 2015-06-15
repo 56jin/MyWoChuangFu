@@ -383,7 +383,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "198"
             endingLineNumber = "198"
-            landmarkName = "-ShowProgressHUDwithMessage:"
+            landmarkName = "-isRootGuidang"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -399,7 +399,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "329"
             endingLineNumber = "329"
-            landmarkName = "-requestFailed:"
+            landmarkName = "-alertView:clickedButtonAtIndex:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

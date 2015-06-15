@@ -30,6 +30,10 @@
 
 #define UIColorFromRGB(R,G,B) UIColorFromRGBA(R,G,B,1.0)
 
+#define MainHeight  [[UIScreen mainScreen] bounds].size.height
+#define MainWidth   [[UIScreen mainScreen] bounds].size.width
+
+
 typedef enum _SideBarShowDirection
 {
     SideBarShowDirectionNone = 0,

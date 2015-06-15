@@ -49,7 +49,7 @@
 {
     if(vc != nil){
         UIViewController *viewController = [vc object];
-        viewController.hidesBottomBarWhenPushed = YES;
+//        viewController.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:viewController animated:YES];
     }
 }

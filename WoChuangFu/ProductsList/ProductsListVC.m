@@ -161,9 +161,9 @@
 - (void)initMainContentView
 {
     UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0,
-                                                                           MAIN_CONTENT_VIEW_OFFSET_Y,
+                                                                           MAIN_CONTENT_VIEW_OFFSET_Y + 44,
                                                                            [AppDelegate sharePhoneWidth],
-                                                                           [AppDelegate sharePhoneHeight]-MAIN_CONTENT_VIEW_OFFSET_Y-FOOT_VIEW_HEIGHT
+                                                                           [AppDelegate sharePhoneHeight]-MAIN_CONTENT_VIEW_OFFSET_Y-FOOT_VIEW_HEIGHT - 47
                                                                            )
                                                           style:UITableViewStylePlain];
     tableView.backgroundColor = HEXCOLOR(@"#eeeeee");
@@ -203,7 +203,8 @@
     //筛选栏
     UIView *view =  [[UIView alloc] init];
     view.frame = CGRectMake(0,
-                            [AppDelegate sharePhoneHeight]-FOOT_VIEW_HEIGHT,
+//                            [AppDelegate sharePhoneHeight]-FOOT_VIEW_HEIGHT,
+                            64,
                             [AppDelegate sharePhoneWidth],
                             FOOT_VIEW_HEIGHT);
     view.backgroundColor = [UIColor whiteColor];

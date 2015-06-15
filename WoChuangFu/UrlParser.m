@@ -125,7 +125,10 @@
         gotoVC = [[[ShowWebVC alloc] init] autorelease];
         ((ShowWebVC*)gotoVC).urlStr = clickUrlStr;
     }
-    gotoVC.hidesBottomBarWhenPushed = YES;
+    
+//    gotoVC.hidesBottomBarWhenPushed = NO;
+    
+    gotoVC.hidesBottomBarWhenPushed = [gotoVC isKindOfClass:[ProductsListVC class]] ? NO : YES;
     //根据[url query]获取传给下一个界面的参数
     if(startVC == nil){
         [[NSNotificationCenter defaultCenter] postNotificationName:MAIN_PAGE_URL_PARSE object:gotoVC];

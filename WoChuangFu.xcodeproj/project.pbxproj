@@ -325,8 +325,6 @@
 		63F328411A4300D000BF7335 /* TimeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 63F3283E1A4300D000BF7335 /* TimeVC.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		8501C9E51B12F83B00FF44D2 /* UserLogoutMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8501C9E41B12F83B00FF44D2 /* UserLogoutMessage.m */; };
 		851424A51B253E430086D3EC /* IgnoreException.m in Sources */ = {isa = PBXBuildFile; fileRef = 851424A41B253E430086D3EC /* IgnoreException.m */; };
-		851C1C6D1B26C5C300A2749A /* libbtReader.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 851C1C6C1B26C5C300A2749A /* libbtReader.a */; };
-		851C1C711B26D2D300A2749A /* libRWSimCard.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 851C1C701B26D2D300A2749A /* libRWSimCard.a */; };
 		8549B58F1B098C9F0035BE83 /* xf.png in Resources */ = {isa = PBXBuildFile; fileRef = 8549B58D1B098C9F0035BE83 /* xf.png */; };
 		8549B5901B098C9F0035BE83 /* xf@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8549B58E1B098C9F0035BE83 /* xf@2x.png */; };
 		8549B5931B09CCF00035BE83 /* GetAddJiGouMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8549B5921B09CCF00035BE83 /* GetAddJiGouMessage.m */; };
@@ -340,12 +338,6 @@
 		859F33411B02FB5E00B72337 /* txt_key_coryright.png in Resources */ = {isa = PBXBuildFile; fileRef = 859F333F1B02FB5E00B72337 /* txt_key_coryright.png */; };
 		859F33421B02FB5E00B72337 /* txt_key_coryright@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 859F33401B02FB5E00B72337 /* txt_key_coryright@2x.png */; };
 		859F33441B02FB8600B72337 /* chuowo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 859F33431B02FB8600B72337 /* chuowo@2x.png */; };
-		859F337B1B03299A00B72337 /* libHttpConnector-d.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 859F33751B03299A00B72337 /* libHttpConnector-d.a */; };
-		859F337C1B03299A00B72337 /* libHttpConnector-s.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 859F33761B03299A00B72337 /* libHttpConnector-s.a */; };
-		859F337D1B03299A00B72337 /* libHttpConnector.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 859F33771B03299A00B72337 /* libHttpConnector.a */; };
-		859F337E1B03299A00B72337 /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 859F33781B03299A00B72337 /* libMobClickLibrary.a */; };
-		859F337F1B03299A00B72337 /* libPushSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 859F33791B03299A00B72337 /* libPushSDK.a */; };
-		859F33801B03299A00B72337 /* libzbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 859F337A1B03299A00B72337 /* libzbar.a */; };
 		859F33841B033BF000B72337 /* TextDeclareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 859F33821B033BF000B72337 /* TextDeclareViewController.m */; };
 		859F33851B033BF000B72337 /* TextDeclareViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 859F33831B033BF000B72337 /* TextDeclareViewController.xib */; };
 		85A367A91B07057E009E4AEC /* QQConnection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85A367711B07057E009E4AEC /* QQConnection.framework */; };
@@ -383,10 +375,17 @@
 		85A88FFE1B15BFC300EF2507 /* JiGouWebViewControler.m in Sources */ = {isa = PBXBuildFile; fileRef = 85A88FFD1B15BFC300EF2507 /* JiGouWebViewControler.m */; };
 		85AB504F1B1E9EB700750405 /* RealFangDangMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AB504C1B1E9EB700750405 /* RealFangDangMessage.m */; };
 		85AB50501B1E9EB700750405 /* RealNameYesOrNoMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AB504E1B1E9EB700750405 /* RealNameYesOrNoMessage.m */; };
-		85AB50531B1EC1AE00750405 /* MySettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AB50521B1EC1AE00750405 /* MySettingViewController.m */; };
 		85B9D50B1B0ACB1E002B0DF6 /* envolope@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85B9D50A1B0ACB1E002B0DF6 /* envolope@2x.png */; };
-		85FED3271B1D83F10025988B /* RealNameCarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85FED3251B1D83F10025988B /* RealNameCarViewController.m */; };
-		85FED3281B1D83F10025988B /* RealNameCarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85FED3261B1D83F10025988B /* RealNameCarViewController.xib */; };
+		85EF55691B293154006A4993 /* RFSegmentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 85EF55681B293154006A4993 /* RFSegmentView.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		85EF556C1B2931C9006A4993 /* WoSchoolViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85EF556B1B2931C9006A4993 /* WoSchoolViewController.m */; };
+		85EF556F1B295AF4006A4993 /* RealnameVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 85EF556E1B295AF4006A4993 /* RealnameVC.m */; };
+		85EF55711B295CD7006A4993 /* imageBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 85EF55701B295CD7006A4993 /* imageBackground.png */; };
+		85EF55781B29783C006A4993 /* connect.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 85EF55741B29783C006A4993 /* connect.bundle */; };
+		85EF55791B29783C006A4993 /* libBlueToothDCAdapter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 85EF55771B29783C006A4993 /* libBlueToothDCAdapter.a */; };
+		85EF557B1B297A46006A4993 /* ExternalAccessory.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85EF557A1B297A46006A4993 /* ExternalAccessory.framework */; };
+		85EF55C31B29946E006A4993 /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 85EF55BD1B29946E006A4993 /* libMobClickLibrary.a */; };
+		85EF55C41B29946E006A4993 /* libPushSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 85EF55BE1B29946E006A4993 /* libPushSDK.a */; };
+		85EF55C51B29946E006A4993 /* libzbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 85EF55BF1B29946E006A4993 /* libzbar.a */; };
 		85FED32C1B1D97760025988B /* fandang.png in Resources */ = {isa = PBXBuildFile; fileRef = 85FED32B1B1D97760025988B /* fandang.png */; };
 		85FED3421B1DA8F40025988B /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85FED3411B1DA8F40025988B /* CoreBluetooth.framework */; };
 		C601173D1A7B2DCF000ED2DA /* FilterView.m in Sources */ = {isa = PBXBuildFile; fileRef = C601173C1A7B2DCF000ED2DA /* FilterView.m */; };
@@ -1091,9 +1090,6 @@
 		8501C9E41B12F83B00FF44D2 /* UserLogoutMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserLogoutMessage.m; sourceTree = "<group>"; };
 		851424A31B253E430086D3EC /* IgnoreException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IgnoreException.h; sourceTree = "<group>"; };
 		851424A41B253E430086D3EC /* IgnoreException.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IgnoreException.m; sourceTree = "<group>"; };
-		851424A81B25956E0086D3EC /* btReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = btReader.h; sourceTree = "<group>"; };
-		851C1C6C1B26C5C300A2749A /* libbtReader.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libbtReader.a; sourceTree = "<group>"; };
-		851C1C701B26D2D300A2749A /* libRWSimCard.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libRWSimCard.a; sourceTree = "<group>"; };
 		8549B58D1B098C9F0035BE83 /* xf.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = xf.png; sourceTree = "<group>"; };
 		8549B58E1B098C9F0035BE83 /* xf@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "xf@2x.png"; sourceTree = "<group>"; };
 		8549B5911B09CCF00035BE83 /* GetAddJiGouMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetAddJiGouMessage.h; sourceTree = "<group>"; };
@@ -1149,12 +1145,6 @@
 		859F33721B03299A00B72337 /* ZBarReaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZBarReaderViewController.h; sourceTree = "<group>"; };
 		859F33731B03299A00B72337 /* ZBarSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZBarSDK.h; sourceTree = "<group>"; };
 		859F33741B03299A00B72337 /* ZBarSymbol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZBarSymbol.h; sourceTree = "<group>"; };
-		859F33751B03299A00B72337 /* libHttpConnector-d.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libHttpConnector-d.a"; sourceTree = "<group>"; };
-		859F33761B03299A00B72337 /* libHttpConnector-s.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libHttpConnector-s.a"; sourceTree = "<group>"; };
-		859F33771B03299A00B72337 /* libHttpConnector.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libHttpConnector.a; sourceTree = "<group>"; };
-		859F33781B03299A00B72337 /* libMobClickLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libMobClickLibrary.a; sourceTree = "<group>"; };
-		859F33791B03299A00B72337 /* libPushSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libPushSDK.a; sourceTree = "<group>"; };
-		859F337A1B03299A00B72337 /* libzbar.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libzbar.a; sourceTree = "<group>"; };
 		859F33811B033BF000B72337 /* TextDeclareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextDeclareViewController.h; sourceTree = "<group>"; };
 		859F33821B033BF000B72337 /* TextDeclareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextDeclareViewController.m; sourceTree = "<group>"; };
 		859F33831B033BF000B72337 /* TextDeclareViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TextDeclareViewController.xib; sourceTree = "<group>"; };
@@ -1203,21 +1193,23 @@
 		85AB504C1B1E9EB700750405 /* RealFangDangMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RealFangDangMessage.m; sourceTree = "<group>"; };
 		85AB504D1B1E9EB700750405 /* RealNameYesOrNoMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RealNameYesOrNoMessage.h; sourceTree = "<group>"; };
 		85AB504E1B1E9EB700750405 /* RealNameYesOrNoMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RealNameYesOrNoMessage.m; sourceTree = "<group>"; };
-		85AB50511B1EC1AE00750405 /* MySettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MySettingViewController.h; sourceTree = "<group>"; };
-		85AB50521B1EC1AE00750405 /* MySettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MySettingViewController.m; sourceTree = "<group>"; };
-		85AB505B1B1ECB8400750405 /* BluetoothReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BluetoothReader.h; sourceTree = "<group>"; };
-		85AB505C1B1ECB8400750405 /* ICardReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICardReader.h; sourceTree = "<group>"; };
-		85AB505D1B1ECB8400750405 /* ICardReaderEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICardReaderEvent.h; sourceTree = "<group>"; };
-		85AB505E1B1ECB8400750405 /* IDCardInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IDCardInfo.h; sourceTree = "<group>"; };
-		85AB505F1B1ECB8400750405 /* IDCardReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IDCardReader.h; sourceTree = "<group>"; };
-		85AB50601B1ECB8400750405 /* ReaderDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderDelegate.h; sourceTree = "<group>"; };
-		85AB50611B1ECB8400750405 /* RWSimCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RWSimCard.h; sourceTree = "<group>"; };
-		85AB50621B1ECB8400750405 /* SimCardReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimCardReader.h; sourceTree = "<group>"; };
-		85AB50631B1ECB8400750405 /* Tools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tools.h; sourceTree = "<group>"; };
 		85B9D50A1B0ACB1E002B0DF6 /* envolope@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "envolope@2x.png"; sourceTree = "<group>"; };
-		85FED3241B1D83F10025988B /* RealNameCarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RealNameCarViewController.h; sourceTree = "<group>"; };
-		85FED3251B1D83F10025988B /* RealNameCarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RealNameCarViewController.m; sourceTree = "<group>"; };
-		85FED3261B1D83F10025988B /* RealNameCarViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RealNameCarViewController.xib; sourceTree = "<group>"; };
+		85EF55671B293154006A4993 /* RFSegmentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RFSegmentView.h; sourceTree = "<group>"; };
+		85EF55681B293154006A4993 /* RFSegmentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RFSegmentView.m; sourceTree = "<group>"; };
+		85EF556A1B2931C9006A4993 /* WoSchoolViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WoSchoolViewController.h; sourceTree = "<group>"; };
+		85EF556B1B2931C9006A4993 /* WoSchoolViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WoSchoolViewController.m; sourceTree = "<group>"; };
+		85EF556D1B295AF4006A4993 /* RealnameVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RealnameVC.h; sourceTree = "<group>"; };
+		85EF556E1B295AF4006A4993 /* RealnameVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RealnameVC.m; sourceTree = "<group>"; };
+		85EF55701B295CD7006A4993 /* imageBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = imageBackground.png; sourceTree = "<group>"; };
+		85EF55731B29783C006A4993 /* BlueToothDCAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlueToothDCAdapter.h; sourceTree = "<group>"; };
+		85EF55741B29783C006A4993 /* connect.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = connect.bundle; sourceTree = "<group>"; };
+		85EF55751B29783C006A4993 /* DCLinkInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCLinkInterface.h; sourceTree = "<group>"; };
+		85EF55761B29783C006A4993 /* DCProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCProtocol.h; sourceTree = "<group>"; };
+		85EF55771B29783C006A4993 /* libBlueToothDCAdapter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libBlueToothDCAdapter.a; sourceTree = "<group>"; };
+		85EF557A1B297A46006A4993 /* ExternalAccessory.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExternalAccessory.framework; path = System/Library/Frameworks/ExternalAccessory.framework; sourceTree = SDKROOT; };
+		85EF55BD1B29946E006A4993 /* libMobClickLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libMobClickLibrary.a; path = lib/libMobClickLibrary.a; sourceTree = "<group>"; };
+		85EF55BE1B29946E006A4993 /* libPushSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPushSDK.a; path = lib/libPushSDK.a; sourceTree = "<group>"; };
+		85EF55BF1B29946E006A4993 /* libzbar.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libzbar.a; path = lib/libzbar.a; sourceTree = "<group>"; };
 		85FED32B1B1D97760025988B /* fandang.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fandang.png; sourceTree = "<group>"; };
 		85FED3411B1DA8F40025988B /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		C601173C1A7B2DCF000ED2DA /* FilterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilterView.m; sourceTree = "<group>"; };
@@ -1446,6 +1438,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				85EF55C31B29946E006A4993 /* libMobClickLibrary.a in Frameworks */,
+				85EF55C41B29946E006A4993 /* libPushSDK.a in Frameworks */,
+				85EF55C51B29946E006A4993 /* libzbar.a in Frameworks */,
+				85EF557B1B297A46006A4993 /* ExternalAccessory.framework in Frameworks */,
 				85FED3421B1DA8F40025988B /* CoreBluetooth.framework in Frameworks */,
 				856ACE7E1B06F7E400745374 /* Accounts.framework in Frameworks */,
 				856ACE7C1B06F7D600745374 /* Social.framework in Frameworks */,
@@ -1458,12 +1454,11 @@
 				631410CC1AD6A5AB001E369C /* CoreData.framework in Frameworks */,
 				85A367B61B07057E009E4AEC /* TencentOpenAPI.framework in Frameworks */,
 				85A367B21B07057E009E4AEC /* AGCommon.framework in Frameworks */,
-				859F33801B03299A00B72337 /* libzbar.a in Frameworks */,
 				631410CA1AD6A591001E369C /* MobileCoreServices.framework in Frameworks */,
 				85A367A91B07057E009E4AEC /* QQConnection.framework in Frameworks */,
+				85EF55791B29783C006A4993 /* libBlueToothDCAdapter.a in Frameworks */,
 				85A367C81B07057E009E4AEC /* ShareSDKiPhoneDefaultShareViewUI.framework in Frameworks */,
 				85A367AA1B07057E009E4AEC /* QZoneConnection.framework in Frameworks */,
-				859F337F1B03299A00B72337 /* libPushSDK.a in Frameworks */,
 				85A367AD1B07057E009E4AEC /* SMSConnection.framework in Frameworks */,
 				C6EAF17C1A654496008444C6 /* CoreLocation.framework in Frameworks */,
 				5CA8F22F1A1B9475004EFE09 /* libbz2.1.0.dylib in Frameworks */,
@@ -1475,12 +1470,9 @@
 				3949A05F196E320D0043B5FC /* SystemConfiguration.framework in Frameworks */,
 				85A367C61B07057E009E4AEC /* ShareSDKiPhoneAppRecommendShareViewUI.framework in Frameworks */,
 				85A367BD1B07057E009E4AEC /* libWeChatSDK.a in Frameworks */,
-				859F337C1B03299A00B72337 /* libHttpConnector-s.a in Frameworks */,
 				85A367C51B07057E009E4AEC /* ShareSDKiPadSimpleShareViewUI.framework in Frameworks */,
 				395F6ABC1979203800B8125A /* AVFoundation.framework in Frameworks */,
 				395F6AB619791FA700B8125A /* CoreMedia.framework in Frameworks */,
-				859F337D1B03299A00B72337 /* libHttpConnector.a in Frameworks */,
-				859F337E1B03299A00B72337 /* libMobClickLibrary.a in Frameworks */,
 				85A367C31B07057E009E4AEC /* ShareSDKiPadDefaultShareViewUI.framework in Frameworks */,
 				3949A067196E323F0043B5FC /* libxml2.dylib in Frameworks */,
 				3949A065196E32350043B5FC /* libz.dylib in Frameworks */,
@@ -1488,7 +1480,6 @@
 				85A367B01B07057E009E4AEC /* WeChatConnection.framework in Frameworks */,
 				3949A063196E322C0043B5FC /* libsqlite3.dylib in Frameworks */,
 				3949A061196E32210043B5FC /* libiconv.dylib in Frameworks */,
-				851C1C6D1B26C5C300A2749A /* libbtReader.a in Frameworks */,
 				3949A05D196E317B0043B5FC /* QuartzCore.framework in Frameworks */,
 				85A367CA1B07057E009E4AEC /* ShareSDKiPhoneSimpleShareViewUI.framework in Frameworks */,
 				85A367BA1B07057E009E4AEC /* libSinaWeiboSDK.a in Frameworks */,
@@ -1496,8 +1487,6 @@
 				39499F37196E2E9C0043B5FC /* CoreGraphics.framework in Frameworks */,
 				39499F39196E2E9C0043B5FC /* UIKit.framework in Frameworks */,
 				39499F35196E2E9C0043B5FC /* Foundation.framework in Frameworks */,
-				859F337B1B03299A00B72337 /* libHttpConnector-d.a in Frameworks */,
-				851C1C711B26D2D300A2749A /* libRWSimCard.a in Frameworks */,
 				85A367C11B07057E009E4AEC /* ShareSDKFlatShareViewUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1518,8 +1507,8 @@
 		39499F28196E2E9C0043B5FC = {
 			isa = PBXGroup;
 			children = (
+				85EF55721B29783C006A4993 /* BlueToothSocket */,
 				851424A21B253E430086D3EC /* IgnoreException */,
-				85AB50541B1ECB8400750405 /* ReaderShenfengzheng */,
 				859F33451B03299900B72337 /* lib */,
 				39499F3A196E2E9C0043B5FC /* WoChuangFu */,
 				39499F53196E2E9C0043B5FC /* WoChuangFuTests */,
@@ -1540,6 +1529,10 @@
 		39499F33196E2E9C0043B5FC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				85EF55BD1B29946E006A4993 /* libMobClickLibrary.a */,
+				85EF55BE1B29946E006A4993 /* libPushSDK.a */,
+				85EF55BF1B29946E006A4993 /* libzbar.a */,
+				85EF557A1B297A46006A4993 /* ExternalAccessory.framework */,
 				85FED3411B1DA8F40025988B /* CoreBluetooth.framework */,
 				856ACE7D1B06F7E400745374 /* Accounts.framework */,
 				856ACE7B1B06F7D600745374 /* Social.framework */,
@@ -1703,6 +1696,7 @@
 		39499F6C196E2FB40043B5FC /* tools */ = {
 			isa = PBXGroup;
 			children = (
+				85EF55661B293154006A4993 /* RFSegmentView */,
 				85A3676C1B07057E009E4AEC /* ShareSDK */,
 				C6E991001A6FA543000B4680 /* RFPasswordStrength */,
 				5CEB03871A38634C00410858 /* LablesMatrix */,
@@ -2179,15 +2173,15 @@
 				C6F1F4501A7646B9006FB01A /* MessageCenter */,
 				63C32F761A52E3FC00542DF3 /* SettingVC.h */,
 				63C32F771A52E3FC00542DF3 /* SettingVC.m */,
-				85AB50511B1EC1AE00750405 /* MySettingViewController.h */,
-				85AB50521B1EC1AE00750405 /* MySettingViewController.m */,
 				5C548F3D1A4EA0AC007CC5BB /* SystemSetVC.h */,
 				5C548F3E1A4EA0AC007CC5BB /* SystemSetVC.m */,
 				85A88FFC1B15BFC300EF2507 /* JiGouWebViewControler.h */,
 				85A88FFD1B15BFC300EF2507 /* JiGouWebViewControler.m */,
-				85FED3241B1D83F10025988B /* RealNameCarViewController.h */,
-				85FED3251B1D83F10025988B /* RealNameCarViewController.m */,
-				85FED3261B1D83F10025988B /* RealNameCarViewController.xib */,
+				85EF556A1B2931C9006A4993 /* WoSchoolViewController.h */,
+				85EF556B1B2931C9006A4993 /* WoSchoolViewController.m */,
+				85EF556D1B295AF4006A4993 /* RealnameVC.h */,
+				85EF556E1B295AF4006A4993 /* RealnameVC.m */,
+				85EF55701B295CD7006A4993 /* imageBackground.png */,
 				85FED32B1B1D97760025988B /* fandang.png */,
 			);
 			name = Set;
@@ -2734,12 +2728,6 @@
 			isa = PBXGroup;
 			children = (
 				859F33461B03299900B72337 /* include */,
-				859F33751B03299A00B72337 /* libHttpConnector-d.a */,
-				859F33761B03299A00B72337 /* libHttpConnector-s.a */,
-				859F33771B03299A00B72337 /* libHttpConnector.a */,
-				859F33781B03299A00B72337 /* libMobClickLibrary.a */,
-				859F33791B03299A00B72337 /* libPushSDK.a */,
-				859F337A1B03299A00B72337 /* libzbar.a */,
 			);
 			path = lib;
 			sourceTree = "<group>";
@@ -2944,47 +2932,25 @@
 			path = UI;
 			sourceTree = "<group>";
 		};
-		85AB50541B1ECB8400750405 /* ReaderShenfengzheng */ = {
+		85EF55661B293154006A4993 /* RFSegmentView */ = {
 			isa = PBXGroup;
 			children = (
-				85AB50551B1ECB8400750405 /* btReaderlibs */,
-				85AB50581B1ECB8400750405 /* include */,
+				85EF55671B293154006A4993 /* RFSegmentView.h */,
+				85EF55681B293154006A4993 /* RFSegmentView.m */,
 			);
-			path = ReaderShenfengzheng;
+			path = RFSegmentView;
 			sourceTree = "<group>";
 		};
-		85AB50551B1ECB8400750405 /* btReaderlibs */ = {
+		85EF55721B29783C006A4993 /* BlueToothSocket */ = {
 			isa = PBXGroup;
 			children = (
-				851C1C6C1B26C5C300A2749A /* libbtReader.a */,
-				851424A81B25956E0086D3EC /* btReader.h */,
+				85EF55731B29783C006A4993 /* BlueToothDCAdapter.h */,
+				85EF55741B29783C006A4993 /* connect.bundle */,
+				85EF55751B29783C006A4993 /* DCLinkInterface.h */,
+				85EF55761B29783C006A4993 /* DCProtocol.h */,
+				85EF55771B29783C006A4993 /* libBlueToothDCAdapter.a */,
 			);
-			path = btReaderlibs;
-			sourceTree = "<group>";
-		};
-		85AB50581B1ECB8400750405 /* include */ = {
-			isa = PBXGroup;
-			children = (
-				851C1C701B26D2D300A2749A /* libRWSimCard.a */,
-				85AB505A1B1ECB8400750405 /* RWSimCard */,
-			);
-			path = include;
-			sourceTree = "<group>";
-		};
-		85AB505A1B1ECB8400750405 /* RWSimCard */ = {
-			isa = PBXGroup;
-			children = (
-				85AB505B1B1ECB8400750405 /* BluetoothReader.h */,
-				85AB505C1B1ECB8400750405 /* ICardReader.h */,
-				85AB505D1B1ECB8400750405 /* ICardReaderEvent.h */,
-				85AB505E1B1ECB8400750405 /* IDCardInfo.h */,
-				85AB505F1B1ECB8400750405 /* IDCardReader.h */,
-				85AB50601B1ECB8400750405 /* ReaderDelegate.h */,
-				85AB50611B1ECB8400750405 /* RWSimCard.h */,
-				85AB50621B1ECB8400750405 /* SimCardReader.h */,
-				85AB50631B1ECB8400750405 /* Tools.h */,
-			);
-			path = RWSimCard;
+			path = BlueToothSocket;
 			sourceTree = "<group>";
 		};
 		C601C8601A7A126F005E8751 /* GetBackPassWord */ = {
@@ -3374,6 +3340,7 @@
 				637253111A4309EC00B0CD8A /* iocn_right.png in Resources */,
 				395D9BA11976766B00C1B1B2 /* linwobi.png in Resources */,
 				6354D5411AFA0CE400F4966D /* weixin@2x.png in Resources */,
+				85EF55781B29783C006A4993 /* connect.bundle in Resources */,
 				C6174ABF1A6E036300AB0CA6 /* checkBtn_bg_normal@2x.png in Resources */,
 				6372530F1A4309EC00B0CD8A /* icon_content_up.png in Resources */,
 				C6091FC11A8A3352001007E1 /* GuidePage5@2x.png in Resources */,
@@ -3572,7 +3539,6 @@
 				63C32F9B1A52EEAD00542DF3 /* ios_sidebar_bg_p@2x.png in Resources */,
 				C6F477301A45596C00D4EAF2 /* lable_content_sku_s.png in Resources */,
 				6372530B1A4309EC00B0CD8A /* btn_content_down_n.png in Resources */,
-				85FED3281B1D83F10025988B /* RealNameCarViewController.xib in Resources */,
 				C63646D01A43CA3A006F79F0 /* bnt_content_second_n.png in Resources */,
 				C63646DF1A43CA46006F79F0 /* btn_share_p.png in Resources */,
 				C6091FB81A89F737001007E1 /* GuidePage3@2x.png in Resources */,
@@ -3595,6 +3561,7 @@
 				395D9BA31976766B00C1B1B2 /* peijian.png in Resources */,
 				C6F1F44F1A762CC9006FB01A /* btn_index_nav_more@2x.png in Resources */,
 				395D9BB519769B0B00C1B1B2 /* biaoyu.png in Resources */,
+				85EF55711B295CD7006A4993 /* imageBackground.png in Resources */,
 				C6E834A31A59442F0066C64D /* btn_navbar_n@2x.png in Resources */,
 				395D9B9D1976766B00C1B1B2 /* chongzhi.png in Resources */,
 				C6F741581A773DE1000FE809 /* icon_list_tr.png in Resources */,
@@ -3694,6 +3661,7 @@
 				C6AC0F581A49969700234E64 /* PropertyCell.m in Sources */,
 				5CA60F531A2C445200AA0533 /* ChooseNumMessage.m in Sources */,
 				5C05D2AE1A41BEAB00B111DA /* ProductEvaluationVC.m in Sources */,
+				85EF556C1B2931C9006A4993 /* WoSchoolViewController.m in Sources */,
 				5C68F10A1A0B50E50040B288 /* RegdistVC.m in Sources */,
 				5CA60F561A2C446500AA0533 /* ChoosePackageMessage.m in Sources */,
 				3949A03C196E2FB50043B5FC /* SYPaginatorViewController.m in Sources */,
@@ -3739,6 +3707,7 @@
 				3949A046196E2FB50043B5FC /* MyTimer.m in Sources */,
 				C6EBE17B1A372CEF0005D2D1 /* MJRefreshHeaderView.m in Sources */,
 				5C2415BA1A44081200B17C01 /* ChooseAreaMessage.m in Sources */,
+				85EF55691B293154006A4993 /* RFSegmentView.m in Sources */,
 				C6B078A21A75E9870000FC87 /* SearchTypeBar.m in Sources */,
 				C6AC0F5B1A49971A00234E64 /* EvaluateTableVC.m in Sources */,
 				3949A032196E2FB50043B5FC /* CircleView.m in Sources */,
@@ -3778,7 +3747,6 @@
 				3949A050196E2FB50043B5FC /* RemoteImageView.m in Sources */,
 				3949A04D196E2FB50043B5FC /* PullRefreshView.m in Sources */,
 				3949A039196E2FB50043B5FC /* SYPageView.m in Sources */,
-				85FED3271B1D83F10025988B /* RealNameCarViewController.m in Sources */,
 				3949A013196E2FB50043B5FC /* NdUncaughtExceptionHandler.m in Sources */,
 				3949A02B196E2FB50043B5FC /* mask.c in Sources */,
 				C6091FAD1A89EA30001007E1 /* GuidePageVC.m in Sources */,
@@ -3820,12 +3788,12 @@
 				5CA60F3F1A2C166100AA0533 /* ProductDetailVC.m in Sources */,
 				3949AA1E1977BA910043F06C /* ZhuYeMessage.m in Sources */,
 				5C2415B61A44045A00B17C01 /* ChooseAreaVC.m in Sources */,
-				85AB50531B1EC1AE00750405 /* MySettingViewController.m in Sources */,
 				C6EBE1621A372C690005D2D1 /* ProductCell.m in Sources */,
 				3949A053196E2FB50043B5FC /* UIKeywordView.m in Sources */,
 				5C05D2A91A41BE1E00B111DA /* EvaluateCellFrame.m in Sources */,
 				C6EAD9E01A78EA4800302434 /* RegisterVC.m in Sources */,
 				C6B0789F1A75D33F0000FC87 /* ModulesManager.m in Sources */,
+				85EF556F1B295AF4006A4993 /* RealnameVC.m in Sources */,
 				3949A036196E2FB50043B5FC /* SVProgressHUD.m in Sources */,
 				63C6DCA51A3B1E62000E85CE /* MyHeader.m in Sources */,
 				3949A03F196E2FB50043B5FC /* ComponentsFactory.m in Sources */,
@@ -3980,23 +3948,25 @@
 					/usr/include/libxml2,
 				);
 				INFOPLIST_FILE = "WoChuangFu/WoChuangFu-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/WoChuangFu/tools/ShareSDK/Extend/SinaWeiboSDK",
 					"$(PROJECT_DIR)/WoChuangFu/tools/ShareSDK/Extend/TencentWeiboSDK",
 					"$(PROJECT_DIR)/WoChuangFu/tools/ShareSDK/Extend/WeChatSDK",
 					"$(PROJECT_DIR)/WoChuangFu/tools/ShareSDK/Extend/YiXinSDK",
+					"$(PROJECT_DIR)/BlueToothSocket",
 					"$(PROJECT_DIR)/lib",
-					"$(PROJECT_DIR)/ReaderShenfengzheng/btReaderlibs",
-					"$(PROJECT_DIR)/ReaderShenfengzheng/include",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (
 					"-Ilib/include",
 					"-I${SDKROOT}/usr/include/libxml2",
 				);
-				OTHER_LDFLAGS = "";
+				OTHER_LDFLAGS = (
+					"-all_load",
+					"-lHttpConnector",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "49e23dbf-3fa8-4fc3-9823-4c198d7fb40c";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -4130,23 +4100,25 @@
 					/usr/include/libxml2,
 				);
 				INFOPLIST_FILE = "WoChuangFu/WoChuangFu-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/WoChuangFu/tools/ShareSDK/Extend/SinaWeiboSDK",
 					"$(PROJECT_DIR)/WoChuangFu/tools/ShareSDK/Extend/TencentWeiboSDK",
 					"$(PROJECT_DIR)/WoChuangFu/tools/ShareSDK/Extend/WeChatSDK",
 					"$(PROJECT_DIR)/WoChuangFu/tools/ShareSDK/Extend/YiXinSDK",
+					"$(PROJECT_DIR)/BlueToothSocket",
 					"$(PROJECT_DIR)/lib",
-					"$(PROJECT_DIR)/ReaderShenfengzheng/btReaderlibs",
-					"$(PROJECT_DIR)/ReaderShenfengzheng/include",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (
 					"-Ilib/include",
 					"-I${SDKROOT}/usr/include/libxml2",
 				);
-				OTHER_LDFLAGS = "";
+				OTHER_LDFLAGS = (
+					"-all_load",
+					"-lHttpConnector",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "49e23dbf-3fa8-4fc3-9823-4c198d7fb40c";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -4181,23 +4153,25 @@
 					/usr/include/libxml2,
 				);
 				INFOPLIST_FILE = "WoChuangFu/WoChuangFu-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/WoChuangFu/tools/ShareSDK/Extend/SinaWeiboSDK",
 					"$(PROJECT_DIR)/WoChuangFu/tools/ShareSDK/Extend/TencentWeiboSDK",
 					"$(PROJECT_DIR)/WoChuangFu/tools/ShareSDK/Extend/WeChatSDK",
 					"$(PROJECT_DIR)/WoChuangFu/tools/ShareSDK/Extend/YiXinSDK",
+					"$(PROJECT_DIR)/BlueToothSocket",
 					"$(PROJECT_DIR)/lib",
-					"$(PROJECT_DIR)/ReaderShenfengzheng/btReaderlibs",
-					"$(PROJECT_DIR)/ReaderShenfengzheng/include",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (
 					"-Ilib/include",
 					"-I${SDKROOT}/usr/include/libxml2",
 				);
-				OTHER_LDFLAGS = "";
+				OTHER_LDFLAGS = (
+					"-all_load",
+					"-lHttpConnector",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "49e23dbf-3fa8-4fc3-9823-4c198d7fb40c";
 				TARGETED_DEVICE_FAMILY = 1;

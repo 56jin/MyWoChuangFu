@@ -403,7 +403,7 @@
         
         ProductsListVC* vc = [[ProductsListVC alloc] init];
         vc.params = passParams;
-        vc.hidesBottomBarWhenPushed = YES;
+//        vc.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
