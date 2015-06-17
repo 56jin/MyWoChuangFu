@@ -57,7 +57,7 @@
         _dataSource = [NSMutableArray arrayWithObjects:@"消息中心",@"系统更新", @"清除缓存",@"加入机构",nil];//@"加入机构",
     }
     else {
-        _dataSource = [NSMutableArray arrayWithObjects:@"实名返档",nil];//@"沃校园办理",@"现场开户",
+        _dataSource = [NSMutableArray arrayWithObjects:@"实名返档",@"沃校园办理",@"派单开户",nil];
     }
 //    else {
 //        UIButton *rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -134,19 +134,23 @@
     UIView *footView = [[UIView alloc]initWithFrame:CGRectMake(0, 20, MainWidth, 60)];
     footView.backgroundColor = [UIColor clearColor];
     
-    UIButton *realBtn = [[UIButton alloc]initWithFrame:CGRectMake(10, 10, 300, 44)];
-    realBtn.backgroundColor = [UIColor orangeColor];
-     NSString *session = [[NSUserDefaults standardUserDefaults] objectForKey:@"sessionid"];
-    
-    [realBtn setTitle:session ? @"退出登录" : @"请登录" forState:UIControlStateNormal];
-//    [realBtn setImage:[UIImage imageNamed:@"fandang.png"] forState:UIControlStateNormal];
-    [realBtn.layer setMasksToBounds:YES];
-    [realBtn.layer setCornerRadius:4];
-    [realBtn addTarget:self action:@selector(LogoutEven) forControlEvents:UIControlEventTouchUpInside];
-//    realBtn.imageEdgeInsets = UIEdgeInsetsMake(5, 0, 0, 5);
-    [realBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [realBtn setTitleColor:[UIColor darkGrayColor] forState:UIControlStateHighlighted];
-    [footView addSubview:realBtn];
+    if (self.isYesOrNo && [self.isYesOrNo isEqualToString:@"YES"]) {
+        
+        UIButton *realBtn = [[UIButton alloc]initWithFrame:CGRectMake(10, 10, 300, 44)];
+        realBtn.backgroundColor = [UIColor orangeColor];
+        NSString *session = [[NSUserDefaults standardUserDefaults] objectForKey:@"sessionid"];
+        
+        [realBtn setTitle:session ? @"退出登录" : @"请登录" forState:UIControlStateNormal];
+        //    [realBtn setImage:[UIImage imageNamed:@"fandang.png"] forState:UIControlStateNormal];
+        [realBtn.layer setMasksToBounds:YES];
+        [realBtn.layer setCornerRadius:4];
+        [realBtn addTarget:self action:@selector(LogoutEven) forControlEvents:UIControlEventTouchUpInside];
+        //    realBtn.imageEdgeInsets = UIEdgeInsetsMake(5, 0, 0, 5);
+        [realBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [realBtn setTitleColor:[UIColor darkGrayColor] forState:UIControlStateHighlighted];
+        [footView addSubview:realBtn];
+    }
+   
     return footView;
 }
 

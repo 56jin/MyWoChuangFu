@@ -370,6 +370,7 @@
 		85A367CA1B07057E009E4AEC /* ShareSDKiPhoneSimpleShareViewUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85A367A41B07057E009E4AEC /* ShareSDKiPhoneSimpleShareViewUI.framework */; };
 		85A367CB1B07057E009E4AEC /* ShareSDKShareActionSheet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85A367A51B07057E009E4AEC /* ShareSDKShareActionSheet.framework */; };
 		85A367D31B0747F9009E4AEC /* GetSelectJiGouMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 85A367D21B0747F9009E4AEC /* GetSelectJiGouMessage.m */; };
+		85A5D9EA1B310A280083263E /* WoSchoolViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85A5D9E91B310A280083263E /* WoSchoolViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		85A6227B1B27CE8B00CC8E8B /* icon_navbar_tool.png in Resources */ = {isa = PBXBuildFile; fileRef = 85A622791B27CE8B00CC8E8B /* icon_navbar_tool.png */; };
 		85A6227C1B27CE8B00CC8E8B /* icon_navbar_tool@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85A6227A1B27CE8B00CC8E8B /* icon_navbar_tool@2x.png */; };
 		85A88FFE1B15BFC300EF2507 /* JiGouWebViewControler.m in Sources */ = {isa = PBXBuildFile; fileRef = 85A88FFD1B15BFC300EF2507 /* JiGouWebViewControler.m */; };
@@ -377,7 +378,6 @@
 		85AB50501B1E9EB700750405 /* RealNameYesOrNoMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AB504E1B1E9EB700750405 /* RealNameYesOrNoMessage.m */; };
 		85B9D50B1B0ACB1E002B0DF6 /* envolope@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85B9D50A1B0ACB1E002B0DF6 /* envolope@2x.png */; };
 		85EF55691B293154006A4993 /* RFSegmentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 85EF55681B293154006A4993 /* RFSegmentView.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		85EF556C1B2931C9006A4993 /* WoSchoolViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85EF556B1B2931C9006A4993 /* WoSchoolViewController.m */; };
 		85EF556F1B295AF4006A4993 /* RealnameVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 85EF556E1B295AF4006A4993 /* RealnameVC.m */; };
 		85EF55711B295CD7006A4993 /* imageBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 85EF55701B295CD7006A4993 /* imageBackground.png */; };
 		85EF55781B29783C006A4993 /* connect.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 85EF55741B29783C006A4993 /* connect.bundle */; };
@@ -1185,6 +1185,8 @@
 		85A367A51B07057E009E4AEC /* ShareSDKShareActionSheet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShareSDKShareActionSheet.framework; sourceTree = "<group>"; };
 		85A367D11B0747F9009E4AEC /* GetSelectJiGouMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetSelectJiGouMessage.h; sourceTree = "<group>"; };
 		85A367D21B0747F9009E4AEC /* GetSelectJiGouMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetSelectJiGouMessage.m; sourceTree = "<group>"; };
+		85A5D9E81B310A280083263E /* WoSchoolViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WoSchoolViewController.h; sourceTree = "<group>"; };
+		85A5D9E91B310A280083263E /* WoSchoolViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WoSchoolViewController.m; sourceTree = "<group>"; };
 		85A622791B27CE8B00CC8E8B /* icon_navbar_tool.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_navbar_tool.png; sourceTree = "<group>"; };
 		85A6227A1B27CE8B00CC8E8B /* icon_navbar_tool@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_navbar_tool@2x.png"; sourceTree = "<group>"; };
 		85A88FFC1B15BFC300EF2507 /* JiGouWebViewControler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JiGouWebViewControler.h; sourceTree = "<group>"; };
@@ -1196,8 +1198,6 @@
 		85B9D50A1B0ACB1E002B0DF6 /* envolope@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "envolope@2x.png"; sourceTree = "<group>"; };
 		85EF55671B293154006A4993 /* RFSegmentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RFSegmentView.h; sourceTree = "<group>"; };
 		85EF55681B293154006A4993 /* RFSegmentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RFSegmentView.m; sourceTree = "<group>"; };
-		85EF556A1B2931C9006A4993 /* WoSchoolViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WoSchoolViewController.h; sourceTree = "<group>"; };
-		85EF556B1B2931C9006A4993 /* WoSchoolViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WoSchoolViewController.m; sourceTree = "<group>"; };
 		85EF556D1B295AF4006A4993 /* RealnameVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RealnameVC.h; sourceTree = "<group>"; };
 		85EF556E1B295AF4006A4993 /* RealnameVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RealnameVC.m; sourceTree = "<group>"; };
 		85EF55701B295CD7006A4993 /* imageBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = imageBackground.png; sourceTree = "<group>"; };
@@ -2177,10 +2177,10 @@
 				5C548F3E1A4EA0AC007CC5BB /* SystemSetVC.m */,
 				85A88FFC1B15BFC300EF2507 /* JiGouWebViewControler.h */,
 				85A88FFD1B15BFC300EF2507 /* JiGouWebViewControler.m */,
-				85EF556A1B2931C9006A4993 /* WoSchoolViewController.h */,
-				85EF556B1B2931C9006A4993 /* WoSchoolViewController.m */,
 				85EF556D1B295AF4006A4993 /* RealnameVC.h */,
 				85EF556E1B295AF4006A4993 /* RealnameVC.m */,
+				85A5D9E81B310A280083263E /* WoSchoolViewController.h */,
+				85A5D9E91B310A280083263E /* WoSchoolViewController.m */,
 				85EF55701B295CD7006A4993 /* imageBackground.png */,
 				85FED32B1B1D97760025988B /* fandang.png */,
 			);
@@ -3661,7 +3661,6 @@
 				C6AC0F581A49969700234E64 /* PropertyCell.m in Sources */,
 				5CA60F531A2C445200AA0533 /* ChooseNumMessage.m in Sources */,
 				5C05D2AE1A41BEAB00B111DA /* ProductEvaluationVC.m in Sources */,
-				85EF556C1B2931C9006A4993 /* WoSchoolViewController.m in Sources */,
 				5C68F10A1A0B50E50040B288 /* RegdistVC.m in Sources */,
 				5CA60F561A2C446500AA0533 /* ChoosePackageMessage.m in Sources */,
 				3949A03C196E2FB50043B5FC /* SYPaginatorViewController.m in Sources */,
@@ -3709,6 +3708,7 @@
 				5C2415BA1A44081200B17C01 /* ChooseAreaMessage.m in Sources */,
 				85EF55691B293154006A4993 /* RFSegmentView.m in Sources */,
 				C6B078A21A75E9870000FC87 /* SearchTypeBar.m in Sources */,
+				85A5D9EA1B310A280083263E /* WoSchoolViewController.m in Sources */,
 				C6AC0F5B1A49971A00234E64 /* EvaluateTableVC.m in Sources */,
 				3949A032196E2FB50043B5FC /* CircleView.m in Sources */,
 				5C05D2A71A41BE1E00B111DA /* EvaluateModel.m in Sources */,
