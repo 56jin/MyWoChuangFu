@@ -113,7 +113,7 @@
     [indexBtn setImage:image forState:UIControlStateNormal];
     [indexBtn setImageEdgeInsets:UIEdgeInsetsMake(11,11,11,11)];
     [indexBtn.titleLabel setFont:[UIFont systemFontOfSize:11.5]];
-    [indexBtn.titleLabel setTextAlignment:UITextAlignmentCenter];
+    [indexBtn.titleLabel setTextAlignment:NSTextAlignmentCenter];
     [indexBtn setTitle:[NSString stringWithFormat:@"%d",index+1] forState:UIControlStateNormal];
     [indexBtn setTitleColor: [UIColor whiteColor] forState:UIControlStateNormal];
     [indexBtn setTitleEdgeInsets:UIEdgeInsetsMake(-2,-image.size.width+1,0,-1)];

@@ -330,6 +330,14 @@
 		8549B5931B09CCF00035BE83 /* GetAddJiGouMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8549B5921B09CCF00035BE83 /* GetAddJiGouMessage.m */; };
 		856ACE7C1B06F7D600745374 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 856ACE7B1B06F7D600745374 /* Social.framework */; };
 		856ACE7E1B06F7E400745374 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 856ACE7D1B06F7E400745374 /* Accounts.framework */; };
+		8578C6741B3256E500A1AE76 /* 618image@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8578C6721B3256E500A1AE76 /* 618image@2x.png */; };
+		8578C6751B3256E500A1AE76 /* imagebtn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8578C6731B3256E500A1AE76 /* imagebtn@2x.png */; };
+		857FC7B71B3AB2B100AB98E3 /* 3Des.c in Sources */ = {isa = PBXBuildFile; fileRef = 857FC7A91B3AB2B100AB98E3 /* 3Des.c */; };
+		857FC7B81B3AB2B100AB98E3 /* BLEIDCardReaderItem.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 857FC7AB1B3AB2B100AB98E3 /* BLEIDCardReaderItem.framework */; };
+		857FC7B91B3AB2B100AB98E3 /* fs_main_login_normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 857FC7AD1B3AB2B100AB98E3 /* fs_main_login_normal.png */; };
+		857FC7BA1B3AB2B100AB98E3 /* fs_main_login_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 857FC7AE1B3AB2B100AB98E3 /* fs_main_login_selected.png */; };
+		857FC7BB1B3AB2B100AB98E3 /* ZSYPopListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 857FC7B01B3AB2B100AB98E3 /* ZSYPopListView.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		857FC7BC1B3AB2B100AB98E3 /* ZSYPopoverListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 857FC7B21B3AB2B100AB98E3 /* ZSYPopoverListView.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		859F33321B02F64000B72337 /* LoginSuccessView.m in Sources */ = {isa = PBXBuildFile; fileRef = 859F33311B02F64000B72337 /* LoginSuccessView.m */; };
 		859F33391B02FACE00B72337 /* logo_key_safari2.png in Resources */ = {isa = PBXBuildFile; fileRef = 859F33371B02FACE00B72337 /* logo_key_safari2.png */; };
 		859F333A1B02FACE00B72337 /* logo_key_safari2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 859F33381B02FACE00B72337 /* logo_key_safari2@2x.png */; };
@@ -380,8 +388,6 @@
 		85EF55691B293154006A4993 /* RFSegmentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 85EF55681B293154006A4993 /* RFSegmentView.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		85EF556F1B295AF4006A4993 /* RealnameVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 85EF556E1B295AF4006A4993 /* RealnameVC.m */; };
 		85EF55711B295CD7006A4993 /* imageBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 85EF55701B295CD7006A4993 /* imageBackground.png */; };
-		85EF55781B29783C006A4993 /* connect.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 85EF55741B29783C006A4993 /* connect.bundle */; };
-		85EF55791B29783C006A4993 /* libBlueToothDCAdapter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 85EF55771B29783C006A4993 /* libBlueToothDCAdapter.a */; };
 		85EF557B1B297A46006A4993 /* ExternalAccessory.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85EF557A1B297A46006A4993 /* ExternalAccessory.framework */; };
 		85EF55C31B29946E006A4993 /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 85EF55BD1B29946E006A4993 /* libMobClickLibrary.a */; };
 		85EF55C41B29946E006A4993 /* libPushSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 85EF55BE1B29946E006A4993 /* libPushSDK.a */; };
@@ -1096,6 +1102,18 @@
 		8549B5921B09CCF00035BE83 /* GetAddJiGouMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetAddJiGouMessage.m; sourceTree = "<group>"; };
 		856ACE7B1B06F7D600745374 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		856ACE7D1B06F7E400745374 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
+		8578C6721B3256E500A1AE76 /* 618image@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "618image@2x.png"; sourceTree = "<group>"; };
+		8578C6731B3256E500A1AE76 /* imagebtn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "imagebtn@2x.png"; sourceTree = "<group>"; };
+		857FC7A91B3AB2B100AB98E3 /* 3Des.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = 3Des.c; sourceTree = "<group>"; };
+		857FC7AA1B3AB2B100AB98E3 /* 3Des.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = 3Des.h; sourceTree = "<group>"; };
+		857FC7AB1B3AB2B100AB98E3 /* BLEIDCardReaderItem.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BLEIDCardReaderItem.framework; sourceTree = "<group>"; };
+		857FC7AD1B3AB2B100AB98E3 /* fs_main_login_normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fs_main_login_normal.png; sourceTree = "<group>"; };
+		857FC7AE1B3AB2B100AB98E3 /* fs_main_login_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fs_main_login_selected.png; sourceTree = "<group>"; };
+		857FC7AF1B3AB2B100AB98E3 /* ZSYPopListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZSYPopListView.h; sourceTree = "<group>"; };
+		857FC7B01B3AB2B100AB98E3 /* ZSYPopListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZSYPopListView.m; sourceTree = "<group>"; };
+		857FC7B11B3AB2B100AB98E3 /* ZSYPopoverListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZSYPopoverListView.h; sourceTree = "<group>"; };
+		857FC7B21B3AB2B100AB98E3 /* ZSYPopoverListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZSYPopoverListView.m; sourceTree = "<group>"; };
+		857FC7B41B3AB2B100AB98E3 /* GDataDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataDefines.h; sourceTree = "<group>"; };
 		859F33301B02F64000B72337 /* LoginSuccessView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginSuccessView.h; sourceTree = "<group>"; };
 		859F33311B02F64000B72337 /* LoginSuccessView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginSuccessView.m; sourceTree = "<group>"; };
 		859F33371B02FACE00B72337 /* logo_key_safari2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo_key_safari2.png; sourceTree = "<group>"; };
@@ -1201,11 +1219,6 @@
 		85EF556D1B295AF4006A4993 /* RealnameVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RealnameVC.h; sourceTree = "<group>"; };
 		85EF556E1B295AF4006A4993 /* RealnameVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RealnameVC.m; sourceTree = "<group>"; };
 		85EF55701B295CD7006A4993 /* imageBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = imageBackground.png; sourceTree = "<group>"; };
-		85EF55731B29783C006A4993 /* BlueToothDCAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlueToothDCAdapter.h; sourceTree = "<group>"; };
-		85EF55741B29783C006A4993 /* connect.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = connect.bundle; sourceTree = "<group>"; };
-		85EF55751B29783C006A4993 /* DCLinkInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCLinkInterface.h; sourceTree = "<group>"; };
-		85EF55761B29783C006A4993 /* DCProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DCProtocol.h; sourceTree = "<group>"; };
-		85EF55771B29783C006A4993 /* libBlueToothDCAdapter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libBlueToothDCAdapter.a; sourceTree = "<group>"; };
 		85EF557A1B297A46006A4993 /* ExternalAccessory.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExternalAccessory.framework; path = System/Library/Frameworks/ExternalAccessory.framework; sourceTree = SDKROOT; };
 		85EF55BD1B29946E006A4993 /* libMobClickLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libMobClickLibrary.a; path = lib/libMobClickLibrary.a; sourceTree = "<group>"; };
 		85EF55BE1B29946E006A4993 /* libPushSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPushSDK.a; path = lib/libPushSDK.a; sourceTree = "<group>"; };
@@ -1443,6 +1456,7 @@
 				85EF55C51B29946E006A4993 /* libzbar.a in Frameworks */,
 				85EF557B1B297A46006A4993 /* ExternalAccessory.framework in Frameworks */,
 				85FED3421B1DA8F40025988B /* CoreBluetooth.framework in Frameworks */,
+				857FC7B81B3AB2B100AB98E3 /* BLEIDCardReaderItem.framework in Frameworks */,
 				856ACE7E1B06F7E400745374 /* Accounts.framework in Frameworks */,
 				856ACE7C1B06F7D600745374 /* Social.framework in Frameworks */,
 				394C86881980FD0B00327C82 /* Security.framework in Frameworks */,
@@ -1456,7 +1470,6 @@
 				85A367B21B07057E009E4AEC /* AGCommon.framework in Frameworks */,
 				631410CA1AD6A591001E369C /* MobileCoreServices.framework in Frameworks */,
 				85A367A91B07057E009E4AEC /* QQConnection.framework in Frameworks */,
-				85EF55791B29783C006A4993 /* libBlueToothDCAdapter.a in Frameworks */,
 				85A367C81B07057E009E4AEC /* ShareSDKiPhoneDefaultShareViewUI.framework in Frameworks */,
 				85A367AA1B07057E009E4AEC /* QZoneConnection.framework in Frameworks */,
 				85A367AD1B07057E009E4AEC /* SMSConnection.framework in Frameworks */,
@@ -1507,7 +1520,7 @@
 		39499F28196E2E9C0043B5FC = {
 			isa = PBXGroup;
 			children = (
-				85EF55721B29783C006A4993 /* BlueToothSocket */,
+				857FC7A81B3AB2B100AB98E3 /* ReadMsmAndShenFZcar */,
 				851424A21B253E430086D3EC /* IgnoreException */,
 				859F33451B03299900B72337 /* lib */,
 				39499F3A196E2E9C0043B5FC /* WoChuangFu */,
@@ -2382,6 +2395,8 @@
 		5CA60F5C1A35978600AA0533 /* MainPage */ = {
 			isa = PBXGroup;
 			children = (
+				8578C6721B3256E500A1AE76 /* 618image@2x.png */,
+				8578C6731B3256E500A1AE76 /* imagebtn@2x.png */,
 				5CA60F5E1A3597D400AA0533 /* MainVC.h */,
 				5CA60F5F1A3597D400AA0533 /* MainVC.m */,
 				5CA60F611A3598AE00AA0533 /* MainView.h */,
@@ -2710,6 +2725,39 @@
 			path = IgnoreException;
 			sourceTree = "<group>";
 		};
+		857FC7A81B3AB2B100AB98E3 /* ReadMsmAndShenFZcar */ = {
+			isa = PBXGroup;
+			children = (
+				857FC7A91B3AB2B100AB98E3 /* 3Des.c */,
+				857FC7AA1B3AB2B100AB98E3 /* 3Des.h */,
+				857FC7AB1B3AB2B100AB98E3 /* BLEIDCardReaderItem.framework */,
+				857FC7AC1B3AB2B100AB98E3 /* CWPopup */,
+				857FC7B31B3AB2B100AB98E3 /* XmlPack */,
+			);
+			path = ReadMsmAndShenFZcar;
+			sourceTree = "<group>";
+		};
+		857FC7AC1B3AB2B100AB98E3 /* CWPopup */ = {
+			isa = PBXGroup;
+			children = (
+				857FC7AD1B3AB2B100AB98E3 /* fs_main_login_normal.png */,
+				857FC7AE1B3AB2B100AB98E3 /* fs_main_login_selected.png */,
+				857FC7AF1B3AB2B100AB98E3 /* ZSYPopListView.h */,
+				857FC7B01B3AB2B100AB98E3 /* ZSYPopListView.m */,
+				857FC7B11B3AB2B100AB98E3 /* ZSYPopoverListView.h */,
+				857FC7B21B3AB2B100AB98E3 /* ZSYPopoverListView.m */,
+			);
+			path = CWPopup;
+			sourceTree = "<group>";
+		};
+		857FC7B31B3AB2B100AB98E3 /* XmlPack */ = {
+			isa = PBXGroup;
+			children = (
+				857FC7B41B3AB2B100AB98E3 /* GDataDefines.h */,
+			);
+			path = XmlPack;
+			sourceTree = "<group>";
+		};
 		859F33331B02F9C300B72337 /* BMWaveButton */ = {
 			isa = PBXGroup;
 			children = (
@@ -2939,18 +2987,6 @@
 				85EF55681B293154006A4993 /* RFSegmentView.m */,
 			);
 			path = RFSegmentView;
-			sourceTree = "<group>";
-		};
-		85EF55721B29783C006A4993 /* BlueToothSocket */ = {
-			isa = PBXGroup;
-			children = (
-				85EF55731B29783C006A4993 /* BlueToothDCAdapter.h */,
-				85EF55741B29783C006A4993 /* connect.bundle */,
-				85EF55751B29783C006A4993 /* DCLinkInterface.h */,
-				85EF55761B29783C006A4993 /* DCProtocol.h */,
-				85EF55771B29783C006A4993 /* libBlueToothDCAdapter.a */,
-			);
-			path = BlueToothSocket;
 			sourceTree = "<group>";
 		};
 		C601C8601A7A126F005E8751 /* GetBackPassWord */ = {
@@ -3340,7 +3376,6 @@
 				637253111A4309EC00B0CD8A /* iocn_right.png in Resources */,
 				395D9BA11976766B00C1B1B2 /* linwobi.png in Resources */,
 				6354D5411AFA0CE400F4966D /* weixin@2x.png in Resources */,
-				85EF55781B29783C006A4993 /* connect.bundle in Resources */,
 				C6174ABF1A6E036300AB0CA6 /* checkBtn_bg_normal@2x.png in Resources */,
 				6372530F1A4309EC00B0CD8A /* icon_content_up.png in Resources */,
 				C6091FC11A8A3352001007E1 /* GuidePage5@2x.png in Resources */,
@@ -3411,6 +3446,7 @@
 				C6EAD9DD1A78E0A600302434 /* 004@2x.jpg in Resources */,
 				85A367B71B07057E009E4AEC /* TencentOpenApi_IOS_Bundle.bundle in Resources */,
 				C6091FBD1A89F737001007E1 /* GuidePage4s_4@2x.png in Resources */,
+				857FC7BA1B3AB2B100AB98E3 /* fs_main_login_selected.png in Resources */,
 				39EDACB719A3C205009A5208 /* ic_launcher.png in Resources */,
 				85A367BB1B07057E009E4AEC /* WeiboSDK.bundle in Resources */,
 				6372530D1A4309EC00B0CD8A /* btn_content_up_n.png in Resources */,
@@ -3428,6 +3464,7 @@
 				C6F11F661A7615DA00B41E64 /* icon_search_all_class_n@2x.png in Resources */,
 				C6091FBF1A8A3349001007E1 /* GuidePage4s_5@2x.png in Resources */,
 				63C32F921A52EE5400542DF3 /* icon_navbar_wo_p.png in Resources */,
+				8578C6741B3256E500A1AE76 /* 618image@2x.png in Resources */,
 				C60DFBB01A79D1C10056296F /* icon_login_password@2x.png in Resources */,
 				635AA8261AFB4970001317B2 /* logo_key_safari2@2x.png in Resources */,
 				8549B5901B098C9F0035BE83 /* xf@2x.png in Resources */,
@@ -3493,6 +3530,7 @@
 				5C68F1071A0B196E0040B288 /* login_type_sheet.png in Resources */,
 				637253151A4309EC00B0CD8A /* sifeBar_bg@2x.png in Resources */,
 				6354D53C1AFA0CE400F4966D /* shareGoods.png in Resources */,
+				857FC7B91B3AB2B100AB98E3 /* fs_main_login_normal.png in Resources */,
 				C6E6B7461A779861002447C9 /* btn_content_ywb_p@2x.png in Resources */,
 				C6F11F681A7615DA00B41E64 /* icon_search_all_class_p@2x.png in Resources */,
 				5CEB03B61A3ECE2200410858 /* btn_search_delete_n.png in Resources */,
@@ -3508,6 +3546,7 @@
 				395D9BB319769B0B00C1B1B2 /* back.png in Resources */,
 				C6E6B7421A779861002447C9 /* bg_content_select_n@2x.png in Resources */,
 				6354D53A1AFA0CE400F4966D /* share.png in Resources */,
+				8578C6751B3256E500A1AE76 /* imagebtn@2x.png in Resources */,
 				C6091FBA1A89F737001007E1 /* GuidePage4s_1@2x.png in Resources */,
 				C63646CF1A43CA3A006F79F0 /* bnt_content_primary_n.png in Resources */,
 				85A367B31B07057E009E4AEC /* ShareSDKLocalizable.strings in Resources */,
@@ -3615,6 +3654,7 @@
 				3949A025196E2FB50043B5FC /* FTPHelper.m in Sources */,
 				5CA60F631A3598AE00AA0533 /* MainView.m in Sources */,
 				5C05D2AF1A41BEAB00B111DA /* StarView.m in Sources */,
+				857FC7BB1B3AB2B100AB98E3 /* ZSYPopListView.m in Sources */,
 				3949A02A196E2FB50043B5FC /* bitstream.c in Sources */,
 				6354D5511AFA0E7B00F4966D /* KeychainItemWrapper.m in Sources */,
 				63F328401A4300D000BF7335 /* TimeModel.m in Sources */,
@@ -3691,6 +3731,7 @@
 				5CF92D0E1A48008900068336 /* passParams.m in Sources */,
 				3949A014196E2FB50043B5FC /* GTMBase64_My.m in Sources */,
 				5CEB03A41A39405E00410858 /* MainViewModelsInit.m in Sources */,
+				857FC7BC1B3AB2B100AB98E3 /* ZSYPopoverListView.m in Sources */,
 				63E2FB7B1A4D51E80071DE34 /* InsuranceVC.m in Sources */,
 				63C6DC9C1A3B1DC1000E85CE /* NumberModel.m in Sources */,
 				C6EBE17C1A372CEF0005D2D1 /* UIScrollView+MJExtension.m in Sources */,
@@ -3698,6 +3739,7 @@
 				3949A023196E2FB50043B5FC /* wwanconnect.c in Sources */,
 				3949A042196E2FB50043B5FC /* GifView.m in Sources */,
 				3949A033196E2FB50043B5FC /* MyEGORefreshTableHeaderView.m in Sources */,
+				857FC7B71B3AB2B100AB98E3 /* 3Des.c in Sources */,
 				5CA60F341A2C15AC00AA0533 /* ProductsMessage.m in Sources */,
 				85AB50501B1E9EB700750405 /* RealNameYesOrNoMessage.m in Sources */,
 				3949A045196E2FB50043B5FC /* MyScrollView.m in Sources */,
@@ -3939,6 +3981,7 @@
 					"$(PROJECT_DIR)/WoChuangFu/tools/ShareSDK/Extend/RenRenSDK",
 					"$(PROJECT_DIR)/WoChuangFu/tools/ShareSDK",
 					"$(PROJECT_DIR)/WoChuangFu/tools/ShareSDK/UI",
+					"$(PROJECT_DIR)/ReadMsmAndShenFZcar",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WoChuangFu/WoChuangFu-Prefix.pch";
@@ -4091,6 +4134,7 @@
 					"$(PROJECT_DIR)/WoChuangFu/tools/ShareSDK/Extend/RenRenSDK",
 					"$(PROJECT_DIR)/WoChuangFu/tools/ShareSDK",
 					"$(PROJECT_DIR)/WoChuangFu/tools/ShareSDK/UI",
+					"$(PROJECT_DIR)/ReadMsmAndShenFZcar",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WoChuangFu/WoChuangFu-Prefix.pch";
@@ -4120,7 +4164,7 @@
 					"-lHttpConnector",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "49e23dbf-3fa8-4fc3-9823-4c198d7fb40c";
+				PROVISIONING_PROFILE = "38a90dd6-4b0c-4e64-b7dc-2caff5bf8953";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
@@ -4144,6 +4188,7 @@
 					"$(PROJECT_DIR)/WoChuangFu/tools/ShareSDK/Extend/RenRenSDK",
 					"$(PROJECT_DIR)/WoChuangFu/tools/ShareSDK",
 					"$(PROJECT_DIR)/WoChuangFu/tools/ShareSDK/UI",
+					"$(PROJECT_DIR)/ReadMsmAndShenFZcar",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WoChuangFu/WoChuangFu-Prefix.pch";

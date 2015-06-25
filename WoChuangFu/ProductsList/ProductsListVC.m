@@ -50,6 +50,7 @@
      BOOL    sortByPriceSelected;
      BOOL    isTdLayout;
      BOOL    sortBySailCountSelected;
+     BOOL    sortByTimeSelected;
      BOOL    sideBarShowing;           //侧滑栏显示标志
      CGFloat currentTranslate;         //当前偏移
      int     ContentOffset;            //侧滑栏偏移量
@@ -82,8 +83,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    sortByTimeSelected = YES;
     sortByPriceSelected = NO;
-    sortBySailCountSelected = YES;
+    sortBySailCountSelected = NO;
     isTdLayout = YES;
     currentTranslate = 0;
     sideBarShowing = NO;
@@ -132,7 +134,7 @@
                            self.params[@"moduleId"]==nil?[NSNull null]:self.params[@"moduleId"],@"moduleId",
                            self.params[@"developId"]==nil?[NSNull null]:self.params[@"developId"],@"developerId",
                            @"initSearch",@"requestType",
-                           @"2",@"sortType",
+                           @"6",@"sortType",
                            @"1",@"pageIndex",
                            PAGE_COUNT,@"pageCount",
                            @"1",@"needType",
@@ -209,50 +211,68 @@
                             FOOT_VIEW_HEIGHT);
     view.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:view];
-    CGFloat width = ([AppDelegate sharePhoneWidth]-40)/3;
+    CGFloat width = ([AppDelegate sharePhoneWidth]-40)/4;
+    
+    
+    //按时间排序
+    UIButton *timeFilterBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [timeFilterBtn setTitle:@"按时间排序" forState:UIControlStateNormal];
+    timeFilterBtn.frame = CGRectMake(0, 0, width - 1, 44);
+    //    [sailFilterBtn setImage:[UIImage imageNamed:@"icon_down_n"] forState:UIControlStateNormal];
+    [timeFilterBtn.titleLabel setFont:[UIFont systemFontOfSize:12.0f]];
+    [timeFilterBtn setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+    [timeFilterBtn addTarget:self action:@selector(timeByCount:) forControlEvents:UIControlEventTouchUpInside];
+    [view addSubview:timeFilterBtn];
+    
+    UIImageView *imageView8 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"sifeBar_line_s"]];
+    imageView8.frame = CGRectMake(width, 4, 1, 36);
+    [view addSubview:imageView8];
+    
+
     //按价格排序
     UIButton *priceFilterBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [priceFilterBtn setTitle:@"按价格排序" forState:UIControlStateNormal];
-    priceFilterBtn.frame = CGRectMake(0, 0, width - 1, 44);
+    priceFilterBtn.frame = CGRectMake(width, 0, width - 1, 44);
     [priceFilterBtn.titleLabel setFont:[UIFont systemFontOfSize:12.0f]];
     [priceFilterBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [priceFilterBtn addTarget:self action:@selector(sortByPrice:) forControlEvents:UIControlEventTouchUpInside];
     [view addSubview:priceFilterBtn];
     
     UIImageView *imageView1 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"sifeBar_line_s"]];
-    imageView1.frame = CGRectMake(width,4, 1,36);
+    imageView1.frame = CGRectMake(width*2,4, 1,36);
     [view addSubview:imageView1];
     
     //按销量排序
     UIButton *sailFilterBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [sailFilterBtn setTitle:@"按销量排序" forState:UIControlStateNormal];
-    sailFilterBtn.frame = CGRectMake(width, 0, width - 1, 44);
+    sailFilterBtn.frame = CGRectMake(width*2, 0, width - 1, 44);
 //    [sailFilterBtn setImage:[UIImage imageNamed:@"icon_down_n"] forState:UIControlStateNormal];
     [sailFilterBtn.titleLabel setFont:[UIFont systemFontOfSize:12.0f]];
-    [sailFilterBtn setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+    [sailFilterBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [sailFilterBtn addTarget:self action:@selector(sortBySailCount:) forControlEvents:UIControlEventTouchUpInside];
     [view addSubview:sailFilterBtn];
     
     UIImageView *imageView2 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"sifeBar_line_s"]];
-    imageView2.frame = CGRectMake(width*2, 4, 1, 36);
+    imageView2.frame = CGRectMake(width*3, 4, 1, 36);
     [view addSubview:imageView2];
     
     //按价格排序
     UIButton *typeFilterBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [typeFilterBtn setTitle:@"按分类排序" forState:UIControlStateNormal];
-    typeFilterBtn.frame = CGRectMake(width*2, 0, width, 44);
+    typeFilterBtn.frame = CGRectMake(width*3, 0, width, 44);
     [typeFilterBtn.titleLabel setFont:[UIFont systemFontOfSize:12.0f]];
     [typeFilterBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [typeFilterBtn addTarget:self action:@selector(sortByType:) forControlEvents:UIControlEventTouchUpInside];
     [view addSubview:typeFilterBtn];
-    self.btnList = [NSMutableArray arrayWithObjects:priceFilterBtn,sailFilterBtn,typeFilterBtn, nil];
+    self.btnList = [NSMutableArray arrayWithObjects:timeFilterBtn,priceFilterBtn,sailFilterBtn,typeFilterBtn, nil];
     
     UIImageView *imageView3 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"sifeBar_line_s"]];
-    imageView3.frame = CGRectMake(width*3,4, 1,36);
+    imageView3.frame = CGRectMake(width*4,4, 1,36);
     [view addSubview:imageView3];
     
+    
     UIButton *layoutTypebtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    layoutTypebtn.frame = CGRectMake(width*3+1,0,40,44);
+    layoutTypebtn.frame = CGRectMake(width*4+1,0,40,44);
     layoutTypebtn.adjustsImageWhenHighlighted = NO;
     [layoutTypebtn setImage:[UIImage imageNamed:@"icon_list_td"] forState:UIControlStateSelected];
     [layoutTypebtn setImage:[UIImage imageNamed:@"icon_list_tr"] forState:UIControlStateNormal];
@@ -871,21 +891,59 @@
 }
 
 
+- (void)timeByCount:(UIButton *)sender {
+    sortByTimeSelected = !sortByTimeSelected;
+    if (sortByTimeSelected)
+    {
+        sortByPriceSelected = NO;
+        sortBySailCountSelected = NO;
+        [self.webRequestDict setObject:@"6" forKey:@"sortType"];
+//        [sender setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+//        [self.btnList[1] setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+//        [self.btnList[2] setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    }
+    else
+    {
+        [self.webRequestDict setObject:@"5" forKey:@"sortType"];
+        [sender setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    }
+    
+    [sender setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+    [self.btnList[1] setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [self.btnList[2] setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+
+    
+    self.currentPage = 1;
+    [self.webRequestDict setObject:@"1" forKey:@"pageIndex"];
+    bussineDataService *bus = [bussineDataService sharedDataService];
+    bus.target = self;
+    [self.productsList removeAllObjects];
+    [self.productsTable reloadData];
+    [bus getProducts:self.webRequestDict];
+}
+
 - (void)sortByPrice:(UIButton *)sender
 {
     sortByPriceSelected = !sortByPriceSelected;
     if (sortByPriceSelected)
     {
         sortBySailCountSelected = NO;
+        sortByTimeSelected = NO;
         [self.webRequestDict setObject:@"3" forKey:@"sortType"];
-        [sender setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
-        [self.btnList[1] setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+//        [sender setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+//        [self.btnList[0] setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+//        [self.btnList[2] setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     }
     else
     {
         [self.webRequestDict setObject:@"4" forKey:@"sortType"];
         [sender setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     }
+    
+    [sender setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+    [self.btnList[0] setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [self.btnList[2] setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    
     self.currentPage = 1;
     [self.webRequestDict setObject:@"1" forKey:@"pageIndex"];
     bussineDataService *bus = [bussineDataService sharedDataService];
@@ -900,15 +958,22 @@
     if (sortBySailCountSelected)
     {
         sortByPriceSelected = NO;
+        sortByTimeSelected = NO;
         [self.webRequestDict setObject:@"2" forKey:@"sortType"];
-        [sender setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
-        [self.btnList[0] setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+//        [sender setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+//        [self.btnList[0] setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+//        [self.btnList[1] setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     }
     else
     {
         [self.webRequestDict setObject:@"1" forKey:@"sortType"];
         [sender setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     }
+    
+     [sender setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+    [self.btnList[0] setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [self.btnList[1] setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    
     self.currentPage = 1;
     [self.webRequestDict setObject:@"1" forKey:@"pageIndex"];
     bussineDataService *bus = [bussineDataService sharedDataService];
@@ -1013,6 +1078,23 @@
     bussineDataService *bus=[bussineDataService sharedDataService];
     bus.target = self;
     [bus getProducts:self.webRequestDict];
+}
+
+
+#pragma mark - UIScrollViewDelegate
+
+- (void) scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+//    sideBarShowing = NO;
+    NSLog(@"    huandong   stat  ");
+     [self moveAnimationWithDirection:SideBarShowDirectionNone duration:MoveAnimationDuration];
+    
+}
+
+- (void) scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+//    sideBarShowing = NO;
+    NSLog(@"    huandong    end ");
 }
 
 @end

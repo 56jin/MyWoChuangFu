@@ -15,16 +15,27 @@
 //#import "IDCardReader.h"
 //#import "SimCardReader.h"
 #import <CoreBluetooth/CoreBluetooth.h>
-#import "BlueToothDCAdapter.h"
+//#import "BlueToothDCAdapter.h"
+
+#import "3Des.h"
+#import <BLEIDCardReaderItem/BLEIDCardReaderItem.h>
+#import "GDataXMLNode.h"
+#import "ZSYPopListView.h"
 
 #define SCREEN_WIDTH ([UIScreen mainScreen].bounds.size.width)
 #define LABELEDITHEIGHT 50
 #define HUISE ([UIColor colorWithRed:125/255.0 green:125/255.0 blue:125/255.0 alpha:1])
 
-@interface RealnameVC ()<TitleBarDelegate,UITextFieldDelegate,UITextViewDelegate,HttpBackDelegate,CBCentralManagerDelegate> {
+@interface RealnameVC ()<TitleBarDelegate,ZSYPopListViewDelegate,UITextFieldDelegate,UITextViewDelegate,HttpBackDelegate,CBCentralManagerDelegate,BR_Callback> {
 //    SimCardReader *rwcard; //读身份证号
     CBCentralManager *manager;
-    BlueToothDCAdapter *adapter;
+//    BlueToothDCAdapter *adapter;
+    BleTool *bletool;//bleTool对象
+    BOOL isRead;
+    BOOL isReadAgin;
+    ZSYPopListView *zsy;
+    UILabel *BlootLabel;  // 显示当前连接的蓝牙设备名称
+    NSDictionary *blootDic;  //当前选择的蓝牙设备信息
 }
 
 @end
@@ -68,28 +79,111 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    bletool =[[BleTool alloc]init:self]; //bletool初始化
     
-    adapter = [[BlueToothDCAdapter alloc] init];
+//    adapter = [[BlueToothDCAdapter alloc] init];
     
 //    manager = [[CBCentralManager alloc] initWithDelegate:self queue:nil];
     [self layoutView];
     
-//    [self performSelector:@selector(afertBtn) withObject:nil afterDelay:0.5];
+    [self performSelector:@selector(afertBtn) withObject:nil afterDelay:0.5];
 
-    
+//    [self afertBtn];
     
     // Do any additional setup after loading the view.
 }
 
 - (void)afertBtn {
     
+    
+     [MBProgressHUD showHUDAddedTo:[AppDelegate shareMyApplication].window animated:YES];
+    //搜索蓝牙设备
+    NSMutableArray *devarry= [bletool ScanDeiceList:2.0f];
+    if (devarry && devarry != nil && devarry.count > 0) {
+        NSLog(@"设备信息 %@",devarry);
+        [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
+        
+//        for (NSDictionary *dic in devarry) {
+//            if ([dic [@"name"] isEqualToString:@"KT8000_30461F"] ) {
+//                [bletool connectBt:[dic valueForKey:@"uuid"]];
+//                isRead = YES;
+//                
+//                if (isReadAgin == YES) {
+//                    [self getIdCradBtnEvent];
+//                }
+//
+//                
+//                break;
+//            }
+//        }
+        
+        zsy = [[ZSYPopListView alloc]initWitZSYPopFrame:CGRectMake(0, 0, 200, devarry.count  * 55 + 50) WithNSArray:devarry WithString:@"选择蓝牙读卡器类型"];
+        zsy.isTitle = NO;
+        zsy.delegate = self;
+        
+        
+    }else {
+        
+        [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
+        
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"您附近没有找到蓝牙读卡器" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"重新搜索", nil];
+        alert.tag = 10108;
+        [alert show];
+        [alert release];
+
+    }
+    
 //    rwcard=[[SimCardReader alloc]init];
 //    
 //    [rwcard setReaderDelegate:self];
     
-    adapter = [[BlueToothDCAdapter alloc] init];
+//    adapter = [[BlueToothDCAdapter alloc] init];
 }
 
+#pragma  mark -bletool 's delegate
+-(void)BR_connectResult:(BOOL)isconnected{
+    
+    [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
+    if(isconnected){  //链接成功
+        NSLog(@"\n\n  读取代理1");
+        [self ShowProgressHUDwithMessage:@"链接蓝牙读卡器成功"];
+        [BlootLabel setText:[NSString stringWithFormat:@"您当前连接蓝牙设备: %@",blootDic[@"name"] ]];
+
+    }
+    else{
+        //链接失败
+        NSLog(@"\n\n  读取代理2");
+        [self ShowProgressHUDwithMessage:@"链接蓝牙读卡器失败"];
+        
+    }
+    
+    
+}
+
+
+//选择哪个店铺类型
+- (void)sureDoneWith:(NSDictionary *)resion{
+    
+  [MBProgressHUD showHUDAddedTo:[AppDelegate shareMyApplication].window animated:YES];
+    if (zsy) {
+        [zsy dissViewClose];
+        zsy = nil;
+        zsy.delegate = nil;
+    }
+
+    blootDic = resion ;
+    [bletool connectBt:[resion valueForKey:@"uuid"]];
+    isRead = YES;
+    
+    if (isReadAgin == YES) {
+//        [self getIdCradBtnEvent];
+          [self performSelector:@selector(getIdCradBtnEvent) withObject:nil afterDelay:0.5];
+    }
+
+   
+    
+    
+}
 
 -(void)layoutView{
 //    self.view.backgroundColor = [UIColor whiteColor];
@@ -114,13 +208,19 @@
     [self.view addSubview:mainView];
     
    
-
+    BlootLabel = [[UILabel alloc]init];
+    [BlootLabel setBackgroundColor:[UIColor clearColor]];
+    [BlootLabel setFont:[UIFont systemFontOfSize:13.0f]];
+    [BlootLabel setTextColor:[self colorWithHexString:@"#b6b6b6"]];
+    [BlootLabel setFrame:CGRectMake(10, 10, MainWidth - 20, 20)];
+    [BlootLabel setText:@"您当前暂无连接蓝牙设备，请打开蓝牙"];
+    [mainView addSubview:BlootLabel];
     
     
     
     CGPoint ponit = CGPointMake(self.view.frame.size.width/2, 0);
     UIView *line1 = [[UIView alloc]initWithFrame:CGRectMake(10, 0, self.view.frame.size.width-10, 40)];
-    ponit.y = 30;
+    ponit.y = 60;
     [line1.layer setCornerRadius:5.0];
     [line1.layer setBorderWidth:2];
     [line1.layer setMasksToBounds:YES];
@@ -249,7 +349,6 @@
     
   
     photoImageView = [[UIImageView alloc]initWithFrame:CGRectMake(10, line4.frame.origin.y+line4.frame.size.height+20, 100, 100)];
-    photoImageView.tag = 201506;
     photoImageView.backgroundColor = [UIColor darkGrayColor];
     [photoImageView setImage:[UIImage imageNamed:@"imageBackground.png"]];
     [photoImageView.layer setMasksToBounds:YES];
@@ -318,8 +417,10 @@
 - (void)dealloc {
     [super dealloc];
 //    [rwcard release];
-    [adapter release];
+//    [adapter release];
 //    [manager release];
+    blootDic = nil;
+    [bletool release];
     [fanNumTextFiled release];
     [getIdCradBtn release];
     [nameLabel release];
@@ -329,11 +430,22 @@
     [photoImageView release];
     [remarkTextFild release];
     [realBtn release];
+    [BlootLabel release];
     
 }
 
+
+
+
 - (void)getIdCradBtnEvent {
     [self.view endEditing:YES];
+    
+    isReadAgin = NO;
+    if (!isRead) {
+        isReadAgin = YES;
+        [self afertBtn]; // 先连接设备
+        return;
+    }
     
     [MBProgressHUD showHUDAddedTo:[AppDelegate shareMyApplication].window animated:YES];
     
@@ -365,48 +477,216 @@
 //    [idCardReader release];
     
     
-    [adapter readIdCard:^(IdCardInformation *info, NSError *error){
-        
-         [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
-        
-        NSLog(@"\n\n 读取身份证信息 %@   ----   %@   ---- 图片   %@  \n\n",info.description,error.domain,info.picBuffer);
-        
-        
-        if (error != nil)
-        {
-            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
-            hud.mode = MBProgressHUDModeText;
-            hud.labelText = @"读取身份证信息失败";
-            hud.dimBackground = NO;
-            hud.removeFromSuperViewOnHide = YES;
-            [hud hide:YES afterDelay:2];
-
-        }
-        else
-        {
-            
-            UIImage *image = [UIImage imageWithData:info.picBuffer];
-           
-            nameLabel.text = info.name;
-            idCardAddress.text = info.address;
-            idCardLabel.text = info.ident;
+//    [adapter readIdCard:^(IdCardInformation *info, NSError *error){
+//        
+//         [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
+//        
+//        NSLog(@"\n\n 读取身份证信息 %@   ----   %@  \n\n",info.description,error.domain);
+//        
+//        
+//        if (error != nil)
+//        {
+//            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+//            hud.mode = MBProgressHUDModeText;
+//            hud.labelText = @"读取身份证信息失败";
+//            hud.dimBackground = NO;
+//            hud.removeFromSuperViewOnHide = YES;
+//            [hud hide:YES afterDelay:2];
+//
+//        }
+//        else
+//        {
+//            UIImage *img=[UIImage imageWithData:info.picBuffer];
+//            nameLabel.text = info.name;
+//            idCardAddress.text = info.address;
+//            idCardLabel.text = info.ident;
 //            photoImageView.image = nil;
-            
-            if (image) {
-                [photoImageView setImage:nil];
-                UIImageView *imageView = (UIImageView *)[self.view viewWithTag:201506];
-                [imageView setImage:image];
-            }
-            
-            
-        }
-        
-        
-    }];
+//            photoImageView.image = img;
+//        }
+//        
+//        
+//    }];
 
    
+    
+//    NSDictionary *result=[bletool readIDCardS];//读出来的加密数据 其中baseInfo是加密后的数据，需要用设备对应的key解密。
+//    
+//    NSData *baseinfo=[result objectForKey:@"baseInfo"];
+//    //    NSString *keyStr=@"1234567812345678";
+//    //    NSData* keydata = [keyStr dataUsingEncoding:NSUTF8StringEncoding];
+//    
+//    NSLog(@"读取到的数据 ：%@",result);
+//    Byte keybt[24]={0x68,0x99,0x3c,0x53,0x55,0xd5,0xe3,0x80,0x71,0x27,0xfa,0x61,0x99,0xbd,0xd3,0xd0,0x68,0x99,0x3c,0x53,0x55,0xd5,0xe3,0x80};//测试用key,每台设备有自己的key，从数据库读取到key后转成nsdata传给Decdata:(NSData*) byKey:(NSData*)方法
+//    //    Byte keybt[24]={0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55};
+//    
+//    NSString *resultstr=  [self Decdata:baseinfo byKey:[NSData dataWithBytes:keybt length:24]];
+    
+    NSDictionary *result=[bletool readIDCardS];//读出来的加密数据 其中baseInfo是加密后的数据，需要用设备对应的key解密。
+    
+    
+    //处理xml字符串，因为返回的xml字符没有根节点，所以此处加上一个根节点，便于GDataXmlNode取xml值
+    NSString *resultstr = [result valueForKey:@"baseInfo"];
+    NSLog(@"获取身份证信息：---- %@",resultstr);
+    
+    [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
+    
+    if(resultstr == nil || [resultstr isEqualToString:@""]){
+        
+//        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+//        hud.mode = MBProgressHUDModeText;
+//        hud.labelText = @"读取身份证信息失败";
+//        hud.dimBackground = NO;
+//        hud.removeFromSuperViewOnHide = YES;
+//        [hud hide:YES afterDelay:2];
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"读取身份证信息失败" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"重新读取", nil];
+        alert.tag = 101010;
+        [alert show];
+        [alert release];
+
+        
+        return;
+
+    }else{
+        
+        
+//        NSArray *strArray = [resultstr componentsSeparatedByString:@"\n"];
+//    
+//        for (NSString *str in strArray) {
+//            if([str rangeOfString:@"name"].location !=NSNotFound)//
+//            {
+//                str = [str stringByReplacingOccurrencesOfString:@"<name>" withString:@""];
+//                 str = [str stringByReplacingOccurrencesOfString:@"</name>" withString:@""];
+//                 nameLabel.text = str;
+//            }
+//            else if([str rangeOfString:@"idNum"].location !=NSNotFound)//
+//            {
+//                str = [str stringByReplacingOccurrencesOfString:@"<idNum>" withString:@""];
+//                str = [str stringByReplacingOccurrencesOfString:@"</idNum>" withString:@""];
+//                idCardLabel.text = str;
+//            }
+//            else if([str rangeOfString:@"address"].location !=NSNotFound)//
+//            {
+//                str = [str stringByReplacingOccurrencesOfString:@"<address>" withString:@""];
+//                str = [str stringByReplacingOccurrencesOfString:@"</address>" withString:@""];
+//                idCardAddress.text = str;
+//
+//            }
+//
+//            else
+//            {
+//                NSLog(@"no found");
+//            }
+        
+        
+        //        GDataXMLNode 使用方法如下 ，需要在项目中引入GDataXMLNode.h   并且在项目的build setting中的Header Search Paths中添加搜索路径： /usr/include/libxml2
+        GDataXMLDocument *xmlroot=[[GDataXMLDocument alloc] initWithXMLString:resultstr options:0 error:nil];
+        GDataXMLElement *xmlelement= [xmlroot rootElement];
+        NSArray *xmlarray= [xmlelement children];
+        NSMutableDictionary *xmldictionary=[NSMutableDictionary dictionary];
+        for(GDataXMLElement *childElement in xmlarray){
+            NSString *childName= [childElement name];
+            NSString *childValue= [childElement stringValue];
+            [xmldictionary setValue:childValue forKey:childName];
+        }
+        
+        [xmldictionary valueForKey:@""];
+//        NSString *sexCode= [self SexJudge:[xmldictionary valueForKey:@"sexCode"]];  //性别
+//        NSString *nationCode=[self NationJugde:[xmldictionary valueForKey:@"nationCode"]];  // 民族
+        nameLabel.text = [xmldictionary valueForKey:@"name"];
+        idCardLabel.text = [xmldictionary valueForKey:@"idNum"];
+        idCardAddress.text = [xmldictionary valueForKey:@"address"];
+    
+    }
+    
+    
+    
+    
+    //    相片解码 start
+    NSData *_decodedImageData=[result objectForKey:@"picBitmap"];
+    if(_decodedImageData!=nil){
+        NSDictionary *imgdecodeDict=[bletool DecodePicFunc:_decodedImageData];
+        NSString *errcode= [imgdecodeDict objectForKey:@"errCode"];
+        
+        if([errcode isEqualToString:@"-1"]){
+            
+            [self ShowProgressHUDwithMessage:@"解码图片失败"];
+            return;
+
+            
+        }else if([errcode isEqualToString:@"0"]){
+            NSData *imgdecodeData=[imgdecodeDict objectForKey:@"DecPicData"];
+            
+            UIImage *image = [UIImage imageWithData:imgdecodeData];
+            
+            
+            CGSize origImageSize= [image size];
+            CGRect newRect;
+            newRect.origin= CGPointZero;
+            //拉伸到多大
+            newRect.size.width= photoImageView.frame.size.width *2;
+            newRect.size.height= photoImageView.frame.size.height*2;
+            //缩放倍数
+            float ratio = MIN(newRect.size.width/origImageSize.width, newRect.size.height/origImageSize.height);
+            UIGraphicsBeginImageContext(newRect.size);
+            CGRect projectRect;
+            projectRect.size.width =ratio * origImageSize.width;
+            projectRect.size.height=ratio * origImageSize.height;
+            projectRect.origin.x= (newRect.size.width -projectRect.size.width)/2.0;
+            projectRect.origin.y= (newRect.size.height-projectRect.size.height)/2.0;
+            [image drawInRect:projectRect];
+            UIImage *small = UIGraphicsGetImageFromCurrentImageContext();
+            //压缩比例
+            NSData *smallData=UIImageJPEGRepresentation(small, 1);
+            UIGraphicsEndImageContext();
+
+            if (smallData) {
+                 photoImageView.image  = [UIImage imageWithData:smallData];
+            }
+            
+           
+            
+        }
+        
+    }else{
+        
+//        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+//        hud.mode = MBProgressHUDModeText;
+//        hud.labelText = @"解码图片失败";
+//        hud.dimBackground = NO;
+//        hud.removeFromSuperViewOnHide = YES;
+//        [hud hide:YES afterDelay:2];
+        [self ShowProgressHUDwithMessage:@"解码图片失败"];
+        
+        return;
+
+    }
+    //    相片解码 end
 
 }
+
+#pragma mark -toolFunc
+//加密读卡中把返回的nsdata类型的加密数据解密成xml格式文本
+-(NSString*)Decdata:(NSData*)encedData byKey:(NSData*)key{
+    //    NSLog(@"开始解密xml");
+    //    NSLog(@"收到数据：%@",recvdata);
+    Byte baseDict[encedData.length];
+    bzero(baseDict, encedData.length);
+    Des3_Decrypt((unsigned char*)[encedData bytes], baseDict, encedData.length, (unsigned char*)[key bytes]);
+    NSData* baseinfo=[NSData dataWithBytes:baseDict length:encedData.length];
+    NSString *resultstr=[[NSString alloc]initWithData:baseinfo encoding:NSUTF8StringEncoding];
+//    NSMutableDictionary * dicData = [NSJSONSerialization JSONObjectWithData:baseinfo options:1 error:NULL];
+//    
+//    NSError *error = nil;
+//    NSDictionary *dict = [XMLReader dictionaryForXMLString:resultstr
+//                                                   options:XMLReaderOptionsProcessNamespaces
+//                                                     error:&error];
+    
+
+    
+    
+    return  resultstr;
+}
+
 
 - (void)sureFangDangEven {
     [self.view endEditing:YES];
@@ -638,7 +918,24 @@
         }
     }
     
+    if(alertView.tag==10108)
+    {
+        if([buttonTitle isEqualToString:@"重新搜索"]){
+//            [self afertBtn];
+            [self performSelector:@selector(afertBtn) withObject:nil afterDelay:0.5];
+        }
+    }
     
+    if(alertView.tag==101010)
+    {
+        if([buttonTitle isEqualToString:@"重新读取"]){
+            
+            [self performSelector:@selector(getIdCradBtnEvent) withObject:nil afterDelay:1];
+//            [self getIdCradBtnEvent];
+        }
+    }
+
+
     
 }
 
@@ -719,6 +1016,12 @@
 
 
 -(void)backAction{
+    
+    if (isRead) {
+        //断开连接
+        [bletool disconnectBt];
+
+    }
     [self.navigationController popViewControllerAnimated:YES];
 }
 @end

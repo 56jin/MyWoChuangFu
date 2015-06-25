@@ -21,6 +21,7 @@
 #import "LoginSuccessView.h"
 #import "ShowWebVC.h"
 #import "AppDelegate.h"
+#import "SettingVC.h"
 
 
 @interface MyWocfVC ()<TitleBarDelegate,SideBarDelegate,LoginViewDelegate,HttpBackDelegate>
@@ -63,10 +64,11 @@
     [self.view addSubview:mainView];
     
     //导航栏
-    titleBar = [[TitleBar alloc] initWithFramShowHome:NO ShowSearch:NO TitlePos:middle_position];
+    titleBar = [[TitleBar alloc] initWithFramShowHome:YES ShowSearch:NO TitlePos:middle_position];
     titleBar.target = self;
     [titleBar setLeftWithImage:@"btn_navbar_n" HighLightImage:@"btn_navbar_p"];
     [titleBar setLeftIsHiden:YES];
+    [titleBar setRightImage:@"icon_navbar_set"];
     if (IOS7)
         titleBar.frame = CGRectMake(0, 20, PHONE_WIDTH, 44);
     [mainView addSubview:titleBar];
@@ -197,6 +199,15 @@
    
     [self logoutUser];
     
+}
+
+-(void)homeAction {
+    
+    //    MySettingViewController *setVC = [[MySettingViewController alloc]init];
+    SettingVC *setVC = [[SettingVC alloc]init];
+    setVC.isYesOrNo = @"YES";
+    setVC.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:setVC animated:YES];
 }
 
 - (void)logoutUser {

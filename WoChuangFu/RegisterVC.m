@@ -172,8 +172,10 @@
     
     UITextField *developer = [[UITextField alloc] initWithFrame:CGRectMake(90,10,240,30)];
     developer.delegate = self;
-    developer.placeholder = @"请输入推荐人姓名/编号(选填)";
+    developer.placeholder = @"请输入推荐人沃创富账号(选填)";
+    developer.adjustsFontSizeToFitWidth = YES;
     developer.tag = DEVELOPER_TAG;
+    developer.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
     developer.returnKeyType = UIReturnKeyDone;
     [developerBgView addSubview:developer];
     

@@ -94,9 +94,9 @@
 +(NSString*)hexStringDes:(NSString*)str withEncrypt:(BOOL)bEncrypt{
     NSString* returnStr = nil;
     if (bEncrypt) {
-        return [DesToHexString encrypt:[str stringByReplacingOccurrencesOfString:@"\n" withString:@""] withKey:des_key usePadding:YES];
+        return [DesToHexString encrypt:[str stringByReplacingOccurrencesOfString:@"\n" withString:@""] withKey:Mydes_key usePadding:YES];
     }else {
-        return [DesToHexString decrypt:[str stringByReplacingOccurrencesOfString:@"\n" withString:@""] withKey:des_key];
+        return [DesToHexString decrypt:[str stringByReplacingOccurrencesOfString:@"\n" withString:@""] withKey:Mydes_key];
     }
     
     return  returnStr;

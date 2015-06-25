@@ -57,7 +57,7 @@
         _dataSource = [NSMutableArray arrayWithObjects:@"消息中心",@"系统更新", @"清除缓存",@"加入机构",nil];//@"加入机构",
     }
     else {
-        _dataSource = [NSMutableArray arrayWithObjects:@"实名返档",@"沃校园办理",@"派单开户",nil];
+        _dataSource = [NSMutableArray arrayWithObjects:@"实名返档",@"沃校园办理",@"派单开户",nil]; //@"沃校园办理",@"派单开户",
     }
 //    else {
 //        UIButton *rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -371,6 +371,10 @@
     
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"sessionid"];
     [[NSUserDefaults standardUserDefaults] synchronize];
+    if (self.tabBarController.selectedIndex == 2) {
+        [self.navigationController popViewControllerAnimated:YES];
+        return;
+    }
      [self.tabBarController setSelectedIndex:2];
     
         
