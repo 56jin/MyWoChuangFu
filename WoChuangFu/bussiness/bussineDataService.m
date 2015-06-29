@@ -130,7 +130,14 @@ static bussineDataService *sharedBussineDataServicee = nil;
         MyLog(@"请求的地址：%@",self.httpCnctor.serviceUrl);
         [self.httpCnctor sendMessage:msg synchronously:NO SessionId:sessionId];
     }else{
-        [MBProgressHUD showHUDAddedTo:[AppDelegate shareMyApplication].window animated:YES];
+//        [MBProgressHUD showHUDAddedTo:[AppDelegate shareMyApplication].window animated:YES];
+        
+        if (![[msg getBusinessCode] isEqualToString:COMMIT_OPEN_USER_BIZCODE] &&
+            ![[msg getBusinessCode] isEqualToString:SUECC_OPEN_USER_BIZCODE]) {
+            [MBProgressHUD showHUDAddedTo:[AppDelegate shareMyApplication].window animated:YES];
+        }
+        
+        
 #ifdef STATIC_XML
         NSString* xmlFile = [[NSString alloc] initWithString:[[NSBundle mainBundle]
                                                               pathForResource:[msg getBusinessCode]
@@ -1167,8 +1174,6 @@ static bussineDataService *sharedBussineDataServicee = nil;
                              funName:@"realFangDang:"
                        synchronously:NO];
     }
-
-    
 }
 
 -(void)realFangDangFinished:(id<MessageDelegate>)msg
@@ -1182,6 +1187,217 @@ static bussineDataService *sharedBussineDataServicee = nil;
     [self noticeUI:rspDic];
 }
 
+#pragma mark 沃校园办理确认下单
+-(void)schoolOrderComfirm:(NSDictionary *)paramters{
+    
+    if ([[UIDevice currentDevice] networkAvailable]) {
+        [self readySharedSendMessage:@"XXXXXXXX"
+                               param:paramters
+                             funName:@"xxxxxxx:"
+                       synchronously:NO];
+    }
+    
+}
+
+#pragma mark 号码验证
+-(void)identifyManeger:(NSDictionary *)paramters{
+    if ([[UIDevice currentDevice] networkAvailable]) {
+        [self readySharedSendMessage:@"IndentifyMessage"
+                               param:paramters
+                             funName:@"identifyManeger:"
+                       synchronously:NO];
+    }
+}
+
+#pragma mark 号码判断是否为联通号码Finished
+-(void)identifyManegerFinished:(id<MessageDelegate>)msg{
+    IndentifyMessage *Msg = msg;
+    NSDictionary *rspDic = [self handleRspInfo:Msg];
+    NSString* rspCode = [Msg getRspcode];
+    if([rspCode isEqualToString:@"0000"]){
+        self.rspInfo = Msg.rspInfo;
+    }
+    [self noticeUI:rspDic];
+}
+
+#pragma mark 获取手机验证码
+-(void)getIndentifyCode:(NSDictionary *)paramters{
+    if ([[UIDevice currentDevice] networkAvailable]) {
+        [self readySharedSendMessage:@"GetIndentifyCodeMessage"
+                               param:paramters
+                             funName:@"getIndentifyCode:"
+                       synchronously:NO];
+    }
+}
+
+#pragma mark 获取验证码Finished
+-(void)getIndentifyCodeFinished:(id<MessageDelegate>)msg{
+    GetIndentifyCodeMessage *Msg = msg;
+    NSDictionary *rspDic = [self handleRspInfo:Msg];
+    NSString* rspCode = [Msg getRspcode];
+    if([rspCode isEqualToString:@"0000"]){
+        self.rspInfo = Msg.rspInfo;
+    }
+    [self noticeUI:rspDic];
+}
+
+#pragma mark 校验手机验证码
+-(void)comfirmIndentifyCode:(NSDictionary *)paramters{
+    if ([[UIDevice currentDevice] networkAvailable]) {
+        [self readySharedSendMessage:@"ComfirmIndentifyMessage"
+                               param:paramters
+                             funName:@"comfirmIndentify:"
+                       synchronously:NO];
+    }
+}
+#pragma mark 校验手机验证码Finished
+-(void)comfirmIndentifyFinished:(id<MessageDelegate>)msg{
+    ComfirmIndentifyMessage *Msg = msg;
+    NSDictionary *rspDic = [self handleRspInfo:Msg];
+    NSString* rspCode = [Msg getRspcode];
+    if([rspCode isEqualToString:@"0000"]){
+        self.rspInfo = Msg.rspInfo;
+    }
+    [self noticeUI:rspDic];
+}
+
+
+#pragma mark 校验身份证与手机号是否一致
+-(void)sureSFZandIphoneNum:(NSDictionary *)paramters {
+    if ([[UIDevice currentDevice] networkAvailable]) {
+        [self readySharedSendMessage:@"OpenNetworkUserMessage"
+                               param:paramters
+                             funName:@"OpenNetworkUser:"
+                       synchronously:NO];
+    }
+
+}
+#pragma mark 校验身份证与手机号是否一致Finished
+-(void)OpenNetworkUserFinished:(id<MessageDelegate>)msg{
+    OpenNetworkUserMessage *Msg = msg;
+    NSDictionary *rspDic = [self handleRspInfo:Msg];
+    NSString* rspCode = [Msg getRspcode];
+    if([rspCode isEqualToString:@"0000"]){
+        self.rspInfo = Msg.rspInfo;
+    }
+    [self noticeUI:rspDic];
+}
+
+#pragma mark cf0046获取融合宽带信息
+-(void)getRHKDInfo:(NSDictionary *)paramters {
+    if ([[UIDevice currentDevice] networkAvailable]) {
+        [self readySharedSendMessage:@"GetRHKDcodeMessage"
+                               param:paramters
+                             funName:@"getRHKDcode:"
+                       synchronously:NO];
+    }
+
+}
+
+#pragma mark cf0046获取融合宽带信息Finished
+-(void)getRHKDcodeFinished:(id<MessageDelegate>)msg{
+    GetRHKDcodeMessage *Msg = msg;
+    NSDictionary *rspDic = [self handleRspInfo:Msg];
+    NSString* rspCode = [Msg getRspcode];
+    if([rspCode isEqualToString:@"0000"]){
+        self.rspInfo = Msg.rspInfo;
+    }
+    [self noticeUI:rspDic];
+}
+
+#pragma mark
+#pragma mark - 派单开户订单搜索
+- (void)searchAccountOrder:(NSDictionary *)paramters
+{
+    if ([[UIDevice currentDevice] networkAvailable]) {
+        [self readySharedSendMessage:@"SearchOpenAccountOrderMessage"
+                               param:paramters
+                             funName:@"searchAccountOrder:"
+                       synchronously:NO];
+    }
+}
+
+-(void)searchAccountOrderFinished:(id<MessageDelegate>)msg
+{
+    SearchOpenAccountOrderMessage *Msg = msg;
+    NSDictionary *rspDic = [self handleRspInfo:Msg];
+    NSString* rspCode = [Msg getRspcode];
+    if([rspCode isEqualToString:@"0000"]){
+        self.rspInfo = Msg.rspInfo;
+    }
+    [self noticeUI:rspDic];
+}
+
+
+#pragma mark
+#pragma mark - 开户
+- (void)commitOpenUser:(NSDictionary *)paramters
+{
+    if ([[UIDevice currentDevice] networkAvailable]) {
+        [self readySharedSendMessage:@"CommitOpenUserMessage"
+                               param:paramters
+                             funName:@"commitOpenUser:"
+                       synchronously:NO];
+    }
+}
+
+-(void)commitOpenUserFinished:(id<MessageDelegate>)msg
+{
+    CommitOpenUserMessage *Msg = msg;
+    NSDictionary *rspDic = [self handleRspInfo:Msg];
+    NSString* rspCode = [Msg getRspcode];
+    if([rspCode isEqualToString:@"0000"]){
+        self.rspInfo = Msg.rspInfo;
+    }
+    [self noticeUI:rspDic];
+}
+
+
+#pragma mark
+#pragma mark - 开户成功提交信息
+- (void)suessCommitOpenUser:(NSDictionary *)paramters
+{
+    if ([[UIDevice currentDevice] networkAvailable]) {
+        [self readySharedSendMessage:@"SueccOpenUserMessage"
+                               param:paramters
+                             funName:@"suessCommitOpenUser:"
+                       synchronously:NO];
+    }
+}
+
+-(void)suessCommitOpenUserFinished:(id<MessageDelegate>)msg
+{
+    SueccOpenUserMessage *Msg = msg;
+    NSDictionary *rspDic = [self handleRspInfo:Msg];
+    NSString* rspCode = [Msg getRspcode];
+    if([rspCode isEqualToString:@"0000"]){
+        self.rspInfo = Msg.rspInfo;
+    }
+    [self noticeUI:rspDic];
+}
+
+#pragma mark
+#pragma mark - 查看开户流程处理过程
+- (void)checkFlow:(NSDictionary *)paramters
+{
+    if ([[UIDevice currentDevice] networkAvailable]) {
+        [self readySharedSendMessage:@"CheckFLowMessage"
+                               param:paramters
+                             funName:@"checkFlow:"
+                       synchronously:NO];
+    }
+}
+
+-(void)checkFlowFinished:(id<MessageDelegate>)msg
+{
+    CheckFLowMessage *Msg = msg;
+    NSDictionary *rspDic = [self handleRspInfo:Msg];
+    NSString* rspCode = [Msg getRspcode];
+    if([rspCode isEqualToString:@"0000"]){
+        self.rspInfo = Msg.rspInfo;
+    }
+    [self noticeUI:rspDic];
+}
 
 
 #pragma mark -
@@ -1191,7 +1407,11 @@ static bussineDataService *sharedBussineDataServicee = nil;
     if([msg isHouTai]){
         MyLog(@"后台");
     }else{
-        [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
+//        [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
+        if (![[msg getBusinessCode] isEqualToString:COMMIT_OPEN_USER_BIZCODE] &&
+            ![[msg getBusinessCode] isEqualToString:SUECC_OPEN_USER_BIZCODE]) {
+            [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
+        }
         MyLog(@"不是后台");
     }
     
@@ -1262,7 +1482,23 @@ static bussineDataService *sharedBussineDataServicee = nil;
         [self realNameYesOrNoFinished:msg];
     }else if([[msg getBusinessCode] isEqualToString:RealFangDangMessage_BIZCODE]) {
         [self realFangDangFinished:msg];
+    }else if([[msg getBusinessCode] isEqualToString:GetIndentifyCodeMessage_BIZCODE]) {
+        [self getIndentifyCodeFinished:msg];
+    }else if([[msg getBusinessCode] isEqualToString:OpenNetworkUserMessage_BIZCODE]) {
+        [self OpenNetworkUserFinished:msg];
     }
+    else if([[msg getBusinessCode] isEqualToString:GetRHKDcodeMessage_BIZCODE]) {
+        [self getRHKDcodeFinished:msg];
+    }else if([[msg getBusinessCode] isEqualToString:SEARCH_OPENACCOUNT_ORDER_BIZCODE]){
+        [self searchAccountOrderFinished:msg];
+    }else if ([[msg getBusinessCode] isEqualToString:COMMIT_OPEN_USER_BIZCODE]){
+        [self commitOpenUserFinished:msg];
+    }else if([[msg getBusinessCode] isEqualToString:SUECC_OPEN_USER_BIZCODE]){
+        [self suessCommitOpenUserFinished:msg];
+    }else if([[msg getBusinessCode] isEqualToString:CHECK_FLOW_BIZCODE]){
+        [self checkFlowFinished:msg];
+    }
+    
 
 
 

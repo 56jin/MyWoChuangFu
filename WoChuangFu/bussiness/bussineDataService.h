@@ -186,6 +186,34 @@
 - (void)isRootPush:(NSDictionary *)paramters;
 #pragma mark - 实名返档
 - (void)sureGuiDang:(NSDictionary *)paramters;
+#pragma mark - 沃校园管理确认下单
+- (void)schoolOrderComfirm:(NSDictionary *)paramters;
+#pragma mark 号码判断是否为联通号码
+-(void)identifyManeger:(NSDictionary *)paramters;
+#pragma mark 获取手机验证码
+-(void)getIndentifyCode:(NSDictionary *)paramters;
+#pragma mark 校验手机验证码
+-(void)comfirmIndentifyCode:(NSDictionary *)paramters;
+#pragma mark 校验身份证与手机号是否一致
+-(void)sureSFZandIphoneNum:(NSDictionary *)paramters;
+#pragma mark cf0046获取融合宽带信息
+-(void)getRHKDInfo:(NSDictionary *)paramters;
 
+
+#pragma mark
+#pragma mark - 搜索派单开户订单
+- (void)searchAccountOrder:(NSDictionary *)paramters;
+
+#pragma mark
+#pragma mark - 开户
+- (void)commitOpenUser:(NSDictionary *)paramters;
+
+#pragma mark
+#pragma mark - 开户成功提交信息
+- (void)suessCommitOpenUser:(NSDictionary *)paramters;
+
+#pragma mark
+#pragma mark - 查看开户流程处理过程
+- (void)checkFlow:(NSDictionary *)paramters;
 
 @end

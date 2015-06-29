@@ -9,6 +9,11 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>WoChuangFu_AppStore.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
@@ -18,6 +23,11 @@
 			<true/>
 		</dict>
 		<key>39499F4B196E2E9C0043B5FC</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>85DC4C4F1B3E774E009B2177</key>
 		<dict>
 			<key>primary</key>
 			<true/>

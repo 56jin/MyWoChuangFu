@@ -64,6 +64,11 @@
     if (self.isLogin) {
         return;
     }
+    if (self.isShow) {
+        [self.navigationController popViewControllerAnimated:YES];
+        return;
+    }
+
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
 

@@ -71,7 +71,7 @@
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
     if ([[NSUserDefaults standardUserDefaults]objectForKey:@"sessionid"]!=nil) {
-        [[NSUserDefaults standardUserDefaults]objectForKey:@"sessionid"] ==[NSNull null];
+        [[NSUserDefaults standardUserDefaults]objectForKey:@"sessionid"] == [NSNull null];
     }
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -79,6 +79,14 @@
     isLogin = NO;  //每次启动默认不登录
     
 //   [self initTabBar];
+    
+#ifdef WoCFu
+    NSLog(@"\n\n\n企业下载\n\n\n");
+    
+#elif WoCFu_AppStore
+    NSLog(@"\n\n\nAppStore下载\n\n\n");
+
+#endif
     
     NSString *isFirst = [[NSUserDefaults standardUserDefaults] objectForKey:@"isFirst"];
     if (isFirst == nil) {

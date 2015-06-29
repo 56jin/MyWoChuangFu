@@ -15,7 +15,7 @@
 #import "WoSchoolViewController.h"
 #import "RealnameVC.h"
 //#import "MySettingViewController.h"
-
+#import "SendOrderVC.h"
 
 
 @interface SettingVC ()<UITableViewDataSource,UITableViewDelegate,TitleBarDelegate,HttpBackDelegate>
@@ -213,10 +213,20 @@
         [self isRootGuidang];
         
     }
-    else if ([_dataSource[indexPath.row] isEqualToString:@"现场开户"])
+    else if ([_dataSource[indexPath.row] isEqualToString:@"派单开户"])
     {
         
-        [self isRootGuidang];
+//        [self isRootGuidang];
+        bussineDataService *buss=[bussineDataService sharedDataService];
+        buss.target=self;
+        NSString *session = [[NSUserDefaults standardUserDefaults] objectForKey:@"sessionid"];
+        
+        NSDictionary *SendDic = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                 session,@"sessionId",
+                                 @"openAccount",@"menuName",
+                                 nil];
+        [buss isRootPush:SendDic];
+
         
     }
 
@@ -312,15 +322,28 @@
             if ( [TabStr isEqualToString:@"沃校园办理"]) {
                WoSchoolViewController * WoSchoolView = [[WoSchoolViewController alloc]init];
                 WoSchoolView.hidesBottomBarWhenPushed = YES;
+                NSString *isChangGui = [NSString stringWithFormat:@"%@",bus.rspInfo[@"marketingMethods"]];
+                [WoSchoolView setIsCG:isChangGui];
+                
+
+
                 [self.navigationController pushViewController:WoSchoolView animated:YES];
             }
             else if( [TabStr isEqualToString:@"实名返档"]) {
-//               RealNameCarViewController *realName = [[RealNameCarViewController alloc]initWithNibName:@"RealNameCarViewController" bundle:nil];
+
                 RealnameVC *realName = [[RealnameVC alloc]init];
                 realName.hidesBottomBarWhenPushed = YES;
                 [self.navigationController pushViewController:realName animated:YES];
                 
             }
+            else if( [TabStr isEqualToString:@"派单开户"]) {
+                
+                SendOrderVC *sendOrderVC = [[SendOrderVC alloc] init];
+                sendOrderVC.hidesBottomBarWhenPushed = YES;
+                [self.navigationController pushViewController:sendOrderVC animated:YES];
+                
+            }
+
             
         }
         else

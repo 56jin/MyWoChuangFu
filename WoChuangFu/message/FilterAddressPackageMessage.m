@@ -27,6 +27,9 @@
                               [requestInfo objectForKey:@"bandAddress"] == nil?[NSNull null]:[requestInfo objectForKey:@"bandAddress"],@"bandAddress",
                               [requestInfo objectForKey:@"cityCode"],@"cityCode",
                               [requestInfo objectForKey:@"moduleId"],@"moduleId",
+                              [requestInfo objectForKey:@"version"],@"version",
+                              [requestInfo objectForKey:@"version"],@"version",
+                              [requestInfo objectForKey:@"woRhflag"],@"woRhflag",
                               nil];
     [requestClass release];
     

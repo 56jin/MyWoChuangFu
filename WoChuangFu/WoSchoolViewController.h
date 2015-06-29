@@ -7,7 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+@class MLTableAlert;
+@interface WoSchoolViewController : UIViewController{
+    NSDictionary* params;
+    NSString *isChangGui;
+}
+@property (strong, nonatomic) MLTableAlert *alert;
+@property(nonatomic,retain)NSDictionary* params;
+@property (nonatomic,strong)NSMutableArray *cardOrderKeyValuelist;
+@property (nonatomic)NSString *isChangGui;
 
-@interface WoSchoolViewController : UIViewController
-
+-(void)setIsCG:(NSString *)_isChangGui;
 @end

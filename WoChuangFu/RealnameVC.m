@@ -98,9 +98,18 @@
     
      [MBProgressHUD showHUDAddedTo:[AppDelegate shareMyApplication].window animated:YES];
     //搜索蓝牙设备
-    NSMutableArray *devarry= [bletool ScanDeiceList:2.0f];
+    NSMutableArray *devarry = [[NSMutableArray alloc]init];
+    NSArray *arry = [bletool ScanDeiceList:2.0f];
+    [devarry addObjectsFromArray:arry];
     if (devarry && devarry != nil && devarry.count > 0) {
         NSLog(@"设备信息 %@",devarry);
+        
+        for (NSDictionary *dic in devarry) {
+            if (!dic || dic.count <= 0 || [dic allKeys].count <= 0) {
+                [devarry removeObject:dic];
+            }
+        }
+        
         [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
         
 //        for (NSDictionary *dic in devarry) {
@@ -133,6 +142,8 @@
 
     }
     
+    [devarry release];
+    
 //    rwcard=[[SimCardReader alloc]init];
 //    
 //    [rwcard setReaderDelegate:self];
@@ -146,6 +157,7 @@
     [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
     if(isconnected){  //链接成功
         NSLog(@"\n\n  读取代理1");
+         isRead = YES;
         [self ShowProgressHUDwithMessage:@"链接蓝牙读卡器成功"];
         [BlootLabel setText:[NSString stringWithFormat:@"您当前连接蓝牙设备: %@",blootDic[@"name"] ]];
 
@@ -164,19 +176,24 @@
 //选择哪个店铺类型
 - (void)sureDoneWith:(NSDictionary *)resion{
     
-  [MBProgressHUD showHUDAddedTo:[AppDelegate shareMyApplication].window animated:YES];
+  
     if (zsy) {
         [zsy dissViewClose];
         zsy = nil;
         zsy.delegate = nil;
     }
-
+    
+    NSLog(@"获取设备信息%@",resion);
+    
+    [MBProgressHUD showHUDAddedTo:[AppDelegate shareMyApplication].window animated:YES];
     blootDic = resion ;
     [bletool connectBt:[resion valueForKey:@"uuid"]];
-    isRead = YES;
+    
+
     
     if (isReadAgin == YES) {
 //        [self getIdCradBtnEvent];
+//         [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
           [self performSelector:@selector(getIdCradBtnEvent) withObject:nil afterDelay:0.5];
     }
 
@@ -538,10 +555,10 @@
 //        hud.dimBackground = NO;
 //        hud.removeFromSuperViewOnHide = YES;
 //        [hud hide:YES afterDelay:2];
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"读取身份证信息失败" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"重新读取", nil];
-        alert.tag = 101010;
-        [alert show];
-        [alert release];
+        
+        [self performSelector:@selector(getShowFail) withObject:nil afterDelay:0.5];
+        
+       
 
         
         return;
@@ -662,6 +679,13 @@
     }
     //    相片解码 end
 
+}
+
+- (void)getShowFail {
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"读取身份证信息失败" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"重新读取", nil];
+    alert.tag = 101010;
+    [alert show];
+    [alert release];
 }
 
 #pragma mark -toolFunc

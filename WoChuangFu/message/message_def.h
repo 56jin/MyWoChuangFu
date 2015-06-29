@@ -44,6 +44,14 @@
 #import "UserLogoutMessage.h"
 #import "RealFangDangMessage.h"
 #import "RealNameYesOrNoMessage.h"
-
+#import "IndentifyMessage.h"
+#import "GetIndentifyCodeMessage.h"
+#import "ComfirmIndentifyMessage.h"
+#import "OpenNetworkUserMessage.h"
+#import "GetRHKDcodeMessage.h"
+#import "SearchOpenAccountOrderMessage.h"
+#import "CommitOpenUserMessage.h"
+#import "SueccOpenUserMessage.h"
+#import "CheckFLowMessage.h"
 
 #endif

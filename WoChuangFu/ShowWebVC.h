@@ -20,6 +20,7 @@
     BOOL isPayment;
 }
 
+@property(nonatomic,copy) NSString* isShow;  //是否显示商城首页图标  YES 隐藏 
 @property(nonatomic,retain)NSString* urlStr;
 @property(nonatomic,retain)NSString* titleStr;
 @property(nonatomic,retain)TitleBar* titleBar;
