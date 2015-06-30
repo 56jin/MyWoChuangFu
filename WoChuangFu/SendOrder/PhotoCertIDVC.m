@@ -211,32 +211,31 @@
     //errCode:1成功 -1 失败
     //isBlank:0 白卡 1非白卡
     BOOL isWriteCardOK = YES;
-    [self showHUDWithMSG:@"正在检查卡的类型......"];
-    NSDictionary *checkSimBlankDict= [self.adapter CheckSIMisBlank:0];
-    if([[checkSimBlankDict valueForKey:@"errCode"] isEqualToString:@"1"]){
-        if ([[checkSimBlankDict valueForKey:@"isBlank"] isEqualToString:@"0"]) {
-            NSData *imsi2gdata=[checkSimBlankDict objectForKey:@"IMSI2G"];
-            NSString *imsi2gStr= [[NSString alloc]initWithData:imsi2gdata encoding:NSUTF8StringEncoding];
-            NSLog(@"imsi2gstr===%@",imsi2gStr);
+//    [self showHUDWithMSG:@"正在检查卡的类型......"];
+//    NSDictionary *checkSimBlankDict= [self.adapter CheckSIMisBlank:0];
+//    if([[checkSimBlankDict valueForKey:@"errCode"] isEqualToString:@"1"]){
+//        if ([[checkSimBlankDict valueForKey:@"isBlank"] isEqualToString:@"0"]) {
+//            NSData *imsi2gdata=[checkSimBlankDict objectForKey:@"IMSI2G"];
+//            NSString *imsi2gStr= [[NSString alloc]initWithData:imsi2gdata encoding:NSUTF8StringEncoding];
+//            NSLog(@"imsi2gstr===%@",imsi2gStr);
             NSData *imsi2g = [imsiString dataUsingEncoding:NSUTF8StringEncoding];
             [self showHUDWithMSG:@"正在写入IMSI中......"];
-//            NSInteger result = [self.adapter WriteSIMCardwithIMSI1:imsi2g
-//                                                          andIMSI2:nil];
-//            if(result==1){
-//                [self showHUDWithMSG:@"正在写入短信中心号......"];
-//                result = [self.adapter WriteMsgCenter:SMS_PHONE_CENTER
-//                                      withNumberIndex:(Byte)0x01];
-//                if (result == 1) {
-//                    isWriteCardOK = YES;
-//                }else{
-//                    isWriteCardOK = NO;
-//                }
-//            }else{
-//                isWriteCardOK = NO;
-//            }
-            
-        }
-    }
+            NSInteger result = [self.adapter WriteSIMCardwithIMSI1:imsi2g
+                                                          andIMSI2:nil];
+            if(result==1){
+                [self showHUDWithMSG:@"正在写入短信中心号......"];
+                result = [self.adapter WriteMsgCenter:SMS_PHONE_CENTER
+                                      withNumberIndex:(Byte)0x01];
+                if (result == 1) {
+                    isWriteCardOK = YES;
+                }else{
+                    isWriteCardOK = NO;
+                }
+            }else{
+                isWriteCardOK = NO;
+            }
+//        }
+//    }
     
     return isWriteCardOK;
 }
@@ -436,23 +435,23 @@
 //            返回1不成功，不写卡，不调44接口;
 //            返回2表示已开户写卡，调44接口提交资料
             
-//            if ([respCode isEqualToString:@"0"]) {
+            if ([respCode isEqualToString:@"0"]) {
                 NSString *imsi = [rspInfo objectForKey:@"imsi"];
                 BOOL isWriteCard = [self writeCard:imsi];
                 [self showHUDWithMSG:@"正在开户中......"];
                 [self sendSuessOpneUserMessage:isWriteCard];
-//            }else if ([respCode isEqualToString:@"1"]) {
-//                UIAlertView *alter = [[UIAlertView alloc] initWithTitle:@"提示"
-//                                                                message:respDesc
-//                                                               delegate:nil
-//                                                      cancelButtonTitle:@"确定"
-//                                                      otherButtonTitles:nil];
-//                [alter show];
-//                [alter release];
-//            }else if([respCode isEqualToString:@"2"]) {
-//                [self showHUDWithMSG:@"正在开户中......"];
-//                [self sendSuessOpneUserMessage:YES];
-//            }
+            }else if ([respCode isEqualToString:@"1"]) {
+                UIAlertView *alter = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                                message:respDesc
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"确定"
+                                                      otherButtonTitles:nil];
+                [alter show];
+                [alter release];
+            }else if([respCode isEqualToString:@"2"]) {
+                [self showHUDWithMSG:@"正在开户中......"];
+                [self sendSuessOpneUserMessage:YES];
+            }
             
         }
     }else if ([bizCode isEqualToString:[SueccOpenUserMessage getBizCode]]) {

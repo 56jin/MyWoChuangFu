@@ -220,8 +220,14 @@
     [titleBar release];
 }
 -(void)initMainView{
-    UIView *mainView = [[UIView alloc]initWithFrame:CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-64)];
+    UIScrollView *mainView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 64, self.view.frame.size.width, self.view.frame.size.height-64)];
     mainView.backgroundColor = [UIColor groupTableViewBackgroundColor];
+    // 去掉弹簧效果
+    mainView.bounces = NO;
+    // 增加额外的滚动区域（逆时针，上、左、下、右）
+    // top  left  bottom  right
+    mainView.contentInset = UIEdgeInsetsMake(0, 0, 30, 0);
+    mainView.contentSize = CGSizeMake(MainWidth, MainHeight);
     [self.view addSubview:mainView];
     
    
@@ -248,7 +254,7 @@
 //    CGRect tmpFrame = CGRectMake(0, 0, 0, 0);
     //返档号码
     LWEdit *fanNum = [[LWEdit alloc]initWithFrame:CGRectMake(10 , 0, 100, 10)];
-    [fanNum setFont:[UIFont fontWithName:nil size:18]];
+    [fanNum setFont:[UIFont systemFontOfSize:15.0f]];
     //    fanNum.backgroundColor = [UIColor yellowColor];
     fanNum.textColor = [self colorWithHexString:@"#363636"];
     fanNum.text = @"返档号码:";
@@ -256,17 +262,18 @@
     fannumP.y = line1.frame.size.height/2;
     fanNum.center = fannumP;
     
-    fanNumTextFiled = [[UITextField alloc]initWithFrame:CGRectMake(fanNum.frame.origin.x+fanNum.frame.size.width+10, 0, 100, fanNum.frame.size.height)];
+    fanNumTextFiled = [[UITextField alloc]initWithFrame:CGRectMake(fanNum.frame.origin.x+fanNum.frame.size.width+10, 0, 120, fanNum.frame.size.height)];
     fanNumTextFiled.keyboardType = UIKeyboardTypeNumberPad;
     fanNumTextFiled.delegate = self;
+    fanNumTextFiled.adjustsFontSizeToFitWidth = YES;
     
     getIdCradBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    getIdCradBtn.frame = CGRectMake(fanNumTextFiled.frame.origin.x+fanNumTextFiled.frame.size.width+5, 0, 100,fanNumTextFiled.frame.size.height+8);
+    getIdCradBtn.frame = CGRectMake(fanNumTextFiled.frame.origin.x+fanNumTextFiled.frame.size.width+10, 0, 90,fanNumTextFiled.frame.size.height+8);
     CGPoint fanTextponit = fanNumTextFiled.center;
     fanTextponit.y = line1.frame.size.height/2;
     fanNumTextFiled.center = fanTextponit;
     
-    
+    [getIdCradBtn.titleLabel setFont:[UIFont systemFontOfSize:15.0f]];
     getIdCradBtn.backgroundColor = [UIColor orangeColor];
     [getIdCradBtn addTarget:self action:@selector(getIdCradBtnEvent) forControlEvents:UIControlEventTouchUpInside];
     [getIdCradBtn setTitle:@"获取身份证" forState:UIControlStateNormal];
@@ -275,6 +282,7 @@
     getIdCradBtn.center = btnpont;
     [getIdCradBtn.layer setCornerRadius:3];
     [getIdCradBtn setTitleColor:[UIColor darkGrayColor] forState:UIControlStateHighlighted];
+    
     messageLabel = [[UILabel alloc]initWithFrame:CGRectMake(fanNum.frame.origin.x, line1.frame.size.height+line1.frame.origin.y+10, self.view.frame.size.width, fanNum.frame.size.height)];
     messageLabel.text = @"获取身份证信息前，请将身份证原件放置在阅读器上";
     [messageLabel setFont:[UIFont fontWithName:nil size:13]];
@@ -466,77 +474,6 @@
     
     [MBProgressHUD showHUDAddedTo:[AppDelegate shareMyApplication].window animated:YES];
     
-//    IDCardReader *idCardReader=[[IDCardReader alloc] init];
-//    //    IDCardInfo *info=[rwcard getIDCard];
-//    IDCardInfo *info=[idCardReader getIDCard:@""];
-//    NSLog(@"name:%@",info.Name);
-    
-//    [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
-//    
-//    if (!info.Name) {
-//        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
-//        hud.mode = MBProgressHUDModeText;
-//        hud.labelText = @"读取身份证信息失败";
-//        hud.dimBackground = NO;
-//        hud.removeFromSuperViewOnHide = YES;
-//        [hud hide:YES afterDelay:2];
-//        
-//    }
-//    
-//    
-//    //    NSLog(@"image---->%d:%@", [info.photo length],info.photo);
-//    UIImage *img=[UIImage imageWithData:info.Picture];
-//    nameLabel.text = info.Name;
-//    idCardAddress.text = info.Address;
-//    idCardLabel.text = info.CardNo;
-//    photoImageView.image = nil;
-//    photoImageView.image = img;
-//    [idCardReader release];
-    
-    
-//    [adapter readIdCard:^(IdCardInformation *info, NSError *error){
-//        
-//         [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
-//        
-//        NSLog(@"\n\n 读取身份证信息 %@   ----   %@  \n\n",info.description,error.domain);
-//        
-//        
-//        if (error != nil)
-//        {
-//            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
-//            hud.mode = MBProgressHUDModeText;
-//            hud.labelText = @"读取身份证信息失败";
-//            hud.dimBackground = NO;
-//            hud.removeFromSuperViewOnHide = YES;
-//            [hud hide:YES afterDelay:2];
-//
-//        }
-//        else
-//        {
-//            UIImage *img=[UIImage imageWithData:info.picBuffer];
-//            nameLabel.text = info.name;
-//            idCardAddress.text = info.address;
-//            idCardLabel.text = info.ident;
-//            photoImageView.image = nil;
-//            photoImageView.image = img;
-//        }
-//        
-//        
-//    }];
-
-   
-    
-//    NSDictionary *result=[bletool readIDCardS];//读出来的加密数据 其中baseInfo是加密后的数据，需要用设备对应的key解密。
-//    
-//    NSData *baseinfo=[result objectForKey:@"baseInfo"];
-//    //    NSString *keyStr=@"1234567812345678";
-//    //    NSData* keydata = [keyStr dataUsingEncoding:NSUTF8StringEncoding];
-//    
-//    NSLog(@"读取到的数据 ：%@",result);
-//    Byte keybt[24]={0x68,0x99,0x3c,0x53,0x55,0xd5,0xe3,0x80,0x71,0x27,0xfa,0x61,0x99,0xbd,0xd3,0xd0,0x68,0x99,0x3c,0x53,0x55,0xd5,0xe3,0x80};//测试用key,每台设备有自己的key，从数据库读取到key后转成nsdata传给Decdata:(NSData*) byKey:(NSData*)方法
-//    //    Byte keybt[24]={0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55};
-//    
-//    NSString *resultstr=  [self Decdata:baseinfo byKey:[NSData dataWithBytes:keybt length:24]];
     
     NSDictionary *result=[bletool readIDCardS];//读出来的加密数据 其中baseInfo是加密后的数据，需要用设备对应的key解密。
     
@@ -549,50 +486,13 @@
     
     if(resultstr == nil || [resultstr isEqualToString:@""]){
         
-//        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
-//        hud.mode = MBProgressHUDModeText;
-//        hud.labelText = @"读取身份证信息失败";
-//        hud.dimBackground = NO;
-//        hud.removeFromSuperViewOnHide = YES;
-//        [hud hide:YES afterDelay:2];
-        
         [self performSelector:@selector(getShowFail) withObject:nil afterDelay:0.5];
-        
-       
-
-        
+    
         return;
 
     }else{
         
         
-//        NSArray *strArray = [resultstr componentsSeparatedByString:@"\n"];
-//    
-//        for (NSString *str in strArray) {
-//            if([str rangeOfString:@"name"].location !=NSNotFound)//
-//            {
-//                str = [str stringByReplacingOccurrencesOfString:@"<name>" withString:@""];
-//                 str = [str stringByReplacingOccurrencesOfString:@"</name>" withString:@""];
-//                 nameLabel.text = str;
-//            }
-//            else if([str rangeOfString:@"idNum"].location !=NSNotFound)//
-//            {
-//                str = [str stringByReplacingOccurrencesOfString:@"<idNum>" withString:@""];
-//                str = [str stringByReplacingOccurrencesOfString:@"</idNum>" withString:@""];
-//                idCardLabel.text = str;
-//            }
-//            else if([str rangeOfString:@"address"].location !=NSNotFound)//
-//            {
-//                str = [str stringByReplacingOccurrencesOfString:@"<address>" withString:@""];
-//                str = [str stringByReplacingOccurrencesOfString:@"</address>" withString:@""];
-//                idCardAddress.text = str;
-//
-//            }
-//
-//            else
-//            {
-//                NSLog(@"no found");
-//            }
         
         
         //        GDataXMLNode 使用方法如下 ，需要在项目中引入GDataXMLNode.h   并且在项目的build setting中的Header Search Paths中添加搜索路径： /usr/include/libxml2
@@ -1069,6 +969,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         [self addObserver:self forKeyPath:@"text" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:self];
+        [self setFont:[UIFont systemFontOfSize:15.0f]];
 //        self.backgroundColor = [UIColor grayColor];
     }
     return self;

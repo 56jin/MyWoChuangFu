@@ -21,10 +21,11 @@
 #import "UIWindow+YUBottomPoper.h"
 #import "AddressComBox.h"
 #import "ShowWebVC.h"
+#import "ZSYPopListView.h"
 //#define MainHeight  [[UIScreen mainScreen] bounds].size.height
 //#define MainWidth   [[UIScreen mainScreen] bounds].size.width
 
-@interface WoSchoolViewController ()<RFSegmentViewDelegate,TitleBarDelegate,UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,HttpBackDelegate,CBCentralManagerDelegate,BR_Callback,UITextFieldDelegate,AddressComBoxDelegate> {
+@interface WoSchoolViewController ()<RFSegmentViewDelegate,TitleBarDelegate,UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,HttpBackDelegate,CBCentralManagerDelegate,BR_Callback,UITextFieldDelegate,AddressComBoxDelegate,ZSYPopListViewDelegate> {
     UITableView *myTabView;
     UIView *oldView;  //老宽带用户
     UIScrollView *myScrollView; //新宽带用户页面
@@ -36,8 +37,14 @@
     CBCentralManager *manager;
 //    BlueToothDCAdapter *adapter;
     
-    NSMutableArray *devarry; //存储ble列表蓝牙
+//    NSMutableArray *devarry; //存储ble列表蓝牙
     BleTool *bletool;//bleTool对象
+    
+    BOOL isRead;
+    BOOL isReadAgin;
+    ZSYPopListView *zsy;
+    UILabel *devLabel;  // 显示当前连接的蓝牙设备名称
+    NSDictionary *blootDic;  //当前选择的蓝牙设备信息
     
      BOOL IsKeyBoardHide; //监听键盘
     
@@ -46,6 +53,9 @@
     NSArray* areaData;
     
     NSArray *jiedaoData;
+    
+
+
     
     
     
@@ -729,6 +739,7 @@
         UITextField *numFiled = [[UITextField alloc]initWithFrame:CGRectMake(60, 10, 250, 40)];
         numFiled.delegate = self;
         numFiled.placeholder = @"请输入手机号";
+        numFiled.font = [UIFont systemFontOfSize:15.0f];
         numFiled.returnKeyType = UIReturnKeyDone;
         numFiled.keyboardType =  UIKeyboardTypeNumbersAndPunctuation;
         numFiled.tag = 8003;
@@ -772,10 +783,10 @@
         [sureOrderBtn setHidden:YES];
         
         
-        UILabel *devLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, allHeight-80, MainWidth-10, 40)];
-        devLabel.text = @"当前设备:444440";
+        devLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, allHeight-80, MainWidth-10, 40)];
+        devLabel.text = @"您当前暂无连接蓝牙设备，请打开蓝牙";
         [devLabel setFont:[UIFont fontWithName:nil size:13]];
-//        devLabel.textColor = [self colorWithHexString:@"#b6b6b6"];
+        devLabel.textColor = [self colorWithHexString:@"#b6b6b6"];
         devLabel.tag = 3320;
         [devLabel setHidden:YES];
         
@@ -812,27 +823,28 @@
         [SFview.layer setCornerRadius:4.0];
         [SFview.layer setBorderWidth:1.0f];
         [SFview.layer setBorderColor:[[UIColor groupTableViewBackgroundColor] CGColor]];
-        [SFview setFrame:(CGRect){10,allHeight,MainWidth - 20,60}];
-         allHeight += 60;
+        [SFview setFrame:(CGRect){10,allHeight,MainWidth - 20,50}];
+         allHeight += 50;
         
         UILabel *label = [[UILabel alloc]init];
         label.backgroundColor = [UIColor clearColor];
-        label.font = [UIFont systemFontOfSize:16.0f];
+        [label setTextColor:[self colorWithHexString:@"#363636"]];
+        label.font = [UIFont systemFontOfSize:15.0f];
         label.text = i == 0 ? @"姓名" : i == 1 ? @"身份证" : @"地址";
-        [label setFrame:(CGRect){10,0,50,60}];
+        [label setFrame:(CGRect){10,0,50,50}];
         [SFview addSubview:label];
         
         UITextField *text = [[UITextField alloc]initWithFrame:CGRectZero];
         text.delegate = self;
        
-        text.placeholder = i == 0 ? @"机主姓名" : i == 1 ? @"机主身份证号" :@"详细地址（在报装地址基础上加）";
+        text.placeholder = i == 0 ? @"机主姓名" : i == 1 ? @"机主身份证号" :@"详细地址(在报装地址基础上加)";
         
 //        if ([isChangGui integerValue] == 2) {
 //            text.userInteractionEnabled = i == 2 ? YES : NO;
 //        }
         
         
-        
+        text.font = [UIFont systemFontOfSize:15.0f];
         text.tag = 4000 + i ;
         [text setBorderStyle:UITextBorderStyleNone];
         text.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -840,8 +852,8 @@
         text.returnKeyType = UIReturnKeyDone;
         text.clearButtonMode = UITextFieldViewModeWhileEditing; //编辑时会出现个修改X
         text.keyboardType = i == 1 ? UIKeyboardTypeNumbersAndPunctuation : UIKeyboardTypeDefault;
-        [text setFrame:(CGRect){70,5,MainWidth - 100 ,50}];
-        text.adjustsFontSizeToFitWidth = YES;
+        [text setFrame:(CGRect){70,0,MainWidth - 100 ,50}];
+//        text.adjustsFontSizeToFitWidth = YES;
         [SFview addSubview:text];
         
         [view3 addSubview:SFview];
@@ -917,7 +929,7 @@
 
 - (UIView *)viewWith:(NSInteger)integer andString:(NSString *)string {
     //手机验证码页面
-    UIView *NumView = [[UIView alloc]initWithFrame:(CGRect){0,0,MainWidth,67 * integer}];
+    UIView *NumView = [[UIView alloc]initWithFrame:(CGRect){0,0,MainWidth,50 * integer}];
     [NumView setBackgroundColor:[UIColor whiteColor]];
     
     
@@ -934,6 +946,8 @@
             text.placeholder = @"请输入手机号";
             
         }
+        
+        text.font = [UIFont systemFontOfSize:15.0f];
         text.tag = 1000 + i + integer * 100;
         [text setBorderStyle:UITextBorderStyleNone];
         text.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -941,7 +955,7 @@
         text.returnKeyType = UIReturnKeyDone;
         text.clearButtonMode = UITextFieldViewModeWhileEditing; //编辑时会出现个修改X
         text.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
-        [text setFrame:(CGRect){10,63 * i + 8,MainWidth - 100 ,50}];
+        [text setFrame:(CGRect){10,50 * i,MainWidth - 100 ,50}];
         [NumView addSubview:text];
         
         if ([isChangGui isEqualToString:@"1"] && integer == 1) {
@@ -951,7 +965,7 @@
         if (i == 0 || i == 2) {
             UILabel *label = [[UILabel alloc]init];
             label.backgroundColor = [UIColor groupTableViewBackgroundColor];
-            [label setFrame:(CGRect){0, i == 0 ? 65 : 130,MainWidth,1}];
+            [label setFrame:(CGRect){0, i == 0 ? 49 : 109,MainWidth,1}];
             [NumView addSubview:label];
             
         }
@@ -963,36 +977,28 @@
       
         
         UIButton *sureOrderBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [sureOrderBtn setBackgroundColor: (i == 0 && integer ==2) || (i == 1 && integer == 3)  ? [UIColor clearColor] :[UIColor orangeColor]];
-        [sureOrderBtn setFrame:(CGRect){MainWidth - 120,64 *i + 10,100,44}];
+        [sureOrderBtn setBackgroundColor: (i == 0 && integer ==2) || (i == 1 && integer == 3)  ? [UIColor orangeColor] :[UIColor orangeColor]];
+        [sureOrderBtn setFrame:(CGRect){MainWidth - 110,50 *i + 5,100,40}];
         [sureOrderBtn setTitle:(i == 0 && integer ==2) || (i == 1 && integer == 3) ? @"获取验证码" : @"确定" forState:UIControlStateNormal];
-        [sureOrderBtn setTitleColor: (i == 0 && integer ==2) || (i == 1 && integer == 3)  ? [UIColor blackColor] : [UIColor whiteColor] forState:UIControlStateNormal];
+        
+        [sureOrderBtn setTitleColor: (i == 0 && integer ==2) || (i == 1 && integer == 3)  ? [UIColor whiteColor] : [UIColor whiteColor] forState:UIControlStateNormal];
         [sureOrderBtn setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
         sureOrderBtn.tag = 1000 + i + integer * 200;
         [sureOrderBtn.layer setMasksToBounds:YES];
         [sureOrderBtn.layer setCornerRadius:4.0];
         
         
-        if ((i == 0 && integer == 2) || (i == 1 && integer == 3) ) {
+        if ( i == 1 && integer == 3 ) {
             [sureOrderBtn.layer setBorderWidth:1.0f];
              [sureOrderBtn.layer setBorderColor:[[UIColor groupTableViewBackgroundColor] CGColor]];
         }
        
-        [sureOrderBtn.titleLabel setFont:[UIFont systemFontOfSize:18 weight:20]];
+        [sureOrderBtn.titleLabel setFont:[UIFont systemFontOfSize:15 weight:20]];
         [sureOrderBtn addTarget:self action:@selector(sureOrGetCodeEven:) forControlEvents:UIControlEventTouchUpInside];
         [NumView addSubview:sureOrderBtn];
         
         NumView.tag = 1520;//常规
     }
-    
-    
-   
-    
-    
-    
-    
-    
-    
    
     return NumView;
 }
@@ -1144,12 +1150,13 @@
     UITableViewCell *Cell = [tableView dequeueReusableCellWithIdentifier:CellStr];
     if(Cell == nil){
         Cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellStr];
-//        Cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        Cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         Cell.selectionStyle = UITableViewCellSelectionStyleNone;
         Cell.backgroundColor=[UIColor whiteColor];
+        
         UILabel *lb = [[UILabel alloc]initWithFrame:CGRectMake(50, 5, 200, 35)];
-//        lb.backgroundColor = [UIColor yellowColor];
-        lb.textColor = [UIColor darkTextColor];
+        lb.backgroundColor = [UIColor clearColor];
+        [lb setTextColor:[self colorWithHexString:@"#363636"]];
         lb.tag = 100;
         lb.font = [UIFont systemFontOfSize:15];
         
@@ -1201,11 +1208,25 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    UITextField *numText = (UITextField *)[myScrollView viewWithTag:1100 ];
-    if ([numText.text length] > 0 && [numText.text length] < 11) {
+    NSString *numStr = nil;
+    if (flagInteger == 0) {
+        UITextField *numText = (UITextField *)[myScrollView viewWithTag:  (1000 + [isChangGui integerValue] * 100 ) ];
+        numStr = numText.text;
+    }else if (flagInteger == 1) {
+        UITextField *numText = (UITextField *)[myScrollView viewWithTag:8003];
+        numStr = numText.text;
+    }
+    
+    if ([numStr length] <= 0 || numStr == nil || [numStr isEqualToString:@""]) {
         [self ShowAlertMyView:@"请先输入完整手机号码"];
         return;
     }
+
+    if ([numStr length] > 0 && [numStr length] < 11) {
+        [self ShowAlertMyView:@"请先输入完整手机号码"];
+        return;
+    }
+    
     
     [self.view endEditing:YES];
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
@@ -1235,8 +1256,15 @@
 }
 
 -(void)backAction {
+    if (isRead) {
+        //断开连接
+        [bletool disconnectBt];
+        
+    }
+
     [self.navigationController popViewControllerAnimated:YES];
 }
+
 
 #pragma mark - textField 代理方法
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
@@ -1392,62 +1420,47 @@
 }
 
 - (void)getUserIDCardInfo{
-    [self.view endEditing:YES];
+//    [self.view endEditing:YES];
     
-    [MBProgressHUD showHUDAddedTo:[AppDelegate shareMyApplication].window animated:YES];
-
-
-    [self searchBlueTooth];
-    
-    [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
-    
-    
+    [self getIdCradBtnEvent];
 }
 
 //搜索蓝牙设备
 - (void)searchBlueTooth{
-//    devarry= [bletool ScanDeiceList:2.0f];
-//    if ([devarry count]==0) {
-//        NSLog(@"搜索不到蓝牙设备");
-//    }
-//    // create the alert
-//    alert = [MLTableAlert tableAlertWithTitle:@"选择蓝牙" cancelButtonTitle:@"取消" refreshButtonTitle:@"刷新" numberOfRows:^NSInteger (NSInteger section)
-//                  {
-//                      return 0;
-//                  }
-//                                          andCells:^UITableViewCell* (MLTableAlert *anAlert, NSIndexPath *indexPath)
-//                  {
-//                      return nil;
-//                  }TableAlertTableArrayBlock:^NSArray *{
-//                      
-//                      return [NSArray arrayWithObjects:@"dsad",@"ytyur",@"oiuyioyu", nil];
-//                      
-//                  } tableArr:[NSArray arrayWithObjects:@"dsad",@"ytyur",@"oiuyioyu", nil]];
-//    
-//    // Setting custom alert height
-//    self.alert.height = 350;
-//    
-//    // configure actions to perform
-//    [self.alert configureSelectionBlock:^(NSIndexPath *selectedIndex){
-////        self.resultLabel.text = [NSString stringWithFormat:@"Selected Index\nSection: %ld Row: %ld", (long)selectedIndex.section, (long)selectedIndex.row];
-//    } andCompletionBlock:^{
-////        self.resultLabel.text = @"Cancel Button Pressed\nNo Cells Selected";
-//    } andRefreshBlock:^{
-////        self.resultLabel.text = @"Refresh Pressed\nNo Cells Selected";
-//        
-////        NSLog(@"refresh");
-////        [arr removeLastObject];
-//        
-//        [self.alert.table reloadData];
-////        [self refrsh];
-//        
-//        
-//    }];
-//    
-//    
-//    self.alert.titleLabel.text = @"索索";
-//    // show the alert
-//    [self.alert show];
+    [MBProgressHUD showHUDAddedTo:[AppDelegate shareMyApplication].window animated:YES];
+    //搜索蓝牙设备
+    NSMutableArray *devarry = [[NSMutableArray alloc]init];
+    NSArray *arry = [bletool ScanDeiceList:2.0f];
+    [devarry addObjectsFromArray:arry];
+    if (devarry && devarry != nil && devarry.count > 0) {
+        NSLog(@"设备信息 %@",devarry);
+        
+        for (NSDictionary *dic in devarry) {
+            if (!dic || dic.count <= 0 || [dic allKeys].count <= 0) {
+                [devarry removeObject:dic];
+            }
+        }
+        
+        [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
+        
+        zsy = [[ZSYPopListView alloc]initWitZSYPopFrame:CGRectMake(0, 0, 200, devarry.count  * 55 + 50) WithNSArray:devarry WithString:@"选择蓝牙读卡器类型"];
+        zsy.isTitle = NO;
+        zsy.delegate = self;
+        
+        
+    }else {
+        
+        [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
+        
+        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"提示" message:@"您附近没有找到蓝牙读卡器" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"重新搜索", nil];
+        alertView.tag = 10108;
+        [alertView show];
+        
+        
+    }
+    
+    
+   
     
 }
 
@@ -1478,14 +1491,177 @@
 
 #pragma  mark -bletool 's delegate
 -(void)BR_connectResult:(BOOL)isconnected{
+     [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
     if(isconnected){
-//        self.connectedView.hidden=NO;
-//        [ToastView showWithText:@"设备已连接" bottomOffset:35 duration:2.5f];
+        NSLog(@"\n\n  读取代理1");
+        isRead = YES;
+        [self ShowProgressHUDwithMessage:@"链接蓝牙读卡器成功"];
+    
+        [devLabel setText:[NSString stringWithFormat:@"您当前连接蓝牙设备: %@",blootDic[@"name"] ]];
+
     }else{
-//        self.connectedView.hidden=YES;
-//        [ToastView showWithText:@"设备已断开" bottomOffset:35 duration:2.5f];
+        //链接失败
+        NSLog(@"\n\n  读取代理2");
+        [self ShowProgressHUDwithMessage:@"链接蓝牙读卡器失败"];
+
     }
 }
+
+//选择哪个店铺类型
+- (void)sureDoneWith:(NSDictionary *)resion{
+    
+    
+    if (zsy) {
+        [zsy dissViewClose];
+        zsy = nil;
+        zsy.delegate = nil;
+    }
+    
+    NSLog(@"获取设备信息%@",resion);
+    
+    [MBProgressHUD showHUDAddedTo:[AppDelegate shareMyApplication].window animated:YES];
+    blootDic = resion ;
+    [bletool connectBt:[resion valueForKey:@"uuid"]];
+    
+    
+    
+    if (isReadAgin == YES) {
+        //        [self getIdCradBtnEvent];
+        //         [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
+        [self performSelector:@selector(getIdCradBtnEvent) withObject:nil afterDelay:0.5];
+    }
+    
+    
+    
+    
+}
+
+- (void)getIdCradBtnEvent {
+    [self.view endEditing:YES];
+    
+    isReadAgin = NO;
+    if (!isRead) {
+        isReadAgin = YES;
+        [self searchBlueTooth]; // 先连接设备
+        return;
+    }
+    
+    [MBProgressHUD showHUDAddedTo:[AppDelegate shareMyApplication].window animated:YES];
+    
+    
+    NSDictionary *result=[bletool readIDCardS];//读出来的加密数据 其中baseInfo是加密后的数据，需要用设备对应的key解密。
+    
+    
+    //处理xml字符串，因为返回的xml字符没有根节点，所以此处加上一个根节点，便于GDataXmlNode取xml值
+    NSString *resultstr = [result valueForKey:@"baseInfo"];
+    NSLog(@"获取身份证信息：---- %@",resultstr);
+    
+    [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
+    
+    if(resultstr == nil || [resultstr isEqualToString:@""]){
+        
+        [self performSelector:@selector(getShowFail) withObject:nil afterDelay:0.5];
+        
+        return;
+        
+    }else{
+        
+        
+        
+        
+        //        GDataXMLNode 使用方法如下 ，需要在项目中引入GDataXMLNode.h   并且在项目的build setting中的Header Search Paths中添加搜索路径： /usr/include/libxml2
+        GDataXMLDocument *xmlroot=[[GDataXMLDocument alloc] initWithXMLString:resultstr options:0 error:nil];
+        GDataXMLElement *xmlelement= [xmlroot rootElement];
+        NSArray *xmlarray= [xmlelement children];
+        NSMutableDictionary *xmldictionary=[NSMutableDictionary dictionary];
+        for(GDataXMLElement *childElement in xmlarray){
+            NSString *childName= [childElement name];
+            NSString *childValue= [childElement stringValue];
+            [xmldictionary setValue:childValue forKey:childName];
+        }
+        
+        [xmldictionary valueForKey:@""];
+        //        NSString *sexCode= [self SexJudge:[xmldictionary valueForKey:@"sexCode"]];  //性别
+        //        NSString *nationCode=[self NationJugde:[xmldictionary valueForKey:@"nationCode"]];  // 民族
+        
+        UITextField *IDcarText = (UITextField *)[myScrollView viewWithTag:4001 ];
+        UITextField *nameText = (UITextField *)[myScrollView viewWithTag:4000 ];
+        nameText.text = [xmldictionary valueForKey:@"name"];
+        IDcarText.text = [xmldictionary valueForKey:@"idNum"];
+       
+        
+    }
+    
+    
+    
+    
+//    //    相片解码 start
+//    NSData *_decodedImageData=[result objectForKey:@"picBitmap"];
+//    if(_decodedImageData!=nil){
+//        NSDictionary *imgdecodeDict=[bletool DecodePicFunc:_decodedImageData];
+//        NSString *errcode= [imgdecodeDict objectForKey:@"errCode"];
+//        
+//        if([errcode isEqualToString:@"-1"]){
+//            
+//            [self ShowProgressHUDwithMessage:@"解码图片失败"];
+//            return;
+//            
+//            
+//        }else if([errcode isEqualToString:@"0"]){
+//            NSData *imgdecodeData=[imgdecodeDict objectForKey:@"DecPicData"];
+//            
+//            UIImage *image = [UIImage imageWithData:imgdecodeData];
+//            
+//            
+//            CGSize origImageSize= [image size];
+//            CGRect newRect;
+//            newRect.origin= CGPointZero;
+//            //拉伸到多大
+//            newRect.size.width= photoImageView.frame.size.width *2;
+//            newRect.size.height= photoImageView.frame.size.height*2;
+//            //缩放倍数
+//            float ratio = MIN(newRect.size.width/origImageSize.width, newRect.size.height/origImageSize.height);
+//            UIGraphicsBeginImageContext(newRect.size);
+//            CGRect projectRect;
+//            projectRect.size.width =ratio * origImageSize.width;
+//            projectRect.size.height=ratio * origImageSize.height;
+//            projectRect.origin.x= (newRect.size.width -projectRect.size.width)/2.0;
+//            projectRect.origin.y= (newRect.size.height-projectRect.size.height)/2.0;
+//            [image drawInRect:projectRect];
+//            UIImage *small = UIGraphicsGetImageFromCurrentImageContext();
+//            //压缩比例
+//            NSData *smallData=UIImageJPEGRepresentation(small, 1);
+//            UIGraphicsEndImageContext();
+//            
+//            if (smallData) {
+//                photoImageView.image  = [UIImage imageWithData:smallData];
+//            }
+//            
+//            
+//            
+//        }
+//        
+//    }else{
+//        
+//        //        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
+//        //        hud.mode = MBProgressHUDModeText;
+//        //        hud.labelText = @"解码图片失败";
+//        //        hud.dimBackground = NO;
+//        //        hud.removeFromSuperViewOnHide = YES;
+//        //        [hud hide:YES afterDelay:2];
+//        [self ShowProgressHUDwithMessage:@"解码图片失败"];
+//        
+//        return;
+//        
+//    }
+//    //    相片解码 end
+    
+}
+
+- (void)getShowFail {
+    [self ShowAlertMyView:@"读取身份证信息失败"];
+}
+
 
 #pragma mark - 确认下单
 -(void)orderComfirm{
@@ -1515,13 +1691,15 @@
             switch (selectInteger) {
                 case 0:  //新带宽
                     
-                    
-                    //先验证手机验证码再校验下单
-                    if (!codeMSM || codeMSM == nil) {
-                        [self ShowAlertMyView:@"请先验证手机收到的验证码"];
-                        return;
+                    if (flagInteger == 0) {
+                        //先验证手机验证码再校验下单
+                        if (!codeMSM || codeMSM == nil) {
+                            [self ShowAlertMyView:@"请先验证手机收到的验证码"];
+                            return;
+                        }
+
                     }
-                     [self sureOpenUserIphoneNum];  //先校验再下单
+                    [self sureOpenUserIphoneNum];  //先校验再下单
                     
                     break;
                 case 1:  //旧用户带宽
@@ -1556,9 +1734,17 @@
 
 #pragma mark - 校验手机号码与身份证 mark = 10
 - (void)sureOpenUserIphoneNum {
-    UITextField *numText = (UITextField *)[myScrollView viewWithTag:  (1000 + [isChangGui integerValue] * 100 ) ];
+    NSString *numStr = nil;
+    if (flagInteger == 0) {
+        UITextField *numText = (UITextField *)[myScrollView viewWithTag:  (1000 + [isChangGui integerValue] * 100 ) ];
+        numStr = numText.text;
+    }else if (flagInteger == 1) {
+        UITextField *numText = (UITextField *)[myScrollView viewWithTag:8003];
+        numStr = numText.text;
+    }
+    
     UITextField *IDcarText = (UITextField *)[myScrollView viewWithTag:4001 ];
-    if ([numText.text length] <= 0 || [numText.text isEqualToString:@""]) {
+    if ([numStr length] <= 0 || [numStr isEqualToString:@""]) {
         [self ShowAlertMyView:@"请先输入手机号码"];
         return;
     }
@@ -1571,7 +1757,7 @@
     bussineDataService *buss=[bussineDataService sharedDataService];
     buss.target = self;
     NSDictionary *SendDic = [[NSDictionary alloc] initWithObjectsAndKeys:
-                             numText.text,@"svcNum",
+                             numStr,@"svcNum",
                              IDcarText.text,@"cDCardId",
                              @"4",@"methodType",
                              nil];
@@ -1702,12 +1888,32 @@
             switch (selectInteger) {
                 case 0:  //新带宽
                 {
+                    NSString *numStr = nil;
                     
-                    UITextField *numText = (UITextField *)[myScrollView viewWithTag:1200 ];
+                    switch (flagInteger) {
+                        case 0:
+                        {
+                            UITextField *numText = (UITextField *)[myScrollView viewWithTag:1200 ];
+                            numStr = numText.text;
+                        }
+                            break;
+                        case 1:
+                        {
+                            UITextField *numText = (UITextField *)[myScrollView viewWithTag:8003 ];
+                             numStr = numText.text;
+                        }
+                            break;
+
+                            
+                        default:
+                            break;
+                    }
+                    
                     UITextField *IDcarText = (UITextField *)[myScrollView viewWithTag:4001 ];
                     UITextField *nameText = (UITextField *)[myScrollView viewWithTag:4000 ];
                     UITextField *addressText = (UITextField *)[myScrollView viewWithTag:4002 ];
-                    if ([numText.text length] <= 0 || [numText.text isEqualToString:@""]) {
+                    
+                    if ([numStr length] <= 0 || [numStr isEqualToString:@""]) {
                         [self ShowAlertMyView:@"请先输入手机号码"];
                         return;
                     }
@@ -1734,7 +1940,7 @@
                     [addrInfo setValue:resAreaCode forKey:@"cityId"];  //地市的resAreaCode
                     [addrInfo setValue:[NSString stringWithFormat:@"%@%@",addressString,addressText.text] forKey:@"address"];
                     [addrInfo setValue:@"" forKey:@"countryName"];
-                    [addrInfo setValue:numText.text forKey:@"phoneNum"];
+                    [addrInfo setValue:numStr forKey:@"phoneNum"];
                     [addrInfo setValue:[NSString stringWithFormat:@"%@%@",addressString,addressText.text] forKey:@"cityName"];  //两个地址一样拼接上选择的街道地址
                     
                     [sendDic setValue:addrInfo forKey:@"addrInfo"];
@@ -2023,6 +2229,8 @@
         [jizhuAddr setUserInteractionEnabled:YES];
         [jizhuID setUserInteractionEnabled:NO];
         [jizhuName setUserInteractionEnabled:NO];
+        
+        [self searchBlueTooth];
         
     }else{
         

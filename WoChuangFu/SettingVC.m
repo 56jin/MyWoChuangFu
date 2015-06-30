@@ -176,6 +176,9 @@
         UIAlertView *aler=[[UIAlertView alloc] initWithTitle:@"提示" message:@"确定清除缓存？" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
         aler.tag=2324;
         [aler show];
+        
+        
+
     }
     else if ([_dataSource[indexPath.row] isEqualToString:@"加入机构"]){
         

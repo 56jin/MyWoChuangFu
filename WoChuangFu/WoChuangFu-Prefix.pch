@@ -58,9 +58,9 @@ typedef enum _SideBarShowDirection
 
 #define service_IPqq                 @"http://121.31.40.19/wcfapp_web/"   //正式环境
 
-#define service_IP                 @"http://10.37.239.45:8080/emall/"
+//#define service_IP                 @"http://10.37.239.45:8080/emall/"
 
-//#define service_IP                 @"http://221.7.252.48:15613/"   //测试环境
+#define service_IP                 @"http://221.7.252.48:15613/"   //测试环境
 //#define service_IP                 @"http://mall.gx10010.com/"      //正式环境
 
 //#define service_IP                 @"http://221.7.252.48:15613/"

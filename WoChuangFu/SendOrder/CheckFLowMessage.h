@@ -7,7 +7,7 @@
 //
 
 #import "message.h"
-#define CHECK_FLOW_BIZCODE   @"cf0045"
+#define CHECK_FLOW_BIZCODE   @"cf0047"
 @interface CheckFLowMessage : message
 
 @end

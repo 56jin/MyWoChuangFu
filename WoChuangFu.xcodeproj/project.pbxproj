@@ -385,6 +385,7 @@
 		85AB504F1B1E9EB700750405 /* RealFangDangMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AB504C1B1E9EB700750405 /* RealFangDangMessage.m */; };
 		85AB50501B1E9EB700750405 /* RealNameYesOrNoMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AB504E1B1E9EB700750405 /* RealNameYesOrNoMessage.m */; };
 		85B9D50B1B0ACB1E002B0DF6 /* envolope@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85B9D50A1B0ACB1E002B0DF6 /* envolope@2x.png */; };
+		85BA24611B4243A50084DB27 /* libzbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 85EF55BF1B29946E006A4993 /* libzbar.a */; };
 		85D94CEF1B40EA480085A44E /* IndentifyMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D94CE61B40EA480085A44E /* IndentifyMessage.m */; };
 		85D94CF01B40EA480085A44E /* IndentifyMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D94CE61B40EA480085A44E /* IndentifyMessage.m */; };
 		85D94CF11B40EA480085A44E /* GetIndentifyCodeMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D94CE81B40EA480085A44E /* GetIndentifyCodeMessage.m */; };
@@ -1022,7 +1023,6 @@
 		85DC4E7D1B3E774E009B2177 /* icon_search_history_search_n@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C6F11F5A1A7615DA00B41E64 /* icon_search_history_search_n@2x.png */; };
 		85DC4E7E1B3E774E009B2177 /* GuidePage1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C6091FAE1A89F737001007E1 /* GuidePage1@2x.png */; };
 		85DC4E881B3E781D009B2177 /* WoChuangFu_AppStore-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 85DC4E871B3E781D009B2177 /* WoChuangFu_AppStore-Info.plist */; };
-		85DC4E901B3E87E3009B2177 /* libHttpConnector.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 85DC4E8F1B3E87E3009B2177 /* libHttpConnector.a */; };
 		85EF55691B293154006A4993 /* RFSegmentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 85EF55681B293154006A4993 /* RFSegmentView.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		85EF556F1B295AF4006A4993 /* RealnameVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 85EF556E1B295AF4006A4993 /* RealnameVC.m */; };
 		85EF55711B295CD7006A4993 /* imageBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 85EF55701B295CD7006A4993 /* imageBackground.png */; };
@@ -1935,7 +1935,6 @@
 		85D94D801B41315B0085A44E /* SueccOpenUserMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SueccOpenUserMessage.m; sourceTree = "<group>"; };
 		85DC4E841B3E774E009B2177 /* WoChuangFu_AppStore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WoChuangFu_AppStore.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		85DC4E871B3E781D009B2177 /* WoChuangFu_AppStore-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "WoChuangFu_AppStore-Info.plist"; sourceTree = "<group>"; };
-		85DC4E8F1B3E87E3009B2177 /* libHttpConnector.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libHttpConnector.a; sourceTree = "<group>"; };
 		85EF55671B293154006A4993 /* RFSegmentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RFSegmentView.h; sourceTree = "<group>"; };
 		85EF55681B293154006A4993 /* RFSegmentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RFSegmentView.m; sourceTree = "<group>"; };
 		85EF556D1B295AF4006A4993 /* RealnameVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RealnameVC.h; sourceTree = "<group>"; };
@@ -2282,12 +2281,12 @@
 				85DC4D601B3E774E009B2177 /* libsqlite3.dylib in Frameworks */,
 				85DC4D611B3E774E009B2177 /* libiconv.dylib in Frameworks */,
 				85DC4D621B3E774E009B2177 /* QuartzCore.framework in Frameworks */,
+				85BA24611B4243A50084DB27 /* libzbar.a in Frameworks */,
 				85DC4D631B3E774E009B2177 /* ShareSDKiPhoneSimpleShareViewUI.framework in Frameworks */,
 				85DC4D641B3E774E009B2177 /* libSinaWeiboSDK.a in Frameworks */,
 				85DC4D651B3E774E009B2177 /* CFNetwork.framework in Frameworks */,
 				85DC4D661B3E774E009B2177 /* CoreGraphics.framework in Frameworks */,
 				85DC4D671B3E774E009B2177 /* UIKit.framework in Frameworks */,
-				85DC4E901B3E87E3009B2177 /* libHttpConnector.a in Frameworks */,
 				85DC4D681B3E774E009B2177 /* Foundation.framework in Frameworks */,
 				85DC4D691B3E774E009B2177 /* ShareSDKFlatShareViewUI.framework in Frameworks */,
 			);
@@ -2323,7 +2322,6 @@
 		39499F33196E2E9C0043B5FC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				85DC4E8F1B3E87E3009B2177 /* libHttpConnector.a */,
 				85EF55BD1B29946E006A4993 /* libMobClickLibrary.a */,
 				85EF55BE1B29946E006A4993 /* libPushSDK.a */,
 				85EF55BF1B29946E006A4993 /* libzbar.a */,
@@ -4145,9 +4143,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 39499F5D196E2E9C0043B5FC /* Build configuration list for PBXNativeTarget "WoChuangFu" */;
 			buildPhases = (
-				3949A059196E30950043B5FC /* Run Script */,
+				85163DB41B4143B00011FE79 /* ShellScript */,
 				39499F2D196E2E9C0043B5FC /* Sources */,
-				3949A059196E30950043B5FC /* Run Script */,
 				39499F2E196E2E9C0043B5FC /* Frameworks */,
 				39499F2F196E2E9C0043B5FC /* Resources */,
 				5C548F2C1A4C3C53007CC5BB /* CopyFiles */,
@@ -4183,9 +4180,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 85DC4E801B3E774E009B2177 /* Build configuration list for PBXNativeTarget "WoChuangFu_AppStore" */;
 			buildPhases = (
-				85DC4C501B3E774E009B2177 /* Run Script */,
 				85DC4C511B3E774E009B2177 /* Sources */,
-				85DC4C501B3E774E009B2177 /* Run Script */,
 				85DC4D371B3E774E009B2177 /* Frameworks */,
 				85DC4D6A1B3E774E009B2177 /* Resources */,
 				85DC4E7F1B3E774E009B2177 /* CopyFiles */,
@@ -4844,28 +4839,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		3949A059196E30950043B5FC /* Run Script */ = {
+		85163DB41B4143B00011FE79 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Run Script";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if [ lib/libHttpConnector.a ]\nthen\nrm -f lib/libHttpConnector.a\nfi\n\nif [ ${PLATFORM_NAME} = \"iphoneos\" ]\nthen\ncp lib/libHttpConnector-d.a lib/libHttpConnector.a\nelse\ncp lib/libHttpConnector-s.a lib/libHttpConnector.a\nfi";
-		};
-		85DC4C501B3E774E009B2177 /* Run Script */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Run Script";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -5545,14 +5525,11 @@
 					"-Ilib/include",
 					"-I${SDKROOT}/usr/include/libxml2",
 				);
-				OTHER_LDFLAGS = (
-					"-all_load",
-					"-lHttpConnector",
-				);
+				OTHER_LDFLAGS = "-lHttpConnector";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "49e23dbf-3fa8-4fc3-9823-4c198d7fb40c";
 				TARGETED_DEVICE_FAMILY = 1;
-				VALID_ARCHS = "armv7 armv7s";
+				VALID_ARCHS = "armv7 armv7s arm64";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Distribution;
@@ -5703,14 +5680,11 @@
 					"-Ilib/include",
 					"-I${SDKROOT}/usr/include/libxml2",
 				);
-				OTHER_LDFLAGS = (
-					"-all_load",
-					"-lHttpConnector",
-				);
+				OTHER_LDFLAGS = "-lHttpConnector";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "0f36c9c8-6884-48fb-87ca-d6ab2bd62e25";
 				TARGETED_DEVICE_FAMILY = 1;
-				VALID_ARCHS = "armv7 armv7s";
+				VALID_ARCHS = "armv7 armv7s arm64";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -5758,14 +5732,11 @@
 					"-Ilib/include",
 					"-I${SDKROOT}/usr/include/libxml2",
 				);
-				OTHER_LDFLAGS = (
-					"-all_load",
-					"-lHttpConnector",
-				);
+				OTHER_LDFLAGS = "-lHttpConnector";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "49e23dbf-3fa8-4fc3-9823-4c198d7fb40c";
 				TARGETED_DEVICE_FAMILY = 1;
-				VALID_ARCHS = "armv7 armv7s";
+				VALID_ARCHS = "armv7 armv7s arm64";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -5862,7 +5833,7 @@
 					"-Ilib/include",
 					"-I${SDKROOT}/usr/include/libxml2",
 				);
-				OTHER_LDFLAGS = "";
+				OTHER_LDFLAGS = "-lHttpConnector";
 				PRIVATE_HEADERS_FOLDER_PATH = WoChuangFu_AppStore.app/PrivateHeaders;
 				PRODUCT_NAME = WoChuangFu_AppStore;
 				PROVISIONING_PROFILE = "d615163c-a5f5-4010-9f97-00414c62c4f7";
@@ -5918,7 +5889,7 @@
 					"-Ilib/include",
 					"-I${SDKROOT}/usr/include/libxml2",
 				);
-				OTHER_LDFLAGS = "";
+				OTHER_LDFLAGS = "-lHttpConnector";
 				PRIVATE_HEADERS_FOLDER_PATH = WoChuangFu_AppStore.app/PrivateHeaders;
 				PRODUCT_NAME = WoChuangFu_AppStore;
 				PROVISIONING_PROFILE = "";
@@ -5970,7 +5941,7 @@
 					"-Ilib/include",
 					"-I${SDKROOT}/usr/include/libxml2",
 				);
-				OTHER_LDFLAGS = "";
+				OTHER_LDFLAGS = "-lHttpConnector";
 				PRIVATE_HEADERS_FOLDER_PATH = WoChuangFu_AppStore.app/PrivateHeaders;
 				PRODUCT_NAME = WoChuangFu_AppStore;
 				PROVISIONING_PROFILE = "593455cf-31da-4467-927e-0780cb77a57b";
