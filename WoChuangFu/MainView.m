@@ -203,12 +203,8 @@
     }
     bussineDataService* buss = [bussineDataService sharedDataService];
     buss.target = self;
-    NSDictionary *dic=[[NSDictionary alloc] initWithObjectsAndKeys:
-//                       [NSNull null],@"expand",
-//                       [NSNull null],@"advType",
-                       nil];
-    [buss mainPage:dic];
-    [dic release];
+   
+    [buss mainPage:nil];
 }
 
 #pragma mark -

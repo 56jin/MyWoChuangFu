@@ -18,17 +18,18 @@
 {
     NSDictionary *headerData = [[NSDictionary alloc] initWithObjectsAndKeys:MAIN_PAGE_BIZCODE,@"bizCode",nil];
     
-    NSString *requestClass = [[NSString alloc] initWithFormat:JSON_BODY_REUEST,MAIN_PAGE_BIZCODE];
+//    NSString *requestClass = [[NSString alloc] initWithFormat:JSON_BODY_REUEST,MAIN_PAGE_BIZCODE];
     
 //    NSArray *arr=[NSArray arrayWithObjects:[requestInfo objectForKey:@"advType"], nil];
     //NSDictionary *bodyData = [NSNull null];//[[NSDictionary alloc] initWithObjectsAndKeys:
                               //requestClass,@"@class",
                               //nil];
-    [requestClass release];
+    
     
     NSString *requestStr = [self getRequestJSONFromHeader:headerData
                                                  withBody:nil];
     [headerData release];
+//    [requestClass release];
 //    [bodyData release];
     MyLog(@"请求报文:%@",requestStr);
 	return requestStr;//[message hexStringDes:requestStr withEncrypt:YES];

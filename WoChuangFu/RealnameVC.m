@@ -104,8 +104,9 @@
     if (devarry && devarry != nil && devarry.count > 0) {
         NSLog(@"设备信息 %@",devarry);
         
-        for (NSDictionary *dic in devarry) {
-            if (!dic || dic.count <= 0 || [dic allKeys].count <= 0) {
+        for (NSDictionary *dic in arry) {
+            if ( dic.count <= 0 || [dic allKeys].count <= 0) {
+                 NSLog(@"移除信息 ");
                 [devarry removeObject:dic];
             }
         }
@@ -126,9 +127,20 @@
 //            }
 //        }
         
-        zsy = [[ZSYPopListView alloc]initWitZSYPopFrame:CGRectMake(0, 0, 200, devarry.count  * 55 + 50) WithNSArray:devarry WithString:@"选择蓝牙读卡器类型"];
-        zsy.isTitle = NO;
-        zsy.delegate = self;
+        if(devarry.count <= 0){
+            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"您附近没有找到蓝牙读卡器" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"重新搜索", nil];
+            alert.tag = 10108;
+            [alert show];
+            [alert release];
+            
+        }
+        else {
+            zsy = [[ZSYPopListView alloc]initWitZSYPopFrame:CGRectMake(0, 0, 200, devarry.count  * 55 + 50) WithNSArray:devarry WithString:@"选择蓝牙读卡器类型"];
+            zsy.isTitle = NO;
+            zsy.delegate = self;
+        }
+        
+       
         
         
     }else {
@@ -144,11 +156,7 @@
     
     [devarry release];
     
-//    rwcard=[[SimCardReader alloc]init];
-//    
-//    [rwcard setReaderDelegate:self];
-    
-//    adapter = [[BlueToothDCAdapter alloc] init];
+
 }
 
 #pragma  mark -bletool 's delegate
@@ -627,8 +635,13 @@
 //        return;
 //    }
     
-    [self sureFangDang];
-
+    
+    UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"提示" message:[NSString  stringWithFormat:@"是否确定实名返档\n到%@号码上",fanNumTextFiled.text] delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"马上返档", nil];
+    alertView.tag = 288;
+    [alertView show];
+    [alertView release];
+    
+   
 }
 
 - (void)sureFangDang {
@@ -645,14 +658,7 @@
                              remarkTextFild.text,@"remark ",
                              nil];
     
-    //    NSDictionary *SendDic = [[NSDictionary alloc] initWithObjectsAndKeys:
-    //                             session,@"sessionId",
-    //                            @"18550001417",@"phoneNum",
-    //                             @"yihai",@"custName",
-    //                            @"450821199108054988",@"custNo",
-    //                             @"@#$$$$$$$$",@"custAddr",
-    //                             @"wowoowowowow",@"remark ",
-    //                             nil];
+
     
     [buss sureGuiDang:SendDic];
     [SendDic release];
@@ -832,12 +838,14 @@
     }
     
 }
+
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     NSString *buttonTitle = [alertView buttonTitleAtIndex:buttonIndex];
-    if(alertView.tag==10101)
+    if(alertView.tag==10101 || alertView.tag == 288 )
     {
-        if([buttonTitle isEqualToString:@"重试"]){
+
+        if([buttonTitle isEqualToString:@"重试"] || [buttonTitle isEqualToString:@"马上返档"]){
             [self sureFangDang];
         }
     }

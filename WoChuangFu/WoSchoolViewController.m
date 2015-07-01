@@ -25,7 +25,7 @@
 //#define MainHeight  [[UIScreen mainScreen] bounds].size.height
 //#define MainWidth   [[UIScreen mainScreen] bounds].size.width
 
-@interface WoSchoolViewController ()<RFSegmentViewDelegate,TitleBarDelegate,UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,HttpBackDelegate,CBCentralManagerDelegate,BR_Callback,UITextFieldDelegate,AddressComBoxDelegate,ZSYPopListViewDelegate> {
+@interface WoSchoolViewController ()<RFSegmentViewDelegate,TitleBarDelegate,UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,HttpBackDelegate,CBCentralManagerDelegate,BR_Callback,UITextFieldDelegate,AddressComBoxDelegate,ZSYPopListViewDelegate,UIAlertViewDelegate> {
     UITableView *myTabView;
     UIView *oldView;  //老宽带用户
     UIScrollView *myScrollView; //新宽带用户页面
@@ -235,6 +235,15 @@
             {
            
                 bussineDataService* buss = [bussineDataService sharedDataService];
+                NSLog(@"~~~~~~~~~~~~返回信息%@",buss.rspInfo);
+
+                if ([buss.rspInfo objectForKey:@"addrs"] == nil || [buss.rspInfo objectForKey:@"addrs"] == NULL || (NSNull *)[buss.rspInfo objectForKey:@"addrs"] == [NSNull null]) {
+                    [self ShowAlertMyView:@"暂无查询到您输入的地址"];
+                    return;
+                }
+                
+                
+                
                 self.jiedaoData = [buss.rspInfo objectForKey:@"addrs"];
                 
                 
@@ -374,8 +383,11 @@
                 NSString *respCode = buss.rspInfo[@"respCode"];
                 if ([respCode integerValue] == 1) {
                     //正确
-                    
-                    [self sureBuyOrder];
+                    UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"提示" message:@"是否确定马上下单" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"马上下单", nil];
+                    alertView.tag = 288;
+                    [alertView show];
+                   
+//                    [self sureBuyOrder];
                 }
                 else {
                     [self ShowAlertMyView:buss.rspInfo[@"respDesc"]];
@@ -599,6 +611,20 @@
 
 
 
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSString *buttonTitle = [alertView buttonTitleAtIndex:buttonIndex];
+    if(alertView.tag == 288 )
+    {
+        
+        if([buttonTitle isEqualToString:@"马上下单"]){
+            [self sureBuyOrder];
+
+        }
+    }
+    
+}
+
 
 -(void)loadView {
     [super loadView];
@@ -631,7 +657,7 @@
     
     [super viewDidLoad];
     
-    [self sendRequestData];
+    
 //    adapter = [[BlueToothDCAdapter alloc] init];
      bletool =[[BleTool alloc]init:self]; //bletool初始化
     selectInteger = 0;
@@ -685,12 +711,14 @@
      sureOrderBtn.tag = 3000;
     [sureOrderBtn.layer setMasksToBounds:YES];
     [sureOrderBtn.layer setCornerRadius:4.0];
-    [sureOrderBtn.titleLabel setFont:[UIFont systemFontOfSize:20 weight:20]];
+    [sureOrderBtn.titleLabel setFont:[UIFont systemFontOfSize:20.0f]];
     [sureOrderBtn addTarget:self action:@selector(sureOrderEven:) forControlEvents:UIControlEventTouchUpInside];
     [allView addSubview:sureOrderBtn];
     [self initWithNewView]; //新装宽带用户页面
     [self initWithOldView]; //老宽带用户页面
     // Do any additional setup after loading the view.
+    
+    [self sendRequestData];
 }
 
 #pragma mark-    新装宽带用户页面
@@ -777,7 +805,7 @@
         sureOrderBtn.tag = 2000;
         [sureOrderBtn.layer setMasksToBounds:YES];
         [sureOrderBtn.layer setCornerRadius:4.0];
-        [sureOrderBtn.titleLabel setFont:[UIFont systemFontOfSize:20 weight:20]];
+        [sureOrderBtn.titleLabel setFont:[UIFont systemFontOfSize:20]];
         [sureOrderBtn addTarget:self action:@selector(sureOrderEven:) forControlEvents:UIControlEventTouchUpInside];
         [myScrollView addSubview:sureOrderBtn];
         [sureOrderBtn setHidden:YES];
@@ -908,7 +936,7 @@
     [sureOrderBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, -(MainWidth - 220), 0, 0)];
 //    [sureOrderBtn.layer setMasksToBounds:YES];
 //    [sureOrderBtn.layer setCornerRadius:4.0];
-    [sureOrderBtn.titleLabel setFont:[UIFont systemFontOfSize:16 weight:20]];
+    [sureOrderBtn.titleLabel setFont:[UIFont systemFontOfSize:16 ]];
     [sureOrderBtn addTarget:self action:@selector(sureOrderEven:) forControlEvents:UIControlEventTouchUpInside];
     
     [SFview addSubview:sureOrderBtn];
@@ -993,7 +1021,7 @@
              [sureOrderBtn.layer setBorderColor:[[UIColor groupTableViewBackgroundColor] CGColor]];
         }
        
-        [sureOrderBtn.titleLabel setFont:[UIFont systemFontOfSize:15 weight:20]];
+        [sureOrderBtn.titleLabel setFont:[UIFont systemFontOfSize:15]];
         [sureOrderBtn addTarget:self action:@selector(sureOrGetCodeEven:) forControlEvents:UIControlEventTouchUpInside];
         [NumView addSubview:sureOrderBtn];
         
@@ -1435,17 +1463,27 @@
     if (devarry && devarry != nil && devarry.count > 0) {
         NSLog(@"设备信息 %@",devarry);
         
-        for (NSDictionary *dic in devarry) {
-            if (!dic || dic.count <= 0 || [dic allKeys].count <= 0) {
+        for (NSDictionary *dic in arry) {
+            if ( dic.count <= 0 || [dic allKeys].count <= 0) {
                 [devarry removeObject:dic];
             }
         }
         
         [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
         
-        zsy = [[ZSYPopListView alloc]initWitZSYPopFrame:CGRectMake(0, 0, 200, devarry.count  * 55 + 50) WithNSArray:devarry WithString:@"选择蓝牙读卡器类型"];
-        zsy.isTitle = NO;
-        zsy.delegate = self;
+        if(devarry.count <= 0){
+            UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"提示" message:@"您附近没有找到蓝牙读卡器" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"重新搜索", nil];
+            alertView.tag = 10108;
+            [alertView show];
+            
+        }else {
+            zsy = [[ZSYPopListView alloc]initWitZSYPopFrame:CGRectMake(0, 0, 200, devarry.count  * 55 + 50) WithNSArray:devarry WithString:@"选择蓝牙读卡器类型"];
+            zsy.isTitle = NO;
+            zsy.delegate = self;
+        }
+
+        
+        
         
         
     }else {
@@ -2042,7 +2080,7 @@
                              @"10",@"maxRows",
                              @"woRh",@"woRhflag",
                              nil];
-    //发送确认下单请求
+    
     [buss filterAddress:SendDic];
 }
 

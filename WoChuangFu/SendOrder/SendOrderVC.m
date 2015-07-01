@@ -41,7 +41,7 @@
                                                      ShowSearch:NO
                                                        TitlePos:0];
     [titleBar setLeftIsHiden:NO];
-    titleBar.title = @"派单开户";
+    titleBar.title = @"现场开户";
     titleBar.target = self;
     titleBar.frame = CGRectMake(0,20, self.view.frame.size.width,TITLE_BAR_HEIGHT);
     [self.view addSubview:titleBar];

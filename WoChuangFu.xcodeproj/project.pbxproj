@@ -802,7 +802,7 @@
 		85DC4DA01B3E774E009B2177 /* login_type_sheet_a.png in Resources */ = {isa = PBXBuildFile; fileRef = 5C68F1041A0B196E0040B288 /* login_type_sheet_a.png */; };
 		85DC4DA11B3E774E009B2177 /* logo_key_safari2.png in Resources */ = {isa = PBXBuildFile; fileRef = 859F33371B02FACE00B72337 /* logo_key_safari2.png */; };
 		85DC4DA21B3E774E009B2177 /* btn_list_top_n.png in Resources */ = {isa = PBXBuildFile; fileRef = C63646C61A43CA3A006F79F0 /* btn_list_top_n.png */; };
-		85DC4DA31B3E774E009B2177 /* fandang.png in Resources */ = {isa = PBXBuildFile; fileRef = 85FED32B1B1D97760025988B /* fandang.png */; };
+		85DC4DA31B3E774E009B2177 /* fandang@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85FED32B1B1D97760025988B /* fandang@2x.png */; };
 		85DC4DA41B3E774E009B2177 /* Log.png in Resources */ = {isa = PBXBuildFile; fileRef = 395D9B92197673F000C1B1B2 /* Log.png */; };
 		85DC4DA51B3E774E009B2177 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 39499F3D196E2E9C0043B5FC /* InfoPlist.strings */; };
 		85DC4DA61B3E774E009B2177 /* btn_index_nav_more.png in Resources */ = {isa = PBXBuildFile; fileRef = C6F1F44A1A762CC9006FB01A /* btn_index_nav_more.png */; };
@@ -1014,7 +1014,7 @@
 		85DC4E741B3E774E009B2177 /* peijian.png in Resources */ = {isa = PBXBuildFile; fileRef = 395D9B9B1976766B00C1B1B2 /* peijian.png */; };
 		85DC4E751B3E774E009B2177 /* btn_index_nav_more@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C6F1F44B1A762CC9006FB01A /* btn_index_nav_more@2x.png */; };
 		85DC4E761B3E774E009B2177 /* biaoyu.png in Resources */ = {isa = PBXBuildFile; fileRef = 395D9BAD19769B0B00C1B1B2 /* biaoyu.png */; };
-		85DC4E771B3E774E009B2177 /* imageBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 85EF55701B295CD7006A4993 /* imageBackground.png */; };
+		85DC4E771B3E774E009B2177 /* imageBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85EF55701B295CD7006A4993 /* imageBackground@2x.png */; };
 		85DC4E781B3E774E009B2177 /* btn_navbar_n@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C6E834A11A59442F0066C64D /* btn_navbar_n@2x.png */; };
 		85DC4E791B3E774E009B2177 /* chongzhi.png in Resources */ = {isa = PBXBuildFile; fileRef = 395D9B951976766B00C1B1B2 /* chongzhi.png */; };
 		85DC4E7A1B3E774E009B2177 /* icon_list_tr.png in Resources */ = {isa = PBXBuildFile; fileRef = C6F741541A773DE1000FE809 /* icon_list_tr.png */; };
@@ -1025,12 +1025,12 @@
 		85DC4E881B3E781D009B2177 /* WoChuangFu_AppStore-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 85DC4E871B3E781D009B2177 /* WoChuangFu_AppStore-Info.plist */; };
 		85EF55691B293154006A4993 /* RFSegmentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 85EF55681B293154006A4993 /* RFSegmentView.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		85EF556F1B295AF4006A4993 /* RealnameVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 85EF556E1B295AF4006A4993 /* RealnameVC.m */; };
-		85EF55711B295CD7006A4993 /* imageBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 85EF55701B295CD7006A4993 /* imageBackground.png */; };
+		85EF55711B295CD7006A4993 /* imageBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85EF55701B295CD7006A4993 /* imageBackground@2x.png */; };
 		85EF557B1B297A46006A4993 /* ExternalAccessory.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85EF557A1B297A46006A4993 /* ExternalAccessory.framework */; };
 		85EF55C31B29946E006A4993 /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 85EF55BD1B29946E006A4993 /* libMobClickLibrary.a */; };
 		85EF55C41B29946E006A4993 /* libPushSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 85EF55BE1B29946E006A4993 /* libPushSDK.a */; };
 		85EF55C51B29946E006A4993 /* libzbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 85EF55BF1B29946E006A4993 /* libzbar.a */; };
-		85FED32C1B1D97760025988B /* fandang.png in Resources */ = {isa = PBXBuildFile; fileRef = 85FED32B1B1D97760025988B /* fandang.png */; };
+		85FED32C1B1D97760025988B /* fandang@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85FED32B1B1D97760025988B /* fandang@2x.png */; };
 		85FED3421B1DA8F40025988B /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85FED3411B1DA8F40025988B /* CoreBluetooth.framework */; };
 		C601173D1A7B2DCF000ED2DA /* FilterView.m in Sources */ = {isa = PBXBuildFile; fileRef = C601173C1A7B2DCF000ED2DA /* FilterView.m */; };
 		C601C8631A7A1292005E8751 /* GetBackPwdMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = C601C8621A7A1292005E8751 /* GetBackPwdMessage.m */; };
@@ -1939,12 +1939,12 @@
 		85EF55681B293154006A4993 /* RFSegmentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RFSegmentView.m; sourceTree = "<group>"; };
 		85EF556D1B295AF4006A4993 /* RealnameVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RealnameVC.h; sourceTree = "<group>"; };
 		85EF556E1B295AF4006A4993 /* RealnameVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RealnameVC.m; sourceTree = "<group>"; };
-		85EF55701B295CD7006A4993 /* imageBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = imageBackground.png; sourceTree = "<group>"; };
+		85EF55701B295CD7006A4993 /* imageBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "imageBackground@2x.png"; sourceTree = "<group>"; };
 		85EF557A1B297A46006A4993 /* ExternalAccessory.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExternalAccessory.framework; path = System/Library/Frameworks/ExternalAccessory.framework; sourceTree = SDKROOT; };
 		85EF55BD1B29946E006A4993 /* libMobClickLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libMobClickLibrary.a; path = lib/libMobClickLibrary.a; sourceTree = "<group>"; };
 		85EF55BE1B29946E006A4993 /* libPushSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPushSDK.a; path = lib/libPushSDK.a; sourceTree = "<group>"; };
 		85EF55BF1B29946E006A4993 /* libzbar.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libzbar.a; path = lib/libzbar.a; sourceTree = "<group>"; };
-		85FED32B1B1D97760025988B /* fandang.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fandang.png; sourceTree = "<group>"; };
+		85FED32B1B1D97760025988B /* fandang@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fandang@2x.png"; sourceTree = "<group>"; };
 		85FED3411B1DA8F40025988B /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		C601173C1A7B2DCF000ED2DA /* FilterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilterView.m; sourceTree = "<group>"; };
 		C601C8611A7A1292005E8751 /* GetBackPwdMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetBackPwdMessage.h; sourceTree = "<group>"; };
@@ -2978,8 +2978,8 @@
 				85A5D9E91B310A280083263E /* WoSchoolViewController.m */,
 				85D94CF91B40EB480085A44E /* SchoolViewTable.h */,
 				85D94CFA1B40EB480085A44E /* SchoolViewTable.m */,
-				85EF55701B295CD7006A4993 /* imageBackground.png */,
-				85FED32B1B1D97760025988B /* fandang.png */,
+				85EF55701B295CD7006A4993 /* imageBackground@2x.png */,
+				85FED32B1B1D97760025988B /* fandang@2x.png */,
 			);
 			name = Set;
 			sourceTree = "<group>";
@@ -4304,7 +4304,7 @@
 				5C68F1061A0B196E0040B288 /* login_type_sheet_a.png in Resources */,
 				859F33391B02FACE00B72337 /* logo_key_safari2.png in Resources */,
 				C63646D11A43CA3A006F79F0 /* btn_list_top_n.png in Resources */,
-				85FED32C1B1D97760025988B /* fandang.png in Resources */,
+				85FED32C1B1D97760025988B /* fandang@2x.png in Resources */,
 				395D9B94197673F000C1B1B2 /* Log.png in Resources */,
 				39499F3F196E2E9C0043B5FC /* InfoPlist.strings in Resources */,
 				C6F1F44E1A762CC9006FB01A /* btn_index_nav_more.png in Resources */,
@@ -4522,7 +4522,7 @@
 				C6F1F44F1A762CC9006FB01A /* btn_index_nav_more@2x.png in Resources */,
 				85D94D611B412F9C0085A44E /* iconPhoto.png in Resources */,
 				395D9BB519769B0B00C1B1B2 /* biaoyu.png in Resources */,
-				85EF55711B295CD7006A4993 /* imageBackground.png in Resources */,
+				85EF55711B295CD7006A4993 /* imageBackground@2x.png in Resources */,
 				C6E834A31A59442F0066C64D /* btn_navbar_n@2x.png in Resources */,
 				395D9B9D1976766B00C1B1B2 /* chongzhi.png in Resources */,
 				C6F741581A773DE1000FE809 /* icon_list_tr.png in Resources */,
@@ -4603,7 +4603,7 @@
 				85DC4DA01B3E774E009B2177 /* login_type_sheet_a.png in Resources */,
 				85DC4DA11B3E774E009B2177 /* logo_key_safari2.png in Resources */,
 				85DC4DA21B3E774E009B2177 /* btn_list_top_n.png in Resources */,
-				85DC4DA31B3E774E009B2177 /* fandang.png in Resources */,
+				85DC4DA31B3E774E009B2177 /* fandang@2x.png in Resources */,
 				85DC4DA41B3E774E009B2177 /* Log.png in Resources */,
 				85DC4DA51B3E774E009B2177 /* InfoPlist.strings in Resources */,
 				85DC4DA61B3E774E009B2177 /* btn_index_nav_more.png in Resources */,
@@ -4825,7 +4825,7 @@
 				85DC4E741B3E774E009B2177 /* peijian.png in Resources */,
 				85DC4E751B3E774E009B2177 /* btn_index_nav_more@2x.png in Resources */,
 				85DC4E761B3E774E009B2177 /* biaoyu.png in Resources */,
-				85DC4E771B3E774E009B2177 /* imageBackground.png in Resources */,
+				85DC4E771B3E774E009B2177 /* imageBackground@2x.png in Resources */,
 				85DC4E781B3E774E009B2177 /* btn_navbar_n@2x.png in Resources */,
 				85DC4E791B3E774E009B2177 /* chongzhi.png in Resources */,
 				85DC4E7A1B3E774E009B2177 /* icon_list_tr.png in Resources */,
@@ -5519,6 +5519,7 @@
 					"$(PROJECT_DIR)/WoChuangFu/tools/ShareSDK/Extend/YiXinSDK",
 					"$(PROJECT_DIR)/BlueToothSocket",
 					"$(PROJECT_DIR)/lib",
+					"$(PROJECT_DIR)",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (
@@ -5674,6 +5675,7 @@
 					"$(PROJECT_DIR)/WoChuangFu/tools/ShareSDK/Extend/YiXinSDK",
 					"$(PROJECT_DIR)/BlueToothSocket",
 					"$(PROJECT_DIR)/lib",
+					"$(PROJECT_DIR)",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (
@@ -5710,7 +5712,10 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WoChuangFu/WoChuangFu-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = WoCFu;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					WoCFu,
+					RELEASE,
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -5726,6 +5731,7 @@
 					"$(PROJECT_DIR)/WoChuangFu/tools/ShareSDK/Extend/YiXinSDK",
 					"$(PROJECT_DIR)/BlueToothSocket",
 					"$(PROJECT_DIR)/lib",
+					"$(PROJECT_DIR)",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (
@@ -5920,7 +5926,10 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WoChuangFu/WoChuangFu-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = WoCFu_AppStore;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					WoCFu_AppStore,
+					RELEASE,
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,

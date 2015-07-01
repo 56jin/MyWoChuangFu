@@ -57,7 +57,7 @@
         _dataSource = [NSMutableArray arrayWithObjects:@"消息中心",@"系统更新", @"清除缓存",@"加入机构",nil];//@"加入机构",
     }
     else {
-        _dataSource = [NSMutableArray arrayWithObjects:@"实名返档",@"沃校园办理",@"派单开户",nil]; //@"沃校园办理",@"派单开户",
+        _dataSource = [NSMutableArray arrayWithObjects:@"实名返档",@"沃校园办理",@"现场开户",nil]; //@"沃校园办理",@"派单开户",
     }
 //    else {
 //        UIButton *rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -213,10 +213,10 @@
     else if ([_dataSource[indexPath.row] isEqualToString:@"沃校园办理"])
     {
         
-        [self isRootGuidang];
+        [self isRootSchool];
         
     }
-    else if ([_dataSource[indexPath.row] isEqualToString:@"派单开户"])
+    else if ([_dataSource[indexPath.row] isEqualToString:@"现场开户"])
     {
         
 //        [self isRootGuidang];
@@ -246,8 +246,9 @@
    
     }
     
-    bussineDataService *buss=[bussineDataService sharedDataServicee];
+    bussineDataService *buss = [bussineDataService sharedDataServicee];
     buss.target=self;
+
     NSDictionary *SendDic = [[NSDictionary alloc] initWithObjectsAndKeys:
                              session,@"sessionId",
                              nil];
@@ -266,6 +267,19 @@
                              nil];
     [buss isRootPush:SendDic];
 
+}
+
+- (void)isRootSchool {
+    bussineDataService *buss=[bussineDataService sharedDataService];
+    buss.target=self;
+    NSString *session = [[NSUserDefaults standardUserDefaults] objectForKey:@"sessionid"];
+    
+    NSDictionary *SendDic = [[NSDictionary alloc] initWithObjectsAndKeys:
+                             session,@"sessionId",
+                             @"woSchool",@"menuName",
+                             nil];
+    [buss isRootPush:SendDic];
+    
 }
 
 
@@ -323,14 +337,12 @@
            
  
             if ( [TabStr isEqualToString:@"沃校园办理"]) {
+               NSString *isChangGui = [NSString stringWithFormat:@"%@",bus.rspInfo[@"marketingMethods"]];
                WoSchoolViewController * WoSchoolView = [[WoSchoolViewController alloc]init];
                 WoSchoolView.hidesBottomBarWhenPushed = YES;
-                NSString *isChangGui = [NSString stringWithFormat:@"%@",bus.rspInfo[@"marketingMethods"]];
                 [WoSchoolView setIsCG:isChangGui];
-                
-
-
                 [self.navigationController pushViewController:WoSchoolView animated:YES];
+                
             }
             else if( [TabStr isEqualToString:@"实名返档"]) {
 
@@ -339,11 +351,12 @@
                 [self.navigationController pushViewController:realName animated:YES];
                 
             }
-            else if( [TabStr isEqualToString:@"派单开户"]) {
+            else if( [TabStr isEqualToString:@"现场开户"]) {
                 
                 SendOrderVC *sendOrderVC = [[SendOrderVC alloc] init];
                 sendOrderVC.hidesBottomBarWhenPushed = YES;
                 [self.navigationController pushViewController:sendOrderVC animated:YES];
+                
                 
             }
 
@@ -501,21 +514,20 @@
         }
     }
     
+    
+
+    
     if([[RealNameYesOrNoMessage getBizCode] isEqualToString:bizCode]){
-        if(msg == nil || msg.length <= 0){
+        NSLog(@"%@",info);
+        
+        if([info objectForKey:@"MSG"] == [NSNull null]){
             msg = @"获取数据失败!";
-//            [self ShowProgressHUDwithMessage:msg];
         }
-//        else {
-//            [self ShowProgressHUDwithMessage:msg];
-//
-//        }
-//        [self showAlertViewTitle:@"提示"
-//                         message:msg
-//                        delegate:self
-//                             tag:10101
-//               cancelButtonTitle:@"取消"
-//               otherButtonTitles:@"重试",nil];
+        else if(msg == nil || msg.length <= 0 || msg == NULL || (NSNull *)msg == [NSNull null]){
+            msg = @"获取数据失败!";
+
+        }
+
         
         
         NSLog(@"\n\n\n\n   chaoshi  :  %@  \n\n\n",msg);

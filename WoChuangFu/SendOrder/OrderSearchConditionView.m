@@ -14,6 +14,7 @@
 #define CERT_ID_FIELD_TAG       114
 #define APP_ACCOUNT_ID_TAG      115
 
+
 @implementation OrderSearchConditionView
 
 @synthesize delegate;
@@ -191,7 +192,6 @@
     resetBtn.layer.borderColor = [[ComponentsFactory createColorByHex:@"#F96C00"] CGColor];
 
     [self addSubview:resetBtn];
-    [resetBtn release];
     
     UIButton *searchBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     searchBtn.backgroundColor = [ComponentsFactory createColorByHex:@"#F96C00"];
@@ -211,7 +211,6 @@
     searchBtn.layer.borderWidth = 1;
     searchBtn.layer.borderColor = [[ComponentsFactory createColorByHex:@"#F96C00"] CGColor];
     [self addSubview:searchBtn];
-    [searchBtn release];
 
     //布局进入稽核页面按钮
     UIButton *checkBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -226,7 +225,6 @@
     checkBtn.layer.borderWidth = 1;
     checkBtn.layer.borderColor = [[ComponentsFactory createColorByHex:@"#F96C00"] CGColor];
     [self addSubview:checkBtn];
-    [checkBtn release];
 
 }
 
@@ -242,6 +240,7 @@
 #pragma mark - UIAction
 - (void)reset:(id)sender
 {
+    [self hiddenkeyWindows];
     UIView  *conditionView = [self viewWithTag:CONDITION_VIEW_TAG];
     UITextField  *consignField = (UITextField *)[conditionView viewWithTag:CONSIGN_FIELD_TAG];
     UITextField  *orderIdField = (UITextField *)[conditionView viewWithTag:ORDER_ID_FIELD_TAG];
@@ -256,6 +255,7 @@
 
 - (void)search:(id)sender
 {
+    [self hiddenkeyWindows];
     NSLog(@"search");
     UIView  *conditionView = [self viewWithTag:CONDITION_VIEW_TAG];
     UITextField  *consignField = (UITextField *)[conditionView viewWithTag:CONSIGN_FIELD_TAG];
@@ -346,18 +346,17 @@
 
 - (void)gotoCheckView:(id)sender
 {
+    [self hiddenkeyWindows];
     NSLog(@"check");
 }
 
 
 - (void)handleFromTap:(UIGestureRecognizer *)tapSender
 {
-
+    [self hiddenkeyWindows];
 }
 
-#pragma mark
-#pragma mark - UIGestureRecognizerDelegate
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+- (void)hiddenkeyWindows
 {
     UIView  *conditionView = [self viewWithTag:CONDITION_VIEW_TAG];
     UITextField  *consignField = (UITextField *)[conditionView viewWithTag:CONSIGN_FIELD_TAG];
@@ -376,17 +375,23 @@
     if ([acountIDField isFirstResponder]) {
         [acountIDField resignFirstResponder];
     }
-    
+}
+
+#pragma mark
+#pragma mark - UIGestureRecognizerDelegate
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+{
     if ([[touch view] isKindOfClass:[UIButton class]] || [[touch view] isKindOfClass:[UITextField class]]) {
-        return YES;
+        return NO;
     }
-    return NO;
+    return YES;
 }
 
 #pragma mark
 #pragma mark - SingleSelectViewDelegate
 - (void)singleSelectViewdidSelectValue:(SingleSelectView *)singleView
 {
+    [self hiddenkeyWindows];
     if (singleView.orderType) {
         selectOrderType = singleView.orderType;
         UIView  *conditionView = [self viewWithTag:CONDITION_VIEW_TAG];

@@ -30,10 +30,13 @@
     UIButton *scanBtn;
     
     BOOL isSearch;
+    BOOL isConnect;
     
     NSDictionary *idInfo;
     
     NSString *iccidStr;
+    
+    BOOL isActiveDisconnect;
 }
 @property (nonatomic ,retain)PhotoCertIDView *photoView;
 @property (nonatomic ,retain)BleTool *adapter;
@@ -128,7 +131,8 @@
     [self.view addSubview:scanCertBtn];
 
     isSearch = YES;
-    
+    isActiveDisconnect = NO;
+    isConnect = NO;
     
     PhotoCertIDView *idView = [[PhotoCertIDView alloc] initWithFrame:CGRectMake(0, TITLE_BAR_HEIGHT+120, self.view.frame.size.width, self.view.frame.size.height)];
     idView.hidden = YES;
@@ -218,6 +222,7 @@
 //            NSData *imsi2gdata=[checkSimBlankDict objectForKey:@"IMSI2G"];
 //            NSString *imsi2gStr= [[NSString alloc]initWithData:imsi2gdata encoding:NSUTF8StringEncoding];
 //            NSLog(@"imsi2gstr===%@",imsi2gStr);
+    
             NSData *imsi2g = [imsiString dataUsingEncoding:NSUTF8StringEncoding];
             [self showHUDWithMSG:@"正在写入IMSI中......"];
             NSInteger result = [self.adapter WriteSIMCardwithIMSI1:imsi2g
@@ -234,9 +239,10 @@
             }else{
                 isWriteCardOK = NO;
             }
+            
 //        }
 //    }
-    
+
     return isWriteCardOK;
 }
 
@@ -269,8 +275,14 @@
 - (void)scan:(id)sender
 {
     if (isSearch) {
-        NSArray *deviceList = [self.adapter ScanDeiceList:2.0f];
+        NSMutableArray *deviceList = [self.adapter ScanDeiceList:2.0f];
+        
         if (deviceList != nil && [deviceList count] > 0) {
+            for (NSArray *oneItem in deviceList) {
+                if ([oneItem count] == 0) {
+                    [deviceList removeObject:oneItem];
+                }
+            }
             self.deviceView.hidden = NO;
             self.photoView.hidden = YES;
             [self.view bringSubviewToFront:self.deviceView];
@@ -302,6 +314,11 @@
 #pragma mark - TitleBarDelegate
 -(void)backAction
 {
+    isActiveDisconnect = YES;
+    if (isConnect) {
+        [self.adapter disconnectBt];
+    }
+    
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -317,21 +334,32 @@
 -(void)BR_connectResult:(BOOL)isconnected
 {
     if(isconnected){
+        isConnect = YES;
         self.deviceView.hidden = YES;
         self.photoView.hidden = NO;
         [self.view bringSubviewToFront:self.photoView];
         [self.scanBtn setTitle:@"获取身份证信息"
                       forState:UIControlStateNormal];
         isSearch = NO;
+        
+        [self showHUDWithMSG:@"蓝牙设备连接成功"];
+        [NSTimer scheduledTimerWithTimeInterval:0.5f
+                                         target:self
+                                       selector:@selector(hideCurrentHUD)
+                                       userInfo:nil
+                                        repeats:NO];
     }else{
-        UIAlertView  *alter = [[UIAlertView alloc] initWithTitle:nil
-                                                         message:@"设备已断开,是否重新搜索设备进行链接?"
-                                                        delegate:self
-                                               cancelButtonTitle:@"不进行搜索"
-                                               otherButtonTitles:@"重新搜索", nil];
-        alter.tag = ALTER_SHOW_DISCONNECT_TAG;
-        [alter show];
-        [alter release];
+        isConnect = NO;
+        if (isActiveDisconnect == NO) {
+            UIAlertView  *alter = [[UIAlertView alloc] initWithTitle:nil
+                                                             message:@"设备已断开,是否重新搜索设备进行链接?"
+                                                            delegate:self
+                                                   cancelButtonTitle:@"不进行搜索"
+                                                   otherButtonTitles:@"重新搜索", nil];
+            alter.tag = ALTER_SHOW_DISCONNECT_TAG;
+            [alter show];
+            [alter release];
+        }
     }
 }
 
@@ -434,6 +462,16 @@
 //            返回0成功，进行写卡;
 //            返回1不成功，不写卡，不调44接口;
 //            返回2表示已开户写卡，调44接口提交资料
+            if ([respCode isEqual:[NSNull null]]) {
+                UIAlertView *alter = [[UIAlertView alloc] initWithTitle:@"提示"
+                                                                message:@"订单信息提交失败"
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"确定"
+                                                      otherButtonTitles:nil];
+                [alter show];
+                [alter release];
+                return;
+            }
             
             if ([respCode isEqualToString:@"0"]) {
                 NSString *imsi = [rspInfo objectForKey:@"imsi"];
@@ -452,7 +490,7 @@
                 [self showHUDWithMSG:@"正在开户中......"];
                 [self sendSuessOpneUserMessage:YES];
             }
-            
+        
         }
     }else if ([bizCode isEqualToString:[SueccOpenUserMessage getBizCode]]) {
         [self hideCurrentHUD];

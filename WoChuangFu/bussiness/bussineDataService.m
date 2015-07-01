@@ -146,7 +146,7 @@ static bussineDataService *sharedBussineDataServicee = nil;
         [self.httpCnctor sendMessage_static:msg xmlFile:xmlFile];
         [xmlFile release];
 #else
-        MyLog(@"请求的地址：%@",self.httpCnctor.serviceUrl);
+        NSLog(@"请求的地址：%@",self.httpCnctor.serviceUrl);
         
         [self.httpCnctor sendMessage:msg synchronously:NO SessionId:sessionId];
 #endif
@@ -186,6 +186,8 @@ static bussineDataService *sharedBussineDataServicee = nil;
 
 -(void)noticeUI:(NSDictionary*)rspDic
 {
+    
+    NSLog(@"\n\n\n  回调信息 %@  \n\n ",rspDic);
     if (rspDic == nil) {
         return;
     }

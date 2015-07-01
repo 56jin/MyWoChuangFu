@@ -52,15 +52,27 @@ typedef enum _SideBarShowDirection
 //#define service_IP                  @"http://192.168.1.182:8080/emall"
 //#define service_IP                  @"http://mall.gx10010.com"
 
-//#define service_IPqq                  @"http://10.37.238.239:8081/emall"
+//#define service_IPqq                  @"http://10.37.239.44:8080"
 
 //#define service_IPqq                  @"http://221.7.252.48:14411/base_web"
 
 #define service_IPqq                 @"http://121.31.40.19/wcfapp_web/"   //正式环境
 
-//#define service_IP                 @"http://10.37.239.45:8080/emall/"
+//#define service_IP                 @"http://10.37.239.49:8080/emall/"
+
+
+#ifdef RELEASE
+
+#define service_IP                 @"http://mall.gx10010.com/"      //正式环境
+
+#elif DEBUG 
 
 #define service_IP                 @"http://221.7.252.48:15613/"   //测试环境
+
+#endif
+
+
+//#define service_IP                 @"http://221.7.252.48:15613/"   //测试环境
 //#define service_IP                 @"http://mall.gx10010.com/"      //正式环境
 
 //#define service_IP                 @"http://221.7.252.48:15613/"
