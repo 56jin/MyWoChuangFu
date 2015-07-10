@@ -44,7 +44,7 @@ typedef enum _SideBarShowDirection
 #endif
 
 //控制appstore和web端版本的检查更新
-#define AppStore
+//#define AppStore
 //静态数据版本控制宏
 //#define STATIC_XML
 //#define service_IP                  @"http://10.37.238.222:8080/emall"
@@ -56,28 +56,30 @@ typedef enum _SideBarShowDirection
 
 //#define service_IPqq                  @"http://221.7.252.48:14411/base_web"
 
-#define service_IPqq                 @"http://121.31.40.19/wcfapp_web/"   //正式环境
+#define service_IPqq                 @"http://121.31.40.19/wcfapp_web/"   //正式环境 现网
+//#define service_IPqq                  @"http://133.0.191.9:14411/base_web/"  //测试环境
 
+
+//#define service_IP                 @"http://mall.gx10010.com/"      //正式环境 现网
+#define service_IP                 @"http://221.7.252.48:15613/"   //测试环境
+// #define service_IP                 @"http://10.37.239.43:8080/emall/" //兆
+//http://133.0.191.9:15613/
 //#define service_IP                 @"http://10.37.239.49:8080/emall/"
 
 
-#ifdef RELEASE
-
+//#ifdef RELEASE
+//
 //#define service_IP                 @"http://mall.gx10010.com/"      //正式环境
-#define service_IP                 @"http://221.7.252.48:15613/"   //测试环境
+//#define service_IPqq                 @"http://121.31.40.19/wcfapp_web/"
+//
+//#elif DEBUG
+//#define service_IP                 @"http://221.7.252.48:15613/"   //测试环境 
+//#define service_IPqq                  @"http://133.0.191.9:14411/base_web/"
+//
+//#endif
 
-#elif DEBUG 
-
-#define service_IP                 @"http://221.7.252.48:15613/"   //测试环境
-
-#endif
-
-
-//#define service_IP                 @"http://221.7.252.48:15613/"   //测试环境
-//#define service_IP                 @"http://mall.gx10010.com/"      //正式环境
 
 //#define service_IP                 @"http://221.7.252.48:15613/"
-
 //#define service_IP                @"http://221.7.252.48:15613"
 //#define service_IP                @"http://133.0.191.9:15613"
 

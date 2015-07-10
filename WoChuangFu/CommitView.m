@@ -12,6 +12,7 @@
 #import "UIImage+LXX.h"
 #import "passParams.h"
 #import "PackManager.h"
+#import "UIWindow+YUBottomPoper.h"
 
 #define INFO_HEIGHT         49
 #define SEPARATE_LINE       10
@@ -351,8 +352,22 @@
 //地址信息
 - (float)layoutAddrInfo:(float)offset_y
 {
+    
+    
+    UIButton* sendTypeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    sendTypeBtn.frame = CGRectMake(150, offset_y, self.frame.size.width/2-5, INFO_HEIGHT);
+    sendTypeBtn.backgroundColor = [UIColor whiteColor];
+    [sendTypeBtn setTitle:@"选择配送方式" forState:UIControlStateNormal];
+    [sendTypeBtn setTitleColor:[ComponentsFactory createColorByHex:@"#666666"] forState:UIControlStateNormal];
+    [sendTypeBtn.titleLabel setFont:[UIFont systemFontOfSize:16.0]];
+    sendTypeBtn.tag = 1020;
+     sendTypeBtn.userInteractionEnabled = YES;
+     [self.scrollView addSubview:sendTypeBtn];
+    [sendTypeBtn addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
+    
+    
     UIButton* addrBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    addrBtn.frame = CGRectMake(0, offset_y, self.frame.size.width, INFO_HEIGHT);
+    addrBtn.frame = CGRectMake(0, offset_y, self.frame.size.width/2-5, INFO_HEIGHT);
     addrBtn.backgroundColor = [UIColor whiteColor];
     [addrBtn setTitle:@"选择配送地区" forState:UIControlStateNormal];
     [addrBtn setTitleColor:[ComponentsFactory createColorByHex:@"#666666"] forState:UIControlStateNormal];
@@ -366,6 +381,12 @@
     offset_y += addrBtn.frame.size.height;
     addrBtn.userInteractionEnabled = YES;
     [addrBtn addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    
+    
+    
+    
     
     [self.scrollView addSubview:addrBtn];
     
@@ -535,6 +556,10 @@
         case SELECT_ADDR_AREA:
             [self selectAreaAction];
             break;
+        case 1020:
+            [self selctSendMode];
+            break;
+        
         case SELECT_PACKAGE_TYPE:
             [self showPackageSelect];
             break;
@@ -591,8 +616,8 @@
         }
         if (myType != TypeNet) {
             enterStr = ((UIButton*)[self viewWithTag:SELECT_PACKAGE_TYPE]).titleLabel.text;
-            if(enterStr == nil || enterStr.length <=0 || [enterStr isEqualToString:@"选择套餐类型"]){
-                [self showSimpleAlertView:@"请选择套餐类型！"];
+            if(enterStr == nil || enterStr.length <=0 || [enterStr isEqualToString:@"套餐生效时间"]){
+                [self showSimpleAlertView:@"请选择套餐生效时间!"];
                 return NO;
             }
         }
@@ -728,6 +753,58 @@
     if(self.target != nil && [self.target respondsToSelector:@selector(requestAreaData)]){
         [self.target performSelector:@selector(requestAreaData) withObject:nil];
     }
+}
+
+-(void)selctSendMode{
+    
+    NSArray *arr = [NSArray arrayWithObjects:@"邮寄快递",@"上门配送", nil];
+    
+    [self.window  showPopWithButtonTitles:@[@"邮寄快递",@"上门配送"] styles:@[YUDefaultStyle,YUDefaultStyle,YUDefaultStyle] whenButtonTouchUpInSideCallBack:^(int index  ) {
+        
+        if (index==0) {
+            
+            UIButton *btn = (UIButton*)[self viewWithTag:1020];
+            [btn setTitle:@"邮寄快递" forState:UIControlStateNormal];
+            
+            
+            
+        }else if(index == 1){
+            UIButton *btn = (UIButton*)[self viewWithTag:1020];
+            [btn setTitle:@"上门配送" forState:UIControlStateNormal];
+        }else{
+            
+        }
+        
+    }];
+
+//    NSMutableArray* pkgData = [[NSMutableArray alloc] initWithCapacity:0];
+////    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:@"邮寄快递",@"0",@"上门配送",@"1", nil];
+//    
+//    
+//     NSDictionary *dic=[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",0],@"ITEM_CODE",@"邮寄快递",@"ITEM_NAME", nil];
+//    
+//    NSDictionary *dic2=[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",1],@"ITEM_CODE",@"上门配送",@"ITEM_NAME", nil];
+//    
+//    
+//    [pkgData addObject:dic];
+//    [pkgData addObject:dic2];
+//    ZSYCommonPickerView *pickerView = [[ZSYCommonPickerView alloc] initWithTitle:@"配送方式"
+//                                                                      includeAll:NO
+//                                                                      dataSource:pkgData
+//                                                               selectedIndexPath:0
+//                                                                        Firstrow:@"" cancelButtonBlock:^{
+//                                                                            
+//                                                                        } makeSureButtonBlock:^(NSInteger sindexPath) {
+////                                                                            [((UIButton*)[self viewWithTag:1020]) setTitle:[self.pkgDataArray objectAtIndex:sindexPath] forState:UIControlStateNormal];
+//                                                                        }];
+//    [pickerView show];
+    
+
+    
+    
+    
+    
+    
 }
 
 #pragma mark -

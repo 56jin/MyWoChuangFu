@@ -18,7 +18,7 @@
 #define SUBMIT_BTN_TAG    1026
 #define TITLE_HEIGHT ([UIScreen mainScreen].applicationFrame.origin.y+TITLE_BAR_HEIGHT)
 
-@interface NewChooseAddressVC ()<TitleBarDelegate,AddressComBoxDelegate,UITextFieldDelegate,FilterViewDelegate,HttpBackDelegate>
+@interface NewChooseAddressVC ()<TitleBarDelegate,AddressComBoxDelegate,UITextFieldDelegate,FilterViewDelegate,HttpBackDelegate,UITableViewDataSource,UITableViewDelegate>
 
 @property(nonatomic,strong) NSMutableDictionary *addressRequest;
 @property(nonatomic,strong) NSMutableDictionary *packageRequest;
@@ -90,9 +90,12 @@
     AddressComBox *combox = [[AddressComBox alloc] initWithFrame:CGRectMake(60,TITLE_HEIGHT+30,[AppDelegate sharePhoneWidth]-70, 40)];
     combox.delegate = self;
     combox.dataSources = self.cardOrderKeyValuelist;
-    combox.layer.borderWidth = 1;
-    combox.layer.borderColor = [[ComponentsFactory createColorByHex:@"#eeeeee"] CGColor];
+    [combox setUserInteractionEnabled:YES];
+//    combox.layer.borderWidth = 1;
+//    combox.layer.borderColor = [[ComponentsFactory createColorByHex:@"#eeeeee"] CGColor];
     combox.backgroundColor = [UIColor whiteColor];
+    [combox setLabelToLeft];
+    combox.tag = 7000;
     [self.view addSubview:combox];
     
 
@@ -108,7 +111,41 @@
     addressInput.textColor = [ComponentsFactory createColorByHex:@"#666666"];
     addressInput.tag = ADDRESS_INPUT_TAG;
     [addressInput setFont:[UIFont systemFontOfSize:16.0]];
+    addressInput.clearButtonMode  = UITextFieldViewModeWhileEditing;
+    addressInput.returnKeyType = UIReturnKeyDone;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textchaange:) name:UITextFieldTextDidChangeNotification object:addressInput];
+//    [addressInput addTarget:self  action:@selector(valueChanged:)  forControlEvents:UIControlEventAllEditingEvents];
+    
+    
     [self.view addSubview:addressInput];
+    
+    UITableView *addrssTable = [[UITableView alloc]initWithFrame:CGRectMake(60, TITLE_HEIGHT+120, [AppDelegate sharePhoneWidth]-70, 240) style:UITableViewStylePlain];
+    addrssTable.backgroundColor = [UIColor whiteColor];
+    addrssTable.tag = 1500;
+    addrssTable.dataSource = self;
+    addrssTable.delegate = self;
+    addrssTable.bounces = NO;
+    
+//    addrssTable.bounds = CGRectMake(0, 0, 320 / 1.5, 320 / 1.5);
+//    addrssTable.layer.cornerRadius  = 10;
+    addrssTable.layer.shadowColor   = [UIColor blackColor].CGColor;
+    addrssTable.layer.shadowOffset  = CGSizeMake(0, 5);
+    addrssTable.layer.shadowOpacity = 0.5f;
+    addrssTable.layer.shadowRadius  = 10.0f;
+    
+//    addrssTable.layer.borderWidth = 1;
+//    addrssTable.layer.borderColor  =[UIColor darkGrayColor].CGColor;
+
+    [addrssTable setHidden:YES];;
+    [self.view addSubview:addrssTable];
+
+
+    
+   
+   
+    
+    
+    
     
     InsetsLabel *packageLable = [[InsetsLabel alloc] initWithFrame:CGRectMake(0,TITLE_HEIGHT+130, [AppDelegate sharePhoneWidth],40) andInsets:UIEdgeInsetsMake(0, 15,0, 0)];
     packageLable.backgroundColor = [UIColor whiteColor];
@@ -119,8 +156,35 @@
     UILabel *package = [[UILabel alloc] initWithFrame:CGRectMake(60,TITLE_HEIGHT+130,[AppDelegate sharePhoneWidth]-60,40)];
     package.tag = PACKAGE_LABLE_TAG;
     package.textColor = [ComponentsFactory createColorByHex:@"#666666"];
+    package.userInteractionEnabled = YES;
+    UITapGestureRecognizer *single =[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(showPack:)];
+    [package addGestureRecognizer:single];
+    
+    
+
+    UITableView *combox2 = [[UITableView alloc] initWithFrame:CGRectMake(60,TITLE_HEIGHT+170,[AppDelegate sharePhoneWidth]-70,180)];
+    combox2.delegate = self;
+    combox2.dataSource = self;
+//    combox2.backgroundColor = [UIColor blueColor];
+    combox2.tag = 7001;
+    combox2.bounces = NO;
+    
+//     combox2.bounds = CGRectMake(0, 0, 320 / 1.5, 320 / 1.5);
+//    combox2.layer.cornerRadius  = 10;
+    combox2.layer.shadowColor   = [UIColor blackColor].CGColor;
+    combox2.layer.shadowOffset  = CGSizeMake(0, 5);
+    combox2.layer.shadowOpacity = 0.5f;
+    combox2.layer.shadowRadius  = 10.0f;
+    
+    
+    
+    [self.view addSubview:combox2];
+    [combox2 setHidden:YES];
+
+    
     
     [self.view addSubview:package];
+//    [package setHidden:YES];
     
     UIButton *submitBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [submitBtn setTitle:@"确认选择" forState:UIControlStateNormal];
@@ -131,6 +195,111 @@
     [self.view addSubview:submitBtn];
 
 }
+//-(void)valueChanged:(id)sender{
+//   UITextField *textField =  (UITextField*)sender;
+//    if (textField.tag==ADDRESS_INPUT_TAG) {
+//        
+//            UITableView *addressTable = (UITableView*)[self.view viewWithTag:1500];
+//            if (!addressTable.hidden) {
+//                [addressTable setHidden:YES];
+//            }
+//        
+//            //模糊匹配地址
+//            if (textField.tag == ADDRESS_INPUT_TAG &&textField.text.length <2)
+//            {
+//                [self ShowProgressHUDwithMessage:@"请至少输入两个字符"];
+//            
+//            }
+//            else if (textField.tag == ADDRESS_INPUT_TAG && textField.text.length >= 2)
+//            {
+//                bussineDataService *bus = [bussineDataService sharedDataService];
+//                bus.target = self;
+//                [self.addressRequest setObject:textField.text forKey:@"addrInfo"];
+//        
+//                NSString *city = [self.addressRequest objectForKey:@"city"];
+//                if (city == nil)
+//                {
+//                    [self ShowProgressHUDwithMessage:@"请先选择城市"];
+//                }
+//                
+//                [bus filterAddress:self.addressRequest];
+//            }
+//    }
+//}
+
+
+-(void)textchaange:(NSNotification*)notifition{
+    UITextField *textField = (UITextField*)[self.view viewWithTag:ADDRESS_INPUT_TAG];
+    
+    if (textField.tag==ADDRESS_INPUT_TAG&&[textField.text length]!=0) {
+        
+        UITableView *addressTable = (UITableView*)[self.view viewWithTag:1500];
+        if (!addressTable.hidden) {
+            [addressTable setHidden:YES];
+        }
+        
+        //        //模糊匹配地址
+        //        if (textField.tag == ADDRESS_INPUT_TAG &&textField.text.length <1)
+        //        {
+        //            [self ShowProgressHUDwithMessage:@"请至少输入两个字符"];
+        //
+        //        }
+        if (textField.tag == ADDRESS_INPUT_TAG)
+        {
+            bussineDataService *bus = [bussineDataService sharedDataService];
+            bus.target = self;
+            [self.addressRequest setObject:textField.text forKey:@"addrInfo"];
+            
+            NSString *city = [self.addressRequest objectForKey:@"city"];
+            if (city == nil)
+            {
+                [self ShowProgressHUDwithMessage:@"请先选择城市"];
+            }
+            
+            [bus filterAddress:self.addressRequest];
+        }
+    }
+    
+    UITableView *addressTable = (UITableView*)[self.view viewWithTag:1500];
+    
+    if ([textField.text length]==0) {
+        [addressTable setHidden:YES];
+    }
+}
+
+//-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
+//    if (textField.tag==ADDRESS_INPUT_TAG) {
+//        
+//        UITableView *addressTable = (UITableView*)[self.view viewWithTag:1500];
+//        if (!addressTable.hidden) {
+//            [addressTable setHidden:YES];
+//        }
+//        
+////        //模糊匹配地址
+////        if (textField.tag == ADDRESS_INPUT_TAG &&textField.text.length <1)
+////        {
+////            [self ShowProgressHUDwithMessage:@"请至少输入两个字符"];
+////            
+////        }
+//         if (textField.tag == ADDRESS_INPUT_TAG)
+//        {
+//            bussineDataService *bus = [bussineDataService sharedDataService];
+//            bus.target = self;
+//            [self.addressRequest setObject:textField.text forKey:@"addrInfo"];
+//            
+//            NSString *city = [self.addressRequest objectForKey:@"city"];
+//            if (city == nil)
+//            {
+//                [self ShowProgressHUDwithMessage:@"请先选择城市"];
+//            }
+//            
+//            [bus filterAddress:self.addressRequest];
+//        }
+//    }
+//    return YES;
+//    
+//}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -140,6 +309,9 @@
 
 - (void)submit:(UIButton *)sender
 {
+    
+    
+    NSLog(@"%@",self.returnDict);
     if (self.block) {
         self.block(self.returnDict);
     }
@@ -148,42 +320,35 @@
 
 - (void)addressComBox:(AddressComBox *)comBoxView didSelectAtIndex:(NSInteger)index withData:(NSDictionary *)data
 {
-    self.resAreaCode = data[@"resAreaCode"];
-    [self.addressRequest setObject:data[@"areaName"] forKey:@"city"];
-    [self.packageRequest setObject:data[@"areaCode"] forKey:@"cityCode"];
+    if (comBoxView.tag == 7000) {
+        self.resAreaCode = data[@"resAreaCode"];
+        [self.addressRequest setObject:data[@"areaName"] forKey:@"city"];
+        [self.packageRequest setObject:data[@"areaCode"] forKey:@"cityCode"];
+    }else if(comBoxView.tag == 7000){
+        
+    }
+    
+    UITextField *address = (UITextField *)[self.view viewWithTag:ADDRESS_INPUT_TAG];
+    [address becomeFirstResponder];
+
+}
+-(void)showPack:(UITapGestureRecognizer *)recognizer{
+    
+    UITableView *addressTable = (UITableView*)[self.view viewWithTag:7001];
+    if (addressTable.hidden&&[self.broadBandPkg count]!=0) {
+        [addressTable setHidden:NO];
+    }
+
+    else {
+        [addressTable setHidden:YES];
+    }
 }
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-    [textField resignFirstResponder];
-    return NO;
-}
-- (BOOL)textFieldShouldEndEditing:(UITextField *)textField
-{
-    [textField resignFirstResponder];
-    
-    if (textField.tag == ADDRESS_INPUT_TAG &&textField.text.length <2)
-    {
-        [self ShowProgressHUDwithMessage:@"请至少输入两个字符"];
-        return YES;
-    }
-    else if (textField.tag == ADDRESS_INPUT_TAG && textField.text.length >= 2)
-    {
-        bussineDataService *bus = [bussineDataService sharedDataService];
-        bus.target = self;
-        [self.addressRequest setObject:textField.text forKey:@"addrInfo"];
-        
-        NSString *city = [self.addressRequest objectForKey:@"city"];
-        if (city == nil)
-        {
-            [self ShowProgressHUDwithMessage:@"请先选择城市"];
-            return NO;
-        }
-        
-        [bus filterAddress:self.addressRequest];
-    }
-    return YES;
-}
+
+
+
+
+
 - (void)ShowProgressHUDwithMessage:(NSString *)msg
 {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
@@ -213,27 +378,47 @@
     NSString* bizCode = [info objectForKey:@"bussineCode"];
     NSString* errCode = [info objectForKey:@"errorCode"];
     [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
+    //匹配地址
     if ([[filterAddressMessage getBizCode] isEqualToString:bizCode]){
         if ([oKCode isEqualToString:errCode]){
             bussineDataService *bus=[bussineDataService sharedDataService];
             NSDictionary *dict = bus.rspInfo;
             if (dict[@"addrs"] != [NSNull null]){
+                 [self.addrs removeAllObjects];
                 self.addrs = dict[@"addrs"];
                 if (self.addrs.count >0){
-                    FilterView *filter = [[FilterView alloc] initWithDataArray:self.addrs andType:FilterViewDataTypeAddress];
-                    filter.delegate = self;
-                    [filter showInView:self];
+                    UITableView *addressTable = (UITableView*)[self.view viewWithTag:1500];
+                     UITableView *packTable = (UITableView*)[self.view viewWithTag:7001];
+                    //    [addressTable setHidden:NO];
+                    [self.view bringSubviewToFront:addressTable];
+                    if (addressTable.isHidden) {
+                        [addressTable setHidden:NO];
+                        [packTable setHidden:YES];
+                        [self.view bringSubviewToFront:addressTable];
+                        [addressTable reloadData];
+                    }else{
+                        [addressTable reloadData];
+                    }
                 }
                 else{
-                    [self ShowProgressHUDwithMessage:@"没有搜索结果"];
+                    UITableView *addressTable = (UITableView*)[self.view viewWithTag:1500];
+                    [addressTable setHidden:YES];
+//                    [self ShowProgressHUDwithMessage:@"没有搜索结果"];
+                    
                 }
             }else{
-                [self ShowProgressHUDwithMessage:@"没有搜索结果"];
+                UITableView *addressTable = (UITableView*)[self.view viewWithTag:1500];
+                [addressTable setHidden:YES];
+//                [self ShowProgressHUDwithMessage:@"没有搜索结果"];
             }
         }else{
-            [self ShowProgressHUDwithMessage:@"没有搜索结果"];
+            UITableView *addressTable = (UITableView*)[self.view viewWithTag:1500];
+            [addressTable setHidden:YES];
+//            [self ShowProgressHUDwithMessage:@"没有搜索结果"];
         }
     }
+    
+    //匹配套餐
     else if([[FilterAddressPackageMessage getBizCode] isEqualToString:bizCode]){
         if ([oKCode isEqualToString:errCode]){
             bussineDataService *bus=[bussineDataService sharedDataService];
@@ -241,6 +426,7 @@
             if (dict[@"broadbandPackage"] != [NSNull null]){
                 NSDictionary *broadbandPackage = dict[@"broadbandPackage"];
                 if (broadbandPackage[@"broadBandPkg"]!=[NSNull null]){
+                    [self.broadBandPkg removeAllObjects];
                     self.broadBandPkg = broadbandPackage[@"broadBandPkg"];
                     NSMutableDictionary *broadbrandDict = [NSMutableDictionary dictionary];
                     [broadbrandDict setObject:broadbandPackage[@"addrId"] forKey:@"bssAddr_Id"];
@@ -250,33 +436,97 @@
                     [broadbrandDict setObject:@"1" forKey:@"bssBandFlag"];
                     [self.returnDict setObject:broadbrandDict forKey:@"broadbrand"];
                     if (self.broadBandPkg.count >0){
-                        FilterView *filter = [[FilterView alloc] initWithDataArray:self.broadBandPkg andType:FilterViewDataTypeNetPackage];
-                        filter.delegate = self;
-                        [filter showInView:self];
+                        UITableView *addressTable = (UITableView*)[self.view viewWithTag:7001];
+                        UITableView *addressTable2 = (UITableView*)[self.view viewWithTag:1500];
+                        [self.view bringSubviewToFront:addressTable];
+                        if (addressTable.isHidden) {
+                            [addressTable setHidden:NO];
+                            [addressTable2 setHidden:YES];
+                            [self.view bringSubviewToFront:addressTable];
+                            [addressTable reloadData];
+                        }else{
+                            [addressTable reloadData];
+                        }
                     }
                     else{
+                        UITableView *addressTable = (UITableView*)[self.view viewWithTag:7001];
+                        [addressTable setHidden:YES];
                         [self ShowProgressHUDwithMessage:@"没有匹配套餐"];
+                         [MBProgressHUD hideHUDForView:self.view animated:YES];
                     }
                 }else{
+                    UITableView *addressTable = (UITableView*)[self.view viewWithTag:7001];
+                    [addressTable setHidden:YES];
                     [self ShowProgressHUDwithMessage:@"没有匹配套餐"];
+                     [MBProgressHUD hideHUDForView:self.view animated:YES];
                 }
             }
         }else{
+            UITableView *addressTable = (UITableView*)[self.view viewWithTag:7001];
+            [addressTable setHidden:YES];
             [self ShowProgressHUDwithMessage:@"没有匹配套餐"];
+            
+            
+        
         }
     }
+    
 }
 - (void)requestFailed:(NSDictionary *)info
 {
     [self  ShowProgressHUDwithMessage:@"获取网络数据失败"];
+    
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
 }
 
-- (void)didSelectedRowAtIndex:(NSInteger)index withData:(NSDictionary *)data andType:(FilterViewDataType)type
-{
-    if (type == FilterViewDataTypeAddress) {
+
+
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    if (tableView.tag == 1500) {
+        return [self.addrs count];
+    }
+    else if(tableView.tag == 7001){
+        return [self.broadBandPkg count];
+    }
+    else{
+        return 0;
+    }
+    
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+    if (cell ==nil) {
+        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
+        
+    }
+    
+    
+    if (tableView.tag == 1500) {
+         cell.textLabel.text = [self.addrs objectAtIndex:[indexPath row]][@"areaName"];
+        cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
+        cell.textLabel.numberOfLines = 0;
+        [cell.textLabel setFont:[UIFont systemFontOfSize:15.0f]];
+        
+    }
+    else if (tableView.tag == 7001){
+        cell.textLabel.text =  [self.broadBandPkg objectAtIndex:[indexPath row]][@"packDesc"];
+        cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
+        cell.textLabel.numberOfLines = 0;
+        [cell.textLabel setFont:[UIFont systemFontOfSize:15.0f]];
+    }
+   
+    return cell;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (tableView.tag == 1500) {
+        
+        
         UITextField *address = (UITextField *)[self.view viewWithTag:ADDRESS_INPUT_TAG];
-        address.text = [data objectForKey:@"areaName"];
-        [self.packageRequest setObject:[data objectForKey:@"areaCode"] forKey:@"addrId"];
+        address.text = [self.addrs objectAtIndex:[indexPath row]][@"areaName"];
+        [self.packageRequest setObject:[[self.addrs objectAtIndex:indexPath.row] objectForKey:@"areaCode"] forKey:@"addrId"];
         [self.packageRequest setObject:self.moduleId forKey:@"moduleId"];
         NSDictionary *country = [NSDictionary dictionaryWithObjectsAndKeys:
                                  @"",@"areaName",
@@ -284,24 +534,43 @@
                                  nil];
         NSDictionary *city = [NSDictionary dictionaryWithObjectsAndKeys:
                               self.resAreaCode == nil?@"":self.resAreaCode,@"resAreaCode",
-                              self.addrs[index][@"areaName"],@"areaName",
-                              self.addrs[index][@"areaCode"],@"areaCode",
+                              self.addrs[indexPath.row][@"areaName"],@"areaName",
+                              self.addrs[indexPath.row][@"areaCode"],@"areaCode",
                               nil];
         passParams *pass = [passParams sharePassParams];
         [pass.params setObject:country forKey:@"countryCode"];
         [pass.params setObject:city forKey:@"cityCode"];
+        
         bussineDataService *bus = [bussineDataService sharedDataService];
-        [self.returnDict setObject:[data objectForKey:@"areaName"] forKey:@"areaName"];
+        [self.returnDict setObject:[[self.addrs objectAtIndex:indexPath.row] objectForKey:@"areaName"] forKey:@"areaName"];
+        
         bus.target = self;
         [bus filterAddressPackage:self.packageRequest];
         
-    }else if(type == FilterViewDataTypeNetPackage){
+        [address resignFirstResponder];
+    }
+    if (tableView.tag == 7001) {
         UILabel *package = (UILabel *)[self.view viewWithTag:PACKAGE_LABLE_TAG];
-        package.text = [data objectForKey:@"packDesc"];
-        [self.returnDict setObject:self.broadBandPkg[index] forKey:@"broadBandPkg"];
+        package.text =  [self.broadBandPkg objectAtIndex:[indexPath row]][@"packDesc"];
+        [self.returnDict setObject:self.broadBandPkg[indexPath.row] forKey:@"broadBandPkg"];
         UIButton *button = (UIButton *)[self.view viewWithTag:SUBMIT_BTN_TAG];
         button.enabled = YES;
+
     }
+    [tableView setHidden:YES];
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 60;
+}
+-(BOOL)textFieldShouldReturn:(UITextField *)textField{
+    [textField resignFirstResponder];
+    return YES;
 }
 
+-(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
+    UITextField *tf = (UITextField*)[self.view viewWithTag:ADDRESS_INPUT_TAG];
+    if ((![tf isExclusiveTouch])) {
+        [tf
+         resignFirstResponder];
+    }}
 @end

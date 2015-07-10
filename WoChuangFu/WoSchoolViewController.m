@@ -45,20 +45,10 @@
     ZSYPopListView *zsy;
     UILabel *devLabel;  // 显示当前连接的蓝牙设备名称
     NSDictionary *blootDic;  //当前选择的蓝牙设备信息
-    
-     BOOL IsKeyBoardHide; //监听键盘
-    
+    BOOL IsKeyBoardHide; //监听键盘
     NSInteger mark;
-    
     NSArray* areaData;
-    
     NSArray *jiedaoData;
-    
-
-
-    
-    
-    
     NSString *cityCode;
     NSString *addrCode;
     NSString *resAreaCode;    //地市的resAreaCode
@@ -73,6 +63,11 @@
     NSInteger flagInteger;   //flagInteger = 0 验证码校验 flagInteger = 1 阅读器校验
     
     BOOL isHuoDong;
+    
+    
+    
+    NSString  *myProductId;
+    NSString *skuID;
 }
 @property(nonatomic,retain)NSArray* areaData;
 @property(nonatomic,retain)NSArray* jiedaoData;
@@ -115,9 +110,7 @@
         default:
             break;
     }
-    
     [self ShowProgressHUDwithMessage:message];
-    
 }
 - (void)ShowProgressHUDwithMessage:(NSString *)msg
 {
@@ -181,6 +174,30 @@
                 
                 NSLog(@"----------- ：%@",[bus.rspInfo objectForKey:@"respCode"]);
                 
+                if ([bus.rspInfo objectForKey:@"productId"] != [NSNull null]) {
+                    
+                    if (!myProductId) {
+                        myProductId = [bus.rspInfo objectForKey:@"productId"];
+                    }
+                    
+                    
+                }
+                else {
+                    if (!myProductId) {
+                         myProductId = @"30670";
+                    }
+                   
+                }
+                if ([bus.rspInfo objectForKey:@"skuId"] != [NSNull null]) {
+                    
+                    if (!skuID) {
+                        skuID = [bus.rspInfo objectForKey:@"productId"];
+                    }
+                    
+                    
+                }
+                
+                
                 if([[bus.rspInfo objectForKey:@"respCode"] isEqualToString:@"1"])
                 {
                     NSLog(@"请求成功信息%@",info);
@@ -207,16 +224,31 @@
                 
                 NSLog(@"----------- ：%@",[bus.rspInfo objectForKey:@"respCode"]);
                 
-                
+                if ([bus.rspInfo objectForKey:@"productId"] != [NSNull null]) {
+                    
+                    if (!myProductId) {
+                        myProductId = [bus.rspInfo objectForKey:@"productId"];
+                    }
+                    
+                    
+                }
+                else {
+                    if (!myProductId) {
+                        myProductId = @"30670";
+                    }
+                    
+                }
+                if ([bus.rspInfo objectForKey:@"skuId"] != [NSNull null]) {
+                    
+                    if (!skuID) {
+                        skuID = [bus.rspInfo objectForKey:@"productId"];
+                    }
+                    
+                    
+                }
                 UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"提示" message:bus.rspInfo[@"respDesc"] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"确定", nil];
                 [alertView show];
-                
-                
-                
-
-            }
-
-            
+            }  
             break;
         case 3:
             if([[ComfirmIndentifyMessage getBizCode] isEqualToString:bizCode])
@@ -226,6 +258,36 @@
                 if([bus.rspInfo[@"respCode"] integerValue] == 1){
                     codeMSM = @"YES";
                 }
+                
+                
+                if ([bus.rspInfo objectForKey:@"productId"] != [NSNull null]) {
+                    
+                    if (!myProductId) {
+                        myProductId = [bus.rspInfo objectForKey:@"productId"];
+                    }
+                    
+                    
+                }
+                else {
+                    if (!myProductId) {
+                        myProductId = @"30670";
+                    }
+                    
+                }
+
+
+                if ([bus.rspInfo objectForKey:@"skuId"] != [NSNull null]) {
+                    
+                    if (!skuID) {
+                        skuID = [bus.rspInfo objectForKey:@"productId"];
+                    }
+                    
+                    
+                }
+                
+               
+//                if ([myProductId length]==0) {
+//                                    }
                 UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"提示" message:bus.rspInfo[@"respDesc"] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"确定", nil];
                 [alertView show];
             }
@@ -338,10 +400,33 @@
         case 7:
             if([[GetIndentifyCodeMessage getBizCode] isEqualToString:bizCode])
             {
-                bussineDataService* buss = [bussineDataService sharedDataService];
-                iPhoneNumDic = [NSDictionary dictionaryWithDictionary:buss.rspInfo];
-                NSLog(@"\n\n  校验手机号信息   %@    ---  %@",buss.rspInfo,iPhoneNumDic);
-                pkgId = buss.rspInfo[@"svcNumProperty"][@"product"];
+                bussineDataService* bus = [bussineDataService sharedDataService];
+                iPhoneNumDic = [NSDictionary dictionaryWithDictionary:bus.rspInfo];
+                NSLog(@"\n\n  校验手机号信息   %@    ---  %@",bus.rspInfo,iPhoneNumDic);
+                pkgId = bus.rspInfo[@"svcNumProperty"][@"product"];
+                if ([bus.rspInfo objectForKey:@"productId"] != [NSNull null]) {
+                    
+                    if (!myProductId) {
+                        myProductId = [bus.rspInfo objectForKey:@"productId"];
+                    }
+                    
+                    
+                }
+                else {
+                    if (!myProductId) {
+                        myProductId = @"30670";
+                    }
+                    
+                }
+                if ([bus.rspInfo objectForKey:@"skuId"] != [NSNull null]) {
+                    
+                    if (!skuID) {
+                        skuID = [bus.rspInfo objectForKey:@"productId"];
+                    }
+                    
+                    
+                }
+
                 
 
             }
@@ -1525,7 +1610,9 @@
                 break;
         }
         
-    }];}
+    }];
+
+}
 
 #pragma  mark -bletool 's delegate
 -(void)BR_connectResult:(BOOL)isconnected{
@@ -1888,11 +1975,11 @@
                     [productInfo setValue:@"" forKey:@"remark"];
                     
                     [productInfo setValue:@"1018" forKey:@"moduleId"];
-                    [productInfo setValue:@"40126" forKey:@"skuId"];
+                    [productInfo setValue:skuID forKey:@"skuId"];//40126
                     [productInfo setValue:NULL forKey:@"period"];
                     [productInfo setValue:@"com.ailk.app.mapp.model.req.CF0026Request$ProductInfo" forKey:@"@class"];
                     [productInfo setValue:pkgId forKey:@"pkgId"]; //校验成功返回
-                    [productInfo setValue:@"31522" forKey:@"productId"];   //这个值怎么来的
+                    [productInfo setValue:myProductId forKey:@"productId"];   //这个值怎么来的
                     [productInfo setValue:NULL forKey:@"woYibaoFlag"];
                     [productInfo setValue:NULL forKey:@"seckillFlag"];
 
@@ -2020,11 +2107,11 @@
                     [productInfo setValue:@"" forKey:@"remark"];
                     
                     [productInfo setValue:@"1018" forKey:@"moduleId"];
-                    [productInfo setValue:@"40126" forKey:@"skuId"];
+                    [productInfo setValue:skuID forKey:@"skuId"];
                     [productInfo setValue:NULL forKey:@"period"];
                     [productInfo setValue:@"com.ailk.app.mapp.model.req.CF0026Request$ProductInfo" forKey:@"@class"];
                     [productInfo setValue:pkgId forKey:@"pkgId"]; //校验成功返回
-                    [productInfo setValue:@"31522" forKey:@"productId"];   //这个值怎么来的
+                    [productInfo setValue:myProductId forKey:@"productId"];   //这个值怎么来的
                     [productInfo setValue:NULL forKey:@"woYibaoFlag"];
                     [productInfo setValue:NULL forKey:@"seckillFlag"];
                     
@@ -2268,7 +2355,7 @@
         [jizhuID setUserInteractionEnabled:NO];
         [jizhuName setUserInteractionEnabled:NO];
         
-        [self searchBlueTooth];
+//        [self searchBlueTooth];
         
     }else{
         

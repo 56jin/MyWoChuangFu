@@ -14,7 +14,7 @@
 #import "ShowWebVC.h"
 #import "WebProductDetailVC.h"
 #import "UrlParser.h"
-
+#import "UIWindow+YUBottomPoper.h"
 #define TWITTERFON_FORM_BOUNDARY  @"imgBase64"
 
 @interface CommitVC (){
@@ -364,15 +364,46 @@
     
     if([bizCode isEqualToString:[CreateOrderMessage getBizCode]]){
         if([oKCode isEqualToString:errCode]){
+            
+            
             bussineDataService* buss = [bussineDataService sharedDataService];
             NSString* postData = [buss.rspInfo objectForKey:@"postData"];
-            NSMutableArray* postArr = [[NSMutableArray alloc] initWithArray:[postData componentsSeparatedByString:@"="]];
-            if(postArr.count>=2){
-                NSDictionary* sendDic = [[NSDictionary alloc] initWithObjectsAndKeys:postArr[1],@"order_code", nil];
+            
+            //弹出提示选择支付方式，货到付款与在线支付
+            [self.view.window  showPopWithButtonTitles:@[@"货到付款",@"在线支付"] styles:@[YUDefaultStyle,YUDefaultStyle,YUDefaultStyle] whenButtonTouchUpInSideCallBack:^(int index  ) {
                 
-                buss.target = self;
-                [buss paymentUrl:sendDic url:[buss.rspInfo objectForKey:@"postUrl"] key:postArr[0]];
-            }
+                if (index==0) {
+                    
+                    ShowWebVC *gotoVC = [[ShowWebVC alloc] init] ;
+                    gotoVC.isShow = @"YES";
+                    gotoVC.urlStr = [NSString stringWithFormat:@"%@emallcardorder/completion.do?payType=2&orderCode=%@&orderTitle=选号卡",service_IP,buss.rspInfo[@"orderCode"]];
+                    [self.navigationController pushViewController:gotoVC animated:YES];
+
+                    
+                    
+                }else if(index == 1){
+                    bussineDataService* bus = [bussineDataService sharedDataService];
+                    //            NSString* postData = [buss.rspInfo objectForKey:@"postData"];
+                    NSMutableArray* postArr = [[NSMutableArray alloc] initWithArray:[postData componentsSeparatedByString:@"="]];
+                    if(postArr.count>=2){
+                        NSDictionary* sendDic = [[NSDictionary alloc] initWithObjectsAndKeys:postArr[1],@"order_code", nil];
+                        
+                        bus.target = self;
+                        [bus paymentUrl:sendDic url:[buss.rspInfo objectForKey:@"postUrl"] key:postArr[0]];
+                    }
+                }else{
+                    
+                }
+                
+            }];
+            
+            
+            
+            
+            
+            
+            
+
             
         } else {
             if(nil == msg || [info objectForKey:@"MSG"] == [NSNull null]){

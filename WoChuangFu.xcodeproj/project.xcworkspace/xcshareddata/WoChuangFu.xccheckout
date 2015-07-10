@@ -10,6 +10,8 @@
 	<string>WoChuangFu</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
+		<key>0b1c6485-7fa4-4922-b1a9-8d2299886094++6473</key>
+		<string>svn://127.0.0.1/code/MyWoChuangFu-master</string>
 		<key>98E11448CA8FE8FC281AABA50FAE4E57E99EDD2F</key>
 		<string>https://github.com/lewis180777/MyWoChuangFu.git</string>
 	</dict>
@@ -17,15 +19,22 @@
 	<string>WoChuangFu.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>98E11448CA8FE8FC281AABA50FAE4E57E99EDD2F</key>
+		<key>0b1c6485-7fa4-4922-b1a9-8d2299886094++6473</key>
 		<string>../..</string>
+		<key>98E11448CA8FE8FC281AABA50FAE4E57E99EDD2F</key>
+		<string>../../../MyWoChuangFu</string>
+	</dict>
+	<key>IDESourceControlProjectRepositoryRootDictionary</key>
+	<dict>
+		<key>0b1c6485-7fa4-4922-b1a9-8d2299886094++6473</key>
+		<string>svn://127.0.0.1/code</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/lewis180777/MyWoChuangFu.git</string>
+	<string>svn://127.0.0.1/code/MyWoChuangFu-master/WoChuangFu.xcodeproj</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>98E11448CA8FE8FC281AABA50FAE4E57E99EDD2F</string>
+	<string>0b1c6485-7fa4-4922-b1a9-8d2299886094++6473</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
@@ -35,6 +44,14 @@
 			<string>98E11448CA8FE8FC281AABA50FAE4E57E99EDD2F</string>
 			<key>IDESourceControlWCCName</key>
 			<string>MyWoChuangFu</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.subversion</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>0b1c6485-7fa4-4922-b1a9-8d2299886094++6473</string>
+			<key>IDESourceControlWCCName</key>
+			<string>MyWoChuangFu-master</string>
 		</dict>
 	</array>
 </dict>

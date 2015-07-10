@@ -1032,6 +1032,11 @@
 		85EF55C51B29946E006A4993 /* libzbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 85EF55BF1B29946E006A4993 /* libzbar.a */; };
 		85FED32C1B1D97760025988B /* fandang@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85FED32B1B1D97760025988B /* fandang@2x.png */; };
 		85FED3421B1DA8F40025988B /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85FED3411B1DA8F40025988B /* CoreBluetooth.framework */; };
+		8F42C1E61B45410A002F1EFE /* code.png in Resources */ = {isa = PBXBuildFile; fileRef = 8F42C1E51B45410A002F1EFE /* code.png */; };
+		8F4BD20E1B4E1C4E006B0DEF /* code2.png in Resources */ = {isa = PBXBuildFile; fileRef = 8F4BD20D1B4E1C4E006B0DEF /* code2.png */; };
+		8F56B1CB1B4A480500C19F5B /* ScanCodeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F56B1CA1B4A480500C19F5B /* ScanCodeController.m */; };
+		8F5B6BE81B4BA9D400FA827F /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F5B6BE71B4BA9D400FA827F /* WebViewController.m */; };
+		8F9B1AE41B4BC55000D16547 /* ReadBlueTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F9B1AE31B4BC55000D16547 /* ReadBlueTool.m */; };
 		C601173D1A7B2DCF000ED2DA /* FilterView.m in Sources */ = {isa = PBXBuildFile; fileRef = C601173C1A7B2DCF000ED2DA /* FilterView.m */; };
 		C601C8631A7A1292005E8751 /* GetBackPwdMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = C601C8621A7A1292005E8751 /* GetBackPwdMessage.m */; };
 		C601C8671A7A1716005E8751 /* GetSearchInfoMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = C601C8661A7A1716005E8751 /* GetSearchInfoMessage.m */; };
@@ -1946,6 +1951,14 @@
 		85EF55BF1B29946E006A4993 /* libzbar.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libzbar.a; path = lib/libzbar.a; sourceTree = "<group>"; };
 		85FED32B1B1D97760025988B /* fandang@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fandang@2x.png"; sourceTree = "<group>"; };
 		85FED3411B1DA8F40025988B /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+		8F42C1E51B45410A002F1EFE /* code.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = code.png; sourceTree = SOURCE_ROOT; };
+		8F4BD20D1B4E1C4E006B0DEF /* code2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = code2.png; sourceTree = SOURCE_ROOT; };
+		8F56B1C91B4A480500C19F5B /* ScanCodeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScanCodeController.h; path = MessageCenter/ScanCodeController.h; sourceTree = "<group>"; };
+		8F56B1CA1B4A480500C19F5B /* ScanCodeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ScanCodeController.m; path = MessageCenter/ScanCodeController.m; sourceTree = "<group>"; };
+		8F5B6BE61B4BA9D400FA827F /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
+		8F5B6BE71B4BA9D400FA827F /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
+		8F9B1AE21B4BC55000D16547 /* ReadBlueTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReadBlueTool.h; sourceTree = "<group>"; };
+		8F9B1AE31B4BC55000D16547 /* ReadBlueTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReadBlueTool.m; sourceTree = "<group>"; };
 		C601173C1A7B2DCF000ED2DA /* FilterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilterView.m; sourceTree = "<group>"; };
 		C601C8611A7A1292005E8751 /* GetBackPwdMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetBackPwdMessage.h; sourceTree = "<group>"; };
 		C601C8621A7A1292005E8751 /* GetBackPwdMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetBackPwdMessage.m; sourceTree = "<group>"; };
@@ -2362,6 +2375,8 @@
 		39499F3A196E2E9C0043B5FC /* WoChuangFu */ = {
 			isa = PBXGroup;
 			children = (
+				8F4BD20D1B4E1C4E006B0DEF /* code2.png */,
+				8F42C1E51B45410A002F1EFE /* code.png */,
 				39482BFE197E4421009C735B /* 960.png */,
 				39482BFF197E4421009C735B /* 1136.png */,
 				39482C00197E4421009C735B /* icon.png */,
@@ -2968,6 +2983,8 @@
 				C6F1F4501A7646B9006FB01A /* MessageCenter */,
 				63C32F761A52E3FC00542DF3 /* SettingVC.h */,
 				63C32F771A52E3FC00542DF3 /* SettingVC.m */,
+				8F56B1C91B4A480500C19F5B /* ScanCodeController.h */,
+				8F56B1CA1B4A480500C19F5B /* ScanCodeController.m */,
 				5C548F3D1A4EA0AC007CC5BB /* SystemSetVC.h */,
 				5C548F3E1A4EA0AC007CC5BB /* SystemSetVC.m */,
 				85A88FFC1B15BFC300EF2507 /* JiGouWebViewControler.h */,
@@ -2980,6 +2997,10 @@
 				85D94CFA1B40EB480085A44E /* SchoolViewTable.m */,
 				85EF55701B295CD7006A4993 /* imageBackground@2x.png */,
 				85FED32B1B1D97760025988B /* fandang@2x.png */,
+				8F5B6BE61B4BA9D400FA827F /* WebViewController.h */,
+				8F5B6BE71B4BA9D400FA827F /* WebViewController.m */,
+				8F9B1AE21B4BC55000D16547 /* ReadBlueTool.h */,
+				8F9B1AE31B4BC55000D16547 /* ReadBlueTool.m */,
 			);
 			name = Set;
 			sourceTree = "<group>";
@@ -4143,7 +4164,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 39499F5D196E2E9C0043B5FC /* Build configuration list for PBXNativeTarget "WoChuangFu" */;
 			buildPhases = (
-				85163DB41B4143B00011FE79 /* ShellScript */,
+				85163DB41B4143B00011FE79 /* Run Script */,
 				39499F2D196E2E9C0043B5FC /* Sources */,
 				39499F2E196E2E9C0043B5FC /* Frameworks */,
 				39499F2F196E2E9C0043B5FC /* Resources */,
@@ -4204,7 +4225,7 @@
 				ORGANIZATIONNAME = "asiainfo-linkage";
 				TargetAttributes = {
 					39499F30196E2E9C0043B5FC = {
-						DevelopmentTeam = FKNQ7ZDS8B;
+						DevelopmentTeam = SC9U22ASHX;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -4254,6 +4275,7 @@
 				6354D52E1AFA0CE400F4966D /* goods.png in Resources */,
 				6354D52F1AFA0CE400F4966D /* goods@2x.png in Resources */,
 				C619B3CF1A6E38B900278169 /* checkbox_p@2x.png in Resources */,
+				8F4BD20E1B4E1C4E006B0DEF /* code2.png in Resources */,
 				C63646D61A43CA3A006F79F0 /* star_-gray.png in Resources */,
 				39482C09197E513C009C735B /* PushConfig.plist in Resources */,
 				63C32F891A52EE5400542DF3 /* icon_navbar_home_p@2x.png in Resources */,
@@ -4318,6 +4340,7 @@
 				39482C04197E4421009C735B /* 1136.png in Resources */,
 				5C23F4F51A52F3A200B0DAA8 /* icon_navbar_home.png in Resources */,
 				3949AA1A197778BF0043F06C /* wodetequan.png in Resources */,
+				8F42C1E61B45410A002F1EFE /* code.png in Resources */,
 				C6EDD4F91A84AB3500147919 /* btn_login_eye.png in Resources */,
 				6354D5291AFA0CE400F4966D /* chuowo@2x.png in Resources */,
 				3949AA121977746B0043F06C /* caidan-on.png in Resources */,
@@ -4839,18 +4862,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		85163DB41B4143B00011FE79 /* ShellScript */ = {
+		85163DB41B4143B00011FE79 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Run Script";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [ lib/libHttpConnector.a ]\nthen\nrm -f lib/libHttpConnector.a\nfi\n\nif [ ${PLATFORM_NAME} = \"iphoneos\" ]\nthen\ncp lib/libHttpConnector-d.a lib/libHttpConnector.a\nelse\ncp lib/libHttpConnector-s.a lib/libHttpConnector.a\nfi";
+			shellScript = "if [ lib/libHttpConnector.a ]\nthen\nrm -f lib/libHttpConnector.a\nfi\n\nif [ ${PLATFORM_NAME} = \"iphoneos\" ]\nthen\ncp lib/libHttpConnector-d.a lib/libHttpConnector.a\nelse\ncp lib/libHttpConnector-s.a lib/libHttpConnector.a\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -4871,6 +4895,7 @@
 				3949A070196E757C0043B5FC /* LoginMessage.m in Sources */,
 				3949A019196E2FB50043B5FC /* VRGCalendarView.m in Sources */,
 				3949A025196E2FB50043B5FC /* FTPHelper.m in Sources */,
+				8F56B1CB1B4A480500C19F5B /* ScanCodeController.m in Sources */,
 				85D94D6F1B412F9C0085A44E /* SearchOpenAccountOrderMessage.m in Sources */,
 				5CA60F631A3598AE00AA0533 /* MainView.m in Sources */,
 				5C05D2AF1A41BEAB00B111DA /* StarView.m in Sources */,
@@ -5090,6 +5115,7 @@
 				63C6DC9A1A3B1DC1000E85CE /* ChooseNumVC.m in Sources */,
 				3949A031196E2FB50043B5FC /* split.c in Sources */,
 				638FFDB71A419FCF008A35C7 /* ChooseCell.m in Sources */,
+				8F9B1AE41B4BC55000D16547 /* ReadBlueTool.m in Sources */,
 				C6F1F4531A7646DE006FB01A /* MessageCenterVC.m in Sources */,
 				85D94CF31B40EA480085A44E /* ComfirmIndentifyMessage.m in Sources */,
 				85D94D211B40EC4F0085A44E /* UIWindow+YUBottomPoper.m in Sources */,
@@ -5097,6 +5123,7 @@
 				5CA60F3C1A2C164000AA0533 /* ProductsVC.m in Sources */,
 				851424A51B253E430086D3EC /* IgnoreException.m in Sources */,
 				3949A051196E2FB50043B5FC /* StyledPageControl.m in Sources */,
+				8F5B6BE81B4BA9D400FA827F /* WebViewController.m in Sources */,
 				C6EBE1781A372CEF0005D2D1 /* MJRefreshBaseView.m in Sources */,
 				5CF637B91A36925000245108 /* ResourceGetter.m in Sources */,
 				C63966381A52C76B000D970C /* SideBar.m in Sources */,
@@ -5486,7 +5513,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Beijing Wu Xian Sheng Yuan Communication Technologies Co., LTD";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/WoChuangFu/tools/ShareSDK/Connection",
@@ -5528,7 +5555,7 @@
 				);
 				OTHER_LDFLAGS = "-lHttpConnector";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "49e23dbf-3fa8-4fc3-9823-4c198d7fb40c";
+				PROVISIONING_PROFILE = "1fcafef8-c05f-4db0-9a09-c17b9d69a01c";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "armv7 armv7s arm64";
 				WRAPPER_EXTENSION = app;
@@ -5642,7 +5669,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Beijing Wu Xian Sheng Yuan Communication Technologies Co., LTD";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/WoChuangFu/tools/ShareSDK/Connection",
@@ -5684,8 +5711,9 @@
 				);
 				OTHER_LDFLAGS = "-lHttpConnector";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "0f36c9c8-6884-48fb-87ca-d6ab2bd62e25";
+				PROVISIONING_PROFILE = "934a4cee-3d34-4de4-b7dd-98d16dd23873";
 				TARGETED_DEVICE_FAMILY = 1;
+				VALIDATE_PRODUCT = NO;
 				VALID_ARCHS = "armv7 armv7s arm64";
 				WRAPPER_EXTENSION = app;
 			};
@@ -5699,7 +5727,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Beijing Wu Xian Sheng Yuan Communication Technologies Co., LTD";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/WoChuangFu/tools/ShareSDK/Connection",
@@ -5740,8 +5768,9 @@
 				);
 				OTHER_LDFLAGS = "-lHttpConnector";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "49e23dbf-3fa8-4fc3-9823-4c198d7fb40c";
+				PROVISIONING_PROFILE = "1fcafef8-c05f-4db0-9a09-c17b9d69a01c";
 				TARGETED_DEVICE_FAMILY = 1;
+				VALIDATE_PRODUCT = YES;
 				VALID_ARCHS = "armv7 armv7s arm64";
 				WRAPPER_EXTENSION = app;
 			};

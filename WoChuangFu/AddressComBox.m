@@ -11,6 +11,7 @@
 @interface AddressComBox()<UITableViewDataSource,UITableViewDelegate>
 {
     BOOL isShow;
+    BOOL isPacke;
 }
 
 @property(nonatomic,weak) UIImageView *imageView;
@@ -21,11 +22,12 @@
 
 @implementation AddressComBox
 
-- (id)initWithFrame:(CGRect)frame
-{
+
+-(id)initWithFrame:(CGRect)frame isPacke:(BOOL)ispake{
     self = [super initWithFrame:frame];
     if (self) {
         isShow = NO;
+        isPacke = ispake;
         UILabel *lable = [[UILabel alloc] initWithFrame:CGRectMake(0,0,self.frame.size.width-15,self.frame.size.height)];
         [self addSubview:lable];
         self.titleLabel = lable;
@@ -51,6 +53,53 @@
         tableView.backgroundColor = [UIColor whiteColor];
         tableView.dataSource = self;
         tableView.delegate = self;
+        self.tableView = tableView;
+    }
+    return self;
+
+}
+
+
+
+- (id)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        isShow = NO;
+        isPacke = NO;
+        UILabel *lable = [[UILabel alloc] initWithFrame:CGRectMake(0,0,self.frame.size.width-15,self.frame.size.height)];
+        [self addSubview:lable];
+        self.titleLabel = lable;
+        lable.textColor = [ComponentsFactory createColorByHex:@"#666666"];
+        lable.backgroundColor = [UIColor clearColor];
+        lable.text = @"请选择您所在的城市";
+#ifdef __IPHONE_6_0
+        [lable setTextAlignment:NSTextAlignmentCenter];
+#else
+        [lable setTextAlignment:UITextAlignmentCenter];
+#endif
+        UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"down_dark0"]];
+        imageView.frame = CGRectMake(self.frame.size.width-25,(self.frame.size.height-15)/2,15,15);
+        self.imageView = imageView;
+        [self addSubview:imageView];
+        
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+        [button addTarget:self action:@selector(btnClicked:) forControlEvents:UIControlEventTouchUpInside];
+        button.frame = self.bounds;
+        [self addSubview:button];
+        
+        UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(self.frame.origin.x,self.frame.origin.y+self.frame.size.height,self.frame.size.width,0) style:UITableViewStylePlain];
+        tableView.backgroundColor = [UIColor whiteColor];
+        tableView.dataSource = self;
+        tableView.delegate = self;
+        
+//        tableView.bounds = CGRectMake(0, 0, 320 / 1.5, 320 / 1.5);
+//        tableView.layer.cornerRadius  = 10;
+        tableView.layer.shadowColor   = [UIColor blackColor].CGColor;
+        tableView.layer.shadowOffset  = CGSizeMake(0, 5);
+        tableView.layer.shadowOpacity = 0.3f;
+        tableView.layer.shadowRadius  = 10.0f;
+        
         self.tableView = tableView;
     }
     return self;
@@ -134,7 +183,12 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSDictionary *dict = self.dataSources[indexPath.row];
-    self.titleLabel.text = dict[@"areaName"];
+    if (isPacke) {
+        self.titleLabel.text = dict[@"packDesc"];
+    }else{
+        self.titleLabel.text = dict[@"areaName"];
+    }
+    
     [self btnClicked:nil];
     if([self.delegate respondsToSelector:@selector(addressComBox:didSelectAtIndex:withData:)])
     {
@@ -142,5 +196,16 @@
     }
 }
 
+-(void)setLabelToLeft{
+    [self.titleLabel setTextAlignment:NSTextAlignmentLeft];
+    
+}
 
+-(void)reloadTbData{
+    [self.tableView reloadData];
+}
+
+-(void)setData:(NSArray*)arr{
+    self.dataSources = arr;
+}
 @end

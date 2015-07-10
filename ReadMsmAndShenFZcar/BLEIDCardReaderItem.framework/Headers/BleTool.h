@@ -40,12 +40,22 @@
 -(NSDictionary*)readIDCardS;
 
 /**相片解码方法，需要连接网络，返回类型NSDictionary
+ *注：（app发布后不推荐使用此方法，此方法使用的卡尔公司的测试服务器，完成联调后将关闭，请使用DecodePicFunc: onSite:  方法，传入相片解码的url地址）
  *返回类型keys:
  *errCode 0为解码成功 -1解码失败
  *errDesc 在解码失败时有效，失败错误信息描述
  *DecPicData NSData型，解码成功时该key有效,解码后的相片信息
  */
 -(NSDictionary*)DecodePicFunc:(NSData*)encPicData;
+
+
+//相片解码方法，需要连接网络，返回类型NSDictionary
+//入参：PicDecodeUrl 相片解码url
+//返回类型keys:
+//errCode 0为解码成功 -1解码失败
+//errDesc 在解码失败时有效，失败错误信息描述
+//DecPicData NSData型，解码成功时该key有效,解码后的相片信息
+-(NSDictionary*)DecodePicFunc:(NSData*)encPicData onSite:(NSString*)PicDecodeUrl;
 
 /**开卡
  *返回字典项键值如下:

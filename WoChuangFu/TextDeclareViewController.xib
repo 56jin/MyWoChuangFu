@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D131" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
@@ -26,11 +26,11 @@
                     </connections>
                 </webView>
                 <view hidden="YES" contentMode="scaleToFill" id="j92-1h-wbq">
-                    <rect key="frame" x="0.0" y="517.00000336905032" width="320" height="50.999996630949717"/>
+                    <rect key="frame" x="0.0" y="517.00000204319599" width="320" height="50.999997956803966"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="4fY-L7-eGP">
-                            <rect key="frame" x="8" y="11" width="46" height="29.999997534841196"/>
+                            <rect key="frame" x="8" y="11" width="46" height="29.999998504978599"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
                             <state key="normal" title="分享">
                                 <color key="titleColor" red="1" green="0.83513210455581766" blue="0.53775222573219983" alpha="1" colorSpace="calibratedRGB"/>
@@ -38,7 +38,7 @@
                             </state>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="xbt-bN-m4z">
-                            <rect key="frame" x="90" y="9" width="46" height="33.999996630949717"/>
+                            <rect key="frame" x="90" y="9" width="46" height="33.999997956803966"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
                             <state key="normal" title="评论">
                                 <color key="titleColor" red="1" green="0.83513210459999998" blue="0.53775222570000003" alpha="1" colorSpace="calibratedRGB"/>
@@ -46,7 +46,7 @@
                             </state>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="LDx-uT-kHm">
-                            <rect key="frame" x="184" y="9" width="46" height="33.999996630949717"/>
+                            <rect key="frame" x="184" y="9" width="46" height="33.999997956803966"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
                             <state key="normal" title="收藏">
                                 <color key="titleColor" red="1" green="0.83513210459999998" blue="0.53775222570000003" alpha="1" colorSpace="calibratedRGB"/>
@@ -54,7 +54,7 @@
                             </state>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="G9D-Ge-med">
-                            <rect key="frame" x="266" y="9" width="46" height="33.999996630949717"/>
+                            <rect key="frame" x="266" y="9" width="46" height="33.999997956803966"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
                             <state key="normal" title="字体">
                                 <color key="titleColor" red="1" green="0.83513210459999998" blue="0.53775222570000003" alpha="1" colorSpace="calibratedRGB"/>
@@ -65,7 +65,7 @@
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </view>
             </subviews>
-            <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+            <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
             <nil key="simulatedStatusBarMetrics"/>
             <nil key="simulatedTopBarMetrics"/>
             <nil key="simulatedBottomBarMetrics"/>

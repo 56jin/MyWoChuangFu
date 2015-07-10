@@ -113,20 +113,6 @@
         
         [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
         
-//        for (NSDictionary *dic in devarry) {
-//            if ([dic [@"name"] isEqualToString:@"KT8000_30461F"] ) {
-//                [bletool connectBt:[dic valueForKey:@"uuid"]];
-//                isRead = YES;
-//                
-//                if (isReadAgin == YES) {
-//                    [self getIdCradBtnEvent];
-//                }
-//
-//                
-//                break;
-//            }
-//        }
-        
         if(devarry.count <= 0){
             UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"您附近没有找到蓝牙读卡器" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"重新搜索", nil];
             alert.tag = 10108;
@@ -200,14 +186,8 @@
 
     
     if (isReadAgin == YES) {
-//        [self getIdCradBtnEvent];
-//         [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
           [self performSelector:@selector(getIdCradBtnEvent) withObject:nil afterDelay:0.5];
     }
-
-   
-    
-    
 }
 
 -(void)layoutView{
@@ -863,7 +843,7 @@
         if([buttonTitle isEqualToString:@"重新读取"]){
             
             [self performSelector:@selector(getIdCradBtnEvent) withObject:nil afterDelay:1];
-//            [self getIdCradBtnEvent];
+
         }
     }
 

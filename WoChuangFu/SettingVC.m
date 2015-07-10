@@ -16,6 +16,8 @@
 #import "RealnameVC.h"
 //#import "MySettingViewController.h"
 #import "SendOrderVC.h"
+#import "ScanCodeController.h"
+#import "WebViewController.h"
 
 
 @interface SettingVC ()<UITableViewDataSource,UITableViewDelegate,TitleBarDelegate,HttpBackDelegate>
@@ -57,7 +59,7 @@
         _dataSource = [NSMutableArray arrayWithObjects:@"消息中心",@"系统更新", @"清除缓存",@"加入机构",nil];//@"加入机构",
     }
     else {
-        _dataSource = [NSMutableArray arrayWithObjects:@"实名返档",@"沃校园办理",@"现场开户",nil]; //@"沃校园办理",@"派单开户",
+        _dataSource = [NSMutableArray arrayWithObjects:@"实名返档",@"沃校园办理",@"现场开户",@"简易下单",@"微信扫码有惊喜",nil]; //@"沃校园办理",@"派单开户",
     }
 //    else {
 //        UIButton *rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -90,6 +92,16 @@
     [self.view addSubview:_myTable];
     _myTable.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 20)];
     _myTable.tableFooterView = [[UIView alloc] init];
+    
+//    if (![self.isYesOrNo isEqualToString:@"YES"]){
+//        
+//        UIImageView *codeView = [[UIImageView alloc]initWithFrame:CGRectMake(2, 220, self.view.frame.size.width - 10, 300)];
+//        codeView.backgroundColor = [UIColor redColor];
+//        
+//        UIImage *image = [UIImage imageNamed:@"code.png"];
+//        [codeView setImage:image];
+//        [self.view addSubview:codeView];
+//    }
 }
 
 -(void)backAction {
@@ -136,7 +148,7 @@
     
     if (self.isYesOrNo && [self.isYesOrNo isEqualToString:@"YES"]) {
         
-        UIButton *realBtn = [[UIButton alloc]initWithFrame:CGRectMake(10, 10, 300, 44)];
+        UIButton *realBtn = [[UIButton alloc]initWithFrame:CGRectMake(self.view.frame.size.width/2 - 100, 10, 200, 44)];
         realBtn.backgroundColor = [UIColor orangeColor];
         NSString *session = [[NSUserDefaults standardUserDefaults] objectForKey:@"sessionid"];
         
@@ -231,6 +243,20 @@
         [buss isRootPush:SendDic];
 
         
+    }else if ([_dataSource[indexPath.row] isEqualToString:@"简易下单"]){
+        
+//        [self ShowProgressHUDwithMessage:@"敬请期待"];
+        [self isRootEasyCommit];
+  
+    }
+
+    
+    else if ([_dataSource[indexPath.row] isEqualToString:@"微信扫码有惊喜"]){
+        
+//        [self ShowProgressHUDwithMessage:@"敬请期待"];
+        
+        ScanCodeController *scanCode = [[ScanCodeController alloc]init];
+        [self.navigationController pushViewController:scanCode animated:YES];
     }
 
     else
@@ -282,6 +308,18 @@
     
 }
 
+-(void)isRootEasyCommit{
+    
+    bussineDataService *buss=[bussineDataService sharedDataService];
+    buss.target=self;
+    NSString *session = [[NSUserDefaults standardUserDefaults] objectForKey:@"sessionid"];
+    
+    NSDictionary *SendDic = [[NSDictionary alloc] initWithObjectsAndKeys:
+                             session,@"sessionId",
+                             @"simpleOrder",@"menuName",
+                             nil];
+    [buss isRootPush:SendDic];
+}
 
 - (void)updataVersion
 {
@@ -358,6 +396,11 @@
                 [self.navigationController pushViewController:sendOrderVC animated:YES];
                 
                 
+            }
+            else if ([TabStr isEqualToString:@"简易下单"]){
+                
+                WebViewController *easyDo = [[WebViewController alloc]init];
+                [self.navigationController pushViewController:easyDo animated:YES];
             }
 
             

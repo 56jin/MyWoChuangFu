@@ -21,4 +21,9 @@
 @property(nonatomic,strong) NSArray *dataSources;
 @property(nonatomic,assign) id<AddressComBoxDelegate> delegate;
 
+-(void)setLabelToLeft;
+-(void)reloadTbData;
+-(id)initWithFrame:(CGRect)frame isPacke:(BOOL)ispake;
+
+-(void)setData:(NSArray*)arr;
 @end
