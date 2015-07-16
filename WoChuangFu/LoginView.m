@@ -184,6 +184,8 @@
 #pragma mark HttpBackDelegate
 - (void)requestDidFinished:(NSDictionary*)info
 {
+    MyLog(@"登录返回信息 \n\n\n %@ \n\n\n",info);
+    
     NSString* oKCode = @"0000";
     NSString* bizCode = [info objectForKey:@"bussineCode"];
     NSString* errCode = [info objectForKey:@"errorCode"];
@@ -198,12 +200,15 @@
             [APService setTags:[NSSet setWithObjects:nil] alias:[NSString stringWithFormat:@"%@",[nameStr stringByReplacingOccurrencesOfString:@"@" withString:@""]] callbackSelector:nil target:nil];
          NSLog(@"bus,rspInfo是%@",bus.rspInfo);
             NSString *userId = bus.rspInfo[@"userId"];
+            
+            MyLog(@"\n\n\n\n\nuserId id %@\n\n\n\n\n",userId);
             NSString *userCode = bus.rspInfo[@"userCode"];
             _loadUrl= bus.rspInfo[@"loadUrl"];
-            
+            NSString *qq = bus.rspInfo[@"qq"];
             NSString *sessionid = bus.rspInfo[@"sessionId"];;
             NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
             [user setObject:sessionid forKey:@"sessionid"];
+            [user setObject:qq forKey:@"qq"];
             NSLog(@"returnUrl的值是%@",_loadUrl);
            
 

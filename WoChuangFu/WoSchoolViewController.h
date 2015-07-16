@@ -7,6 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+
+typedef void(^TimeBlock)(void);
+
 @class MLTableAlert;
 @interface WoSchoolViewController : UIViewController{
     NSDictionary* params;
@@ -16,6 +19,7 @@
 @property(nonatomic,retain)NSDictionary* params;
 @property (nonatomic,strong)NSMutableArray *cardOrderKeyValuelist;
 @property (nonatomic)NSString *isChangGui;
+@property(nonatomic,copy) TimeBlock timeBlock;
 
 -(void)setIsCG:(NSString *)_isChangGui;
 @end

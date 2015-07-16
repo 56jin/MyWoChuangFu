@@ -1,0 +1,6 @@
+framework module BLEIDCardReaderItem {
+  umbrella header "BLEIDCardReaderItem.h"
+
+  export *
+  module * { export * }
+}

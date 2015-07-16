@@ -56,6 +56,7 @@
 
 - (void)layoutContentView
 {
+    //初始化单个订单详细界面
     RefreshSingleView *singleView = [[RefreshSingleView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
     singleView.loadIndex = 5;
     singleView.backgroundColor = [UIColor clearColor];
@@ -66,13 +67,17 @@
     self.contentTable = singleView;
     [singleView release];
 
+    
+    //设置表头  即搜索条件界面
     [self layoutTableHeaderView];
 
 }
 
 - (void)layoutTableHeaderView
 {
-    OrderSearchConditionView *conditionView = [[OrderSearchConditionView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, 671/2.0f)];
+//    OrderSearchConditionView *conditionView = [[OrderSearchConditionView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, 671/2.0f)];
+     OrderSearchConditionView *conditionView = [[OrderSearchConditionView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, [UIScreen mainScreen].bounds.size.height-200)];
+    
     conditionView.delegate = self;
     conditionView.backgroundColor = [UIColor whiteColor];
     self.contentTable.contentTable.tableHeaderView = conditionView;
@@ -140,7 +145,7 @@
 - (UIView *)refreshSingleView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     SectionClickView *clickedView = [[[SectionClickView alloc]
-                                      initWithFrame:CGRectMake(0, 0, self.contentTable.frame.size.width, SECTION_VIEW_HEIGHT)
+                                      initWithFrame:CGRectMake(0, 0, self.contentTable.frame.size.width, SECTION_VIEW_HEIGHT*2)
                                       WithOpen:showItems[section]]
                                      autorelease];
     clickedView.delegate = self;
@@ -201,7 +206,8 @@
 }
 - (CGFloat)refreshSingleView:(RefreshSingleView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return SECTION_VIEW_HEIGHT;
+   
+    return SECTION_VIEW_HEIGHT*2;
 }
 - (CGFloat)refreshSingleView:(RefreshSingleView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -229,9 +235,12 @@
     
     //组装数据流
     NSDictionary *itemData = [self.itemList objectAtIndex:section];
+    
+    NSLog(@"数据显示：%@",itemData);
+    
     NSMutableArray *itemRowList = [[NSMutableArray alloc] initWithCapacity:0];
     
-    if ([itemData objectForKey:@"custName"] != nil && ![[itemData objectForKey:@"custName"] isEqualToString:@""]) {
+    if ([itemData objectForKey:@"custName"] != [NSNull null] && [itemData objectForKey:@"custName"] != nil && ![[itemData objectForKey:@"custName"] isEqualToString:@""]) {
         NSDictionary *itemDic = [[NSDictionary alloc] initWithObjectsAndKeys:
                                       @"客户信息:",@"key",
                                       [itemData objectForKey:@"custName"],@"value",nil];
@@ -239,7 +248,7 @@
         [itemDic release];
     }
     
-    if ([itemData objectForKey:@"mainNumber"] != nil && ![[itemData objectForKey:@"mainNumber"] isEqualToString:@""]) {
+    if ([itemData objectForKey:@"mainNumber"] != [NSNull null] && [itemData objectForKey:@"mainNumber"] != nil && ![[itemData objectForKey:@"mainNumber"] isEqualToString:@""]) {
         NSDictionary *itemDic = [[NSDictionary alloc] initWithObjectsAndKeys:
                                  @"订购号码:",@"key",
                                  [itemData objectForKey:@"mainNumber"],@"value",nil];
@@ -247,15 +256,15 @@
         [itemDic release];
     }
     
-    if ([itemData objectForKey:@"orderAmount"] != nil && ![[itemData objectForKey:@"orderAmount"] isEqualToString:@""]) {
+    if ([itemData objectForKey:@"orderAmount"] != [NSNull null] && [itemData objectForKey:@"orderAmount"] != nil && ![[itemData objectForKey:@"orderAmount"] isEqualToString:@""]) {
         NSDictionary *itemDic = [[NSDictionary alloc] initWithObjectsAndKeys:
                                  @"订购金额:",@"key",
-                                 [NSString stringWithFormat:@"%d",[[itemData objectForKey:@"orderAmount"] integerValue]/1000],@"value",nil];
+                                 [NSString stringWithFormat:@"%ld",[[itemData objectForKey:@"orderAmount"] integerValue]/1000],@"value",nil];
         [itemRowList addObject:itemDic];
         [itemDic release];
     }
     
-    if ([itemData objectForKey:@"payType"] != nil && ![[itemData objectForKey:@"payType"] isEqualToString:@""]) {
+    if ([itemData objectForKey:@"payType"] != [NSNull null] && [itemData objectForKey:@"payType"] != nil && ![[itemData objectForKey:@"payType"] isEqualToString:@""]) {
         NSDictionary *itemDic = [[NSDictionary alloc] initWithObjectsAndKeys:
                                  @"支付方式:",@"key",
                                  [itemData objectForKey:@"payType"],@"value",nil];
@@ -263,7 +272,7 @@
         [itemDic release];
     }
     
-    if ([itemData objectForKey:@"orderStatuName"] != nil && ![[itemData objectForKey:@"orderStatuName"] isEqualToString:@""]) {
+    if ([itemData objectForKey:@"orderStatuName"] != [NSNull null] && [itemData objectForKey:@"orderStatuName"] != nil && ![[itemData objectForKey:@"orderStatuName"] isEqualToString:@""]) {
         NSDictionary *itemDic = [[NSDictionary alloc] initWithObjectsAndKeys:
                                  @"订单状态:",@"key",
                                  [itemData objectForKey:@"orderStatuName"],@"value",nil];
@@ -271,7 +280,7 @@
         [itemDic release];
     }
     
-    if ([itemData objectForKey:@"createTime"] != nil && ![[itemData objectForKey:@"createTime"] isEqualToString:@""]) {
+    if ([itemData objectForKey:@"createTime"] != [NSNull null] && [itemData objectForKey:@"createTime"] != nil && ![[itemData objectForKey:@"createTime"] isEqualToString:@""]) {
         NSDictionary *itemDic = [[NSDictionary alloc] initWithObjectsAndKeys:
                                  @"下单时间:",@"key",
                                  [itemData objectForKey:@"createTime"],@"value",nil];
@@ -279,7 +288,7 @@
         [itemDic release];
     }
     
-    if ([itemData objectForKey:@"orderId"] != nil && ![[itemData objectForKey:@"orderId"] isEqualToString:@""]) {
+    if ([itemData objectForKey:@"orderId"] != [NSNull null] && [itemData objectForKey:@"orderId"] != nil && ![[itemData objectForKey:@"orderId"] isEqualToString:@""]) {
         NSDictionary *itemDic = [[NSDictionary alloc] initWithObjectsAndKeys:
                                  @"mimi单号:",@"key",
                                  [itemData objectForKey:@"orderId"],@"value",nil];
@@ -287,7 +296,7 @@
         [itemDic release];
     }
     
-    if ([itemData objectForKey:@"receiveTel"] != nil && ![[itemData objectForKey:@"receiveTel"] isEqualToString:@""]) {
+    if ([itemData objectForKey:@"receiveTel"] != [NSNull null] && [itemData objectForKey:@"receiveTel"] != nil && ![[itemData objectForKey:@"receiveTel"] isEqualToString:@""]) {
         NSDictionary *itemDic = [[NSDictionary alloc] initWithObjectsAndKeys:
                                  @"收件人联系电话:",@"key",
                                  [itemData objectForKey:@"receiveTel"],@"value",nil];
@@ -295,7 +304,7 @@
         [itemDic release];
     }
     
-    if ([itemData objectForKey:@"developAgent"] != nil && ![[itemData objectForKey:@"developAgent"] isEqualToString:@""]) {
+    if ([itemData objectForKey:@"developAgent"] != [NSNull null] && [itemData objectForKey:@"developAgent"] != nil && ![[itemData objectForKey:@"developAgent"] isEqualToString:@""]) {
         NSDictionary *itemDic = [[NSDictionary alloc] initWithObjectsAndKeys:
                                  @"白卡类型:",@"key",
                                  [itemData objectForKey:@"developAgent"],@"value",nil];
@@ -308,6 +317,8 @@
     
     NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:section];
     [self.contentTable.contentTable reloadSections:indexSet withRowAnimation:UITableViewRowAnimationNone];
+    
+    
     
 }
 
@@ -344,6 +355,7 @@
     bussineDataService *bussineService = [bussineDataService sharedDataService];
     bussineService.target = self;
     [bussineService searchAccountOrder:self.paramterDic];
+    [paramter release];
 }
 
 #pragma mark
@@ -358,6 +370,9 @@
             NSDictionary *rspInfo = bussineService.rspInfo;
             NSString *respCode = [rspInfo objectForKey:@"respCode"];
             NSString *respDesc = [rspInfo objectForKey:@"respDesc"];
+            
+            NSLog(@"订单信息 %@",rspInfo);
+            
             if ([respCode isEqualToString:@"1"]) {
                 NSArray *orderData = [rspInfo objectForKey:@"orderData"];
                 

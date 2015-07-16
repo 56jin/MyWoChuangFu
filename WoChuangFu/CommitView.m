@@ -19,7 +19,9 @@
 #define SEPARATE_LINE_S     2
 #define FOOTER_HEIGHT       70
 
-@interface CommitView()
+@interface CommitView(){
+    NSString *payType;
+}
 
 @property(nonatomic,retain) UILabel* payMoneyLab;
 
@@ -60,14 +62,16 @@
         case TypeCard:
         case TypeContract:
         {
-            offset_y = [self layoutCertInfo:offset_y];
+//            offset_y = [self layoutCertInfo:offset_y];
+            offset_y = 5;
             offset_y = [self layoutUserInfo:offset_y];
             offset_y = [self layoutPackageInfo:offset_y];
         }
             break;
         case TypeNet:
         {
-            offset_y = [self layoutCertInfo:offset_y];
+            offset_y = 5;
+//            offset_y = [self layoutCertInfo:offset_y];
             offset_y = [self layoutUserInfo:offset_y];
         }
             break;
@@ -355,19 +359,26 @@
     
     
     UIButton* sendTypeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    sendTypeBtn.frame = CGRectMake(150, offset_y, self.frame.size.width/2-5, INFO_HEIGHT);
+    sendTypeBtn.frame = CGRectMake(self.frame.size.width/2-5+2, offset_y, self.frame.size.width/2-5, INFO_HEIGHT);
     sendTypeBtn.backgroundColor = [UIColor whiteColor];
     [sendTypeBtn setTitle:@"选择配送方式" forState:UIControlStateNormal];
     [sendTypeBtn setTitleColor:[ComponentsFactory createColorByHex:@"#666666"] forState:UIControlStateNormal];
     [sendTypeBtn.titleLabel setFont:[UIFont systemFontOfSize:16.0]];
     sendTypeBtn.tag = 1020;
      sendTypeBtn.userInteractionEnabled = YES;
-     [self.scrollView addSubview:sendTypeBtn];
+     [self.scrollView addSubview:sendTypeBtn];  //添加配送方式
     [sendTypeBtn addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIView *line = [[UIView alloc]initWithFrame:CGRectMake(self.frame.size.width/2-5+1, offset_y, 2, INFO_HEIGHT)];
+    line.backgroundColor = [UIColor grayColor];
+    [line setAlpha:0.1];
+    [self.scrollView addSubview:line];
+    
     
     
     UIButton* addrBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    addrBtn.frame = CGRectMake(0, offset_y, self.frame.size.width/2-5, INFO_HEIGHT);
+    addrBtn.frame = CGRectMake(0, offset_y, self.frame.size.width/2-5, INFO_HEIGHT);//有配送方式
+//    addrBtn.frame = CGRectMake(0, offset_y, self.frame.size.width, INFO_HEIGHT);//无配送方式
     addrBtn.backgroundColor = [UIColor whiteColor];
     [addrBtn setTitle:@"选择配送地区" forState:UIControlStateNormal];
     [addrBtn setTitleColor:[ComponentsFactory createColorByHex:@"#666666"] forState:UIControlStateNormal];
@@ -584,10 +595,15 @@
         NSDictionary *dic=[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",i],@"ITEM_CODE",sourceData[i],@"ITEM_NAME", nil];
         DataDictionary_back_cart_item *dat=[[DataDictionary_back_cart_item alloc] initWithDataItem:dic];
         [pkgData addObject:dat];
+        
+        MyLog(@"-----\n------\n%@------\n--------\n",dic);
 
     }
     NSString* title =@"选择套餐";
     [self hiddenAllKeyBoard];
+    
+    
+    MyLog(@"-----------\n\n\n\n%@\n\n\n\n\n",[pkgData objectAtIndex:0]);
     ZSYCommonPickerView *pickerView = [[ZSYCommonPickerView alloc] initWithTitle:title
                                                                       includeAll:NO
                                                                       dataSource:pkgData
@@ -606,14 +622,14 @@
     //显示照片
     
     if (myType == TypeCard ||myType == TypeContract||myType == TypeNet) {
-        if(((UIButton*)[self viewWithTag:UPLOAD_PHOTO_BTN]).imageView.image == nil){
+      /*  if(((UIButton*)[self viewWithTag:UPLOAD_PHOTO_BTN]).imageView.image == nil){
             [self showSimpleAlertView:@"请先拍摄身份证照片正面！"];
             return NO;
         }
         if(((UIButton*)[self viewWithTag:UPLOAD_PHOTO_BACK_BTN]).imageView.image == nil){
             [self showSimpleAlertView:@"请先拍摄身份证照片反面！"];
             return NO;
-        }
+        }*/
         if (myType != TypeNet) {
             enterStr = ((UIButton*)[self viewWithTag:SELECT_PACKAGE_TYPE]).titleLabel.text;
             if(enterStr == nil || enterStr.length <=0 || [enterStr isEqualToString:@"套餐生效时间"]){
@@ -650,8 +666,13 @@
         return NO;
     }
     enterStr = ((UIButton*)[self viewWithTag:SELECT_ADDR_AREA]).titleLabel.text;
-    if(enterStr == nil || enterStr.length <=0 || [enterStr isEqualToString:@"请选择配送地区"]){
+    if(enterStr == nil || enterStr.length <=0 || [enterStr isEqualToString:@"选择配送地区"]){
         [self showSimpleAlertView:@"请选择配送地区！"];
+        return NO;
+    }
+    enterStr = ((UIButton*)[self viewWithTag:1020]).titleLabel.text;
+    if(enterStr == nil || enterStr.length <=0 || [enterStr isEqualToString:@"选择配送方式"]){
+        [self showSimpleAlertView:@"请选择配送方式！"];
         return NO;
     }
     enterStr = ((UITextField*)[self viewWithTag:ENTER_ADDR_DETAIL]).text;
@@ -723,6 +744,27 @@
     
     [allInfo setObject:productInfo forKey:@"productInfo"];
     
+    
+    
+    UIButton *btn = (UIButton*)[self.scrollView viewWithTag:1020];
+    NSString *str;
+    if ([btn.titleLabel.text isEqualToString:@"邮寄快递"]) {
+        str = @"1004";
+    }else if([btn.titleLabel.text isEqualToString:@"上门配送"]){
+        str = @"1002";
+    }else{
+        
+    }
+    
+    NSDictionary *deliveryTypeInfo = [NSDictionary dictionaryWithObject:str forKey:@"deliveryType"];
+    
+    
+    NSDictionary *payTypep = [NSDictionary dictionaryWithObject:payType forKey:@"payType"];
+    
+    [allInfo setObject:payTypep forKey:@"payType"];
+    
+    [allInfo setObject:deliveryTypeInfo forKey:@"deliveryTypeInfo"];
+    
     if(self.target != nil && [self.target respondsToSelector:@selector(commitRequestData:)]){
         [self.target performSelector:@selector(commitRequestData:) withObject:allInfo];
     }
@@ -757,47 +799,70 @@
 
 -(void)selctSendMode{
     
-    NSArray *arr = [NSArray arrayWithObjects:@"邮寄快递",@"上门配送", nil];
-    
-    [self.window  showPopWithButtonTitles:@[@"邮寄快递",@"上门配送"] styles:@[YUDefaultStyle,YUDefaultStyle,YUDefaultStyle] whenButtonTouchUpInSideCallBack:^(int index  ) {
-        
-        if (index==0) {
-            
-            UIButton *btn = (UIButton*)[self viewWithTag:1020];
-            [btn setTitle:@"邮寄快递" forState:UIControlStateNormal];
-            
-            
-            
-        }else if(index == 1){
-            UIButton *btn = (UIButton*)[self viewWithTag:1020];
-            [btn setTitle:@"上门配送" forState:UIControlStateNormal];
-        }else{
-            
-        }
-        
-    }];
+//    NSArray *arr = [NSArray arrayWithObjects:@"邮寄快递",@"上门配送", nil];
+//    
+//    [self.window  showPopWithButtonTitles:@[@"邮寄快递",@"上门配送"] styles:@[YUDefaultStyle,YUDefaultStyle,YUDefaultStyle] whenButtonTouchUpInSideCallBack:^(int index  ) {
+//        
+//        if (index==0) {
+//            
+//            UIButton *btn = (UIButton*)[self viewWithTag:1020];
+//            [btn setTitle:@"邮寄快递" forState:UIControlStateNormal];
+//            
+//            
+//            
+//        }else if(index == 1){
+//            UIButton *btn = (UIButton*)[self viewWithTag:1020];
+//            [btn setTitle:@"上门配送" forState:UIControlStateNormal];
+//        }else{
+//            
+//        }
+//        
+//    }];
 
-//    NSMutableArray* pkgData = [[NSMutableArray alloc] initWithCapacity:0];
-////    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:@"邮寄快递",@"0",@"上门配送",@"1", nil];
-//    
-//    
-//     NSDictionary *dic=[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",0],@"ITEM_CODE",@"邮寄快递",@"ITEM_NAME", nil];
-//    
-//    NSDictionary *dic2=[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",1],@"ITEM_CODE",@"上门配送",@"ITEM_NAME", nil];
-//    
-//    
-//    [pkgData addObject:dic];
-//    [pkgData addObject:dic2];
-//    ZSYCommonPickerView *pickerView = [[ZSYCommonPickerView alloc] initWithTitle:@"配送方式"
-//                                                                      includeAll:NO
-//                                                                      dataSource:pkgData
-//                                                               selectedIndexPath:0
-//                                                                        Firstrow:@"" cancelButtonBlock:^{
-//                                                                            
-//                                                                        } makeSureButtonBlock:^(NSInteger sindexPath) {
-////                                                                            [((UIButton*)[self viewWithTag:1020]) setTitle:[self.pkgDataArray objectAtIndex:sindexPath] forState:UIControlStateNormal];
-//                                                                        }];
-//    [pickerView show];
+    NSMutableArray* pkgData = [[NSMutableArray alloc] initWithCapacity:0];
+    
+        NSDictionary *dic1=[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",0],@"ITEM_CODE",@"邮寄快递",@"ITEM_NAME", nil];
+        DataDictionary_back_cart_item *dat1=[[DataDictionary_back_cart_item alloc] initWithDataItem:dic1];
+    
+    NSDictionary *dic2=[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",0],@"ITEM_CODE",@"上门配送",@"ITEM_NAME", nil];
+    DataDictionary_back_cart_item *dat2=[[DataDictionary_back_cart_item alloc] initWithDataItem:dic2];
+    
+    
+        [pkgData addObject:dat1];
+        [pkgData addObject:dat2];
+        
+//        MyLog(@"-----\n------\n%@------\n--------\n",dic);
+    
+  
+    NSString* title =@"配送方式";
+    [self hiddenAllKeyBoard];
+    
+    
+    MyLog(@"-----------\n\n\n\n%@\n\n\n\n\n",[pkgData objectAtIndex:0]);
+    ZSYCommonPickerView *pickerView = [[ZSYCommonPickerView alloc] initWithTitle:title
+                                                                      includeAll:NO
+                                                                      dataSource:pkgData
+                                                               selectedIndexPath:0
+                                                                        Firstrow:@"" cancelButtonBlock:^{
+                                                                            
+                                                                        } makeSureButtonBlock:^(NSInteger sindexPath) {
+                                                                                    if (sindexPath==0) {
+                                                                            
+                                                                                        UIButton *btn = (UIButton*)[self viewWithTag:1020];
+                                                                                        [btn setTitle:@"邮寄快递" forState:UIControlStateNormal];
+                                                                                        payType = @"2";
+                                                                            
+                                                                                        
+                                                                                        
+                                                                                    }else if(sindexPath == 1){
+                                                                                        UIButton *btn = (UIButton*)[self viewWithTag:1020];
+                                                                                        [btn setTitle:@"上门配送" forState:UIControlStateNormal];
+                                                                                        payType = @"1";
+                                                                                    }else{
+                                                                                        
+                                                                                    }
+                                                                        }];
+    [pickerView show];
     
 
     

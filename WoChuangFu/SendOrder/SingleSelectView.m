@@ -67,12 +67,12 @@
     
     cnt++;
     [self setOneBtnToViewWithFrame:CGRectMake(87/2.0f+10, 0, 108/2.0f, hei)
-                             Title:@"已开户"
+                             Title:@"未开户"
                                Tag:SEGMENT_CLICK_BASE_TAG+cnt];
     
     cnt++;
     [self setOneBtnToViewWithFrame:CGRectMake(87/2.0f+108/2.0f+20, 0, 108/2.0f, hei)
-                             Title:@"未开户"
+                             Title:@"已开户"
                                Tag:SEGMENT_CLICK_BASE_TAG+cnt];
     
     UIButton *buttone = (UIButton *)[self viewWithTag:SEGMENT_CLICK_BASE_TAG];
@@ -120,7 +120,7 @@
             case 0:
             {
                 if (isOrderType) {
-                    self.orderType = chuangFuOrder;
+                    self.orderType = chuangFuOrder2;
                 }else{
                     self.openStatus = All;
                 }
@@ -159,6 +159,9 @@
         }
         if (self.delegate != nil && [self.delegate respondsToSelector:@selector(singleSelectViewdidSelectValue:)]) {
             [self.delegate singleSelectViewdidSelectValue:self];
+            
+            
+            NSLog(@"sssssssss %u",self.orderType);
         }
         
     }

@@ -25,6 +25,7 @@
 //#define MainHeight  [[UIScreen mainScreen] bounds].size.height
 //#define MainWidth   [[UIScreen mainScreen] bounds].size.width
 
+
 @interface WoSchoolViewController ()<RFSegmentViewDelegate,TitleBarDelegate,UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,HttpBackDelegate,CBCentralManagerDelegate,BR_Callback,UITextFieldDelegate,AddressComBoxDelegate,ZSYPopListViewDelegate,UIAlertViewDelegate> {
     UITableView *myTabView;
     UIView *oldView;  //老宽带用户
@@ -38,10 +39,12 @@
 //    BlueToothDCAdapter *adapter;
     
 //    NSMutableArray *devarry; //存储ble列表蓝牙
-    BleTool *bletool;//bleTool对象
-    
+//    BleTool *bletool;//bleTool对象
+    BOOL isAutoShow;
     BOOL isRead;
     BOOL isReadAgin;
+    
+    BOOL canGo;//校验手机号码后是否能继续
     ZSYPopListView *zsy;
     UILabel *devLabel;  // 显示当前连接的蓝牙设备名称
     NSDictionary *blootDic;  //当前选择的蓝牙设备信息
@@ -63,11 +66,19 @@
     NSInteger flagInteger;   //flagInteger = 0 验证码校验 flagInteger = 1 阅读器校验
     
     BOOL isHuoDong;
-    
-    
-    
     NSString  *myProductId;
     NSString *skuID;
+    
+    BleTool *tools;
+    
+    BOOL failStat;
+    int KeyboardHeight;
+    BOOL canMove;//呼出键盘是否滚动视图
+    
+    int indentyMode; //验证码方式  0验证码校验  1阅读器校验
+    
+    BOOL isPopView;
+    
 }
 @property(nonatomic,retain)NSArray* areaData;
 @property(nonatomic,retain)NSArray* jiedaoData;
@@ -84,6 +95,7 @@
 @synthesize isChangGui;
 //@synthesize schoolviewtable;
 @synthesize packages;
+@synthesize timeBlock;
 
 
 - (void)centralManagerDidUpdateState:(CBCentralManager *)central{
@@ -137,12 +149,7 @@
     NSString* msg = [info objectForKey:@"MSG"];
     [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
     NSLog(@"请求吗=========%@",bizCode);
-    
-    
-    
     switch (mark) {
-            
-            
         case 0:
             if([bizCode isEqualToString:[ChooseAreaMessage getBizCode]]){
                 if([oKCode isEqualToString:errCode]){
@@ -202,6 +209,16 @@
                 {
                     NSLog(@"请求成功信息%@",info);
                     [self getIndentify];
+                    
+                    [self btnClock];
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
                     
                 }
                 else
@@ -284,12 +301,16 @@
                     
                     
                 }
-                
+           
                
+                
+                timeBlock();
 //                if ([myProductId length]==0) {
 //                                    }
                 UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"提示" message:bus.rspInfo[@"respDesc"] delegate:nil cancelButtonTitle:nil otherButtonTitles:@"确定", nil];
                 [alertView show];
+                
+                
             }
             break;
         case 5:
@@ -324,9 +345,11 @@
                         addressString = [dict objectForKey:@"areaName"];
                         jiedao.text = addressString;
                         addrCode = [dict objectForKey:@"areaCode"];
+//                    请求套餐并且蛇者
                         
+                           [self packageRequest];
                         
-                        
+                        isAutoShow = YES;
                         
                     };
               
@@ -360,39 +383,80 @@
                 }
                 
                 
-                SchoolViewTable *schoolviewtable2 = [[SchoolViewTable alloc]init];
-                schoolviewtable2.areArr = (NSArray*)packageArr ;
-                schoolviewtable2.handler = ^(NSDictionary *dict){
+        
+                if (isAutoShow) {
+                                    UITableViewCell *cell2 = (UITableViewCell*) [myTabView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:0]];
+                                    UITextField *taocan = (UITextField*)[cell2 viewWithTag:100];
+//                                    taocan.text = [dict objectForKey:@"areaName"];
+                    taocan.text =[packageArr[0] objectForKey:@"areaName"];
+                    isAutoShow = NO;
+                    NSLog(@"第一条信息%@",packageArr[0]);
                     
-                     NSLog(@"选择套餐信息%@",dict);
                     
-                    UITableViewCell *cell2 = (UITableViewCell*) [myTabView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:0]];
-                    UITextField *taocan = (UITextField*)[cell2 viewWithTag:100];
-                    taocan.text = [dict objectForKey:@"areaName"];
                     
+                    mark = 8;
+                    NSMutableDictionary *sendDic = [NSMutableDictionary dictionary];
+                    [sendDic setValue:[packageArr[0] objectForKey:@"packCode"] forKey:@"netEssPkgId"];
+                    [sendDic setValue:iPhoneNumDic[@"svcNumProperty"][@"net_type"] forKey:@"net_type"];
+                    [sendDic setValue:iPhoneNumDic[@"svcNumProperty"][@"product"] forKey:@"phoneEssPkgId"];
+                    [sendDic setValue:@"woRh" forKey:@"woRhflag"];
+                    [sendDic setValue:@"2" forKey:@"userType"];  //宽带用户类型   1:老号码+老宽带  2:老号码+新宽带
+                    
+                    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:[packageArr[0] objectForKey:@"packCode"],@"packCode", nil];
                     selectDic = [NSDictionary dictionaryWithDictionary:dict];
-                    if (iPhoneNumDic && dict) {
-                        //调cf0046接口
-                        mark = 8;
-                        NSMutableDictionary *sendDic = [NSMutableDictionary dictionary];
-                        [sendDic setValue:dict[@"packCode"] forKey:@"netEssPkgId"];
-                        [sendDic setValue:iPhoneNumDic[@"svcNumProperty"][@"net_type"] forKey:@"net_type"];
-                        [sendDic setValue:iPhoneNumDic[@"svcNumProperty"][@"product"] forKey:@"phoneEssPkgId"];
-                        [sendDic setValue:@"woRh" forKey:@"woRhflag"];
-                        [sendDic setValue:@"2" forKey:@"userType"];  //宽带用户类型   1:老号码+老宽带  2:老号码+新宽带
+                    NSLog(@"调cf0046      参数：%@",sendDic);
+                    bussineDataService *buss=[bussineDataService sharedDataService];
+                    buss.target = self;
+                    [buss getRHKDInfo:sendDic];
+                    
+                    
+                    
+                    
+                }
+                else{
+                    
+                    SchoolViewTable *schoolviewtable2 = [[SchoolViewTable alloc]init];
+                    schoolviewtable2.areArr = (NSArray*)packageArr ;
+                    schoolviewtable2.handler = ^(NSDictionary *dict){
                         
-                        NSLog(@"参数：%@",sendDic);
+                        NSLog(@"选择套餐信息%@",dict);
                         
-                        bussineDataService *buss=[bussineDataService sharedDataService];
-                        buss.target = self;
-                        [buss getRHKDInfo:sendDic];
-                    }
-                   
+                        UITableViewCell *cell2 = (UITableViewCell*) [myTabView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:0]];
+                        UITextField *taocan = (UITextField*)[cell2 viewWithTag:100];
+                        taocan.text = [dict objectForKey:@"areaName"];
+                        
+                        selectDic = [NSDictionary dictionaryWithDictionary:dict];
+                        if (iPhoneNumDic && dict) {
+                            //调cf0046接口
+                            mark = 8;
+                            NSMutableDictionary *sendDic = [NSMutableDictionary dictionary];
+                            [sendDic setValue:dict[@"packCode"] forKey:@"netEssPkgId"];
+                            [sendDic setValue:iPhoneNumDic[@"svcNumProperty"][@"net_type"] forKey:@"net_type"];
+                            [sendDic setValue:iPhoneNumDic[@"svcNumProperty"][@"product"] forKey:@"phoneEssPkgId"];
+                            [sendDic setValue:@"woRh" forKey:@"woRhflag"];
+                            [sendDic setValue:@"2" forKey:@"userType"];  //宽带用户类型   1:老号码+老宽带  2:老号码+新宽带
+                            
+                            NSLog(@"调cf0046      参数：%@",sendDic);
+                            
+                            bussineDataService *buss=[bussineDataService sharedDataService];
+                            buss.target = self;
+                            [buss getRHKDInfo:sendDic];
+                        }
+                        
+                        
+                        
+                        
+                    };
+                    [self.navigationController pushViewController:schoolviewtable2 animated:YES];
+                }
+                
 
-                    
-                    
-                };
-                [self.navigationController pushViewController:schoolviewtable2 animated:YES];
+                
+                
+                
+                
+                
+              
                 
             }
             break;
@@ -400,10 +464,35 @@
         case 7:
             if([[GetIndentifyCodeMessage getBizCode] isEqualToString:bizCode])
             {
+                canGo = YES;
+                [self setEditAble:YES];
                 bussineDataService* bus = [bussineDataService sharedDataService];
                 iPhoneNumDic = [NSDictionary dictionaryWithDictionary:bus.rspInfo];
                 NSLog(@"\n\n  校验手机号信息   %@    ---  %@",bus.rspInfo,iPhoneNumDic);
                 pkgId = bus.rspInfo[@"svcNumProperty"][@"product"];
+                
+                UITableViewCell *cell2 = (UITableViewCell*) [myTabView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+                UITextField *dishitf = (UITextField*)[cell2 viewWithTag:100];
+                
+                
+               NSString *ds  = bus.rspInfo[@"svcNumProperty"][@"localname"];
+                
+                
+                if(ds){
+                    cell2.userInteractionEnabled = NO;
+                      dishitf.text = ds;
+                }else{
+                    cell2.userInteractionEnabled = YES;
+                }
+                cityCode = bus.rspInfo[@"svcNumProperty"][@"areaCode"];
+                resAreaCode = bus.rspInfo[@"svcNumProperty"][@"local_net"];
+                
+                
+                
+                NSLog(@"校验号码的地市%@",bus.rspInfo[@"svcNumProperty"][@"localname"]);
+                
+                
+                
                 if ([bus.rspInfo objectForKey:@"productId"] != [NSNull null]) {
                     
                     if (!myProductId) {
@@ -548,6 +637,9 @@
             if([[IndentifyMessage getBizCode] isEqualToString:bizCode])
             {
                 
+                
+                
+                
                 if(msg == nil || msg.length <= 0){
                     msg = @"获取数据失败!";
                     [self ShowProgressHUDwithMessage:msg];
@@ -628,8 +720,11 @@
                     msg = @"获取数据失败!";
                     [self ShowProgressHUDwithMessage:msg];
                 }else {
-                    [self ShowProgressHUDwithMessage:msg];
                     
+                    if(!isPopView)
+                    [self ShowProgressHUDwithMessage:msg];
+                    canGo = NO;
+                    [self setEditAble:NO];
                 }
 
             }
@@ -730,21 +825,65 @@
 #pragma mark -
 #pragma mark Responding to keyboard events
 - (void)keyboardWillShow:(NSNotification *)notification {
+    
+    
+    NSDictionary *userInfo = [notification userInfo];
+    NSValue *aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
+    CGRect keyboardRect = [aValue CGRectValue];
+    int height = keyboardRect.size.height;
+    int width = keyboardRect.size.width;
+    NSLog(@"键盘高度是  %d",height);
+    NSLog(@"键盘宽度是  %d",width);
+    
+    KeyboardHeight = height;
+    
+    if (canMove) {
+        
+   
+    
+    float Durationtime = 0.4;
+    [UIView beginAnimations:@"alt" context:nil];
+    [UIView setAnimationDelegate:self];
+    [UIView setAnimationDuration:Durationtime];
+    
+    if([UIScreen mainScreen].bounds.size.height>=568){
+        
+        [self.view setFrame:CGRectMake(0, -KeyboardHeight, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height+KeyboardHeight)];
+        
+    }else{
+        
+        [self.view setFrame:CGRectMake(0, -KeyboardHeight, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height+KeyboardHeight)];
+    }
+    [UIView commitAnimations];
+    
+    
+     }
+    
+    
+    
     IsKeyBoardHide=NO;
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification {
+    
+    float Durationtime = 0.15;
+    [UIView beginAnimations:@"alt" context:nil];
+    [UIView setAnimationDelegate:self];
+    [UIView setAnimationDuration:Durationtime];
+    
+    [self.view setFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
+    [UIView commitAnimations];
     IsKeyBoardHide=YES;
 }
 
 - (void)viewDidLoad {
     
-    
+    self.view.window.backgroundColor  = [UIColor whiteColor];
     [super viewDidLoad];
     
     
 //    adapter = [[BlueToothDCAdapter alloc] init];
-     bletool =[[BleTool alloc]init:self]; //bletool初始化
+//     bletool =[[BleTool alloc]init:self]; //bletool初始化
     selectInteger = 0;
     flagInteger = 0;
     tableArray = [NSMutableArray array];
@@ -775,14 +914,30 @@
         
         UIButton *modeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         modeBtn.frame = CGRectMake(0, 40, self.view.frame.size.width, 60);
+        CGPoint tempframe = modeBtn.center;
+        modeBtn.frame = CGRectMake(0, 0, self.view.frame.size.width - 130, 30);
+        modeBtn.center = tempframe;
+        
         CGPoint tmpPoint =  modeBtn.center;
         tmpPoint.x = self.view.center.x;
         [modeBtn setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
         modeBtn.center = tmpPoint;
-        [modeBtn setTitle:@"验证码校验" forState:UIControlStateNormal];
+        [modeBtn setTitle:@"点击验证码校验" forState:UIControlStateNormal];
         [modeBtn addTarget:self action:@selector(chooseComfirmMode) forControlEvents:UIControlEventTouchUpInside];
         modeBtn.tag = 5004;
+        modeBtn.backgroundColor = [UIColor whiteColor];
+        [modeBtn.layer setBorderWidth:1];
+        [modeBtn.layer setBorderColor:[UIColor colorWithRed:220/255.0 green:220/255.0 blue:220/255.0 alpha:1].CGColor];
+//        modeBtn.contentEdgeInsets = UIEdgeInsetsMake(0, -10, 0, 0);
+        
+        UIImageView *btnImage = [[UIImageView alloc]initWithFrame:CGRectMake(modeBtn.frame.size.width - 20, 5, 20, 20)];
+        btnImage.tag = 1030;
+        [btnImage setImage:[UIImage imageNamed:@"arrow.png"]];
+        [modeBtn addSubview:btnImage];
+        [modeBtn.layer setCornerRadius:5];
         [allView addSubview:modeBtn];
+        indentyMode = 0;
+        
     }
     
     
@@ -804,6 +959,13 @@
     // Do any additional setup after loading the view.
     
     [self sendRequestData];
+    
+    tools = [[BleTool alloc]init:self];
+    
+    canGo = YES;
+    [self setEditAble:YES];
+
+    
 }
 
 #pragma mark-    新装宽带用户页面
@@ -844,12 +1006,12 @@
         UIView *newView2 = [[UIView alloc]initWithFrame:tmpframe];
         newView2.backgroundColor = [UIColor whiteColor];
         
-        UILabel *numName = [[UILabel alloc]initWithFrame:CGRectMake(10, 10, 45, 40)];
+        UILabel *numName = [[UILabel alloc]initWithFrame:CGRectMake(13, 10, 45, 40)];
         numName.text = @"号码";
-        
+        numName.font = [UIFont systemFontOfSize:15.0f];
         [newView2 addSubview:numName];
         
-        UITextField *numFiled = [[UITextField alloc]initWithFrame:CGRectMake(60, 10, 250, 40)];
+        UITextField *numFiled = [[UITextField alloc]initWithFrame:CGRectMake(54, 10, 250, 40)];
         numFiled.delegate = self;
         numFiled.placeholder = @"请输入手机号";
         numFiled.font = [UIFont systemFontOfSize:15.0f];
@@ -926,7 +1088,7 @@
     int tmp = allHeight;
     allHeight=0;
     
-    for (int i = 0 ; i < 3; i++) {
+    for (int i = 0 ; i < 4; i++) {
         
         allHeight += 10;
         
@@ -936,21 +1098,24 @@
         [SFview.layer setCornerRadius:4.0];
         [SFview.layer setBorderWidth:1.0f];
         [SFview.layer setBorderColor:[[UIColor groupTableViewBackgroundColor] CGColor]];
-        [SFview setFrame:(CGRect){10,allHeight,MainWidth - 20,50}];
+        [SFview setFrame:(CGRect){0,allHeight,MainWidth,50}];
          allHeight += 50;
         
         UILabel *label = [[UILabel alloc]init];
         label.backgroundColor = [UIColor clearColor];
         [label setTextColor:[self colorWithHexString:@"#363636"]];
         label.font = [UIFont systemFontOfSize:15.0f];
-        label.text = i == 0 ? @"姓名" : i == 1 ? @"身份证" : @"地址";
+        label.text = i == 0 ? @"姓名" : i == 1 ? @"身份证" : i == 2 ?  @"地址" :@"联系电话";
         [label setFrame:(CGRect){10,0,50,50}];
         [SFview addSubview:label];
+        
+        
+     
         
         UITextField *text = [[UITextField alloc]initWithFrame:CGRectZero];
         text.delegate = self;
        
-        text.placeholder = i == 0 ? @"机主姓名" : i == 1 ? @"机主身份证号" :@"详细地址(在报装地址基础上加)";
+        text.placeholder = i == 0 ? @"机主姓名" : i == 1 ? @"机主身份证号" :i == 2?@"详细地址(在报装地址基础上加)":@"请输入联系电话";
         
 //        if ([isChangGui integerValue] == 2) {
 //            text.userInteractionEnabled = i == 2 ? YES : NO;
@@ -965,12 +1130,16 @@
         text.returnKeyType = UIReturnKeyDone;
         text.clearButtonMode = UITextFieldViewModeWhileEditing; //编辑时会出现个修改X
         text.keyboardType = i == 1 ? UIKeyboardTypeNumbersAndPunctuation : UIKeyboardTypeDefault;
-        [text setFrame:(CGRect){70,0,MainWidth - 100 ,50}];
+        [text setFrame:(CGRect){75,0,MainWidth - 105 ,50}];
 //        text.adjustsFontSizeToFitWidth = YES;
         [SFview addSubview:text];
         
         [view3 addSubview:SFview];
-        
+        if(i==3){
+            CGRect tmpFrame = label.frame;
+            tmpFrame.size.width  = tmpFrame.size.width+50;
+            label.frame = tmpFrame;
+        }
         
         
     }
@@ -1037,7 +1206,9 @@
 
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+//    [self hideKeyBoard];
     [self.view endEditing:YES];
+    
 }
 
 - (UIView *)viewWith:(NSInteger)integer andString:(NSString *)string {
@@ -1136,6 +1307,7 @@
 //    schoolviewtable = nil;
     
     
+    
 }
 
 #pragma mark 地市  套餐 点击事件
@@ -1198,7 +1370,44 @@
     [self.view endEditing:YES];
     UIButton *btn = (UIButton*)sender;
        if (btn.tag == 1400) {
-           [self getIdentifyingCode];
+           
+           if ([btn.titleLabel.text isEqualToString:@"获取验证码"]) {
+               [self getIdentifyingCode];
+           }
+//           __block int timeout=30; //倒计时时间
+//           dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+//           dispatch_source_t _timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0,queue);
+//           dispatch_source_set_timer(_timer,dispatch_walltime(NULL, 0),1.0*NSEC_PER_SEC, 0); //每秒执行
+//           dispatch_source_set_event_handler(_timer, ^{
+//               if(timeout<=0){ //倒计时结束，关闭
+//                   dispatch_source_cancel(_timer);
+//                   dispatch_async(dispatch_get_main_queue(), ^{
+//                       //设置界面的按钮显示 根据自己需求设置
+//                       [btn setTitle:@"获取验证码" forState:UIControlStateNormal];
+//                       btn.userInteractionEnabled = YES;
+//                   });
+//               }else{
+//                   //            int minutes = timeout / 60;
+//                   int seconds = timeout % 60;
+//                   NSString *strTime = [NSString stringWithFormat:@"%.2d", seconds];
+//                   dispatch_async(dispatch_get_main_queue(), ^{
+//                       //设置界面的按钮显示 根据自己需求设置
+//                       NSLog(@"____%@",strTime);
+//                       [btn setTitle:[NSString stringWithFormat:@"重新获取%@",strTime] forState:UIControlStateNormal];
+//                       btn.userInteractionEnabled = NO;
+//                       
+//                   });
+//                   timeout--;
+//                   
+//               }
+//           });
+//           dispatch_resume(_timer);
+
+           
+           
+           
+           
+//
     }
     else if(btn.tag == 1401){
         [self comfirmIdentify];
@@ -1213,7 +1422,11 @@
     
     UIButton *btn = (UIButton*)sender;
     if (btn.tag ==2000) {
-        [self getUserIDCardInfo];
+//        [self getUserIDCardInfo];
+        
+        //身份证识别
+        
+        [self getMessage];
     }
     else if (btn.tag == 3000){
         [self orderComfirm];
@@ -1282,6 +1495,7 @@
         tf.font = [UIFont systemFontOfSize:15];
         tf.delegate = self;
         
+        
         AddressComBox *combox = [[AddressComBox alloc] initWithFrame:CGRectMake(50, 5, 260, 35)];
         combox.delegate = self;
         combox.dataSources = self.cardOrderKeyValuelist;
@@ -1314,6 +1528,7 @@
     Cell.textLabel.font = [UIFont systemFontOfSize:15];
     
    UITextField *lb = (UITextField*) [Cell viewWithTag:100];
+    lb.returnKeyType = UIReturnKeyDone;
     
     lb.placeholder = indexPath.row == 0 ? @"请选择地市" : indexPath.row  == 1 ? @"请输入小区/街道名称" :@"请选择套餐";
     return Cell;
@@ -1356,10 +1571,22 @@
             resAreaCode = [dict objectForKey:@"resAreaCode"];
             UILabel *lb = (UILabel*) [cell viewWithTag:100];
             lb.text = [dict objectForKey:@"areaName"];
+            
+            UITableViewCell *cell = (UITableViewCell*) [myTabView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+            UITextField *jiedaotf = (UITextField*)[cell viewWithTag:100];
+            jiedaotf.text = nil;
+            
+            UITableViewCell *cell2 = (UITableViewCell*) [myTabView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:0]];
+            UITextField *taocan = (UITextField*)[cell2 viewWithTag:100];
+            taocan.text = nil;
+            
         };
         [self.navigationController pushViewController:schoolviewtable animated:YES];
     }else if(indexPath.row == 1){
 
+        UITableViewCell *cell = (UITableViewCell*) [myTabView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:0]];
+        UITextField *jiedaotf = (UITextField*)[cell viewWithTag:100];
+        jiedaotf.text = nil;
     }else if(indexPath.row == 2){
         
       
@@ -1371,7 +1598,7 @@
 -(void)backAction {
     if (isRead) {
         //断开连接
-        [bletool disconnectBt];
+        [tools disconnectBt];
         
     }
 
@@ -1381,68 +1608,72 @@
 
 #pragma mark - textField 代理方法
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
-    
-   
-    
-//    if(textField.tag ==100){
-//        UITableViewCell *cell = (UITableViewCell*) [myTabView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-//        UITextField *dishitf = (UITextField*)[cell viewWithTag:100];
-//        if ([dishitf.text length]==0) {
-//            [self ShowProgressHUDwithMessage:@"请选择地市"];
-//        }
-//        else{
-//            
-//        }
-//        
-//    }
-    if (textField.tag == 4002 || textField.tag == 4000 || textField.tag == 4001) {
-        float Durationtime = 0.5;
-        [UIView beginAnimations:@"alt" context:nil];
-        [UIView setAnimationDelegate:self];
-        [UIView setAnimationDuration:Durationtime];
+    [self setEditAble:YES];
+    canMove = NO;
+    if(textField.tag == 8003||textField.tag == 1200){
         
-        if([UIScreen mainScreen].bounds.size.height>=568){
-            
-            [self.view setFrame:CGRectMake(0, -245, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height-64)];
-            
-        }else{
-            
-            [self.view setFrame:CGRectMake(0, -245, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height-64)];
-        }
-        [UIView commitAnimations];
+       
+    }
+    
+
+    if (textField.tag == 4002 || textField.tag == 4000 || textField.tag == 4001||textField.tag == 4003) {
+//        float Durationtime = 0.5;
+//        [UIView beginAnimations:@"alt" context:nil];
+//        [UIView setAnimationDelegate:self];
+//        [UIView setAnimationDuration:Durationtime];
+//        
+//        if([UIScreen mainScreen].bounds.size.height>=568){
+//            
+//            [self.view setFrame:CGRectMake(0, -KeyboardHeight, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height+KeyboardHeight)];
+//            
+//        }else{
+//            
+//            [self.view setFrame:CGRectMake(0, KeyboardHeight, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height+KeyboardHeight)];
+//        }
+//        [UIView commitAnimations];
+        
+        canMove = YES;
 
     }
     
     else if (textField.tag == 1302) {
         
-        float Durationtime = 0.5;
-        [UIView beginAnimations:@"alt" context:nil];
-        [UIView setAnimationDelegate:self];
-        [UIView setAnimationDuration:Durationtime];
-        
-        if([UIScreen mainScreen].bounds.size.height>=568){
-            
-            [self.view setFrame:CGRectMake(0, -45, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height-64)];
-            
-        }else{
-            
-            [self.view setFrame:CGRectMake(0, -45, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height-64)];
-        }
-        [UIView commitAnimations];
+//        float Durationtime = 0.5;
+//        [UIView beginAnimations:@"alt" context:nil];
+//        [UIView setAnimationDelegate:self];
+//        [UIView setAnimationDuration:Durationtime];
+//        
+//        if([UIScreen mainScreen].bounds.size.height>=568){
+//            
+//            [self.view setFrame:CGRectMake(0, -KeyboardHeight, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height+KeyboardHeight)];
+//            
+//        }else{
+//            
+//            [self.view setFrame:CGRectMake(0, -KeyboardHeight, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height+KeyboardHeight)];
+//        }
+//        [UIView commitAnimations];
+        canMove = NO;
 
         
     }else if(textField.tag == 9001){
     //街道填写
+        canMove = NO;
         
+    }else{
+        canMove = NO;
     }
     return YES;
 }
 
+
+
+
+
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-    if ( textField.tag == 4002 || textField.tag == 4000 || textField.tag == 4001 || textField.tag == 1302) {
+    if ( textField.tag == 4002 || textField.tag == 4000 || textField.tag == 4001 || textField.tag == 1302||textField.tag == 4003) {
         
         if(IsKeyBoardHide){
-            float Durationtime = 0.3;
+            float Durationtime = 0.15;
             [UIView beginAnimations:@"alt" context:nil];
             [UIView setAnimationDelegate:self];
             [UIView setAnimationDuration:Durationtime];
@@ -1455,29 +1686,37 @@
     }
     
     if ( textField.tag == 1100 || textField.tag == 1200 || textField.tag ==  8003){
-        
-        if ([textField.text length] < 11) {
-            [self ShowAlertMyView:@"请输入完整手机号"];
-            return;
-        }
-        
-        mark = 7;
-        bussineDataService *buss=[bussineDataService sharedDataService];
-        buss.target = self;
-        NSDictionary *SendDic = [[NSDictionary alloc] initWithObjectsAndKeys:
-                                 textField.text,@"svcNum",
-                                
-                                 @"1",@"methodType",
-                                 nil];
-        //发送校验身份证与手机号是否一致
-        [buss identifyManeger:SendDic];
-        
-    }
+  
+            if ([textField.text length] < 11 && [textField.text length] > 0) {
+                
+                if(!isPopView){
+                     [self ShowAlertMyView:@"请输入完整手机号"];
+                    [self setEditAble:NO];
+                }
+               
+                isPopView = NO;
+                return;
+            }
+            
+            mark = 7;
+            bussineDataService *buss=[bussineDataService sharedDataService];
+            buss.target = self;
+            NSDictionary *SendDic = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                     textField.text,@"svcNum",
+                                     
+                                     @"1",@"methodType",
+                                     nil];
+            //发送校验身份证与手机号是否一致
+            [buss identifyManeger:SendDic];
+
+           }
    
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     if ( textField.tag == 1100 || textField.tag == 1200 || textField.tag ==  8003){
+        
+         [self clearMessage];
         NSString * toBeString = [textField.text stringByReplacingCharactersInRange:range withString:string];
         if (toBeString.length >= 11 ){
            textField.text = [toBeString substringToIndex:11];
@@ -1506,9 +1745,11 @@
         
         
         if ([dishitf.text length] ==0) {
+            if(!isPopView)
             [self ShowProgressHUDwithMessage:@"请先选择地市"];
         }
         else if ([textField.text length]<2) {
+            if(!isPopView)
             [self ShowProgressHUDwithMessage:@"请输入至少两个字符"];
         }
         else{
@@ -1531,263 +1772,52 @@
     [textField resignFirstResponder];
     return YES;
 }
-
-- (void)getUserIDCardInfo{
-//    [self.view endEditing:YES];
-    
-    [self getIdCradBtnEvent];
-}
-
-//搜索蓝牙设备
-- (void)searchBlueTooth{
-    [MBProgressHUD showHUDAddedTo:[AppDelegate shareMyApplication].window animated:YES];
-    //搜索蓝牙设备
-    NSMutableArray *devarry = [[NSMutableArray alloc]init];
-    NSArray *arry = [bletool ScanDeiceList:2.0f];
-    [devarry addObjectsFromArray:arry];
-    if (devarry && devarry != nil && devarry.count > 0) {
-        NSLog(@"设备信息 %@",devarry);
-        
-        for (NSDictionary *dic in arry) {
-            if ( dic.count <= 0 || [dic allKeys].count <= 0) {
-                [devarry removeObject:dic];
-            }
-        }
-        
-        [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
-        
-        if(devarry.count <= 0){
-            UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"提示" message:@"您附近没有找到蓝牙读卡器" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"重新搜索", nil];
-            alertView.tag = 10108;
-            [alertView show];
-            
-        }else {
-            zsy = [[ZSYPopListView alloc]initWitZSYPopFrame:CGRectMake(0, 0, 200, devarry.count  * 55 + 50) WithNSArray:devarry WithString:@"选择蓝牙读卡器类型"];
-            zsy.isTitle = NO;
-            zsy.delegate = self;
-        }
-
-        
-        
-        
-        
-    }else {
-        
-        [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
-        
-        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"提示" message:@"您附近没有找到蓝牙读卡器" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"重新搜索", nil];
-        alertView.tag = 10108;
-        [alertView show];
-        
-        
-    }
-    
-    
-   
-    
-}
-
 #pragma mark - 选择验证方式
 -(void)chooseComfirmMode{
+//    [self hideKeyBoard];
+    
+    isPopView = YES;
+    [self.view endEditing:YES];
+    UIImageView *btnImageView = (UIImageView*) [self.view viewWithTag:1030];
+    [btnImageView setImage:[UIImage imageNamed:@"arrowingg.png"]];
     UIButton *btn = (UIButton*)[self.view viewWithTag:5004];
     [self.view.window  showPopWithButtonTitles:@[@"验证码校验",@"身份证阅读器校验"] styles:@[YUDefaultStyle,YUDefaultStyle,YUDefaultStyle] whenButtonTouchUpInSideCallBack:^(int index  ) {
+        
+        
+        UIImageView *btnImageView = (UIImageView*) [self.view viewWithTag:1030];
+        [btnImageView setImage:[UIImage imageNamed:@"arrow.png"]];
         switch (index) {
             case 0:
                 
-                if ([btn.titleLabel.text isEqualToString:@"身份证阅读器校验"]) {
-                      [btn setTitle:@"验证码校验" forState:UIControlStateNormal];
+                if (![btn.titleLabel.text isEqualToString:@"验证码校验"]) {
+                       [btn setTitle:@"验证码校验" forState:UIControlStateNormal];
+                }
+                if (indentyMode == 1 ) {
+                   
                     [self chooseIdentifyMode:0];
+                    indentyMode = 0;
+                   
                 }
                 break;
             case 1:
-                
-                if ([btn.titleLabel.text isEqualToString:@"验证码校验"]) {
+                if (![btn.titleLabel.text isEqualToString:@"身份证阅读器校验"]) {
+                    [btn setTitle:@"验证码校验" forState:UIControlStateNormal];
+                }
+                if (indentyMode ==0) {
                     [btn setTitle:@"身份证阅读器校验" forState:UIControlStateNormal];
                     [self chooseIdentifyMode:1];
+                     indentyMode = 1;
+                    
                 }
                 break;
             default:
+                isPopView = NO;
                 break;
         }
         
     }];
 
 }
-
-#pragma  mark -bletool 's delegate
--(void)BR_connectResult:(BOOL)isconnected{
-     [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
-    if(isconnected){
-        NSLog(@"\n\n  读取代理1");
-        isRead = YES;
-        [self ShowProgressHUDwithMessage:@"链接蓝牙读卡器成功"];
-    
-        [devLabel setText:[NSString stringWithFormat:@"您当前连接蓝牙设备: %@",blootDic[@"name"] ]];
-
-    }else{
-        //链接失败
-        NSLog(@"\n\n  读取代理2");
-        [self ShowProgressHUDwithMessage:@"链接蓝牙读卡器失败"];
-
-    }
-}
-
-//选择哪个店铺类型
-- (void)sureDoneWith:(NSDictionary *)resion{
-    
-    
-    if (zsy) {
-        [zsy dissViewClose];
-        zsy = nil;
-        zsy.delegate = nil;
-    }
-    
-    NSLog(@"获取设备信息%@",resion);
-    
-    [MBProgressHUD showHUDAddedTo:[AppDelegate shareMyApplication].window animated:YES];
-    blootDic = resion ;
-    [bletool connectBt:[resion valueForKey:@"uuid"]];
-    
-    
-    
-    if (isReadAgin == YES) {
-        //        [self getIdCradBtnEvent];
-        //         [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
-        [self performSelector:@selector(getIdCradBtnEvent) withObject:nil afterDelay:0.5];
-    }
-    
-    
-    
-    
-}
-
-- (void)getIdCradBtnEvent {
-    [self.view endEditing:YES];
-    
-    isReadAgin = NO;
-    if (!isRead) {
-        isReadAgin = YES;
-        [self searchBlueTooth]; // 先连接设备
-        return;
-    }
-    
-    [MBProgressHUD showHUDAddedTo:[AppDelegate shareMyApplication].window animated:YES];
-    
-    
-    NSDictionary *result=[bletool readIDCardS];//读出来的加密数据 其中baseInfo是加密后的数据，需要用设备对应的key解密。
-    
-    
-    //处理xml字符串，因为返回的xml字符没有根节点，所以此处加上一个根节点，便于GDataXmlNode取xml值
-    NSString *resultstr = [result valueForKey:@"baseInfo"];
-    NSLog(@"获取身份证信息：---- %@",resultstr);
-    
-    [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
-    
-    if(resultstr == nil || [resultstr isEqualToString:@""]){
-        
-        [self performSelector:@selector(getShowFail) withObject:nil afterDelay:0.5];
-        
-        return;
-        
-    }else{
-        
-        
-        
-        
-        //        GDataXMLNode 使用方法如下 ，需要在项目中引入GDataXMLNode.h   并且在项目的build setting中的Header Search Paths中添加搜索路径： /usr/include/libxml2
-        GDataXMLDocument *xmlroot=[[GDataXMLDocument alloc] initWithXMLString:resultstr options:0 error:nil];
-        GDataXMLElement *xmlelement= [xmlroot rootElement];
-        NSArray *xmlarray= [xmlelement children];
-        NSMutableDictionary *xmldictionary=[NSMutableDictionary dictionary];
-        for(GDataXMLElement *childElement in xmlarray){
-            NSString *childName= [childElement name];
-            NSString *childValue= [childElement stringValue];
-            [xmldictionary setValue:childValue forKey:childName];
-        }
-        
-        [xmldictionary valueForKey:@""];
-        //        NSString *sexCode= [self SexJudge:[xmldictionary valueForKey:@"sexCode"]];  //性别
-        //        NSString *nationCode=[self NationJugde:[xmldictionary valueForKey:@"nationCode"]];  // 民族
-        
-        UITextField *IDcarText = (UITextField *)[myScrollView viewWithTag:4001 ];
-        UITextField *nameText = (UITextField *)[myScrollView viewWithTag:4000 ];
-        nameText.text = [xmldictionary valueForKey:@"name"];
-        IDcarText.text = [xmldictionary valueForKey:@"idNum"];
-       
-        
-    }
-    
-    
-    
-    
-//    //    相片解码 start
-//    NSData *_decodedImageData=[result objectForKey:@"picBitmap"];
-//    if(_decodedImageData!=nil){
-//        NSDictionary *imgdecodeDict=[bletool DecodePicFunc:_decodedImageData];
-//        NSString *errcode= [imgdecodeDict objectForKey:@"errCode"];
-//        
-//        if([errcode isEqualToString:@"-1"]){
-//            
-//            [self ShowProgressHUDwithMessage:@"解码图片失败"];
-//            return;
-//            
-//            
-//        }else if([errcode isEqualToString:@"0"]){
-//            NSData *imgdecodeData=[imgdecodeDict objectForKey:@"DecPicData"];
-//            
-//            UIImage *image = [UIImage imageWithData:imgdecodeData];
-//            
-//            
-//            CGSize origImageSize= [image size];
-//            CGRect newRect;
-//            newRect.origin= CGPointZero;
-//            //拉伸到多大
-//            newRect.size.width= photoImageView.frame.size.width *2;
-//            newRect.size.height= photoImageView.frame.size.height*2;
-//            //缩放倍数
-//            float ratio = MIN(newRect.size.width/origImageSize.width, newRect.size.height/origImageSize.height);
-//            UIGraphicsBeginImageContext(newRect.size);
-//            CGRect projectRect;
-//            projectRect.size.width =ratio * origImageSize.width;
-//            projectRect.size.height=ratio * origImageSize.height;
-//            projectRect.origin.x= (newRect.size.width -projectRect.size.width)/2.0;
-//            projectRect.origin.y= (newRect.size.height-projectRect.size.height)/2.0;
-//            [image drawInRect:projectRect];
-//            UIImage *small = UIGraphicsGetImageFromCurrentImageContext();
-//            //压缩比例
-//            NSData *smallData=UIImageJPEGRepresentation(small, 1);
-//            UIGraphicsEndImageContext();
-//            
-//            if (smallData) {
-//                photoImageView.image  = [UIImage imageWithData:smallData];
-//            }
-//            
-//            
-//            
-//        }
-//        
-//    }else{
-//        
-//        //        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:[UIApplication sharedApplication].keyWindow animated:YES];
-//        //        hud.mode = MBProgressHUDModeText;
-//        //        hud.labelText = @"解码图片失败";
-//        //        hud.dimBackground = NO;
-//        //        hud.removeFromSuperViewOnHide = YES;
-//        //        [hud hide:YES afterDelay:2];
-//        [self ShowProgressHUDwithMessage:@"解码图片失败"];
-//        
-//        return;
-//        
-//    }
-//    //    相片解码 end
-    
-}
-
-- (void)getShowFail {
-    [self ShowAlertMyView:@"读取身份证信息失败"];
-}
-
-
 #pragma mark - 确认下单
 -(void)orderComfirm{
     
@@ -1842,19 +1872,6 @@
         default:
             break;
     }
-    
-    
-//    NSLog(@"确认下单");
-//    bussineDataService *buss=[bussineDataService sharedDataService];
-//    buss.target = self;
-//    NSString *session = [[NSUserDefaults standardUserDefaults] objectForKey:@"sessionid"];
-//    NSDictionary *SendDic = [[NSDictionary alloc] initWithObjectsAndKeys:
-//                             session,@"sessionId",
-//                             
-//                             nil];
-//    //发送确认下单请求
-//    [buss schoolOrderComfirm:SendDic];
-    
 }
 
 #pragma mark - 校验手机号码与身份证 mark = 10
@@ -1906,6 +1923,7 @@
                     UITextField *IDcarText = (UITextField *)[myScrollView viewWithTag:4001 ];
                     UITextField *nameText = (UITextField *)[myScrollView viewWithTag:4000 ];
                     UITextField *addressText = (UITextField *)[myScrollView viewWithTag:4002 ];
+                    UITextField *contactNum = (UITextField *)[myScrollView viewWithTag:4003 ];
                     if ([numText.text length] <= 0 || [numText.text isEqualToString:@""]) {
                         [self ShowAlertMyView:@"请先输入手机号码"];
                         return;
@@ -1931,9 +1949,12 @@
                     [addrInfo setValue:@"" forKey:@"countryId"];
                     [addrInfo setValue:@"com.ailk.app.mapp.model.req.CF0026Request$AddrInfo" forKey:@"@class"];
                     [addrInfo setValue:resAreaCode forKey:@"cityId"];  //地市的resAreaCode
+                    
+                    
+                    NSLog(@"\n\n\n\n地市编码  %@",resAreaCode);
                     [addrInfo setValue:[NSString stringWithFormat:@"%@%@",addressString,addressText.text] forKey:@"address"];
                     [addrInfo setValue:@"" forKey:@"countryName"];
-                    [addrInfo setValue:numText.text forKey:@"phoneNum"];
+                    [addrInfo setValue:contactNum.text forKey:@"phoneNum"];
                     [addrInfo setValue:[NSString stringWithFormat:@"%@%@",addressString,addressText.text] forKey:@"cityName"];  //两个地址一样拼接上选择的街道地址
                     
                     [sendDic setValue:addrInfo forKey:@"addrInfo"];
@@ -1949,6 +1970,7 @@
                     [broadbrand setValue:rhPackegeCode forKey:@"rhPackegeCode"];
                     [broadbrand setValue:@"2" forKey:@"isNewUser"];
                     [broadbrand setValue:selectDic[@"packCode"] forKey:@"essPkgId"];
+//                    [broadbrand setValue:numText.text forKey:@""];//新添加checkPhone
                     
                     [expand setValue:broadbrand forKey:@"broadbrand"];
                     
@@ -1968,7 +1990,7 @@
                     [productInfo setValue:@"" forKey:@"modeCode"];
                     [productInfo setValue:@"" forKey:@"invoiceInfo"];
                     [productInfo setValue:@"" forKey:@"fileId"];
-                    [productInfo setValue:NULL forKey:@"cardNum"];
+                    [productInfo setValue:numText.text forKey:@"cardNum"];
                     [productInfo setValue:NULL forKey:@"custType"];
                     [productInfo setValue:IDcarText.text forKey:@"certNum"];  //身份证号
                     [productInfo setValue:nameText.text forKey:@"certName"]; //名字
@@ -1982,13 +2004,7 @@
                     [productInfo setValue:myProductId forKey:@"productId"];   //这个值怎么来的
                     [productInfo setValue:NULL forKey:@"woYibaoFlag"];
                     [productInfo setValue:NULL forKey:@"seckillFlag"];
-
-                    
                     [sendDic setValue:productInfo forKey:@"productInfo"];
-                    
-                    
-                    
-                    
                     mark = 11;
                     bussineDataService *buss=[bussineDataService sharedDataService];
                     buss.target = self;
@@ -2037,6 +2053,7 @@
                     UITextField *IDcarText = (UITextField *)[myScrollView viewWithTag:4001 ];
                     UITextField *nameText = (UITextField *)[myScrollView viewWithTag:4000 ];
                     UITextField *addressText = (UITextField *)[myScrollView viewWithTag:4002 ];
+                    UITextField *contactNum = (UITextField *)[myScrollView viewWithTag:4003 ];
                     
                     if ([numStr length] <= 0 || [numStr isEqualToString:@""]) {
                         [self ShowAlertMyView:@"请先输入手机号码"];
@@ -2065,7 +2082,7 @@
                     [addrInfo setValue:resAreaCode forKey:@"cityId"];  //地市的resAreaCode
                     [addrInfo setValue:[NSString stringWithFormat:@"%@%@",addressString,addressText.text] forKey:@"address"];
                     [addrInfo setValue:@"" forKey:@"countryName"];
-                    [addrInfo setValue:numStr forKey:@"phoneNum"];
+                    [addrInfo setValue:contactNum.text forKey:@"phoneNum"];
                     [addrInfo setValue:[NSString stringWithFormat:@"%@%@",addressString,addressText.text] forKey:@"cityName"];  //两个地址一样拼接上选择的街道地址
                     
                     [sendDic setValue:addrInfo forKey:@"addrInfo"];
@@ -2100,7 +2117,7 @@
                     [productInfo setValue:@"" forKey:@"modeCode"];
                     [productInfo setValue:@"" forKey:@"invoiceInfo"];
                     [productInfo setValue:@"" forKey:@"fileId"];
-                    [productInfo setValue:NULL forKey:@"cardNum"];
+                    [productInfo setValue:numStr forKey:@"cardNum"];
                     [productInfo setValue:NULL forKey:@"custType"];
                     [productInfo setValue:IDcarText.text forKey:@"certNum"];  //身份证号
                     [productInfo setValue:nameText.text forKey:@"certName"]; //名字
@@ -2166,21 +2183,16 @@
                              dishi ,@"city",
                              @"10",@"maxRows",
                              @"woRh",@"woRhflag",
+    
                              nil];
+    
+    MyLog(@"-------\n\n%@\n\n",SendDic);
     
     [buss filterAddress:SendDic];
 }
 
 #pragma mark - 套餐选择请求 mark 6
 -(void)packageRequest{
-//    UITableViewCell *cell2 = (UITableViewCell*) [myTabView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-//    UITextField *dishitf = (UITextField*)[cell2 viewWithTag:100];
-//    NSString * dishi = dishitf.text;
-//    
-//    UITableViewCell *cell = (UITableViewCell*) [myTabView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
-//    UITextField *jiedaotf = (UITextField*)[cell viewWithTag:100];
-//    NSString * jiedao = jiedaotf.text;
-    
     if (!cityCode) {
         [self ShowAlertMyView:@"请先选择地市"];
         return;
@@ -2292,9 +2304,6 @@
 #pragma mark 地址选择代理
 - (void)addressComBox:(AddressComBox *)comBoxView didSelectAtIndex:(NSInteger)index withData:(NSDictionary *)data
 {
-//    self.resAreaCode = data[@"resAreaCode"];
-//    [self.addressRequest setObject:data[@"areaName"] forKey:@"city"];
-//    [self.packageRequest setObject:data[@"areaCode"] forKey:@"cityCode"];
 }
 
 #pragma mark - 设置常规 促销 标示
@@ -2407,9 +2416,245 @@
 }
 
 
+
+
+
+-(void)getMessage{
+    
+    
+    
+    //搜索蓝牙设备
+    [MBProgressHUD showHUDAddedTo:[AppDelegate shareMyApplication].window animated:YES];
+    NSMutableArray *devarry = [[NSMutableArray alloc]init];
+    NSArray *arry = [tools ScanDeiceList:2.0f];
+    [devarry addObjectsFromArray:arry];
+    if (devarry && devarry != nil && devarry.count > 0) {
+        NSLog(@"设备信息 %@",devarry);
+        
+        for (NSDictionary *dic in arry) {
+            if ( dic.count <= 0 || [dic allKeys].count <= 0) {
+                NSLog(@"移除信息 ");
+                [devarry removeObject:dic];
+            }
+        }
+        
+        [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
+        
+        if(devarry.count <= 0){
+            [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
+            [self ShowProgressHUDwithMessage:@"搜索不到蓝牙,请重试"];
+            
+        }
+        else {
+            zsy = [[ZSYPopListView alloc]initWitZSYPopFrame:CGRectMake(0, 0, 200, devarry.count  * 55 + 50) WithNSArray:devarry WithString:@"选择蓝牙读卡器类型"];
+            zsy.isTitle = NO;
+            zsy.delegate = self;
+        }
+    }else{
+        [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
+        [self ShowProgressHUDwithMessage:@"搜索不到蓝牙,请重试"];    }
+  
+}
+
+#pragma mark -选择连接的蓝牙
+- (void)sureDoneWith:(NSDictionary *)resion{
+    
+    
+    if (zsy) {
+        [zsy dissViewClose];
+        zsy = nil;
+        zsy.delegate = nil;
+    }
+    blootDic = resion;
+    [tools connectBt:[resion valueForKey:@"uuid"]];
+}
+
+
+#pragma  mark - 蓝牙连接代理
+-(void)BR_connectResult:(BOOL)isconnected{
+    //    [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
+    if(isconnected){  //链接成功
+        [self ShowProgressHUDwithMessage:@"链接蓝牙读卡器成功"];
+        [devLabel setText:[NSString stringWithFormat:@"您当前连接蓝牙设备: %@",blootDic[@"name"] ]];
+        [self readCard];
+        
+    }
+    else if(failStat == YES){
+        failStat = NO;
+        //        [self ShowProgressHUDwithMessage:@"身份证读取失败,请重试"];
+    }else{
+        [self ShowProgressHUDwithMessage:@"链接蓝牙读卡器失败,请重试"];
+    }
+    
+    
+}
+
+#pragma mark 读取身份证信息
+-(void)readCard{
+    
+    
+    NSDictionary *result=[tools readIDCardS];//读出来的加密数据 其中baseInfo是加密后的数据，需要用设备对应的key解密。
+    
+    
+    //处理xml字符串，因为返回的xml字符没有根节点，所以此处加上一个根节点，便于GDataXmlNode取xml值
+    NSString *resultstr = [result valueForKey:@"baseInfo"];
+    NSLog(@"获取身份证信息：---- %@",resultstr);
+    
+    [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
+    
+    if(resultstr == nil || [resultstr isEqualToString:@""]){
+        [tools disconnectBt];
+        [NSThread sleepForTimeInterval:1];
+        [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
+        [self ShowProgressHUDwithMessage:@"读取身份证信息失败，请重试"];
+        
+        failStat = YES;
+        //        [result release];
+        //        tools = nil;
+        return;
+        
+    }else{
+        failStat = YES;
+        [tools disconnectBt];
+        [MBProgressHUD showHUDAddedTo:[AppDelegate shareMyApplication].window animated:YES];
+        [NSThread sleepForTimeInterval:1];
+        
+        GDataXMLDocument *xmlroot=[[GDataXMLDocument alloc] initWithXMLString:resultstr options:0 error:nil];
+        GDataXMLElement *xmlelement= [xmlroot rootElement];
+        NSArray *xmlarray= [xmlelement children];
+        NSMutableDictionary *xmldictionary=[NSMutableDictionary dictionary];
+        for(GDataXMLElement *childElement in xmlarray){
+            NSString *childName= [childElement name];
+            NSString *childValue= [childElement stringValue];
+            [xmldictionary setValue:childValue forKey:childName];
+        }
+        
+        [xmldictionary valueForKey:@""];
+        UITextField *IDcarText = (UITextField *)[myScrollView viewWithTag:4001 ];
+        UITextField *nameText = (UITextField *)[myScrollView viewWithTag:4000 ];
+        nameText.text = [xmldictionary valueForKey:@"name"];
+        IDcarText.text = [xmldictionary valueForKey:@"idNum"];
+        
+        
+        [MBProgressHUD hideHUDForView:[AppDelegate shareMyApplication].window animated:YES];
+    }
+    
+    
+    
+}
+#pragma mark - 设置是否能够继续操作
+-(void)setEditAble:(BOOL)canGoOn{
+    UITextField *identify = (UITextField*)[self.view viewWithTag:1201];
+    myTabView.userInteractionEnabled = canGoOn;
+    UITextField *jizhuName = (UITextField*)[self.view viewWithTag:4000];
+    UITextField *jizhuID = (UITextField*)[self.view viewWithTag:4001];
+    UITextField *jizhuAddr = (UITextField*)[self.view viewWithTag:4002];
+    UITextField *contactNum = (UITextField *)[myScrollView viewWithTag:4003 ];
+    identify.userInteractionEnabled = canGoOn;
+    jizhuName.userInteractionEnabled = canGoOn;
+    jizhuID.userInteractionEnabled = canGoOn;
+    jizhuAddr.userInteractionEnabled = canGoOn;
+    contactNum.userInteractionEnabled = canGoOn;
+    
+}
+
+
+
+#pragma mark 获取验证码倒计时
+-(void)btnClock{
+    
+    UIButton *btn = (UIButton*)[self.view viewWithTag:1400];
+    __block int timeout=59; //倒计时时间
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_source_t _timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0,queue);
+    dispatch_source_set_timer(_timer,dispatch_walltime(NULL, 0),1.0*NSEC_PER_SEC, 0); //每秒执行
+    dispatch_source_set_event_handler(_timer, ^{
+        if(timeout<=0){ //倒计时结束，关闭
+            dispatch_source_cancel(_timer);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                //设置界面的按钮显示 根据自己需求设置
+                [btn setTitle:@"获取验证码" forState:UIControlStateNormal];
+                btn.userInteractionEnabled = YES;
+            });
+        }else{
+            //            int minutes = timeout / 60;
+            int seconds = timeout % 60;
+            NSString *strTime = [NSString stringWithFormat:@"%.2d", seconds];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                //设置界面的按钮显示 根据自己需求设置
+                NSLog(@"____%@",strTime);
+                [btn setTitle:[NSString stringWithFormat:@"重新获取%@",strTime] forState:UIControlStateNormal];
+                btn.userInteractionEnabled = NO;
+                
+            });
+            timeout--;
+        }
+    });
+ 
+    timeBlock = ^{
+        NSLog(@"执行timeBlock");
+        dispatch_source_cancel(_timer);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            //设置界面的按钮显示 根据自己需求设置
+            [btn setTitle:@"获取验证码" forState:UIControlStateNormal];
+            btn.userInteractionEnabled = YES;
+        });
+    };
+    dispatch_resume(_timer);
+}
+
+
+-(void)clearMessage{
+    UITableViewCell *cell = (UITableViewCell*) [myTabView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+    UITextField *jiedaotf = (UITextField*)[cell viewWithTag:100];
+    jiedaotf.text = nil;
+    UITableViewCell *cell2 = (UITableViewCell*) [myTabView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:0]];
+    UITextField *taocan = (UITextField*)[cell2 viewWithTag:100];
+    taocan.text = nil;
+    UITableViewCell *cell3 = (UITableViewCell*) [myTabView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    UITextField *dishi = (UITextField*)[cell3 viewWithTag:100];
+    dishi.text = nil;
+}
+
+-(void)hideKeyBoard{
+    
+    
+    UITableViewCell *cell = (UITableViewCell*) [myTabView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+    UITextField *jiedaotf = (UITextField*)[cell viewWithTag:100];
+    [jiedaotf resignFirstResponder];
+    
+    UITextField *identify = (UITextField*)[self.view viewWithTag:1201];
+    UITextField *jizhuName = (UITextField*)[self.view viewWithTag:4000];
+    UITextField *jizhuID = (UITextField*)[self.view viewWithTag:4001];
+    UITextField *jizhuAddr = (UITextField*)[self.view viewWithTag:4002];
+    UITextField *contactNum1 = (UITextField *)[myScrollView viewWithTag:4003 ];
+    
+    UITextField *contactNum = (UITextField *)[myScrollView viewWithTag:8003 ];
+    UITextField *contactNum2 = (UITextField *)[myScrollView viewWithTag:1200 ];
+    
+    [contactNum resignFirstResponder];
+    [contactNum2 resignFirstResponder];
+    [identify resignFirstResponder];
+    [jizhuName resignFirstResponder];
+    [jizhuID resignFirstResponder];
+    [jizhuAddr resignFirstResponder];
+    [contactNum1 resignFirstResponder];
+}
+
+
+-(void)dismissKeyboard {
+    NSArray *subviews = [self.view subviews];
+    for (id objInput in subviews) {
+        if ([objInput isKindOfClass:[UITextField class]]) {
+            UITextField *theTextField = objInput;
+            if ([objInput isFirstResponder]) {
+                [theTextField resignFirstResponder];
+            }
+        }
+    }
+}
+
 @end
-
-
 
 /*
  

@@ -26,6 +26,7 @@
                               [requestInfo objectForKey:@"addrInfo"],@"addrInfo",
                               [requestInfo objectForKey:@"city"],@"city",
                               [requestInfo objectForKey:@"maxRows"],@"maxRows",
+                              [requestInfo objectForKey:@"woRhflag"],@"woRhflag",
                               nil];
     [requestClass release];
     

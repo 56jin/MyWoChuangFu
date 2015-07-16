@@ -11,11 +11,12 @@
 #import "ModulesManager.h"
 #import "FileHelpers.h"
 #import "UrlParser.h"
+#import "WoSchoolViewController.h"
 #define TITLEBAR_HEIGHT 44
 #define MAINCONTENTVIEW_TAG 2000
 #define MAIN_CONTENT_VIEW_OFFSET_Y ([[UIScreen mainScreen] applicationFrame].origin.y + TITLEBAR_HEIGHT)
 
-@interface MoreModuleVC ()<TitleBarDelegate>
+@interface MoreModuleVC ()<TitleBarDelegate,UIWebViewDelegate>
 
 @end
 
@@ -35,6 +36,8 @@
     UIView *bgView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     bgView.backgroundColor = [UIColor blackColor];
     self.view = bgView;
+    
+    
 }
 
 - (void)initTitleBar
@@ -147,6 +150,29 @@
 
     return image;
 }
+
+
+
+
+-(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType{
+    NSURL *url = [request URL];
+    NSString*str =  [url absoluteString];
+    if ([str rangeOfString:@"menuname=woschool"].location!=NSNotFound){
+        WoSchoolViewController * WoSchoolView = [[WoSchoolViewController alloc]init];
+        WoSchoolView.hidesBottomBarWhenPushed = YES;
+        [WoSchoolView setIsCG:@"2"];
+        [self.navigationController pushViewController:WoSchoolView animated:YES];
+        
+        return NO;
+    }
+    return YES;
+}
+
+-(void)webViewDidStartLoad:(UIWebView *)webView{
+    
+}
+
+
 
 #pragma mark
 #pragma mark - TitleBarDelegate

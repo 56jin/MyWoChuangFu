@@ -397,6 +397,9 @@
             msg = @"获取失败请重新获取验证码！";
         }
         [self ShowProgressHUDwithMessage:msg];
+    }else{
+        
+        [self ShowProgressHUDwithMessage:msg];
     }
 }
 

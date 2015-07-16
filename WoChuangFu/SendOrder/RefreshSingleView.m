@@ -58,7 +58,7 @@
     tableView.dataSource = self;
     tableView.backgroundView = nil;
     tableView.scrollEnabled = YES;
-    tableView.pagingEnabled = YES;
+//    tableView.pagingEnabled = YES;
 	tableView.separatorStyle  = UITableViewCellSeparatorStyleNone;
 	[self addSubview:tableView];
     

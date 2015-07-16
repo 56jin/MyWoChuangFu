@@ -21,6 +21,8 @@
     BOOL showCert;
     BOOL needCertImage;
     BOOL isUpLoadIDCardBack;
+  
+    NSString* mYpayType;
 }
 
 @property(nonatomic,strong)NSDictionary* saveRequestData;
@@ -252,34 +254,119 @@
 
 -(void)commitOrderRequest:(NSDictionary*)data
 {
-    NSMutableDictionary* addrInfo = [NSMutableDictionary dictionaryWithDictionary:[data objectForKey:@"addrInfo"]];
-    [addrInfo setObject:[NSString stringWithFormat:@"%@%@%@",addrInfo[@"cityName"],addrInfo[@"countryName"],addrInfo[@"address"]] forKey:@"address"];
-    
-    NSDictionary* productInfo = [self makeProductInfoData:[data objectForKey:@"productInfo"]];
-    NSDictionary* payInfo = nil;
-    NSDictionary *expand = nil;
-    if (self.receiveData[@"ProductInfo"][@"broadbrand"]!= [NSNull null] &&self.receiveData[@"ProductInfo"][@"broadbrand"] != nil)
-    {
-        expand = [NSDictionary dictionaryWithObject:self.receiveData[@"ProductInfo"][@"broadbrand"] forKey:@"broadbrand"];
-    }
-    payInfo=[[NSDictionary alloc] initWithObjectsAndKeys:
-             @"com.ailk.app.mapp.model.req.CF0026Request$PayInfo",@"@class",
-             [NSNull null],@"expand",
-             @"1",@"payType",
-             @"1",@"payWay", nil];
-    
-    NSDictionary* sendDic = [[NSDictionary alloc] initWithObjectsAndKeys:
-                             expand==nil?[NSNull null]:expand,@"expand",
-                             addrInfo,@"addrInfo",
-                             productInfo,@"productInfo",
-                             payInfo,@"payInfo", nil];
     
     
-    bussineDataService* buss = [bussineDataService sharedDataService];
-    buss.target = self;
-    [buss createOrder:sendDic];
+    //弹出提示选择支付方式，货到付款与在线支付
+    [self.view.window  showPopWithButtonTitles:@[@"货到付款",@"在线支付"] styles:@[YUDefaultStyle,YUDefaultStyle,YUDefaultStyle] whenButtonTouchUpInSideCallBack:^(int index  ) {
+        
+        if (index==0) {
+            mYpayType =@"2";
+            NSMutableDictionary* addrInfo = [NSMutableDictionary dictionaryWithDictionary:[data objectForKey:@"addrInfo"]];
+            [addrInfo setObject:[NSString stringWithFormat:@"%@%@%@",addrInfo[@"cityName"],addrInfo[@"countryName"],addrInfo[@"address"]] forKey:@"address"];
+            
+            NSDictionary* productInfo = [self makeProductInfoData:[data objectForKey:@"productInfo"]];
+            NSDictionary* payInfo = nil;
+            NSDictionary *expand = nil;
+            if (self.receiveData[@"ProductInfo"][@"broadbrand"]!= [NSNull null] &&self.receiveData[@"ProductInfo"][@"broadbrand"] != nil)
+            {
+                expand = [NSDictionary dictionaryWithObject:self.receiveData[@"ProductInfo"][@"broadbrand"] forKey:@"broadbrand"];
+            }
+            
+            //    NSDictionary *payTypep = [data objectForKey:@"payType"];
+            
+            payInfo=[[NSDictionary alloc] initWithObjectsAndKeys:
+                     @"com.ailk.app.mapp.model.req.CF0026Request$PayInfo",@"@class",
+                     [NSNull null],@"expand",
+                     mYpayType,@"payType",
+                     @"1",@"payWay", nil];
+            
+            
+            
+            
+            
+            NSDictionary *deliveryTypeInfo = [data objectForKey:@"deliveryTypeInfo"];
+            
+            NSString *deliveryType = [deliveryTypeInfo objectForKey:@"deliveryType"];
+            
+            
+            
+            NSDictionary* sendDic = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                     expand==nil?[NSNull null]:expand,@"expand",
+                                     addrInfo,@"addrInfo",
+                                     productInfo,@"productInfo",
+                                     deliveryType,@"deliveryType",
+                                     payInfo,@"payInfo", nil];
+            
+            
+            
+            
+            bussineDataService* buss = [bussineDataService sharedDataService];
+            buss.target = self;
+            [buss createOrder:sendDic];
+            
+
+            
+            
+            
+        }else if(index == 1){
+            mYpayType = @"1";
+            NSMutableDictionary* addrInfo = [NSMutableDictionary dictionaryWithDictionary:[data objectForKey:@"addrInfo"]];
+            [addrInfo setObject:[NSString stringWithFormat:@"%@%@%@",addrInfo[@"cityName"],addrInfo[@"countryName"],addrInfo[@"address"]] forKey:@"address"];
+            
+            NSDictionary* productInfo = [self makeProductInfoData:[data objectForKey:@"productInfo"]];
+            NSDictionary* payInfo = nil;
+            NSDictionary *expand = nil;
+            if (self.receiveData[@"ProductInfo"][@"broadbrand"]!= [NSNull null] &&self.receiveData[@"ProductInfo"][@"broadbrand"] != nil)
+            {
+                expand = [NSDictionary dictionaryWithObject:self.receiveData[@"ProductInfo"][@"broadbrand"] forKey:@"broadbrand"];
+            }
+            
+            //    NSDictionary *payTypep = [data objectForKey:@"payType"];
+            
+            payInfo=[[NSDictionary alloc] initWithObjectsAndKeys:
+                     @"com.ailk.app.mapp.model.req.CF0026Request$PayInfo",@"@class",
+                     [NSNull null],@"expand",
+                     mYpayType,@"payType",
+                     @"1",@"payWay", nil];
+            
+            
+            
+            
+            
+            NSDictionary *deliveryTypeInfo = [data objectForKey:@"deliveryTypeInfo"];
+            
+            NSString *deliveryType = [deliveryTypeInfo objectForKey:@"deliveryType"];
+            
+            
+            
+            NSDictionary* sendDic = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                     expand==nil?[NSNull null]:expand,@"expand",
+                                     addrInfo,@"addrInfo",
+                                     productInfo,@"productInfo",
+                                     deliveryType,@"deliveryType",
+                                     payInfo,@"payInfo", nil];
+            
+            
+            
+            
+            bussineDataService* buss = [bussineDataService sharedDataService];
+            buss.target = self;
+            [buss createOrder:sendDic];
+            
+
+        }else{
+            
+        }
+        
+    }];
+
     
-}
+    
+    
+    
+    
+    
+   }
 
 -(NSDictionary*)makeProductInfoData:(NSMutableDictionary*)enterData
 {
@@ -366,14 +453,15 @@
         if([oKCode isEqualToString:errCode]){
             
             
+            
             bussineDataService* buss = [bussineDataService sharedDataService];
             NSString* postData = [buss.rspInfo objectForKey:@"postData"];
             
             //弹出提示选择支付方式，货到付款与在线支付
-            [self.view.window  showPopWithButtonTitles:@[@"货到付款",@"在线支付"] styles:@[YUDefaultStyle,YUDefaultStyle,YUDefaultStyle] whenButtonTouchUpInSideCallBack:^(int index  ) {
+
                 
-                if (index==0) {
-                    
+                if ([mYpayType isEqualToString:@"2"]) {
+            
                     ShowWebVC *gotoVC = [[ShowWebVC alloc] init] ;
                     gotoVC.isShow = @"YES";
                     gotoVC.urlStr = [NSString stringWithFormat:@"%@emallcardorder/completion.do?payType=2&orderCode=%@&orderTitle=选号卡",service_IP,buss.rspInfo[@"orderCode"]];
@@ -381,7 +469,8 @@
 
                     
                     
-                }else if(index == 1){
+                }else if([mYpayType isEqualToString:@"1"]){
+                  
                     bussineDataService* bus = [bussineDataService sharedDataService];
                     //            NSString* postData = [buss.rspInfo objectForKey:@"postData"];
                     NSMutableArray* postArr = [[NSMutableArray alloc] initWithArray:[postData componentsSeparatedByString:@"="]];
@@ -394,17 +483,6 @@
                 }else{
                     
                 }
-                
-            }];
-            
-            
-            
-            
-            
-            
-            
-
-            
         } else {
             if(nil == msg || [info objectForKey:@"MSG"] == [NSNull null]){
                 msg = @"提交订单失败！";

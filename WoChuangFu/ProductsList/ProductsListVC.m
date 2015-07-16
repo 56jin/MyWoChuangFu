@@ -216,7 +216,7 @@
     
     //按时间排序
     UIButton *timeFilterBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [timeFilterBtn setTitle:@"按时间排序" forState:UIControlStateNormal];
+    [timeFilterBtn setTitle:@"按时间" forState:UIControlStateNormal];
     timeFilterBtn.frame = CGRectMake(0, 0, width - 1, 44);
     //    [sailFilterBtn setImage:[UIImage imageNamed:@"icon_down_n"] forState:UIControlStateNormal];
     [timeFilterBtn.titleLabel setFont:[UIFont systemFontOfSize:12.0f]];
@@ -231,7 +231,7 @@
 
     //按价格排序
     UIButton *priceFilterBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [priceFilterBtn setTitle:@"按价格排序" forState:UIControlStateNormal];
+    [priceFilterBtn setTitle:@"按价格" forState:UIControlStateNormal];
     priceFilterBtn.frame = CGRectMake(width, 0, width - 1, 44);
     [priceFilterBtn.titleLabel setFont:[UIFont systemFontOfSize:12.0f]];
     [priceFilterBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
@@ -244,7 +244,7 @@
     
     //按销量排序
     UIButton *sailFilterBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [sailFilterBtn setTitle:@"按销量排序" forState:UIControlStateNormal];
+    [sailFilterBtn setTitle:@"按销量" forState:UIControlStateNormal];
     sailFilterBtn.frame = CGRectMake(width*2, 0, width - 1, 44);
 //    [sailFilterBtn setImage:[UIImage imageNamed:@"icon_down_n"] forState:UIControlStateNormal];
     [sailFilterBtn.titleLabel setFont:[UIFont systemFontOfSize:12.0f]];
@@ -258,7 +258,7 @@
     
     //按价格排序
     UIButton *typeFilterBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [typeFilterBtn setTitle:@"按分类排序" forState:UIControlStateNormal];
+    [typeFilterBtn setTitle:@"按分类" forState:UIControlStateNormal];
     typeFilterBtn.frame = CGRectMake(width*3, 0, width, 44);
     [typeFilterBtn.titleLabel setFont:[UIFont systemFontOfSize:12.0f]];
     [typeFilterBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];

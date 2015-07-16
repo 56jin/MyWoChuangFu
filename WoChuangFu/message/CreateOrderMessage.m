@@ -21,8 +21,12 @@
                               requestClass,@"@class",
                               [requestInfo objectForKey:@"expand"]==nil?[NSNull null]:[requestInfo objectForKey:@"expand"],@"expand",
                               [requestDict objectForKey:@"addrInfo"]==nil?[NSNull null]:[requestDict objectForKey:@"addrInfo"],@"addrInfo",
+                               [requestDict objectForKey:@"deliveryType"]==nil?[NSNull null]:[requestDict objectForKey:@"deliveryType"],@"deliveryType",
                               [requestDict objectForKey:@"payInfo"]==nil?[NSNull null]:[requestDict objectForKey:@"payInfo"],@"payInfo",
                               [requestDict objectForKey:@"productInfo"]==nil?[NSNull null]:[requestDict objectForKey:@"productInfo"],@"productInfo",nil];
+    
+    
+    
     [requestClass release];
     
     NSString *requestStr = [self getRequestJSONFromHeader:headerData

@@ -35,7 +35,8 @@
                               ICCID,@"iccid",
                               custName,@"custName",
                               custNo,@"custNo",
-                              custAddr,@"custAddr",nil];
+                              custAddr,@"custAddr",
+                              nil];
     
     
     [requestClass release];

@@ -18,6 +18,7 @@
 #import "SendOrderVC.h"
 #import "ScanCodeController.h"
 #import "WebViewController.h"
+#import "ShowWebVC.h"
 
 
 @interface SettingVC ()<UITableViewDataSource,UITableViewDelegate,TitleBarDelegate,HttpBackDelegate>
@@ -56,10 +57,10 @@
     
     
     if ([self.isYesOrNo isEqualToString:@"YES"]) {
-        _dataSource = [NSMutableArray arrayWithObjects:@"消息中心",@"系统更新", @"清除缓存",@"加入机构",nil];//@"加入机构",
+        _dataSource = [NSMutableArray arrayWithObjects:@"消息中心",@"检测版本", @"清除缓存",@"加入机构",nil];//@"加入机构",
     }
     else {
-        _dataSource = [NSMutableArray arrayWithObjects:@"实名返档",@"沃校园办理",@"现场开户",@"简易下单",@"微信扫码有惊喜",nil]; //@"沃校园办理",@"派单开户",
+        _dataSource = [NSMutableArray arrayWithObjects:@"实名返档",@"沃校园办理",@"现场开户",@"简易下单",@"电子协议认证",nil]; //@"沃校园办理",@"派单开户",
     }
 //    else {
 //        UIButton *rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -134,6 +135,16 @@
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     cell.textLabel.text = _dataSource[indexPath.row];
+    
+    if ([cell.textLabel.text isEqualToString:@"检测版本"]) {
+        UILabel *appVersion = [[UILabel alloc]initWithFrame:CGRectMake(100, 0, cell.frame.size.width - 150, cell.frame.size.height)];
+//        appVersion.backgroundColor = [UIColor blueColor];
+        NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey];
+        appVersion.text = [NSString stringWithFormat:@"当前版本-%@",version];
+        appVersion.textColor = [UIColor grayColor];
+        appVersion.textAlignment = NSTextAlignmentRight;
+        [cell addSubview:appVersion];
+    }
 
     return cell;
 }
@@ -173,7 +184,7 @@
     
     TabStr = _dataSource[indexPath.row];
     
-    if ([_dataSource[indexPath.row] isEqualToString:@"系统更新"])
+    if ([_dataSource[indexPath.row] isEqualToString:@"检测版本"])
     {
         [self updataVersion];
     }
@@ -247,15 +258,20 @@
         
 //        [self ShowProgressHUDwithMessage:@"敬请期待"];
         [self isRootEasyCommit];
+//        ShowWebVC *webVC = [[ShowWebVC alloc] init];
+//        webVC.urlStr = [NSString stringWithFormat:@"%@showProSimDetForApp.do?server_type=0&developId=gxlt10016",service_IP];//@"showProSimDetForApp.do?server_type=0&developId=gxlt10016";
+//        webVC.hidesBottomBarWhenPushed = YES;
+//        [self.navigationController pushViewController:webVC animated:YES];
   
     }
 
     
-    else if ([_dataSource[indexPath.row] isEqualToString:@"微信扫码有惊喜"]){
+    else if ([_dataSource[indexPath.row] isEqualToString:@"电子协议认证"]){
         
 //        [self ShowProgressHUDwithMessage:@"敬请期待"];
         
         ScanCodeController *scanCode = [[ScanCodeController alloc]init];
+        scanCode.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:scanCode animated:YES];
     }
 
@@ -400,10 +416,12 @@
             else if ([TabStr isEqualToString:@"简易下单"]){
                 
                 WebViewController *easyDo = [[WebViewController alloc]init];
+                easyDo.hidesBottomBarWhenPushed = YES;
                 [self.navigationController pushViewController:easyDo animated:YES];
-            }
-
-            
+//                ShowWebVC *webVC = [[ShowWebVC alloc] init];
+//                webVC.urlStr = @"showProSimDetForApp.do?server_type=0&developId=gxlt10016";
+//                [self.navigationController pushViewController:webVC animated:YES];
+            }   
         }
         else
         {

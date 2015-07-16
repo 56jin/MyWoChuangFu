@@ -34,8 +34,7 @@
        [self layoutContentView];
        
         UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                                     action:@selector(handleSectionTap:
-                                                                                                      )];
+                                                                                     action:@selector(handleSectionTap:)];
         [self addGestureRecognizer:tapGesture];
         [tapGesture release];
     }
@@ -56,35 +55,37 @@
     contentView.tag = SECTION_CONTENT_VIEW_TAG;
     contentView.backgroundColor = [UIColor whiteColor];
     
-    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(20/2.0f, 0, 97/2.0f, hei)];
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(20/2.0f, 0, 120/2.0f, hei/2)];
     titleLabel.backgroundColor = [UIColor clearColor];
     titleLabel.textAlignment = NSTextAlignmentLeft;
-    titleLabel.font = [UIFont systemFontOfSize:12.0f];
+    titleLabel.font = [UIFont systemFontOfSize:15.0f];
     titleLabel.textColor = [ComponentsFactory createColorByHex:@"#333333"];
     titleLabel.text = @"订单号：";
     [contentView addSubview:titleLabel];
     [titleLabel release];
     
-    UILabel *orderValueLabel = [[UILabel alloc] initWithFrame:CGRectMake(20/2.0f+97/2.0f+1, 0, 238/2.0f+2, hei)];
+    UILabel *orderValueLabel = [[UILabel alloc] initWithFrame:CGRectMake(20/2.0f+120/2.0f+1, 0, contentView.frame.size.width - 100, hei/2)];
     orderValueLabel.backgroundColor = [UIColor clearColor];
     orderValueLabel.textAlignment = NSTextAlignmentLeft;
-    orderValueLabel.adjustsFontSizeToFitWidth = YES;
-    orderValueLabel.font = [UIFont systemFontOfSize:12.0f];
+//    orderValueLabel.adjustsFontSizeToFitWidth = YES;
+    orderValueLabel.font = [UIFont systemFontOfSize:15.0f];
     orderValueLabel.textColor = [ComponentsFactory createColorByHex:@"#333333"];
     orderValueLabel.tag = SECTION_VALUE_ORDER_LABEL_TAG;
     [contentView addSubview:orderValueLabel];
     [orderValueLabel release];
 
-    UILabel *orderTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(370/2.0f, 0, 80/2.0f, hei)];
+    UILabel *orderTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(20/2.0f, hei/2, 120/2.0f, hei/2)];
     orderTypeLabel.backgroundColor = [UIColor clearColor];
     orderTypeLabel.textAlignment = NSTextAlignmentLeft;
-    orderTypeLabel.font = [UIFont systemFontOfSize:12.0f];
+    orderTypeLabel.font = [UIFont systemFontOfSize:15.0f];
     orderTypeLabel.textColor = [ComponentsFactory createColorByHex:@"#333333"];
     orderTypeLabel.tag = SECTION_STATUS_ORDER_LABEL_TAG;
     [contentView addSubview:orderTypeLabel];
     [orderTypeLabel release];
     
-    UIImageView *arrowView = [[UIImageView alloc] initWithFrame:CGRectMake(454/2.0f, (hei-26/2.0f)/2.0f, 26/2.0f, 26/2.0f)];
+    UIImageView *arrowView = [[UIImageView alloc] initWithFrame:CGRectMake((40+hei)/2.0f, hei/2+hei/4-4.9, 26/2.0f, 26/2.0f)];
+    
+    [arrowView setCenter:CGPointMake(arrowView.center.x, orderTypeLabel.center.y)];
     arrowView.backgroundColor = [UIColor clearColor];
     arrowView.tag = SECTION_ARROW_IMAGE_VIEW_TAG;
     arrowView.image = [UIImage imageNamed:@"cha.png"];
@@ -93,10 +94,12 @@
     
     UIButton *photoButton = [UIButton buttonWithType:UIButtonTypeCustom];
     photoButton.backgroundColor = [UIColor clearColor];
-    photoButton.frame = CGRectMake(485/2.0f, 0, 60/2.0f, hei);
+    photoButton.frame = CGRectMake(80.0f+62/2.0f+20, hei/2, 60/2.0f, hei/2);
+    [photoButton setCenter:CGPointMake(photoButton.center.x, orderTypeLabel.center.y)];
     [photoButton setTitle:@"开卡" forState:UIControlStateNormal];
     [photoButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    photoButton.titleLabel.font = [UIFont systemFontOfSize:12.0f];
+    photoButton.tag = SECTION_PHOTO_BTN_TAG;
+    photoButton.titleLabel.font = [UIFont systemFontOfSize:15.0f];
     [photoButton addTarget:self
                     action:@selector(photoClicked:)
           forControlEvents:UIControlEventTouchUpInside];
@@ -104,14 +107,17 @@
     
     UIButton *flowBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     flowBtn.backgroundColor = [UIColor clearColor];
-    flowBtn.frame = CGRectMake(485/2.0f+62/2.0f, 0, 60/2.0f, hei);
+    flowBtn.frame = CGRectMake(90.0f, hei/2, 60/2.0f, hei/2);
+    [flowBtn setCenter:CGPointMake(flowBtn.center.x, orderTypeLabel.center.y)];
     [flowBtn setTitle:@"流程" forState:UIControlStateNormal];
     [flowBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    flowBtn.titleLabel.font = [UIFont systemFontOfSize:12.0f];
+    flowBtn.titleLabel.font = [UIFont systemFontOfSize:15.0f];
+//    flowBtn.userInteractionEnabled = NO;
     [flowBtn addTarget:self
                     action:@selector(lookFlow:)
           forControlEvents:UIControlEventTouchUpInside];
     [contentView addSubview:flowBtn];
+    
     
     UIImageView *infoView = [[UIImageView alloc] initWithFrame:CGRectMake(610/2.0f, (hei-16/2.0f)/2.0f, 23/2.0f, 16/2.0f)];
     infoView.backgroundColor = [UIColor clearColor];
@@ -192,11 +198,25 @@
     UILabel *orderIDLabel = (UILabel *)[sectionView viewWithTag:SECTION_VALUE_ORDER_LABEL_TAG];
     UILabel *orderTypeLabel = (UILabel *)[sectionView viewWithTag:SECTION_STATUS_ORDER_LABEL_TAG];
     UIImageView *arrowView = (UIImageView *)[sectionView viewWithTag:SECTION_ARROW_IMAGE_VIEW_TAG];
+    UIButton *open = (UIButton*)[sectionView viewWithTag:SECTION_PHOTO_BTN_TAG];
     if (isShow) {
         arrowView.hidden = NO;
     }else{
         arrowView.hidden = YES;
     }
+    
+    if ([orderType isEqualToString:@"未开户"]) {
+        [open setEnabled:YES];
+        [open setHidden:NO];
+        
+    }else if([orderType isEqualToString:@"已开户"]){
+        [open setEnabled:NO];
+        [open setHidden:YES];
+        [open setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+    }else{
+        
+    }
+    
     
     orderTypeLabel.text = orderType;
     orderIDLabel.text = orderID;

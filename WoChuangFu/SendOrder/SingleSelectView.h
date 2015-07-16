@@ -17,7 +17,8 @@ typedef enum OrderType
 {
     chuangFuOrder,
     phoneSaleOrder,
-    FocusOrder
+    FocusOrder,
+    chuangFuOrder2
 } OrderType;
 
 @protocol SingleSelectViewDelegate;

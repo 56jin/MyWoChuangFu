@@ -4,12 +4,13 @@
 //
 //  Created by wuhui on 15/6/11.
 //  Copyright (c) 2015年 asiainfo-linkage. All rights reserved.
-//
+//  此界面为整个现场开户界面
+
 
 #import <UIKit/UIKit.h>
-#import "RefreshSingleView.h"
-#import "SectionClickView.h"
-#import "OrderSearchConditionView.h"
+#import "RefreshSingleView.h"//单条内容详情界面
+#import "SectionClickView.h"//单条信息简要界面
+#import "OrderSearchConditionView.h"//搜索条件界面
 #import "bussineDataService.h"
 
 @protocol SendOrderViewDelegate <NSObject>

@@ -6,7 +6,7 @@
 	<dict>
 		<key>BLEIDCardReaderItem</key>
 		<data>
-		U22+/rTegsBIHParJo5tlIPN56c=
+		5MvWKqIQZVkvb4xh32dTdxjcohI=
 		</data>
 		<key>Headers/BLEIDCardReaderItem.h</key>
 		<data>
@@ -14,7 +14,7 @@
 		</data>
 		<key>Headers/BleTool.h</key>
 		<data>
-		4m2uTFgZOiwOsB+pJFmX13EKY64=
+		kdRmSsTgz/FrhkM6uHAXttsIZTw=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -25,7 +25,7 @@
 	<dict>
 		<key>BLEIDCardReaderItem</key>
 		<data>
-		U22+/rTegsBIHParJo5tlIPN56c=
+		5MvWKqIQZVkvb4xh32dTdxjcohI=
 		</data>
 		<key>Headers/BLEIDCardReaderItem.h</key>
 		<data>
@@ -33,7 +33,7 @@
 		</data>
 		<key>Headers/BleTool.h</key>
 		<data>
-		4m2uTFgZOiwOsB+pJFmX13EKY64=
+		kdRmSsTgz/FrhkM6uHAXttsIZTw=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>

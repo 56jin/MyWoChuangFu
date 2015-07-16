@@ -71,6 +71,7 @@
     orderIDField.delegate = self;
     orderIDField.textColor = [ComponentsFactory createColorByHex:@"#333333"];
     orderIDField.font = [UIFont systemFontOfSize:13.0f];
+    orderIDField.returnKeyType = UIReturnKeyDone;
     [conditionView addSubview:orderIDField];
     [orderIDField release];
     
@@ -90,6 +91,7 @@
     consigenPhoneField.textAlignment = NSTextAlignmentLeft;
     consigenPhoneField.textColor = [ComponentsFactory createColorByHex:@"#333333"];
     consigenPhoneField.font = [UIFont systemFontOfSize:13.0f];
+    consigenPhoneField.returnKeyType = UIReturnKeyDone;
     [conditionView addSubview:consigenPhoneField];
     [consigenPhoneField release];
     
@@ -109,6 +111,7 @@
     certIDField.delegate = self;
     certIDField.textColor = [ComponentsFactory createColorByHex:@"#333333"];
     certIDField.font = [UIFont systemFontOfSize:13.0f];
+    certIDField.returnKeyType = UIReturnKeyDone;
     [conditionView addSubview:certIDField];
     [certIDField release];
     
@@ -127,9 +130,16 @@
     [accountID release];
     accountIDField.delegate = self;
     accountIDField.textColor = [ComponentsFactory createColorByHex:@"#333333"];
+       NSString *qq =  [[NSUserDefaults standardUserDefaults]objectForKey:@"qq"];
+    if (qq!=nil&&[qq length]>0) {
+        accountIDField.text = qq;
+    }
+    
     accountIDField.font = [UIFont systemFontOfSize:13.0f];
+    accountIDField.returnKeyType = UIReturnKeyDone;
     [conditionView addSubview:accountIDField];
     [accountIDField release];
+    
 
     
     [self insertSeperViewToSuperView:conditionView withSeperY:rowHei*(cnt+1)];
@@ -290,7 +300,14 @@
     }
     
     switch (selectOrderType) {
-        case chuangFuOrder:
+        case chuangFuOrder:{
+            [data setObject:@"0" forKey:@"orderTypeResult"];
+            [data setObject:accountID forKey:@"developCode"];
+            [data setObject:@"" forKey:@"telePhoneOrderId"];
+            [data setObject:@"" forKey:@"enterWorker"];
+        }
+            break;
+        case chuangFuOrder2:
         {
             [data setObject:@"0" forKey:@"orderTypeResult"];
             [data setObject:accountID forKey:@"developCode"];
@@ -391,6 +408,13 @@
 #pragma mark - SingleSelectViewDelegate
 - (void)singleSelectViewdidSelectValue:(SingleSelectView *)singleView
 {
+    
+//    UIView  *conditionView = [self viewWithTag:CONDITION_VIEW_TAG];
+//    UITextField *acountIDField = (UITextField *)[conditionView viewWithTag:APP_ACCOUNT_ID_TAG];
+    
+    
+    
+      NSLog(@"------选择的  模式%u",selectOrderType);
     [self hiddenkeyWindows];
     if (singleView.orderType) {
         selectOrderType = singleView.orderType;
@@ -399,23 +423,32 @@
         NSDictionary *attributeDic = [[NSDictionary alloc] initWithObjectsAndKeys:
                                       [ComponentsFactory createColorByHex:@"#959595"],NSForegroundColorAttributeName, nil];
         NSAttributedString *accountID = nil;
+        
+        
+      
         switch (selectOrderType) {
-            case chuangFuOrder:
+                
+            
+                
+            case chuangFuOrder2:
             {
                 accountID = [[NSAttributedString alloc] initWithString:@"创富者ID"
                                                             attributes:attributeDic];
+                [self clearMessage];
             }
                 break;
             case FocusOrder:
             {
                 accountID = [[NSAttributedString alloc] initWithString:@"工号"
                                                             attributes:attributeDic];
+                 [self clearMessage];
             }
                 break;
             case phoneSaleOrder:
             {
                 accountID = [[NSAttributedString alloc] initWithString:@"电话营销ID"
                                                             attributes:attributeDic];
+                 [self clearMessage];
             }
                 break;
             default:
@@ -428,6 +461,17 @@
     }else{
         selectOpenStatus = singleView.openStatus;
     }
+}
+
+-(void)clearMessage{
+    UITextField *tf = (UITextField*)[self viewWithTag:CERT_ID_FIELD_TAG];
+    UITextField *tf1 = (UITextField*)[self viewWithTag:ORDER_ID_FIELD_TAG];
+    UITextField *tf2 = (UITextField*)[self viewWithTag:CONSIGN_FIELD_TAG];
+    UITextField *tf3 = (UITextField*)[self viewWithTag:APP_ACCOUNT_ID_TAG];
+    tf.text = nil;
+    tf2.text = nil;
+    tf3.text = nil;
+    tf1.text = nil;
 }
 
 #pragma mark

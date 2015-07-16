@@ -11,7 +11,7 @@
 #import "GTMBase64_My.h"
 #import <ShareSDK/ShareSDK.h>
 #import <QZoneConnection/ISSQZoneApp.h>
-
+#import "WoSchoolViewController.h"
 
 @interface ShowWebVC ()
 
@@ -106,7 +106,7 @@
 
 - (NSString*)processPaymentUrl:(NSString*)payUrl
 {
-    MyLog(@"before processPaymentUrl:%@",payUrl);
+    NSLog(@"before processPaymentUrl:%@",payUrl);
     NSMutableString* retUrl = [[[NSMutableString alloc] initWithCapacity:0] autorelease];
     //1,按？分隔
     NSArray* allArr = [payUrl componentsSeparatedByString:@"?"];
@@ -169,7 +169,7 @@
             }
             
              body = [NSString stringWithFormat:@"sessionId=%@&destUrl=%@",sessionId,[self encodeURL:self.urlStr]];
-            
+//             body = [NSString stringWithFormat:@"&destUrl=%@",[self encodeURL:self.urlStr]];
             
             
             if ([self.urlStr rangeOfString:@"school"].location != NSNotFound
@@ -180,17 +180,13 @@
                  body = [NSString stringWithFormat:@"destUrl=%@",[self encodeURL:self.urlStr]];
                 
             }
-            
-           
-        
-           
         } else {
             //            [GTMBase64_My stringByEncodingData:[[self.urlStr stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding] dataUsingEncoding:NSUTF8StringEncoding]]
             body = self.postData;
         }
     }
     
-
+    NSLog(@"\n\n 请求地址  %@   ---- %@  \n\n",url,[self encodeURL:self.urlStr]);
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url];
     if(self.isPayment){
@@ -238,6 +234,17 @@
 {
     NSURL *url = [request URL];
     NSString*str =  [url absoluteString];
+    
+    
+    
+//    if ([request.URL.relativeString hasSuffix:@"=a"] || [request.URL.relativeString hasSuffix:@"=b"] ) {
+//        [self getMessage];
+//        
+//        return NO;
+//    }
+//
+    
+    
     if ([str rangeOfString:@"wcfsproduct"].location!=NSNotFound)
     {
         NSString *query = url.query;
@@ -301,6 +308,17 @@
         }];
     }
     
+    
+//    NSLog(@"连接地址   --------- %@",str);
+    
+    if ([str rangeOfString:@"menuname=woschool"].location!=NSNotFound){
+        WoSchoolViewController * WoSchoolView = [[WoSchoolViewController alloc]init];
+        WoSchoolView.hidesBottomBarWhenPushed = YES;
+        [WoSchoolView setIsCG:@"2"];
+        [self.navigationController pushViewController:WoSchoolView animated:YES];
+        
+        return NO;
+    }
     if(FIRST==0){
         FIRST=1;
         return YES;
@@ -363,5 +381,7 @@
     }
     return NO;
 }
+
+
 
 @end
